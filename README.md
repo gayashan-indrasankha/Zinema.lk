@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/images/logo-512.png" alt="Zinema.lk Logo" width="120" />
+  <img src="assets/images/logo.png" alt="Zinema.lk Logo" width="120" />
 </p>
 
 <h1 align="center">🎬 Zinema.lk</h1>
