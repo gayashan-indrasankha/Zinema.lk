@@ -1,0 +1,18 @@
+-- Episode Parts System Migration
+-- Run this SQL to add support for multi-part episode downloads
+
+-- Table to store episode parts (each part has its own WhatsApp message ID)
+CREATE TABLE IF NOT EXISTS `episode_parts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `episode_id` int(11) NOT NULL COMMENT 'Foreign key to episodes table',
+  `part_number` int(11) NOT NULL COMMENT 'Part number (1, 2, 3, etc.)',
+  `message_id` varchar(255) NOT NULL COMMENT 'WhatsApp Message ID for this part',
+  `file_name` varchar(500) DEFAULT NULL COMMENT 'Part file name for reference',
+  `file_size` bigint(20) DEFAULT NULL COMMENT 'File size in bytes',
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_episode_part` (`episode_id`, `part_number`),
+  KEY `idx_episode_id` (`episode_id`),
+  KEY `idx_message_id` (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

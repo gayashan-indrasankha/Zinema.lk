@@ -1,0 +1,29 @@
+User-agent: *
+Allow: /
+Allow: /movies.php
+Allow: /tv-series.php
+Allow: /collections.php
+Allow: /movie/
+Allow: /series/
+Allow: /collection/
+
+# Block sensitive areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /includes/
+Disallow: /uploads/
+Disallow: /database/
+Disallow: /profile.php
+Disallow: /ajax_*
+Disallow: /google-callback.php
+Disallow: /download.php
+Disallow: /whatsapp-watch.php
+Disallow: /reset-password.php
+Disallow: /verify-email.php
+Disallow: /fb-video-api/
+
+# Crawl delay (optional - be nice to your server)
+Crawl-delay: 1
+
+# Sitemap location - Update domain for production
+Sitemap: https://zinema.lk/sitemap.xml

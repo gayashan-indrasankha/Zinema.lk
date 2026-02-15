@@ -1,0 +1,22 @@
+<IfModule mod_headers.c>
+    # Enable Cross-Origin Resource Sharing (CORS)
+    Header set Access-Control-Allow-Origin "*"
+    
+    # Enable Accept-Ranges for seeking and iOS playback
+    Header set Accept-Ranges bytes
+</IfModule>
+
+<IfModule mod_mime.c>
+    # Force correct MIME type for MP4 videos
+    AddType video/mp4 .mp4
+</IfModule>
+
+<IfModule mod_deflate.c>
+    # Disable compression for video files to prevent playback errors
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|mp4)$ no-gzip dont-vary
+</IfModule>
+
+# Disable caching for testing (optional, remove in production if needed)
+# <IfModule mod_expires.c>
+#     ExpiresActive Off
+# </IfModule>

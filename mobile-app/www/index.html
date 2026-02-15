@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Zinema.lk</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0b0c10;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .splash {
+            text-align: center;
+            animation: fadeIn 0.5s ease-in;
+        }
+        .splash img {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            margin-bottom: 20px;
+        }
+        .splash h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #2a6cff, #6c5ce7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .splash p {
+            color: #888;
+            font-size: 14px;
+        }
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid rgba(42, 108, 255, 0.2);
+            border-top-color: #2a6cff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 24px auto 0;
+        }
+        .update-banner {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #2a6cff, #6c5ce7);
+            color: #fff;
+            padding: 16px 20px;
+            text-align: center;
+            z-index: 9999;
+            animation: slideUp 0.3s ease-out;
+        }
+        .update-banner button {
+            background: #fff;
+            color: #2a6cff;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Splash screen shown briefly before WebView loads zinema.lk -->
+    <div class="splash" id="splash">
+        <h1>Zinema.lk</h1>
+        <p>Sinhala Movies & TV Series</p>
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Update notification banner -->
+    <div class="update-banner" id="updateBanner">
+        <p id="updateMessage">A new version is available!</p>
+        <button onclick="downloadUpdate()">Update Now</button>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

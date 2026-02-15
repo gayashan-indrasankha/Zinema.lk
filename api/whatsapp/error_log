@@ -1,0 +1,7 @@
+[24-Jan-2026 10:01:08 UTC] PHP Fatal error:  Uncaught mysqli_sql_exception: No such file or directory in /home/zinexxio/public_html/admin/config.php:42
+Stack trace:
+#0 /home/zinexxio/public_html/admin/config.php(42): mysqli->__construct()
+#1 /home/zinexxio/public_html/api/whatsapp/config.php(21): require_once('/home/zinexxio/...')
+#2 /home/zinexxio/public_html/api/whatsapp/validate-token.php(11): require_once('/home/zinexxio/...')
+#3 {main}
+  thrown in /home/zinexxio/public_html/admin/config.php on line 42

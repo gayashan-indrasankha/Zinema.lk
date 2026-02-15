@@ -1,0 +1,22 @@
+2025/12/26-01:48:34.960 44f0 Reusing MANIFEST D:\001\whatapp bot\.wwebjs_auth\session-bot3\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/12/26-01:48:34.960 44f0 Recovering log #68
+2025/12/26-01:48:35.002 44f0 Reusing old log D:\001\whatapp bot\.wwebjs_auth\session-bot3\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000068.log 
+2025/12/26-01:48:37.293 47b4 Level-0 table #73: started
+2025/12/26-01:48:37.300 47b4 Level-0 table #73: 185550 bytes OK
+2025/12/26-01:48:37.302 47b4 Delete type=0 #68
+2025/12/26-01:48:37.303 47b4 Manual compaction at level-0 from '\x00!\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00"\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/12/26-01:48:37.415 72ec Compacting 1@1 + 1@2 files
+2025/12/26-01:48:37.500 72ec Generated table #74@1: 27245 keys, 1008558 bytes
+2025/12/26-01:48:37.500 72ec Compacted 1@1 + 1@2 files => 1008558 bytes
+2025/12/26-01:48:37.501 72ec compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/12/26-01:48:56.696 47b4 Level-0 table #76: started
+2025/12/26-01:48:56.741 47b4 Level-0 table #76: 1280568 bytes OK
+2025/12/26-01:48:56.743 47b4 Delete type=2 #70
+2025/12/26-01:48:56.743 47b4 Delete type=0 #72
+2025/12/26-01:48:56.743 47b4 Delete type=2 #73
+2025/12/26-01:48:56.845 fcc Compacting 1@1 + 1@2 files
+2025/12/26-01:48:56.994 fcc Generated table #77@1: 36867 keys, 1414104 bytes
+2025/12/26-01:48:56.994 fcc Compacted 1@1 + 1@2 files => 1414104 bytes
+2025/12/26-01:48:57.003 fcc compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/12/26-01:48:57.004 fcc Delete type=2 #74
+2025/12/26-01:48:57.004 fcc Delete type=2 #76

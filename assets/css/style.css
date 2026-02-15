@@ -1,0 +1,74 @@
+/* Global Styles */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Movie Card Styles */
+.movie-card {
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+}
+
+.movie-poster {
+    height: 300px;
+    object-fit: cover;
+}
+
+/* Trailer Page Styles */
+.trailer-container {
+    background-color: #000;
+}
+
+/* Download Page Styles */
+#countdown {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .movie-poster {
+        height: 200px;
+    }
+    
+    #countdown {
+        font-size: 3rem;
+    }
+}
+
+/* Loading Animation */
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
