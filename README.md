@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="assets/images/logo.png" alt="Zinema.lk Logo" width="120" />
+  <img src="assets/images/logo.png" alt="Zinema.lk Logo" width="150" />
 </p>
-
-<h1 align="center">🎬 Zinema.lk</h1>
 
 <p align="center">
   <strong>Sri Lanka's Premier Sinhala Movie & TV Series Streaming Platform</strong>
