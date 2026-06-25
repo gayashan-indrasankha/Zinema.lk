@@ -44,7 +44,8 @@ backend/
 
 `Zinema.Infrastructure`
 
-- Future database access.
+- EF Core database access.
+- PostgreSQL persistence configuration.
 - Future external service integrations.
 - Future object storage, email, and repository implementations.
 - Dependency injection registration for infrastructure services.
@@ -72,9 +73,33 @@ From the repository root:
 dotnet build backend/Zinema.sln
 ```
 
+## Database Setup
+
+The API is configured for PostgreSQL through the `DefaultConnection` connection string in `src/Zinema.Api/appsettings.json`.
+
+Development placeholder:
+
+```text
+Host=localhost;Port=5432;Database=zinema_db;Username=postgres;Password=postgres
+```
+
+The EF Core context lives in `Zinema.Infrastructure/Persistence/AppDbContext.cs`.
+
+Current migration:
+
+```text
+InitialCatalogSchema
+```
+
+Apply migrations from the repository root when a local PostgreSQL instance is available:
+
+```bash
+dotnet ef database update --project backend/src/Zinema.Infrastructure --startup-project backend/src/Zinema.Api --context AppDbContext
+```
+
 ## Current Scope
 
-This foundation includes:
+This foundation currently includes:
 
 - .NET solution and project structure.
 - Clean Architecture project references.
@@ -85,5 +110,9 @@ This foundation includes:
 - `/health` endpoint.
 - Worker project skeleton.
 - Unit and integration test project structure.
+- Domain entities for the initial catalog model.
+- EF Core `AppDbContext`.
+- PostgreSQL registration through Infrastructure.
+- Initial catalog migration.
 
-Product features, database schema, movie management logic, authentication logic, and frontend implementation are intentionally out of scope for this branch.
+Public API CRUD endpoints, movie management workflows, authentication implementation, and frontend implementation are intentionally out of scope for this branch.
