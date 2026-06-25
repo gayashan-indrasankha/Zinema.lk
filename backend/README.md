@@ -97,6 +97,31 @@ Apply migrations from the repository root when a local PostgreSQL instance is av
 dotnet ef database update --project backend/src/Zinema.Infrastructure --startup-project backend/src/Zinema.Api --context AppDbContext
 ```
 
+## Catalog API
+
+The public catalog API currently exposes read-only endpoints:
+
+```text
+GET /api/catalog/movies
+GET /api/catalog/movies/{slug}
+GET /api/catalog/genres
+```
+
+Catalog controllers return DTOs only. EF Core query logic is implemented in Infrastructure through `ICatalogQueryService`, keeping controllers thin and Application independent from Infrastructure.
+
+Supported movie list query parameters:
+
+- `page`
+- `pageSize`
+- `search`
+- `genre`
+- `publishStatus`
+- `sortBy`
+
+`publishStatus` defaults to published content. `sortBy` supports `latest`, `title`, and `year`.
+
+Catalog endpoint documentation lives in `docs/api/catalog-api.md`.
+
 ## Current Scope
 
 This foundation currently includes:
@@ -114,5 +139,7 @@ This foundation currently includes:
 - EF Core `AppDbContext`.
 - PostgreSQL registration through Infrastructure.
 - Initial catalog migration.
+- Public catalog read APIs.
+- Application-layer catalog query contracts and DTOs.
 
-Public API CRUD endpoints, movie management workflows, authentication implementation, and frontend implementation are intentionally out of scope for this branch.
+Create, update, delete, movie management workflows, authentication implementation, video processing, and frontend implementation are intentionally out of scope for this branch.
