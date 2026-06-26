@@ -75,13 +75,15 @@ dotnet build backend/Zinema.sln
 
 ## Database Setup
 
-The API is configured for PostgreSQL through the `DefaultConnection` connection string in `src/Zinema.Api/appsettings.json`.
+The API is configured for PostgreSQL through the `DefaultConnection` connection string.
 
-Development placeholder:
+Local development configuration lives in `src/Zinema.Api/appsettings.Development.json`:
 
 ```text
 Host=localhost;Port=5432;Database=zinema_db;Username=postgres;Password=postgres
 ```
+
+The base `appsettings.json` keeps its connection string generic. Use environment variables or Development settings for local values.
 
 The EF Core context lives in `Zinema.Infrastructure/Persistence/AppDbContext.cs`.
 
@@ -96,6 +98,48 @@ Apply migrations from the repository root when a local PostgreSQL instance is av
 ```bash
 dotnet ef database update --project backend/src/Zinema.Infrastructure --startup-project backend/src/Zinema.Api --context AppDbContext
 ```
+
+Or use the helper script:
+
+```powershell
+.\scripts\database\update-database.ps1
+```
+
+## Local Development Services
+
+Start local PostgreSQL, Redis, and MinIO from the repository root:
+
+```bash
+docker compose up -d
+```
+
+Local service defaults:
+
+- PostgreSQL: `localhost:5432`
+- Redis: `localhost:6379`
+- MinIO API: `http://localhost:9000`
+- MinIO console: `http://localhost:9001`
+
+Copy `.env.example` to `.env` if local port or credential overrides are needed. Keep real secrets out of Git.
+
+Full setup instructions live in `docs/setup/local-development.md`.
+
+## Development Seed Data
+
+Development seeding is disabled by default and only runs in the Development environment when explicitly enabled:
+
+```powershell
+$env:Database__SeedOnStartup = "true"
+dotnet run --project backend/src/Zinema.Api
+```
+
+When enabled, startup applies EF Core migrations and seeds neutral demo catalog data. The seed operation is idempotent and checks slugs before inserting records.
+
+Seed summary:
+
+- Genres: Action, Drama, Family, Mystery.
+- Published movies: Demo Action Feature, Sample Drama Story, Neutral Family Adventure, Catalog Mystery Sample.
+- No real posters or videos are seeded.
 
 ## Catalog API
 
@@ -122,6 +166,14 @@ Supported movie list query parameters:
 
 Catalog endpoint documentation lives in `docs/api/catalog-api.md`.
 
+Local test URLs:
+
+```text
+GET http://localhost:5145/health
+GET http://localhost:5145/api/catalog/movies
+GET http://localhost:5145/api/catalog/genres
+```
+
 ## Current Scope
 
 This foundation currently includes:
@@ -141,5 +193,7 @@ This foundation currently includes:
 - Initial catalog migration.
 - Public catalog read APIs.
 - Application-layer catalog query contracts and DTOs.
+- Local Docker Compose services for PostgreSQL, Redis, and MinIO.
+- Explicit Development-only demo database seeding.
 
 Create, update, delete, movie management workflows, authentication implementation, video processing, and frontend implementation are intentionally out of scope for this branch.
