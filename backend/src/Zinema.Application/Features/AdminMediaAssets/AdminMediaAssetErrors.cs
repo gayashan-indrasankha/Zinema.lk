@@ -40,4 +40,11 @@ public static class AdminMediaAssetErrors
             "AdminMediaAsset.StorageKeyConflict",
             $"Storage key '{storageKey}' is already used.");
     }
+
+    public static Error StorageUploadFailed()
+    {
+        return Error.Create(
+            "AdminMediaAsset.StorageUploadFailed",
+            "Media file upload failed.");
+    }
 }
