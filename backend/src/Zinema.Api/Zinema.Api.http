@@ -1,0 +1,6 @@
+@Zinema.Api_HostAddress = http://localhost:5145
+
+GET {{Zinema.Api_HostAddress}}/health
+Accept: application/json
+
+###
