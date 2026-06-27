@@ -1,6 +1,7 @@
 using Zinema.Application.Common.Results;
 using Zinema.Application.DTOs.Auth;
 using Zinema.Application.Features.AdminCatalog;
+using Zinema.Application.Features.AdminMediaAssets;
 using Zinema.Application.Features.Auth;
 using Zinema.Application.Features.Catalog;
 using Zinema.Domain.Entities;
@@ -123,5 +124,106 @@ public class SolutionFoundationTests
         Assert.Equal("Demo Action Feature", command.Title);
         Assert.Contains(genreId, command.GenreIds);
         Assert.Equal(PublishStatus.Draft, command.PublishStatus);
+    }
+
+    [Fact]
+    public void GetAdminMediaAssetsQueryNormalizesPaginationAndFilters()
+    {
+        var movieId = Guid.NewGuid();
+        var query = GetAdminMediaAssetsQuery.Create(
+            page: -1,
+            pageSize: 500,
+            assetType: "  Poster  ",
+            status: "Ready",
+            movieId: movieId,
+            seriesId: null,
+            episodeId: null);
+
+        Assert.True(query.IsSuccess);
+        Assert.Equal(GetAdminMediaAssetsQuery.DefaultPage, query.Value.Page);
+        Assert.Equal(GetAdminMediaAssetsQuery.MaxPageSize, query.Value.PageSize);
+        Assert.Equal("poster", query.Value.AssetType);
+        Assert.Equal(MediaStatus.Ready, query.Value.Status);
+        Assert.Equal(movieId, query.Value.MovieId);
+    }
+
+    [Fact]
+    public void GetAdminMediaAssetsQueryRejectsInvalidStatus()
+    {
+        var query = GetAdminMediaAssetsQuery.Create(
+            page: 1,
+            pageSize: 20,
+            assetType: null,
+            status: "unknown",
+            movieId: null,
+            seriesId: null,
+            episodeId: null);
+
+        Assert.True(query.IsFailure);
+        Assert.Equal("AdminMediaAsset.Validation", query.Error.Code);
+    }
+
+    [Fact]
+    public void MediaAssetValidationRequiresRelatedCatalogItem()
+    {
+        var error = AdminMediaAssetValidation.ValidateMetadata(
+            "Poster",
+            "poster",
+            "image/jpeg",
+            "poster.jpg",
+            "movies/demo/poster.jpg",
+            null,
+            1200,
+            movieId: null,
+            seriesId: null,
+            episodeId: null,
+            collectionId: null);
+
+        Assert.NotNull(error);
+        Assert.Equal("AdminMediaAsset.Validation", error.Code);
+    }
+
+    [Fact]
+    public void MediaAssetValidationRejectsNegativeFileSize()
+    {
+        var error = AdminMediaAssetValidation.ValidateMetadata(
+            "Poster",
+            "poster",
+            "image/jpeg",
+            "poster.jpg",
+            "movies/demo/poster.jpg",
+            null,
+            -1,
+            movieId: Guid.NewGuid(),
+            seriesId: null,
+            episodeId: null,
+            collectionId: null);
+
+        Assert.NotNull(error);
+        Assert.Equal("AdminMediaAsset.Validation", error.Code);
+    }
+
+    [Fact]
+    public void CreateMediaAssetCommandCanCarryMetadataInput()
+    {
+        var movieId = Guid.NewGuid();
+        var command = new CreateMediaAssetCommand(
+            "Demo Poster",
+            "poster",
+            "image/jpeg",
+            "poster.jpg",
+            "movies/demo/poster.jpg",
+            null,
+            1200,
+            MediaStatus.PendingUpload,
+            movieId,
+            null,
+            null,
+            null);
+
+        Assert.Equal("Demo Poster", command.Title);
+        Assert.Equal("poster", command.AssetType);
+        Assert.Equal(movieId, command.MovieId);
+        Assert.Equal(MediaStatus.PendingUpload, command.Status);
     }
 }
