@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Zinema.Application.Features.AdminCatalog;
 using Zinema.Application.Features.Auth;
 using Zinema.Application.Features.Catalog;
 using Zinema.Infrastructure.Authentication;
@@ -40,6 +41,7 @@ public static class DependencyInjection
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IAdminCatalogService, AdminCatalogService>();
         services.AddScoped<ICatalogQueryService, CatalogQueryService>();
 
         return services;

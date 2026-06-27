@@ -1,5 +1,6 @@
 using Zinema.Application.Common.Results;
 using Zinema.Application.DTOs.Auth;
+using Zinema.Application.Features.AdminCatalog;
 using Zinema.Application.Features.Auth;
 using Zinema.Application.Features.Catalog;
 using Zinema.Domain.Entities;
@@ -92,5 +93,35 @@ public class SolutionFoundationTests
         Assert.Equal("token", response.AccessToken);
         Assert.Equal("demo@example.test", response.User.Email);
         Assert.Contains(AuthRoles.User, response.User.Roles);
+    }
+
+    [Theory]
+    [InlineData("Demo Action Feature", "demo-action-feature")]
+    [InlineData("  Sample: Drama Story!  ", "sample-drama-story")]
+    [InlineData("Feature 2026", "feature-2026")]
+    public void SlugGeneratorCreatesSafeSlugs(string value, string expected)
+    {
+        var slug = SlugGenerator.Generate(value);
+
+        Assert.Equal(expected, slug);
+    }
+
+    [Fact]
+    public void CreateMovieCommandCanCarryAdminCatalogInput()
+    {
+        var genreId = Guid.NewGuid();
+        var command = new CreateMovieCommand(
+            "Demo Action Feature",
+            null,
+            "Neutral admin catalog test entry.",
+            2026,
+            100,
+            "English",
+            [genreId],
+            PublishStatus.Draft);
+
+        Assert.Equal("Demo Action Feature", command.Title);
+        Assert.Contains(genreId, command.GenreIds);
+        Assert.Equal(PublishStatus.Draft, command.PublishStatus);
     }
 }

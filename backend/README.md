@@ -218,6 +218,32 @@ $env:Auth__DevelopmentAdminPassword = "<local-dev-password>"
 
 Auth endpoint documentation lives in `docs/api/auth-api.md`. Security notes live in `docs/security/authentication.md`.
 
+## Admin Catalog API
+
+Admin catalog endpoints require a JWT access token for a user with the `Admin` role.
+
+Movie management endpoints:
+
+```text
+POST /api/admin/movies
+PUT /api/admin/movies/{id}
+DELETE /api/admin/movies/{id}
+PATCH /api/admin/movies/{id}/publish
+PATCH /api/admin/movies/{id}/unpublish
+```
+
+Genre management endpoints:
+
+```text
+POST /api/admin/genres
+PUT /api/admin/genres/{id}
+DELETE /api/admin/genres/{id}
+```
+
+Movie deletes archive the movie by setting its publish status to `Archived`. Genre deletes are blocked when the genre is linked to movies.
+
+Admin catalog endpoint documentation lives in `docs/api/admin-catalog-api.md`.
+
 ## Current Scope
 
 This foundation currently includes:
@@ -242,5 +268,6 @@ This foundation currently includes:
 - ASP.NET Core Identity with Guid-based users and roles.
 - JWT Bearer authentication.
 - Role-based authorization foundation.
+- Admin-only catalog management APIs for movies and genres.
 
-Create, update, delete, movie management workflows, admin catalog features, video processing, and frontend implementation are intentionally out of scope for this branch.
+Series, episode, collection management, watchlist features, review features, payment features, video processing, and frontend implementation are intentionally out of scope for this branch.
