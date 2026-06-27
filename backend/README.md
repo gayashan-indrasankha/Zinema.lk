@@ -260,9 +260,51 @@ DELETE /api/admin/media-assets/{id}
 
 This API manages metadata only. It records fields such as title, asset type, content type, file name, storage key, optional public URL, file size, status, and catalog links.
 
-The current implementation does not upload files, replace files, delete physical objects, run FFmpeg, or generate HLS output. `DELETE` archives metadata by setting media status to `Archived`.
+The metadata endpoints do not upload files, replace files, delete physical objects, run FFmpeg, or generate HLS output. `DELETE` archives metadata by setting media status to `Archived`.
 
 Admin media asset endpoint documentation lives in `docs/api/admin-media-assets-api.md`. Storage architecture notes live in `docs/architecture/media-storage.md`.
+
+## Admin Media Upload API
+
+Admin media upload requires a JWT access token for a user with the `Admin` role.
+
+Upload endpoint:
+
+```text
+POST /api/admin/media-assets/upload
+```
+
+This endpoint accepts `multipart/form-data`, uploads an image to MinIO/S3-compatible object storage, and creates the related media asset metadata record after upload succeeds.
+
+Allowed upload content types:
+
+```text
+image/jpeg
+image/png
+image/webp
+```
+
+Default max upload size:
+
+```text
+5242880 bytes
+```
+
+Local MinIO defaults are configured in `src/Zinema.Api/appsettings.Development.json` and can be overridden with environment variables:
+
+```text
+ObjectStorage__Endpoint=localhost:9000
+ObjectStorage__AccessKey=minioadmin
+ObjectStorage__SecretKey=minioadmin
+ObjectStorage__BucketName=zinema-media
+ObjectStorage__UseSsl=false
+ObjectStorage__EnsureBucketExists=true
+ObjectStorage__PublicBaseUrl=http://localhost:9000/zinema-media
+```
+
+When `ObjectStorage__EnsureBucketExists` is `true`, the API creates the bucket if it is missing. This branch does not upload videos, run FFmpeg, transcode media, or generate HLS output.
+
+Admin media upload endpoint documentation lives in `docs/api/admin-media-upload-api.md`.
 
 ## Current Scope
 
@@ -291,5 +333,6 @@ This foundation currently includes:
 - Admin-only catalog management APIs for movies and genres.
 - Admin-only media asset metadata management APIs.
 - Object storage URL abstraction foundation.
+- Admin-only image upload to MinIO/S3-compatible object storage.
 
-Series, episode, collection management, real file upload, watchlist features, review features, payment features, video processing, and frontend implementation are intentionally out of scope for this branch.
+Series, episode, collection management, video upload, watchlist features, review features, payment features, video processing, and frontend implementation are intentionally out of scope for this branch.

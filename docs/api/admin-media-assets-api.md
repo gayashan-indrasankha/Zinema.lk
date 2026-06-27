@@ -16,7 +16,7 @@ Required role:
 Admin
 ```
 
-This API stores metadata only. It does not upload files, replace files, delete physical objects, process videos, create HLS output, or run FFmpeg.
+This API stores metadata only. Use `docs/api/admin-media-upload-api.md` for admin image upload. The metadata endpoints do not replace files, delete physical objects, process videos, create HLS output, or run FFmpeg.
 
 ## Endpoints
 
