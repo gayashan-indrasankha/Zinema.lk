@@ -41,11 +41,14 @@ public static class DependencyInjection
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
         services.Configure<ObjectStorageOptions>(
             configuration.GetSection(ObjectStorageOptions.SectionName));
+        services.Configure<MediaUploadOptions>(
+            configuration.GetSection(MediaUploadOptions.SectionName));
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IAdminCatalogService, AdminCatalogService>();
         services.AddScoped<IAdminMediaAssetService, AdminMediaAssetService>();
+        services.AddScoped<IAdminMediaAssetUploadService, AdminMediaAssetUploadService>();
         services.AddSingleton<IObjectStorageService, ObjectStorageService>();
         services.AddScoped<ICatalogQueryService, CatalogQueryService>();
 
