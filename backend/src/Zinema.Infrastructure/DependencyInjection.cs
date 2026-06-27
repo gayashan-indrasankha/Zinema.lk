@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Zinema.Application.Features.AdminCatalog;
+using Zinema.Application.Features.AdminMediaAssets;
 using Zinema.Application.Features.Auth;
 using Zinema.Application.Features.Catalog;
 using Zinema.Infrastructure.Authentication;
@@ -38,10 +39,14 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<AppDbContext>();
 
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
+        services.Configure<ObjectStorageOptions>(
+            configuration.GetSection(ObjectStorageOptions.SectionName));
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IAdminCatalogService, AdminCatalogService>();
+        services.AddScoped<IAdminMediaAssetService, AdminMediaAssetService>();
+        services.AddSingleton<IObjectStorageService, ObjectStorageService>();
         services.AddScoped<ICatalogQueryService, CatalogQueryService>();
 
         return services;
