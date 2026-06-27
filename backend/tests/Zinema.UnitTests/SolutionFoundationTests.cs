@@ -226,4 +226,74 @@ public class SolutionFoundationTests
         Assert.Equal(movieId, command.MovieId);
         Assert.Equal(MediaStatus.PendingUpload, command.Status);
     }
+
+    [Fact]
+    public void StorageKeyGeneratorCreatesSafeMediaAssetKeys()
+    {
+        var uploadId = Guid.Parse("11111111-2222-3333-4444-555555555555");
+        var timestamp = new DateTimeOffset(2026, 6, 28, 10, 30, 0, TimeSpan.Zero);
+
+        var storageKey = StorageKeyGenerator.Generate(
+            "  Demo Poster Image.JPG  ",
+            timestamp,
+            uploadId);
+
+        Assert.Equal(
+            "media-assets/2026/06/11111111222233334444555555555555-demo-poster-image.jpg",
+            storageKey);
+    }
+
+    [Fact]
+    public void MediaUploadValidationAcceptsAllowedImageFile()
+    {
+        var error = MediaUploadValidation.ValidateUpload(
+            "poster.png",
+            "image/png",
+            1200,
+            new MediaUploadOptions());
+
+        Assert.Null(error);
+    }
+
+    [Fact]
+    public void MediaUploadValidationRejectsDangerousFileName()
+    {
+        var error = MediaUploadValidation.ValidateUpload(
+            "../poster.png",
+            "image/png",
+            1200,
+            new MediaUploadOptions());
+
+        Assert.NotNull(error);
+        Assert.Equal("AdminMediaAsset.Validation", error.Code);
+    }
+
+    [Fact]
+    public void MediaUploadValidationRejectsUnsupportedContentType()
+    {
+        var error = MediaUploadValidation.ValidateUpload(
+            "trailer.mp4",
+            "video/mp4",
+            1200,
+            new MediaUploadOptions());
+
+        Assert.NotNull(error);
+        Assert.Equal("AdminMediaAsset.Validation", error.Code);
+    }
+
+    [Fact]
+    public void MediaUploadValidationRejectsOversizedFiles()
+    {
+        var error = MediaUploadValidation.ValidateUpload(
+            "poster.webp",
+            "image/webp",
+            1201,
+            new MediaUploadOptions
+            {
+                MaxFileSizeBytes = 1200
+            });
+
+        Assert.NotNull(error);
+        Assert.Equal("AdminMediaAsset.Validation", error.Code);
+    }
 }
