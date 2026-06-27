@@ -244,6 +244,26 @@ Movie deletes archive the movie by setting its publish status to `Archived`. Gen
 
 Admin catalog endpoint documentation lives in `docs/api/admin-catalog-api.md`.
 
+## Admin Media Assets API
+
+Admin media asset endpoints require a JWT access token for a user with the `Admin` role.
+
+Media asset metadata endpoints:
+
+```text
+GET /api/admin/media-assets
+GET /api/admin/media-assets/{id}
+POST /api/admin/media-assets
+PUT /api/admin/media-assets/{id}
+DELETE /api/admin/media-assets/{id}
+```
+
+This API manages metadata only. It records fields such as title, asset type, content type, file name, storage key, optional public URL, file size, status, and catalog links.
+
+The current implementation does not upload files, replace files, delete physical objects, run FFmpeg, or generate HLS output. `DELETE` archives metadata by setting media status to `Archived`.
+
+Admin media asset endpoint documentation lives in `docs/api/admin-media-assets-api.md`. Storage architecture notes live in `docs/architecture/media-storage.md`.
+
 ## Current Scope
 
 This foundation currently includes:
@@ -269,5 +289,7 @@ This foundation currently includes:
 - JWT Bearer authentication.
 - Role-based authorization foundation.
 - Admin-only catalog management APIs for movies and genres.
+- Admin-only media asset metadata management APIs.
+- Object storage URL abstraction foundation.
 
-Series, episode, collection management, watchlist features, review features, payment features, video processing, and frontend implementation are intentionally out of scope for this branch.
+Series, episode, collection management, real file upload, watchlist features, review features, payment features, video processing, and frontend implementation are intentionally out of scope for this branch.
