@@ -17,6 +17,9 @@ public static class ApiApplicationBuilderExtensions
             });
         }
 
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         app.MapHealthChecks("/health");
         app.MapControllers();
 

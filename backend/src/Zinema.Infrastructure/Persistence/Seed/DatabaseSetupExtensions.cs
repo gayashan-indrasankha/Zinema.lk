@@ -23,6 +23,7 @@ public static class DatabaseSetupExtensions
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
         await dbContext.Database.MigrateAsync(cancellationToken);
+        await IdentityDataSeeder.SeedAsync(scope.ServiceProvider, configuration, cancellationToken);
         await DevelopmentDatabaseSeeder.SeedAsync(dbContext, cancellationToken);
     }
 
