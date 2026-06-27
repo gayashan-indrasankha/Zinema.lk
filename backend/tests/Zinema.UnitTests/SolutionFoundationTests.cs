@@ -1,4 +1,6 @@
 using Zinema.Application.Common.Results;
+using Zinema.Application.DTOs.Auth;
+using Zinema.Application.Features.Auth;
 using Zinema.Application.Features.Catalog;
 using Zinema.Domain.Entities;
 using Zinema.Domain.Enums;
@@ -64,5 +66,31 @@ public class SolutionFoundationTests
         Assert.Equal(12, query.PageSize);
         Assert.Equal(PublishStatus.Scheduled, query.PublishStatus);
         Assert.Equal(GetMoviesQuery.SortTitle, query.SortBy);
+    }
+
+    [Fact]
+    public void AuthRolesIncludeUserAndAdmin()
+    {
+        Assert.Contains(AuthRoles.User, AuthRoles.All);
+        Assert.Contains(AuthRoles.Admin, AuthRoles.All);
+    }
+
+    [Fact]
+    public void AuthResponseDoesNotExposePasswordData()
+    {
+        var user = new CurrentUserDto(
+            Guid.NewGuid(),
+            "Demo User",
+            "demo@example.test",
+            [AuthRoles.User]);
+
+        var response = new AuthResponseDto(
+            "token",
+            DateTimeOffset.UtcNow.AddMinutes(30),
+            user);
+
+        Assert.Equal("token", response.AccessToken);
+        Assert.Equal("demo@example.test", response.User.Email);
+        Assert.Contains(AuthRoles.User, response.User.Roles);
     }
 }
