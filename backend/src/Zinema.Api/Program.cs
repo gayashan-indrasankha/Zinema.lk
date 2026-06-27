@@ -13,6 +13,10 @@ var app = builder.Build();
 
 app.UseApiPipeline();
 
+await app.Services.ApplyDevelopmentDatabaseSetupAsync(
+    app.Configuration,
+    app.Environment.IsDevelopment());
+
 app.Run();
 
 public partial class Program;
