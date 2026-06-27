@@ -174,6 +174,50 @@ GET http://localhost:5145/api/catalog/movies
 GET http://localhost:5145/api/catalog/genres
 ```
 
+## Authentication and Authorization
+
+The API uses ASP.NET Core Identity with JWT Bearer authentication.
+
+Roles:
+
+- `User`
+- `Admin`
+
+Public auth endpoints:
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+GET /api/auth/me
+```
+
+RBAC verification endpoint:
+
+```text
+GET /api/admin/ping
+```
+
+`/api/auth/me` requires a valid bearer token. `/api/admin/ping` requires the `Admin` role.
+
+JWT settings are configured through the `Jwt` configuration section. The Development settings use a local-only placeholder signing key. Real signing keys should be supplied through environment variables or secret storage.
+
+Development role seeding is idempotent and runs only when startup seeding is explicitly enabled:
+
+```powershell
+$env:Database__SeedOnStartup = "true"
+dotnet run --project backend/src/Zinema.Api
+```
+
+Development admin user seeding is disabled by default. If enabled, credentials must come from configuration or environment variables:
+
+```powershell
+$env:Auth__SeedDevelopmentAdmin = "true"
+$env:Auth__DevelopmentAdminEmail = "admin@example.test"
+$env:Auth__DevelopmentAdminPassword = "<local-dev-password>"
+```
+
+Auth endpoint documentation lives in `docs/api/auth-api.md`. Security notes live in `docs/security/authentication.md`.
+
 ## Current Scope
 
 This foundation currently includes:
@@ -195,5 +239,8 @@ This foundation currently includes:
 - Application-layer catalog query contracts and DTOs.
 - Local Docker Compose services for PostgreSQL, Redis, and MinIO.
 - Explicit Development-only demo database seeding.
+- ASP.NET Core Identity with Guid-based users and roles.
+- JWT Bearer authentication.
+- Role-based authorization foundation.
 
-Create, update, delete, movie management workflows, authentication implementation, video processing, and frontend implementation are intentionally out of scope for this branch.
+Create, update, delete, movie management workflows, admin catalog features, video processing, and frontend implementation are intentionally out of scope for this branch.
