@@ -4,7 +4,8 @@ namespace Zinema.Worker;
 
 public sealed class PlaceholderVideoProcessingJobRunner(
     ILogger<PlaceholderVideoProcessingJobRunner> logger,
-    IVideoProcessingQueue videoProcessingQueue) : IVideoProcessingJobRunner
+    IVideoProcessingQueue videoProcessingQueue,
+    IVideoProcessingJobLifecycleService videoProcessingJobLifecycleService) : IVideoProcessingJobRunner
 {
     public async Task RunNextAsync(CancellationToken cancellationToken = default)
     {
@@ -19,7 +20,28 @@ public sealed class PlaceholderVideoProcessingJobRunner(
         }
 
         logger.LogInformation(
-            "Video processing runner placeholder observed {QueuedJobCount} queued job(s). No media processing is executed.",
+            "Video processing runner placeholder observed {QueuedJobCount} queued job(s).",
             queuedJobs.Count);
+
+        foreach (var queuedJob in queuedJobs)
+        {
+            var claimResult = await videoProcessingJobLifecycleService.StartProcessingJobAsync(
+                queuedJob.Id,
+                cancellationToken);
+
+            if (claimResult.IsFailure)
+            {
+                logger.LogWarning(
+                    "Video processing runner placeholder could not claim job {ProcessingJobId}: {ErrorCode}",
+                    queuedJob.Id,
+                    claimResult.Error.Code);
+
+                continue;
+            }
+
+            logger.LogInformation(
+                "Video processing runner placeholder claimed job {ProcessingJobId}. Real media processing is not implemented.",
+                claimResult.Value.Id);
+        }
     }
 }

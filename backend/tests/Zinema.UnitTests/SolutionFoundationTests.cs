@@ -511,6 +511,163 @@ public class SolutionFoundationTests
         Assert.Equal(VideoProcessingJobStatus.Queued.ToString(), queuedJobs[0].Status);
     }
 
+    [Theory]
+    [InlineData(VideoProcessingJobStatus.Pending, false)]
+    [InlineData(VideoProcessingJobStatus.Queued, true)]
+    [InlineData(VideoProcessingJobStatus.Processing, false)]
+    [InlineData(VideoProcessingJobStatus.Completed, false)]
+    [InlineData(VideoProcessingJobStatus.Failed, false)]
+    [InlineData(VideoProcessingJobStatus.Cancelled, false)]
+    public void VideoProcessingJobStartValidationAllowsOnlyQueuedJobs(
+        VideoProcessingJobStatus status,
+        bool canStart)
+    {
+        Assert.Equal(canStart, VideoProcessingJobValidation.CanStart(status));
+    }
+
+    [Theory]
+    [InlineData(VideoProcessingJobStatus.Pending, false)]
+    [InlineData(VideoProcessingJobStatus.Queued, false)]
+    [InlineData(VideoProcessingJobStatus.Processing, true)]
+    [InlineData(VideoProcessingJobStatus.Completed, false)]
+    [InlineData(VideoProcessingJobStatus.Failed, false)]
+    [InlineData(VideoProcessingJobStatus.Cancelled, false)]
+    public void VideoProcessingJobTerminalValidationAllowsOnlyProcessingJobs(
+        VideoProcessingJobStatus status,
+        bool canCompleteOrFail)
+    {
+        Assert.Equal(canCompleteOrFail, VideoProcessingJobValidation.CanComplete(status));
+        Assert.Equal(canCompleteOrFail, VideoProcessingJobValidation.CanFail(status));
+    }
+
+    [Fact]
+    public void FailVideoProcessingJobCommandRequiresErrorMessage()
+    {
+        var command = new FailVideoProcessingJobCommand(Guid.NewGuid(), " ");
+
+        var error = VideoProcessingJobValidation.ValidateFail(command);
+
+        Assert.NotNull(error);
+        Assert.Equal("VideoProcessingJob.Validation", error.Code);
+    }
+
+    [Fact]
+    public async Task VideoProcessingLifecycleMovesQueuedJobToProcessing()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var mediaAsset = CreateMediaAsset("media-assets/lifecycle-start.mp4");
+        var job = CreateProcessingJob(mediaAsset, VideoProcessingJobStatus.Queued);
+
+        dbContext.MediaAssets.Add(mediaAsset);
+        dbContext.VideoProcessingJobs.Add(job);
+        await dbContext.SaveChangesAsync();
+
+        var lifecycle = new VideoProcessingJobLifecycleService(dbContext);
+        var result = await lifecycle.StartProcessingJobAsync(job.Id);
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(VideoProcessingJobStatus.Processing.ToString(), result.Value.Status);
+        Assert.NotNull(result.Value.StartedAt);
+        Assert.Equal(1, result.Value.AttemptCount);
+
+        var saved = await dbContext.VideoProcessingJobs.FirstAsync(item => item.Id == job.Id);
+        Assert.Equal(VideoProcessingJobStatus.Processing, saved.Status);
+        Assert.NotNull(saved.StartedAt);
+        Assert.Null(saved.CompletedAt);
+    }
+
+    [Fact]
+    public async Task VideoProcessingLifecycleMovesProcessingJobToCompleted()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var mediaAsset = CreateMediaAsset("media-assets/lifecycle-complete.mp4");
+        var job = CreateProcessingJob(mediaAsset, VideoProcessingJobStatus.Processing);
+        job.StartedAt = DateTimeOffset.UtcNow.AddMinutes(-5);
+        job.AttemptCount = 1;
+
+        dbContext.MediaAssets.Add(mediaAsset);
+        dbContext.VideoProcessingJobs.Add(job);
+        await dbContext.SaveChangesAsync();
+
+        var lifecycle = new VideoProcessingJobLifecycleService(dbContext);
+        var result = await lifecycle.CompleteProcessingJobAsync(job.Id);
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(VideoProcessingJobStatus.Completed.ToString(), result.Value.Status);
+        Assert.NotNull(result.Value.CompletedAt);
+        Assert.Null(result.Value.ErrorMessage);
+
+        var saved = await dbContext.VideoProcessingJobs.FirstAsync(item => item.Id == job.Id);
+        Assert.Equal(VideoProcessingJobStatus.Completed, saved.Status);
+        Assert.NotNull(saved.CompletedAt);
+    }
+
+    [Fact]
+    public async Task VideoProcessingLifecycleMovesProcessingJobToFailed()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var mediaAsset = CreateMediaAsset("media-assets/lifecycle-fail.mp4");
+        var job = CreateProcessingJob(mediaAsset, VideoProcessingJobStatus.Processing);
+        job.StartedAt = DateTimeOffset.UtcNow.AddMinutes(-5);
+        job.AttemptCount = 1;
+
+        dbContext.MediaAssets.Add(mediaAsset);
+        dbContext.VideoProcessingJobs.Add(job);
+        await dbContext.SaveChangesAsync();
+
+        var lifecycle = new VideoProcessingJobLifecycleService(dbContext);
+        var result = await lifecycle.FailProcessingJobAsync(
+            new FailVideoProcessingJobCommand(job.Id, " Placeholder processing failed. "));
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(VideoProcessingJobStatus.Failed.ToString(), result.Value.Status);
+        Assert.Equal("Placeholder processing failed.", result.Value.ErrorMessage);
+        Assert.NotNull(result.Value.CompletedAt);
+
+        var saved = await dbContext.VideoProcessingJobs.FirstAsync(item => item.Id == job.Id);
+        Assert.Equal(VideoProcessingJobStatus.Failed, saved.Status);
+        Assert.Equal("Placeholder processing failed.", saved.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task VideoProcessingLifecycleRejectsPendingJobCompletion()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var mediaAsset = CreateMediaAsset("media-assets/lifecycle-pending.mp4");
+        var job = CreateProcessingJob(mediaAsset, VideoProcessingJobStatus.Pending);
+
+        dbContext.MediaAssets.Add(mediaAsset);
+        dbContext.VideoProcessingJobs.Add(job);
+        await dbContext.SaveChangesAsync();
+
+        var lifecycle = new VideoProcessingJobLifecycleService(dbContext);
+        var result = await lifecycle.CompleteProcessingJobAsync(job.Id);
+
+        Assert.True(result.IsFailure);
+        Assert.Equal("VideoProcessingJob.InvalidStateTransition", result.Error.Code);
+    }
+
+    [Theory]
+    [InlineData(VideoProcessingJobStatus.Completed)]
+    [InlineData(VideoProcessingJobStatus.Cancelled)]
+    public async Task VideoProcessingLifecycleRejectsTerminalJobClaim(VideoProcessingJobStatus status)
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var mediaAsset = CreateMediaAsset($"media-assets/lifecycle-{status}.mp4");
+        var job = CreateProcessingJob(mediaAsset, status);
+        job.CompletedAt = DateTimeOffset.UtcNow.AddMinutes(-1);
+
+        dbContext.MediaAssets.Add(mediaAsset);
+        dbContext.VideoProcessingJobs.Add(job);
+        await dbContext.SaveChangesAsync();
+
+        var lifecycle = new VideoProcessingJobLifecycleService(dbContext);
+        var result = await lifecycle.StartProcessingJobAsync(job.Id);
+
+        Assert.True(result.IsFailure);
+        Assert.Equal("VideoProcessingJob.InvalidStateTransition", result.Error.Code);
+    }
+
     private static AppDbContext CreateInMemoryDbContext()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -518,6 +675,19 @@ public class SolutionFoundationTests
             .Options;
 
         return new AppDbContext(options);
+    }
+
+    private static VideoProcessingJob CreateProcessingJob(
+        MediaAsset mediaAsset,
+        VideoProcessingJobStatus status)
+    {
+        return new VideoProcessingJob
+        {
+            MediaAssetId = mediaAsset.Id,
+            SourceStorageKey = mediaAsset.StorageKey,
+            Status = status,
+            QueuedAt = DateTimeOffset.UtcNow.AddMinutes(-10)
+        };
     }
 
     private static MediaAsset CreateMediaAsset(string storageKey)

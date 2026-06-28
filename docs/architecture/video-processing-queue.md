@@ -51,9 +51,13 @@ Zinema.Worker
   -> IVideoProcessingJobRunner
   -> IVideoProcessingQueue.GetQueuedJobsAsync
   -> queued job DTOs
+  -> IVideoProcessingJobLifecycleService.StartProcessingJobAsync
+  -> Processing status
 ```
 
-The current worker runner is placeholder-only. It reads queued jobs and logs that it found them, but it does not claim jobs, update statuses, run FFmpeg, write output files, or mark jobs completed.
+The current worker runner is placeholder-only. It reads queued jobs, claims them by moving them from `Queued` to `Processing`, and logs that real processing is not implemented.
+
+It does not run FFmpeg, write output files, generate HLS output, or mark jobs completed automatically.
 
 ## Redis
 
@@ -64,8 +68,7 @@ Redis is available in local Docker Compose for later branches, but this branch d
 Later branches can add:
 
 - Redis-backed dispatch.
-- Worker job claiming.
-- `Queued -> Processing` transitions.
+- Stronger worker job claiming.
 - Retry and attempt handling.
 - FFmpeg execution.
 - HLS manifest and segment output.
