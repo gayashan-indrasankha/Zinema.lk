@@ -10,6 +10,7 @@ namespace Zinema.Infrastructure.Services;
 public sealed class LocalVideoProcessingService(
     IOptions<VideoProcessingOptions> options,
     IFfmpegCommandBuilder ffmpegCommandBuilder,
+    IHlsOutputManifestBuilder hlsOutputManifestBuilder,
     IFfmpegAvailabilityChecker ffmpegAvailabilityChecker,
     ILogger<LocalVideoProcessingService> logger) : IVideoProcessingService
 {
@@ -71,13 +72,31 @@ public sealed class LocalVideoProcessingService(
                 ExitCode: null));
         }
 
+        var outputManifest = hlsOutputManifestBuilder.BuildManifest(command.Value.OutputPlan);
+        if (outputManifest.IsFailure)
+        {
+            return Result<VideoProcessingExecutionResult>.Success(new VideoProcessingExecutionResult(
+                processingJob.Id,
+                VideoProcessingExecutionStatus.ValidationFailed,
+                WasExecuted: false,
+                Succeeded: false,
+                Message: outputManifest.Error.Message,
+                OutputPlan: command.Value.OutputPlan,
+                Command: command.Value,
+                ExitCode: null));
+        }
+
         Directory.CreateDirectory(command.Value.OutputPlan.JobOutputDirectory);
 
-        return await ExecuteFfmpegAsync(command.Value, cancellationToken);
+        return await ExecuteFfmpegAsync(
+            command.Value,
+            outputManifest.Value,
+            cancellationToken);
     }
 
     private async Task<Result<VideoProcessingExecutionResult>> ExecuteFfmpegAsync(
         FfmpegHlsCommand command,
+        HlsOutputManifest outputManifest,
         CancellationToken cancellationToken)
     {
         try
@@ -124,7 +143,8 @@ public sealed class LocalVideoProcessingService(
                         Message: "FFmpeg HLS processing completed successfully.",
                         OutputPlan: command.OutputPlan,
                         Command: command,
-                        ExitCode: process.ExitCode));
+                        ExitCode: process.ExitCode,
+                        OutputManifest: outputManifest));
             }
 
             return ExecutionFailure(

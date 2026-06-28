@@ -8,4 +8,5 @@ public sealed record VideoProcessingExecutionResult(
     string Message,
     HlsOutputPlan? OutputPlan,
     FfmpegHlsCommand? Command,
-    int? ExitCode);
+    int? ExitCode,
+    HlsOutputManifest? OutputManifest = null);
