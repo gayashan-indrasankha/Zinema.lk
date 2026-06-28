@@ -18,6 +18,10 @@ public interface IVideoProcessingJobService
         Guid id,
         CancellationToken cancellationToken = default);
 
+    Task<Result<VideoProcessingJobDto>> EnqueueProcessingJobAsync(
+        EnqueueVideoProcessingJobCommand command,
+        CancellationToken cancellationToken = default);
+
     Task<Result<VideoProcessingJobDto>> CancelProcessingJobAsync(
         Guid id,
         CancellationToken cancellationToken = default);

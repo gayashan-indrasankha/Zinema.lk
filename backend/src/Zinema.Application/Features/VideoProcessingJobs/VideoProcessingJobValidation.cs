@@ -12,6 +12,26 @@ public static class VideoProcessingJobValidation
             : null;
     }
 
+    public static Error? ValidateEnqueue(Guid processingJobId)
+    {
+        return processingJobId == Guid.Empty
+            ? VideoProcessingJobErrors.Validation("Video processing job ID is required.")
+            : null;
+    }
+
+    public static bool CanEnqueue(VideoProcessingJobStatus status)
+    {
+        return status is VideoProcessingJobStatus.Pending;
+    }
+
+    public static Error? ValidateEnqueue(VideoProcessingJobStatus status)
+    {
+        return CanEnqueue(status)
+            ? null
+            : VideoProcessingJobErrors.InvalidStateTransition(
+                $"Cannot enqueue a video processing job with status '{status}'.");
+    }
+
     public static bool CanCancel(VideoProcessingJobStatus status)
     {
         return status is VideoProcessingJobStatus.Pending or VideoProcessingJobStatus.Queued;

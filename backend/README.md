@@ -316,14 +316,15 @@ Processing job endpoints:
 POST /api/admin/media-assets/{id}/processing-jobs
 GET /api/admin/processing-jobs
 GET /api/admin/processing-jobs/{id}
+POST /api/admin/processing-jobs/{id}/enqueue
 PATCH /api/admin/processing-jobs/{id}/cancel
 ```
 
-This API creates and tracks job records for media assets. New jobs start with status `Pending`. Cancel is allowed only for `Pending` or `Queued` jobs.
+This API creates and tracks job records for media assets. New jobs start with status `Pending`. Enqueue is allowed only for `Pending` jobs and moves them to `Queued`. Cancel is allowed only for `Pending` or `Queued` jobs.
 
-This branch does not run FFmpeg, transcode video, generate HLS output, or cancel operating-system processes. The worker project includes placeholder queue and runner implementations only.
+This branch does not run FFmpeg, transcode video, generate HLS output, or cancel operating-system processes. The worker project reads queued jobs through an interface and logs placeholder activity only.
 
-Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`.
+Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`; queue notes live in `docs/architecture/video-processing-queue.md`.
 
 ## Current Scope
 
@@ -355,5 +356,6 @@ This foundation currently includes:
 - Admin-only image upload to MinIO/S3-compatible object storage.
 - Admin-only video processing job management APIs.
 - Placeholder video processing queue and worker runner boundaries.
+- EF Core-backed video processing queue state transitions.
 
 Series, episode, collection management, video upload, watchlist features, review features, payment features, real video processing, and frontend implementation are intentionally out of scope for this branch.

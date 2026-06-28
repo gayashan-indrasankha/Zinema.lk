@@ -3,12 +3,23 @@ using Zinema.Application.Features.VideoProcessingJobs;
 namespace Zinema.Worker;
 
 public sealed class PlaceholderVideoProcessingJobRunner(
-    ILogger<PlaceholderVideoProcessingJobRunner> logger) : IVideoProcessingJobRunner
+    ILogger<PlaceholderVideoProcessingJobRunner> logger,
+    IVideoProcessingQueue videoProcessingQueue) : IVideoProcessingJobRunner
 {
-    public Task RunNextAsync(CancellationToken cancellationToken = default)
+    public async Task RunNextAsync(CancellationToken cancellationToken = default)
     {
-        logger.LogDebug("Video processing runner placeholder is idle.");
+        var queuedJobs = await videoProcessingQueue.GetQueuedJobsAsync(
+            maxCount: 5,
+            cancellationToken);
 
-        return Task.CompletedTask;
+        if (queuedJobs.Count == 0)
+        {
+            logger.LogDebug("Video processing runner placeholder found no queued jobs.");
+            return;
+        }
+
+        logger.LogInformation(
+            "Video processing runner placeholder observed {QueuedJobCount} queued job(s). No media processing is executed.",
+            queuedJobs.Count);
     }
 }

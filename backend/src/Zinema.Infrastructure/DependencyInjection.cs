@@ -51,6 +51,7 @@ public static class DependencyInjection
         services.AddScoped<IAdminMediaAssetService, AdminMediaAssetService>();
         services.AddScoped<IAdminMediaAssetUploadService, AdminMediaAssetUploadService>();
         services.AddScoped<IVideoProcessingJobService, VideoProcessingJobService>();
+        services.AddScoped<IVideoProcessingQueue, VideoProcessingQueueService>();
         services.AddSingleton<IObjectStorageService, ObjectStorageService>();
         services.AddScoped<ICatalogQueryService, CatalogQueryService>();
 

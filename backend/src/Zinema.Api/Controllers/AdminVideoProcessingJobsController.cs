@@ -79,6 +79,21 @@ public sealed class AdminVideoProcessingJobsController(
         return result.IsSuccess ? Ok(result.Value) : ToProblem(result.Error);
     }
 
+    [HttpPost("processing-jobs/{id:guid}/enqueue")]
+    [ProducesResponseType(typeof(VideoProcessingJobDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<VideoProcessingJobDto>> Enqueue(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var result = await videoProcessingJobService.EnqueueProcessingJobAsync(
+            new EnqueueVideoProcessingJobCommand(id),
+            cancellationToken);
+
+        return result.IsSuccess ? Ok(result.Value) : ToProblem(result.Error);
+    }
+
     private ActionResult ToProblem(Error error)
     {
         var statusCode = GetStatusCode(error.Code);
