@@ -58,6 +58,7 @@ public static class DependencyInjection
         services.AddScoped<IFfmpegAvailabilityChecker, FfmpegAvailabilityChecker>();
         services.AddScoped<IFfmpegCommandBuilder, FfmpegHlsCommandBuilder>();
         services.AddScoped<IVideoProcessingService, LocalVideoProcessingService>();
+        services.AddScoped<IVideoProcessingJobExecutionService, VideoProcessingJobExecutionService>();
         services.AddSingleton<IObjectStorageService, ObjectStorageService>();
         services.AddScoped<ICatalogQueryService, CatalogQueryService>();
 

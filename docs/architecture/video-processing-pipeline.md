@@ -64,6 +64,7 @@ Application defines lightweight worker-facing interfaces:
 ```text
 IVideoProcessingQueue
 IVideoProcessingJobRunner
+IVideoProcessingJobExecutionService
 IVideoProcessingService
 IFfmpegCommandBuilder
 IFfmpegAvailabilityChecker
@@ -71,7 +72,16 @@ IFfmpegAvailabilityChecker
 
 `Zinema.Worker` registers placeholder implementations. The worker logs a heartbeat and calls the placeholder runner.
 
-The placeholder runner can read queued jobs through `IVideoProcessingQueue.GetQueuedJobsAsync`, claim them through the lifecycle service, and move them from `Queued` to `Processing`. It then calls `IVideoProcessingService`.
+The runner reads queued jobs through `IVideoProcessingQueue.GetQueuedJobsAsync` and delegates each job to `IVideoProcessingJobExecutionService`.
+
+The execution service owns the processing flow:
+
+```text
+Queued -> Processing -> Completed
+Queued -> Processing -> Failed
+```
+
+It can also accept a `Pending` job by enqueueing it before starting processing.
 
 When `VideoProcessing__EnableExecution` is `false`, the service returns a disabled result without running FFmpeg and the worker fails the claimed job with a clear message. When execution is enabled, the service checks FFmpeg availability before attempting local HLS output generation.
 

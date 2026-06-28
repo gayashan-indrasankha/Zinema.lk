@@ -62,9 +62,9 @@ The worker can read queued jobs and claim them:
 Queued -> Processing
 ```
 
-After claiming a job, the worker calls `IVideoProcessingService`.
+After claiming a job, the execution service calls `IVideoProcessingService`.
 
-When execution is disabled, the service does not run FFmpeg and the worker marks the claimed job as failed with a clear message. When execution is enabled, the worker marks a job completed only after the processing service reports success.
+When execution is disabled, the processing service does not run FFmpeg and the execution service marks the claimed job as failed with a clear message. When execution is enabled, a job is marked completed only after the processing service reports success.
 
 ## Admin Lifecycle Endpoints
 

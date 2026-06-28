@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Zinema.Application.Common.Results;
@@ -12,6 +14,7 @@ using Zinema.Application.Features.VideoProcessingJobs;
 using Zinema.Domain.Entities;
 using Zinema.Domain.Enums;
 using Zinema.Infrastructure.Persistence;
+using Zinema.Infrastructure;
 using Zinema.Infrastructure.Services;
 using Zinema.Worker;
 
@@ -776,36 +779,177 @@ public class SolutionFoundationTests
             Guid.Parse("22222222-3333-4444-5555-666666666666"),
             "media-assets/source.mp4",
             VideoProcessingJobStatus.Queued.ToString());
+        var failedJob = queuedJob with
+        {
+            Status = VideoProcessingJobStatus.Failed.ToString(),
+            ErrorMessage = "Video processing execution is disabled by configuration.",
+            CompletedAt = DateTimeOffset.UtcNow
+        };
+        var queue = new FakeVideoProcessingQueue([queuedJob]);
+        var executionService = new FakeVideoProcessingJobExecutionService(failedJob);
+        var runner = new PlaceholderVideoProcessingJobRunner(
+            NullLogger<PlaceholderVideoProcessingJobRunner>.Instance,
+            queue,
+            executionService);
+
+        await runner.RunNextAsync();
+
+        Assert.Equal(1, executionService.ExecuteCallCount);
+        Assert.Equal(queuedJob.Id, executionService.LastProcessingJobId);
+    }
+
+    [Fact]
+    public async Task VideoProcessingJobExecutionServiceCompletesSuccessfulProcessing()
+    {
+        var queuedJob = CreateProcessingJobDto(
+            Guid.Parse("33333333-4444-5555-6666-777777777777"),
+            "media-assets/source.mp4",
+            VideoProcessingJobStatus.Queued.ToString());
         var processingJob = queuedJob with
         {
             Status = VideoProcessingJobStatus.Processing.ToString(),
             StartedAt = DateTimeOffset.UtcNow
         };
-        var queue = new FakeVideoProcessingQueue([queuedJob]);
+        var queue = new FakeVideoProcessingQueue([]);
         var lifecycle = new FakeVideoProcessingJobLifecycleService(processingJob);
         var processingService = new FakeVideoProcessingService(
             new VideoProcessingExecutionResult(
                 processingJob.Id,
-                VideoProcessingExecutionStatus.ExecutionDisabled,
-                WasExecuted: false,
-                Succeeded: false,
-                Message: "Video processing execution is disabled by configuration.",
+                VideoProcessingExecutionStatus.Succeeded,
+                WasExecuted: true,
+                Succeeded: true,
+                Message: "Processing completed.",
                 OutputPlan: null,
                 Command: null,
-                ExitCode: null));
-        var runner = new PlaceholderVideoProcessingJobRunner(
-            NullLogger<PlaceholderVideoProcessingJobRunner>.Instance,
+                ExitCode: 0));
+        var executionService = new VideoProcessingJobExecutionService(
             queue,
             lifecycle,
-            processingService);
+            processingService,
+            NullLogger<VideoProcessingJobExecutionService>.Instance);
 
-        await runner.RunNextAsync();
+        var result = await executionService.ExecuteAsync(queuedJob);
 
-        Assert.Equal(1, processingService.ProcessCallCount);
+        Assert.True(result.IsSuccess);
+        Assert.Equal(VideoProcessingJobStatus.Completed.ToString(), result.Value.Status);
         Assert.Equal(1, lifecycle.StartCallCount);
-        Assert.Equal(1, lifecycle.FailCallCount);
+        Assert.Equal(1, lifecycle.CompleteCallCount);
+        Assert.Equal(0, lifecycle.FailCallCount);
+        Assert.Equal(1, processingService.ProcessCallCount);
+    }
+
+    [Fact]
+    public async Task VideoProcessingJobExecutionServiceFailsUnsuccessfulProcessing()
+    {
+        var queuedJob = CreateProcessingJobDto(
+            Guid.Parse("44444444-5555-6666-7777-888888888888"),
+            "media-assets/source.mp4",
+            VideoProcessingJobStatus.Queued.ToString());
+        var processingJob = queuedJob with
+        {
+            Status = VideoProcessingJobStatus.Processing.ToString(),
+            StartedAt = DateTimeOffset.UtcNow
+        };
+        var queue = new FakeVideoProcessingQueue([]);
+        var lifecycle = new FakeVideoProcessingJobLifecycleService(processingJob);
+        var processingService = new FakeVideoProcessingService(
+            new VideoProcessingExecutionResult(
+                processingJob.Id,
+                VideoProcessingExecutionStatus.Failed,
+                WasExecuted: true,
+                Succeeded: false,
+                Message: "Processing command failed.",
+                OutputPlan: null,
+                Command: null,
+                ExitCode: 1));
+        var executionService = new VideoProcessingJobExecutionService(
+            queue,
+            lifecycle,
+            processingService,
+            NullLogger<VideoProcessingJobExecutionService>.Instance);
+
+        var result = await executionService.ExecuteAsync(queuedJob);
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(VideoProcessingJobStatus.Failed.ToString(), result.Value.Status);
+        Assert.Equal("Processing command failed.", result.Value.ErrorMessage);
+        Assert.Equal(1, lifecycle.StartCallCount);
         Assert.Equal(0, lifecycle.CompleteCallCount);
-        Assert.Equal("Video processing execution is disabled by configuration.", lifecycle.LastFailureMessage);
+        Assert.Equal(1, lifecycle.FailCallCount);
+        Assert.Equal(1, processingService.ProcessCallCount);
+    }
+
+    [Fact]
+    public async Task VideoProcessingJobExecutionServiceEnqueuesPendingJobBeforeProcessing()
+    {
+        var pendingJob = CreateProcessingJobDto(
+            Guid.Parse("55555555-6666-7777-8888-999999999999"),
+            "media-assets/source.mp4",
+            VideoProcessingJobStatus.Pending.ToString());
+        var queuedJob = pendingJob with { Status = VideoProcessingJobStatus.Queued.ToString() };
+        var processingJob = pendingJob with
+        {
+            Status = VideoProcessingJobStatus.Processing.ToString(),
+            StartedAt = DateTimeOffset.UtcNow
+        };
+        var queue = new FakeVideoProcessingQueue([], queuedJob);
+        var lifecycle = new FakeVideoProcessingJobLifecycleService(processingJob);
+        var processingService = new FakeVideoProcessingService(
+            new VideoProcessingExecutionResult(
+                processingJob.Id,
+                VideoProcessingExecutionStatus.Succeeded,
+                WasExecuted: true,
+                Succeeded: true,
+                Message: "Processing completed.",
+                OutputPlan: null,
+                Command: null,
+                ExitCode: 0));
+        var executionService = new VideoProcessingJobExecutionService(
+            queue,
+            lifecycle,
+            processingService,
+            NullLogger<VideoProcessingJobExecutionService>.Instance);
+
+        var result = await executionService.ExecuteAsync(pendingJob);
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(VideoProcessingJobStatus.Completed.ToString(), result.Value.Status);
+        Assert.Equal(1, queue.EnqueueCallCount);
+        Assert.Equal(1, lifecycle.StartCallCount);
+        Assert.Equal(1, lifecycle.CompleteCallCount);
+    }
+
+    [Fact]
+    public void InfrastructureRegistersVideoProcessingJobExecutionDependencies()
+    {
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["ConnectionStrings:DefaultConnection"] = "Host=localhost;Database=zinema_test",
+                ["VideoProcessing:EnableExecution"] = "false"
+            })
+            .Build();
+        var services = new ServiceCollection();
+
+        services.AddLogging();
+        services.AddInfrastructure(configuration);
+
+        using var serviceProvider = services.BuildServiceProvider();
+
+        Assert.NotNull(serviceProvider.GetRequiredService<IVideoProcessingJobExecutionService>());
+        Assert.NotNull(serviceProvider.GetRequiredService<IVideoProcessingService>());
+        Assert.NotNull(serviceProvider.GetRequiredService<IFfmpegCommandBuilder>());
+        Assert.NotNull(serviceProvider.GetRequiredService<IFfmpegAvailabilityChecker>());
+    }
+
+    [Fact]
+    public void VideoProcessingOptionsDefaultsKeepExecutionDisabled()
+    {
+        var options = new VideoProcessingOptions();
+
+        Assert.False(options.EnableExecution);
+        Assert.Equal(string.Empty, options.FfmpegPath);
+        Assert.Equal("media-output/hls", options.OutputRoot);
     }
 
     private static AppDbContext CreateInMemoryDbContext()
@@ -879,14 +1023,21 @@ public class SolutionFoundationTests
     }
 
     private sealed class FakeVideoProcessingQueue(
-        IReadOnlyList<VideoProcessingJobDto> queuedJobs) : IVideoProcessingQueue
+        IReadOnlyList<VideoProcessingJobDto> queuedJobs,
+        VideoProcessingJobDto? enqueuedJob = null) : IVideoProcessingQueue
     {
+        public int EnqueueCallCount { get; private set; }
+
         public Task<Result<VideoProcessingJobDto>> EnqueueAsync(
             Guid processingJobId,
             CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(Result<VideoProcessingJobDto>.Failure(
-                VideoProcessingJobErrors.Validation("Not used in this test.")));
+            EnqueueCallCount++;
+
+            return Task.FromResult(enqueuedJob is null
+                ? Result<VideoProcessingJobDto>.Failure(
+                    VideoProcessingJobErrors.Validation("No queued test job was configured."))
+                : Result<VideoProcessingJobDto>.Success(enqueuedJob));
         }
 
         public Task<IReadOnlyList<VideoProcessingJobDto>> GetQueuedJobsAsync(
@@ -951,6 +1102,23 @@ public class SolutionFoundationTests
         {
             ProcessCallCount++;
             return Task.FromResult(Result<VideoProcessingExecutionResult>.Success(executionResult));
+        }
+    }
+
+    private sealed class FakeVideoProcessingJobExecutionService(
+        VideoProcessingJobDto executionResult) : IVideoProcessingJobExecutionService
+    {
+        public int ExecuteCallCount { get; private set; }
+
+        public Guid? LastProcessingJobId { get; private set; }
+
+        public Task<Result<VideoProcessingJobDto>> ExecuteAsync(
+            VideoProcessingJobDto processingJob,
+            CancellationToken cancellationToken = default)
+        {
+            ExecuteCallCount++;
+            LastProcessingJobId = processingJob.Id;
+            return Task.FromResult(Result<VideoProcessingJobDto>.Success(executionResult));
         }
     }
 }
