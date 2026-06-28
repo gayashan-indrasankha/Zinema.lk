@@ -34,6 +34,8 @@ The current worker still reads queued jobs from the queue service. This keeps ba
 
 A job is marked `Completed` only when `IVideoProcessingService` returns a successful processing result.
 
+A successful processing result can include `HlsOutputManifest`, which describes the generated HLS playlist and segment output paths for later playback integration.
+
 A job is marked `Failed` when:
 
 - processing execution is disabled
@@ -57,3 +59,5 @@ The execution service does not bypass `IVideoProcessingService`; local FFmpeg ex
 ## Current Boundary
 
 This branch does not add object storage upload for HLS output, playback publishing, new database columns, or a new queue backend.
+
+Output manifest details are kept in the processing result for now. They are not persisted to the database in this branch.
