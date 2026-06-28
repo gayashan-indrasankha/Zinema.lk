@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Zinema.Application.Common.Results;
 using Zinema.Application.DTOs.Auth;
+using Zinema.Application.DTOs.VideoProcessingJobs;
 using Zinema.Application.Features.AdminCatalog;
 using Zinema.Application.Features.AdminMediaAssets;
 using Zinema.Application.Features.Auth;
@@ -10,6 +13,7 @@ using Zinema.Domain.Entities;
 using Zinema.Domain.Enums;
 using Zinema.Infrastructure.Persistence;
 using Zinema.Infrastructure.Services;
+using Zinema.Worker;
 
 namespace Zinema.UnitTests;
 
@@ -668,6 +672,142 @@ public class SolutionFoundationTests
         Assert.Equal("VideoProcessingJob.InvalidStateTransition", result.Error.Code);
     }
 
+    [Fact]
+    public void FfmpegCommandBuilderCreatesHlsCommand()
+    {
+        var jobId = Guid.Parse("11111111-2222-3333-4444-555555555555");
+        var options = Options.Create(new VideoProcessingOptions
+        {
+            FfmpegPath = "ffmpeg",
+            OutputRoot = Path.Combine("media-output", "hls"),
+            HlsSegmentDurationSeconds = 8
+        });
+        var commandBuilder = new FfmpegHlsCommandBuilder(options);
+
+        var result = commandBuilder.BuildHlsCommand(
+            CreateProcessingJobDto(jobId, "media-assets/source.mp4"));
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(jobId, result.Value.ProcessingJobId);
+        Assert.Contains("-f", result.Value.Arguments);
+        Assert.Contains("hls", result.Value.Arguments);
+        Assert.Contains("-hls_time", result.Value.Arguments);
+        Assert.Contains("8", result.Value.Arguments);
+        Assert.EndsWith("master.m3u8", result.Value.OutputPlan.MasterPlaylistPath);
+        Assert.EndsWith("segment_%03d.ts", result.Value.OutputPlan.SegmentPathPattern);
+    }
+
+    [Fact]
+    public void FfmpegCommandBuilderCreatesSafeHlsOutputPlan()
+    {
+        var jobId = Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
+        var outputRoot = Path.Combine("media-output", "hls");
+        var commandBuilder = new FfmpegHlsCommandBuilder(Options.Create(new VideoProcessingOptions
+        {
+            FfmpegPath = "ffmpeg",
+            OutputRoot = outputRoot
+        }));
+
+        var result = commandBuilder.BuildHlsCommand(
+            CreateProcessingJobDto(jobId, "media-assets/source.mp4"));
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(Path.GetFullPath(outputRoot), result.Value.OutputPlan.OutputRoot);
+        Assert.Equal(
+            Path.Combine(Path.GetFullPath(outputRoot), jobId.ToString("D")),
+            result.Value.OutputPlan.JobOutputDirectory);
+        Assert.Equal(
+            Path.Combine(Path.GetFullPath(outputRoot), jobId.ToString("D"), "master.m3u8"),
+            result.Value.OutputPlan.MasterPlaylistPath);
+    }
+
+    [Fact]
+    public async Task LocalVideoProcessingServiceReturnsDisabledResultWhenExecutionIsOff()
+    {
+        var availabilityChecker = new FakeFfmpegAvailabilityChecker(new FfmpegAvailabilityDto(
+            IsPathConfigured: true,
+            IsAvailable: true,
+            FfmpegPath: "ffmpeg",
+            Version: "ffmpeg test",
+            Message: "available"));
+        var service = new LocalVideoProcessingService(
+            Options.Create(new VideoProcessingOptions
+            {
+                FfmpegPath = "ffmpeg",
+                OutputRoot = Path.Combine("media-output", "hls"),
+                EnableExecution = false
+            }),
+            new FfmpegHlsCommandBuilder(Options.Create(new VideoProcessingOptions
+            {
+                FfmpegPath = "ffmpeg",
+                OutputRoot = Path.Combine("media-output", "hls")
+            })),
+            availabilityChecker,
+            NullLogger<LocalVideoProcessingService>.Instance);
+
+        var result = await service.ProcessAsync(
+            CreateProcessingJobDto(Guid.NewGuid(), "media-assets/source.mp4"));
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(VideoProcessingExecutionStatus.ExecutionDisabled, result.Value.Status);
+        Assert.False(result.Value.WasExecuted);
+        Assert.False(result.Value.Succeeded);
+        Assert.Equal(0, availabilityChecker.CallCount);
+    }
+
+    [Fact]
+    public async Task FfmpegAvailabilityCheckerReportsMissingPath()
+    {
+        var checker = new FfmpegAvailabilityChecker(
+            Options.Create(new VideoProcessingOptions()),
+            NullLogger<FfmpegAvailabilityChecker>.Instance);
+
+        var result = await checker.CheckAvailabilityAsync();
+
+        Assert.False(result.IsPathConfigured);
+        Assert.False(result.IsAvailable);
+        Assert.Equal("FFmpeg path is not configured.", result.Message);
+    }
+
+    [Fact]
+    public async Task WorkerFailsClaimedJobWhenProcessingExecutionIsDisabled()
+    {
+        var queuedJob = CreateProcessingJobDto(
+            Guid.Parse("22222222-3333-4444-5555-666666666666"),
+            "media-assets/source.mp4",
+            VideoProcessingJobStatus.Queued.ToString());
+        var processingJob = queuedJob with
+        {
+            Status = VideoProcessingJobStatus.Processing.ToString(),
+            StartedAt = DateTimeOffset.UtcNow
+        };
+        var queue = new FakeVideoProcessingQueue([queuedJob]);
+        var lifecycle = new FakeVideoProcessingJobLifecycleService(processingJob);
+        var processingService = new FakeVideoProcessingService(
+            new VideoProcessingExecutionResult(
+                processingJob.Id,
+                VideoProcessingExecutionStatus.ExecutionDisabled,
+                WasExecuted: false,
+                Succeeded: false,
+                Message: "Video processing execution is disabled by configuration.",
+                OutputPlan: null,
+                Command: null,
+                ExitCode: null));
+        var runner = new PlaceholderVideoProcessingJobRunner(
+            NullLogger<PlaceholderVideoProcessingJobRunner>.Instance,
+            queue,
+            lifecycle,
+            processingService);
+
+        await runner.RunNextAsync();
+
+        Assert.Equal(1, processingService.ProcessCallCount);
+        Assert.Equal(1, lifecycle.StartCallCount);
+        Assert.Equal(1, lifecycle.FailCallCount);
+        Assert.Equal(0, lifecycle.CompleteCallCount);
+        Assert.Equal("Video processing execution is disabled by configuration.", lifecycle.LastFailureMessage);
+    }
+
     private static AppDbContext CreateInMemoryDbContext()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -701,5 +841,116 @@ public class SolutionFoundationTests
             StorageKey = storageKey,
             Status = MediaStatus.Uploaded
         };
+    }
+
+    private static VideoProcessingJobDto CreateProcessingJobDto(
+        Guid id,
+        string sourceStorageKey,
+        string status = "Pending")
+    {
+        var now = DateTimeOffset.UtcNow;
+        return new VideoProcessingJobDto(
+            id,
+            Guid.NewGuid(),
+            "Video Source",
+            sourceStorageKey,
+            null,
+            status,
+            null,
+            0,
+            now,
+            null,
+            null,
+            now,
+            null);
+    }
+
+    private sealed class FakeFfmpegAvailabilityChecker(
+        FfmpegAvailabilityDto availability) : IFfmpegAvailabilityChecker
+    {
+        public int CallCount { get; private set; }
+
+        public Task<FfmpegAvailabilityDto> CheckAvailabilityAsync(
+            CancellationToken cancellationToken = default)
+        {
+            CallCount++;
+            return Task.FromResult(availability);
+        }
+    }
+
+    private sealed class FakeVideoProcessingQueue(
+        IReadOnlyList<VideoProcessingJobDto> queuedJobs) : IVideoProcessingQueue
+    {
+        public Task<Result<VideoProcessingJobDto>> EnqueueAsync(
+            Guid processingJobId,
+            CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(Result<VideoProcessingJobDto>.Failure(
+                VideoProcessingJobErrors.Validation("Not used in this test.")));
+        }
+
+        public Task<IReadOnlyList<VideoProcessingJobDto>> GetQueuedJobsAsync(
+            int maxCount,
+            CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(queuedJobs);
+        }
+    }
+
+    private sealed class FakeVideoProcessingJobLifecycleService(
+        VideoProcessingJobDto processingJob) : IVideoProcessingJobLifecycleService
+    {
+        public int StartCallCount { get; private set; }
+
+        public int CompleteCallCount { get; private set; }
+
+        public int FailCallCount { get; private set; }
+
+        public string? LastFailureMessage { get; private set; }
+
+        public Task<Result<VideoProcessingJobDto>> StartProcessingJobAsync(
+            Guid id,
+            CancellationToken cancellationToken = default)
+        {
+            StartCallCount++;
+            return Task.FromResult(Result<VideoProcessingJobDto>.Success(processingJob));
+        }
+
+        public Task<Result<VideoProcessingJobDto>> CompleteProcessingJobAsync(
+            Guid id,
+            CancellationToken cancellationToken = default)
+        {
+            CompleteCallCount++;
+            return Task.FromResult(Result<VideoProcessingJobDto>.Success(
+                processingJob with { Status = VideoProcessingJobStatus.Completed.ToString() }));
+        }
+
+        public Task<Result<VideoProcessingJobDto>> FailProcessingJobAsync(
+            FailVideoProcessingJobCommand command,
+            CancellationToken cancellationToken = default)
+        {
+            FailCallCount++;
+            LastFailureMessage = command.ErrorMessage;
+            return Task.FromResult(Result<VideoProcessingJobDto>.Success(
+                processingJob with
+                {
+                    Status = VideoProcessingJobStatus.Failed.ToString(),
+                    ErrorMessage = command.ErrorMessage
+                }));
+        }
+    }
+
+    private sealed class FakeVideoProcessingService(
+        VideoProcessingExecutionResult executionResult) : IVideoProcessingService
+    {
+        public int ProcessCallCount { get; private set; }
+
+        public Task<Result<VideoProcessingExecutionResult>> ProcessAsync(
+            VideoProcessingJobDto processingJob,
+            CancellationToken cancellationToken = default)
+        {
+            ProcessCallCount++;
+            return Task.FromResult(Result<VideoProcessingExecutionResult>.Success(executionResult));
+        }
     }
 }
