@@ -8,7 +8,7 @@ public sealed class VideoProcessingJob : AuditableEntity
 
     public MediaAsset? MediaAsset { get; set; }
 
-    public MediaStatus Status { get; set; } = MediaStatus.Uploaded;
+    public VideoProcessingJobStatus Status { get; set; } = VideoProcessingJobStatus.Pending;
 
     public string SourceStorageKey { get; set; } = string.Empty;
 
