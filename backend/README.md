@@ -329,6 +329,12 @@ Processing diagnostics:
 GET /api/admin/processing/ffmpeg/status
 ```
 
+Public playback output endpoint:
+
+```text
+GET /api/videos/{videoId}/playback
+```
+
 This API creates and tracks job records for media assets. New jobs start with status `Pending`. Enqueue is allowed only for `Pending` jobs and moves them to `Queued`. Start is allowed only for `Queued` jobs and moves them to `Processing`. Complete and fail are allowed only for `Processing` jobs. Cancel is allowed only for `Pending` or `Queued` jobs.
 
 FFmpeg/HLS processing is configured through:
@@ -351,9 +357,11 @@ media-output/hls/{jobId}/segment_%03d.ts
 
 Successful local HLS processing results can include an output manifest with playlist, segment, output directory, relative playback path, generated timestamp, and validation metadata.
 
+The playback output endpoint currently treats `videoId` as the source media asset ID. It returns safe playback path information only when completed processing output data is available. It does not create signed URLs, call a CDN, or expose absolute local machine paths.
+
 Generated media output and local FFmpeg binaries must not be committed. This branch does not upload HLS output to MinIO or publish playback URLs.
 
-Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`; queue notes live in `docs/architecture/video-processing-queue.md`; lifecycle notes live in `docs/architecture/video-processing-lifecycle.md`; job execution notes live in `docs/architecture/video-processing-job-execution.md`; output manifest notes live in `docs/architecture/video-processing-output-manifest.md`; FFmpeg/HLS notes live in `docs/architecture/ffmpeg-hls-processing.md`.
+Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`; playback output endpoint documentation lives in `docs/api/video-playback-output-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`; queue notes live in `docs/architecture/video-processing-queue.md`; lifecycle notes live in `docs/architecture/video-processing-lifecycle.md`; job execution notes live in `docs/architecture/video-processing-job-execution.md`; output manifest notes live in `docs/architecture/video-processing-output-manifest.md`; FFmpeg/HLS notes live in `docs/architecture/ffmpeg-hls-processing.md`.
 
 ## Current Scope
 
@@ -390,5 +398,6 @@ This foundation currently includes:
 - Video processing job execution orchestration.
 - FFmpeg/HLS command planning, availability checks, and guarded local execution foundation.
 - HLS output manifest foundation.
+- Video playback output API foundation.
 
-Series, episode, collection management, video upload, HLS publishing, watchlist features, review features, payment features, and frontend implementation are intentionally out of scope for this branch.
+Series, episode, collection management, video upload, production HLS publishing, CDN/signed URL integration, watchlist features, review features, payment features, and frontend implementation are intentionally out of scope for this branch.
