@@ -69,6 +69,7 @@ IVideoProcessingService
 IFfmpegCommandBuilder
 IFfmpegAvailabilityChecker
 IHlsOutputManifestBuilder
+IVideoPlaybackOutputService
 ```
 
 `Zinema.Worker` registers placeholder implementations. The worker logs a heartbeat and calls the placeholder runner.
@@ -88,6 +89,18 @@ When `VideoProcessing__EnableExecution` is `false`, the service returns a disabl
 
 When local HLS processing succeeds, the processing result can include an `HlsOutputManifest` with the master playlist path, relative playback path, segment pattern, output directory, generated timestamp, and validation state.
 
+## Playback Output Boundary
+
+The public playback output endpoint is:
+
+```text
+GET /api/videos/{videoId}/playback
+```
+
+For this foundation, `videoId` is the source media asset ID. The endpoint checks existing processing job state and returns safe playback path information only when completed output path data is available.
+
+It does not expose absolute local paths, generate signed URLs, call a CDN, or pretend playback is ready when output metadata is missing.
+
 ## Data Boundary
 
 The existing `video_processing_jobs` table is used. The status column remains a string column, so the clearer job status enum does not require a table shape change.
@@ -103,5 +116,6 @@ Later branches can add:
 - HLS output upload to object storage.
 - Output storage paths.
 - Playback metadata from output manifests.
+- Dedicated persisted playback entities.
 - Job progress reporting.
 - Cleanup and failure recovery.

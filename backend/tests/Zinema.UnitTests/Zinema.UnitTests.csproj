@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Zinema.Application\Zinema.Application.csproj" />
+    <ProjectReference Include="..\..\src\Zinema.Api\Zinema.Api.csproj" />
     <ProjectReference Include="..\..\src\Zinema.Domain\Zinema.Domain.csproj" />
     <ProjectReference Include="..\..\src\Zinema.Infrastructure\Zinema.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Zinema.Worker\Zinema.Worker.csproj" />

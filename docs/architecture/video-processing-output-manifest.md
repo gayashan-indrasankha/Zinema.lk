@@ -45,6 +45,18 @@ HlsOutputPlan
 
 The builder creates relative playback paths from the existing output plan and verifies that output paths remain under the configured output root.
 
+## Playback API Position
+
+The playback output API can expose safe playback information once processed output information is available:
+
+```text
+GET /api/videos/{videoId}/playback
+  -> IVideoPlaybackOutputService
+  -> VideoPlaybackOutputDto
+```
+
+The current playback endpoint does not persist or load `HlsOutputManifest` records yet. It uses existing processing job output path information when present and returns a not-playable response when output metadata is not available.
+
 ## Validation Rules
 
 The manifest foundation validates that:
@@ -60,6 +72,6 @@ Invalid output plans are rejected before FFmpeg execution.
 
 ## Current Boundary
 
-This branch does not persist the manifest in the database, publish playback URLs, upload generated files to object storage, or expose a playback API.
+This branch does not persist the manifest in the database, publish production playback URLs, or upload generated files to object storage.
 
 Later branches can use the manifest to create playback metadata, upload HLS files to object storage, or generate public playback paths.

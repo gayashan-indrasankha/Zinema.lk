@@ -1,15 +1,19 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
+using Zinema.Api.Controllers;
 using Zinema.Application.Common.Results;
 using Zinema.Application.DTOs.Auth;
 using Zinema.Application.DTOs.VideoProcessingJobs;
+using Zinema.Application.DTOs.VideoPlayback;
 using Zinema.Application.Features.AdminCatalog;
 using Zinema.Application.Features.AdminMediaAssets;
 using Zinema.Application.Features.Auth;
 using Zinema.Application.Features.Catalog;
+using Zinema.Application.Features.VideoPlayback;
 using Zinema.Application.Features.VideoProcessingJobs;
 using Zinema.Domain.Entities;
 using Zinema.Domain.Enums;
@@ -809,6 +813,129 @@ public class SolutionFoundationTests
     }
 
     [Fact]
+    public void VideoPlaybackOutputFactoryCreatesPlayableOutputFromManifest()
+    {
+        var videoId = Guid.Parse("12121212-3434-5656-7878-909090909090");
+        var jobId = Guid.Parse("13131313-3535-5757-7979-919191919191");
+        var manifest = new HlsOutputManifestBuilder()
+            .BuildManifest(CreateOutputPlan(jobId, Path.Combine("media-output", "hls")))
+            .Value;
+
+        var result = VideoPlaybackOutputFactory.FromManifest(
+            videoId,
+            VideoProcessingJobStatus.Completed.ToString(),
+            manifest);
+
+        Assert.True(result.IsSuccess);
+        Assert.True(result.Value.IsPlayable);
+        Assert.Equal(videoId, result.Value.VideoId);
+        Assert.Equal(VideoProcessingJobStatus.Completed.ToString(), result.Value.Status);
+        Assert.Equal($"media-output/hls/{jobId:D}/master.m3u8", result.Value.PlaylistPath);
+        Assert.Equal($"/media-output/hls/{jobId:D}/master.m3u8", result.Value.PlaybackUrl);
+        Assert.Null(result.Value.Message);
+        Assert.False(Path.IsPathRooted(result.Value.PlaylistPath));
+        Assert.DoesNotContain("..", result.Value.PlaylistPath);
+    }
+
+    [Theory]
+    [InlineData("/media-output/hls")]
+    [InlineData("../private-output")]
+    [InlineData("https://example.test/hls")]
+    public void VideoPlaybackOutputFactoryRejectsUnsafePlaybackBasePath(string playbackBasePath)
+    {
+        var manifest = new HlsOutputManifestBuilder()
+            .BuildManifest(CreateOutputPlan(Guid.NewGuid(), Path.Combine("media-output", "hls")))
+            .Value;
+
+        var result = VideoPlaybackOutputFactory.FromManifest(
+            Guid.NewGuid(),
+            VideoProcessingJobStatus.Completed.ToString(),
+            manifest,
+            playbackBasePath);
+
+        Assert.True(result.IsFailure);
+        Assert.Equal("VideoPlayback.Validation", result.Error.Code);
+    }
+
+    [Fact]
+    public async Task VideoPlaybackOutputServiceReturnsNotPlayableWhenProcessingJobIsMissing()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var mediaAsset = CreateMediaAsset("media-assets/playback-source.mp4");
+
+        dbContext.MediaAssets.Add(mediaAsset);
+        await dbContext.SaveChangesAsync();
+
+        var service = new VideoPlaybackOutputService(dbContext);
+        var result = await service.GetPlaybackOutputAsync(mediaAsset.Id);
+
+        Assert.True(result.IsSuccess);
+        Assert.False(result.Value.IsPlayable);
+        Assert.Equal("NotProcessed", result.Value.Status);
+        Assert.Null(result.Value.PlaylistPath);
+        Assert.Null(result.Value.PlaybackUrl);
+    }
+
+    [Fact]
+    public async Task VideoPlaybackOutputServiceReturnsPlayableWhenCompletedJobHasSafeOutputPrefix()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var mediaAsset = CreateMediaAsset("media-assets/playable-source.mp4");
+        var job = CreateProcessingJob(mediaAsset, VideoProcessingJobStatus.Completed);
+        job.CompletedAt = DateTimeOffset.UtcNow;
+        job.OutputStoragePrefix = "media-output/hls/playable-job";
+
+        dbContext.MediaAssets.Add(mediaAsset);
+        dbContext.VideoProcessingJobs.Add(job);
+        await dbContext.SaveChangesAsync();
+
+        var service = new VideoPlaybackOutputService(dbContext);
+        var result = await service.GetPlaybackOutputAsync(mediaAsset.Id);
+
+        Assert.True(result.IsSuccess);
+        Assert.True(result.Value.IsPlayable);
+        Assert.Equal(VideoProcessingJobStatus.Completed.ToString(), result.Value.Status);
+        Assert.Equal("media-output/hls/playable-job/master.m3u8", result.Value.PlaylistPath);
+        Assert.Equal("/media-output/hls/playable-job/master.m3u8", result.Value.PlaybackUrl);
+        Assert.Null(result.Value.Message);
+    }
+
+    [Fact]
+    public async Task VideoPlaybackOutputServiceDoesNotExposeUnsafeOutputPrefix()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var mediaAsset = CreateMediaAsset("media-assets/unsafe-source.mp4");
+        var job = CreateProcessingJob(mediaAsset, VideoProcessingJobStatus.Completed);
+        job.CompletedAt = DateTimeOffset.UtcNow;
+        job.OutputStoragePrefix = "../private-output";
+
+        dbContext.MediaAssets.Add(mediaAsset);
+        dbContext.VideoProcessingJobs.Add(job);
+        await dbContext.SaveChangesAsync();
+
+        var service = new VideoPlaybackOutputService(dbContext);
+        var result = await service.GetPlaybackOutputAsync(mediaAsset.Id);
+
+        Assert.True(result.IsSuccess);
+        Assert.False(result.Value.IsPlayable);
+        Assert.Equal("InvalidOutput", result.Value.Status);
+        Assert.Null(result.Value.PlaylistPath);
+        Assert.Null(result.Value.PlaybackUrl);
+    }
+
+    [Fact]
+    public void VideoPlaybackControllerExposesPlaybackEndpoint()
+    {
+        var method = typeof(VideoPlaybackController).GetMethod(
+            nameof(VideoPlaybackController.GetPlaybackOutput));
+
+        Assert.NotNull(method);
+        var httpGet = Assert.Single(method.GetCustomAttributes(typeof(HttpGetAttribute), inherit: false)
+            .OfType<HttpGetAttribute>());
+        Assert.Equal("{videoId:guid}/playback", httpGet.Template);
+    }
+
+    [Fact]
     public async Task LocalVideoProcessingServiceReturnsDisabledResultWhenExecutionIsOff()
     {
         var availabilityChecker = new FakeFfmpegAvailabilityChecker(new FfmpegAvailabilityDto(
@@ -1026,6 +1153,7 @@ public class SolutionFoundationTests
         Assert.NotNull(serviceProvider.GetRequiredService<IFfmpegCommandBuilder>());
         Assert.NotNull(serviceProvider.GetRequiredService<IHlsOutputManifestBuilder>());
         Assert.NotNull(serviceProvider.GetRequiredService<IFfmpegAvailabilityChecker>());
+        Assert.NotNull(serviceProvider.GetRequiredService<IVideoPlaybackOutputService>());
     }
 
     [Fact]
