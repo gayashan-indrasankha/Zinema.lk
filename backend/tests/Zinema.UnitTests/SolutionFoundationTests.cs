@@ -4,6 +4,7 @@ using Zinema.Application.Features.AdminCatalog;
 using Zinema.Application.Features.AdminMediaAssets;
 using Zinema.Application.Features.Auth;
 using Zinema.Application.Features.Catalog;
+using Zinema.Application.Features.VideoProcessingJobs;
 using Zinema.Domain.Entities;
 using Zinema.Domain.Enums;
 
@@ -295,5 +296,77 @@ public class SolutionFoundationTests
 
         Assert.NotNull(error);
         Assert.Equal("AdminMediaAsset.Validation", error.Code);
+    }
+
+    [Fact]
+    public void VideoProcessingJobCreateValidationRequiresMediaAssetId()
+    {
+        var error = VideoProcessingJobValidation.ValidateCreate(Guid.Empty);
+
+        Assert.NotNull(error);
+        Assert.Equal("VideoProcessingJob.Validation", error.Code);
+    }
+
+    [Fact]
+    public void CreateVideoProcessingJobCommandCanCarryMediaAssetId()
+    {
+        var mediaAssetId = Guid.NewGuid();
+        var command = new CreateVideoProcessingJobCommand(mediaAssetId);
+
+        Assert.Equal(mediaAssetId, command.MediaAssetId);
+    }
+
+    [Theory]
+    [InlineData(VideoProcessingJobStatus.Pending, true)]
+    [InlineData(VideoProcessingJobStatus.Queued, true)]
+    [InlineData(VideoProcessingJobStatus.Processing, false)]
+    [InlineData(VideoProcessingJobStatus.Completed, false)]
+    [InlineData(VideoProcessingJobStatus.Failed, false)]
+    [InlineData(VideoProcessingJobStatus.Cancelled, false)]
+    public void VideoProcessingJobCancelValidationAllowsOnlyWaitingJobs(
+        VideoProcessingJobStatus status,
+        bool canCancel)
+    {
+        Assert.Equal(canCancel, VideoProcessingJobValidation.CanCancel(status));
+    }
+
+    [Fact]
+    public void VideoProcessingJobCancelValidationRejectsProcessingJob()
+    {
+        var error = VideoProcessingJobValidation.ValidateCancel(
+            VideoProcessingJobStatus.Processing);
+
+        Assert.NotNull(error);
+        Assert.Equal("VideoProcessingJob.InvalidStateTransition", error.Code);
+    }
+
+    [Fact]
+    public void GetVideoProcessingJobsQueryNormalizesPaginationAndStatus()
+    {
+        var mediaAssetId = Guid.NewGuid();
+        var query = GetVideoProcessingJobsQuery.Create(
+            page: -1,
+            pageSize: 500,
+            status: "Queued",
+            mediaAssetId: mediaAssetId);
+
+        Assert.True(query.IsSuccess);
+        Assert.Equal(GetVideoProcessingJobsQuery.DefaultPage, query.Value.Page);
+        Assert.Equal(GetVideoProcessingJobsQuery.MaxPageSize, query.Value.PageSize);
+        Assert.Equal(VideoProcessingJobStatus.Queued, query.Value.Status);
+        Assert.Equal(mediaAssetId, query.Value.MediaAssetId);
+    }
+
+    [Fact]
+    public void GetVideoProcessingJobsQueryRejectsInvalidStatus()
+    {
+        var query = GetVideoProcessingJobsQuery.Create(
+            page: 1,
+            pageSize: 20,
+            status: "unknown",
+            mediaAssetId: null);
+
+        Assert.True(query.IsFailure);
+        Assert.Equal("VideoProcessingJob.Validation", query.Error.Code);
     }
 }
