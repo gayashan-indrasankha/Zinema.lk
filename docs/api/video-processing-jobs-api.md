@@ -25,6 +25,9 @@ POST /api/admin/media-assets/{id}/processing-jobs
 GET /api/admin/processing-jobs
 GET /api/admin/processing-jobs/{id}
 POST /api/admin/processing-jobs/{id}/enqueue
+PATCH /api/admin/processing-jobs/{id}/start
+PATCH /api/admin/processing-jobs/{id}/complete
+PATCH /api/admin/processing-jobs/{id}/fail
 PATCH /api/admin/processing-jobs/{id}/cancel
 ```
 
@@ -128,6 +131,62 @@ Responses:
 - `400 Bad Request` when the job is already queued, processing, completed, failed, or cancelled.
 - `404 Not Found` when the job does not exist.
 
+## PATCH /api/admin/processing-jobs/{id}/start
+
+Claims a queued job and moves it into the processing state.
+
+Allowed start status:
+
+- `Queued`
+
+When start succeeds, the job status becomes `Processing`, `startedAt` is set, `attemptCount` is incremented, and any previous error message is cleared.
+
+Responses:
+
+- `200 OK` when the job is started.
+- `400 Bad Request` when the job is pending, already processing, completed, failed, or cancelled.
+- `404 Not Found` when the job does not exist.
+
+## PATCH /api/admin/processing-jobs/{id}/complete
+
+Marks a processing job as completed.
+
+Allowed complete status:
+
+- `Processing`
+
+When completion succeeds, the job status becomes `Completed`, `completedAt` is set, and any error message is cleared.
+
+Responses:
+
+- `200 OK` when the job is completed.
+- `400 Bad Request` when the job is pending, queued, completed, failed, or cancelled.
+- `404 Not Found` when the job does not exist.
+
+## PATCH /api/admin/processing-jobs/{id}/fail
+
+Marks a processing job as failed.
+
+Allowed fail status:
+
+- `Processing`
+
+Request body:
+
+```json
+{
+  "errorMessage": "Placeholder processing failed."
+}
+```
+
+When failure succeeds, the job status becomes `Failed`, `completedAt` is set, and `errorMessage` stores the failure reason.
+
+Responses:
+
+- `200 OK` when the job is failed.
+- `400 Bad Request` when the error message is missing or the job is pending, queued, completed, failed, or cancelled.
+- `404 Not Found` when the job does not exist.
+
 ## PATCH /api/admin/processing-jobs/{id}/cancel
 
 Cancels a waiting job.
@@ -166,4 +225,5 @@ Example:
 - EF Core job read/write logic lives in Infrastructure.
 - Application defines DTOs, commands, queries, validation helpers, and interfaces.
 - Worker interfaces are placeholders for later processing branches.
+- The worker can claim queued jobs into `Processing`, but it does not complete or fail them automatically.
 - This branch does not execute real media processing.

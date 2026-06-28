@@ -4,7 +4,7 @@
 
 The video processing foundation prepares job tracking and worker boundaries for later media processing work.
 
-This branch creates API and service foundations only. It does not run FFmpeg, transcode video, generate HLS manifests, generate HLS segments, or start operating-system media processes.
+This branch creates API, service, queue, and lifecycle foundations only. It does not run FFmpeg, transcode video, generate HLS manifests, generate HLS segments, or start operating-system media processes.
 
 ## Current Flow
 
@@ -44,15 +44,18 @@ Failed
 Cancelled
 ```
 
-Current allowed transition:
+Current allowed transitions:
 
 ```text
 Pending -> Queued
 Pending -> Cancelled
+Queued -> Processing
 Queued -> Cancelled
+Processing -> Completed
+Processing -> Failed
 ```
 
-Other transitions are reserved for later worker and processing branches.
+Other transitions are blocked by application validation.
 
 ## Worker Boundary
 
@@ -63,9 +66,9 @@ IVideoProcessingQueue
 IVideoProcessingJobRunner
 ```
 
-`Zinema.Worker` registers placeholder implementations. The worker logs a heartbeat and calls the placeholder runner, but the placeholder does not claim jobs, change job status, run commands, or process files.
+`Zinema.Worker` registers placeholder implementations. The worker logs a heartbeat and calls the placeholder runner.
 
-The placeholder runner can read queued jobs through `IVideoProcessingQueue.GetQueuedJobsAsync`. It only logs that queued jobs exist.
+The placeholder runner can read queued jobs through `IVideoProcessingQueue.GetQueuedJobsAsync`, claim them through the lifecycle service, and move them from `Queued` to `Processing`. It then logs that real processing is not implemented. It does not run commands, process files, write output, or mark jobs completed automatically.
 
 ## Data Boundary
 
@@ -76,7 +79,7 @@ The existing `video_processing_jobs` table is used. The status column remains a 
 Later branches can add:
 
 - Queue-backed job dispatch.
-- Claiming Queued jobs and moving them to Processing.
+- Stronger worker job claiming.
 - Retry and attempt tracking.
 - FFmpeg command execution.
 - HLS manifest and segment creation.
