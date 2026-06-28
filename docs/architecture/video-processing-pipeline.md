@@ -68,6 +68,7 @@ IVideoProcessingJobExecutionService
 IVideoProcessingService
 IFfmpegCommandBuilder
 IFfmpegAvailabilityChecker
+IHlsOutputManifestBuilder
 ```
 
 `Zinema.Worker` registers placeholder implementations. The worker logs a heartbeat and calls the placeholder runner.
@@ -85,6 +86,8 @@ It can also accept a `Pending` job by enqueueing it before starting processing.
 
 When `VideoProcessing__EnableExecution` is `false`, the service returns a disabled result without running FFmpeg and the worker fails the claimed job with a clear message. When execution is enabled, the service checks FFmpeg availability before attempting local HLS output generation.
 
+When local HLS processing succeeds, the processing result can include an `HlsOutputManifest` with the master playlist path, relative playback path, segment pattern, output directory, generated timestamp, and validation state.
+
 ## Data Boundary
 
 The existing `video_processing_jobs` table is used. The status column remains a string column, so the clearer job status enum does not require a table shape change.
@@ -99,5 +102,6 @@ Later branches can add:
 - Source file staging from object storage.
 - HLS output upload to object storage.
 - Output storage paths.
+- Playback metadata from output manifests.
 - Job progress reporting.
 - Cleanup and failure recovery.

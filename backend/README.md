@@ -349,9 +349,11 @@ media-output/hls/{jobId}/master.m3u8
 media-output/hls/{jobId}/segment_%03d.ts
 ```
 
+Successful local HLS processing results can include an output manifest with playlist, segment, output directory, relative playback path, generated timestamp, and validation metadata.
+
 Generated media output and local FFmpeg binaries must not be committed. This branch does not upload HLS output to MinIO or publish playback URLs.
 
-Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`; queue notes live in `docs/architecture/video-processing-queue.md`; lifecycle notes live in `docs/architecture/video-processing-lifecycle.md`; job execution notes live in `docs/architecture/video-processing-job-execution.md`; FFmpeg/HLS notes live in `docs/architecture/ffmpeg-hls-processing.md`.
+Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`; queue notes live in `docs/architecture/video-processing-queue.md`; lifecycle notes live in `docs/architecture/video-processing-lifecycle.md`; job execution notes live in `docs/architecture/video-processing-job-execution.md`; output manifest notes live in `docs/architecture/video-processing-output-manifest.md`; FFmpeg/HLS notes live in `docs/architecture/ffmpeg-hls-processing.md`.
 
 ## Current Scope
 
@@ -387,5 +389,6 @@ This foundation currently includes:
 - EF Core-backed video processing lifecycle state transitions.
 - Video processing job execution orchestration.
 - FFmpeg/HLS command planning, availability checks, and guarded local execution foundation.
+- HLS output manifest foundation.
 
 Series, episode, collection management, video upload, HLS publishing, watchlist features, review features, payment features, and frontend implementation are intentionally out of scope for this branch.
