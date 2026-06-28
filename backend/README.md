@@ -306,6 +306,25 @@ When `ObjectStorage__EnsureBucketExists` is `true`, the API creates the bucket i
 
 Admin media upload endpoint documentation lives in `docs/api/admin-media-upload-api.md`.
 
+## Admin Video Processing Jobs API
+
+Admin video processing job endpoints require a JWT access token for a user with the `Admin` role.
+
+Processing job endpoints:
+
+```text
+POST /api/admin/media-assets/{id}/processing-jobs
+GET /api/admin/processing-jobs
+GET /api/admin/processing-jobs/{id}
+PATCH /api/admin/processing-jobs/{id}/cancel
+```
+
+This API creates and tracks job records for media assets. New jobs start with status `Pending`. Cancel is allowed only for `Pending` or `Queued` jobs.
+
+This branch does not run FFmpeg, transcode video, generate HLS output, or cancel operating-system processes. The worker project includes placeholder queue and runner implementations only.
+
+Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`.
+
 ## Current Scope
 
 This foundation currently includes:
@@ -334,5 +353,7 @@ This foundation currently includes:
 - Admin-only media asset metadata management APIs.
 - Object storage URL abstraction foundation.
 - Admin-only image upload to MinIO/S3-compatible object storage.
+- Admin-only video processing job management APIs.
+- Placeholder video processing queue and worker runner boundaries.
 
-Series, episode, collection management, video upload, watchlist features, review features, payment features, video processing, and frontend implementation are intentionally out of scope for this branch.
+Series, episode, collection management, video upload, watchlist features, review features, payment features, real video processing, and frontend implementation are intentionally out of scope for this branch.
