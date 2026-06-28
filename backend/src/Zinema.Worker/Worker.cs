@@ -4,7 +4,7 @@ namespace Zinema.Worker;
 
 public class Worker(
     ILogger<Worker> logger,
-    IVideoProcessingJobRunner videoProcessingJobRunner) : BackgroundService
+    IServiceScopeFactory serviceScopeFactory) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -14,6 +14,10 @@ public class Worker(
             {
                 logger.LogInformation("Zinema worker heartbeat at: {time}", DateTimeOffset.UtcNow);
             }
+
+            using var scope = serviceScopeFactory.CreateScope();
+            var videoProcessingJobRunner = scope.ServiceProvider
+                .GetRequiredService<IVideoProcessingJobRunner>();
 
             await videoProcessingJobRunner.RunNextAsync(stoppingToken);
 
