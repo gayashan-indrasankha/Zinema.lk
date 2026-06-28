@@ -55,9 +55,9 @@ Zinema.Worker
   -> Processing status
 ```
 
-The current worker runner is placeholder-only. It reads queued jobs, claims them by moving them from `Queued` to `Processing`, and logs that real processing is not implemented.
+The current worker runner reads queued jobs, claims them by moving them from `Queued` to `Processing`, and calls `IVideoProcessingService`.
 
-It does not run FFmpeg, write output files, generate HLS output, or mark jobs completed automatically.
+When execution is disabled, the processing service returns a disabled result without running FFmpeg and the worker fails the claimed job with a clear message. When execution is enabled, processing must succeed before the worker marks the job completed.
 
 ## Redis
 

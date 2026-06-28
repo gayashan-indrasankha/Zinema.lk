@@ -4,7 +4,7 @@
 
 The video processing foundation prepares job tracking and worker boundaries for later media processing work.
 
-This branch creates API, service, queue, and lifecycle foundations only. It does not run FFmpeg, transcode video, generate HLS manifests, generate HLS segments, or start operating-system media processes.
+This branch creates API, service, queue, lifecycle, and guarded FFmpeg/HLS processing foundations. FFmpeg execution is disabled by default and only runs when explicitly enabled through configuration.
 
 ## Current Flow
 
@@ -64,11 +64,16 @@ Application defines lightweight worker-facing interfaces:
 ```text
 IVideoProcessingQueue
 IVideoProcessingJobRunner
+IVideoProcessingService
+IFfmpegCommandBuilder
+IFfmpegAvailabilityChecker
 ```
 
 `Zinema.Worker` registers placeholder implementations. The worker logs a heartbeat and calls the placeholder runner.
 
-The placeholder runner can read queued jobs through `IVideoProcessingQueue.GetQueuedJobsAsync`, claim them through the lifecycle service, and move them from `Queued` to `Processing`. It then logs that real processing is not implemented. It does not run commands, process files, write output, or mark jobs completed automatically.
+The placeholder runner can read queued jobs through `IVideoProcessingQueue.GetQueuedJobsAsync`, claim them through the lifecycle service, and move them from `Queued` to `Processing`. It then calls `IVideoProcessingService`.
+
+When `VideoProcessing__EnableExecution` is `false`, the service returns a disabled result without running FFmpeg and the worker fails the claimed job with a clear message. When execution is enabled, the service checks FFmpeg availability before attempting local HLS output generation.
 
 ## Data Boundary
 
@@ -81,8 +86,8 @@ Later branches can add:
 - Queue-backed job dispatch.
 - Stronger worker job claiming.
 - Retry and attempt tracking.
-- FFmpeg command execution.
-- HLS manifest and segment creation.
+- Source file staging from object storage.
+- HLS output upload to object storage.
 - Output storage paths.
 - Job progress reporting.
 - Cleanup and failure recovery.

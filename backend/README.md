@@ -54,7 +54,7 @@ backend/
 
 - Background worker host for future video processing jobs.
 - Intended for media processing orchestration, queue handling, and scheduled work.
-- No FFmpeg processing is implemented in this foundation branch.
+- Includes guarded local FFmpeg/HLS processing foundations with execution disabled by default.
 
 `Zinema.UnitTests`
 
@@ -323,11 +323,35 @@ PATCH /api/admin/processing-jobs/{id}/fail
 PATCH /api/admin/processing-jobs/{id}/cancel
 ```
 
+Processing diagnostics:
+
+```text
+GET /api/admin/processing/ffmpeg/status
+```
+
 This API creates and tracks job records for media assets. New jobs start with status `Pending`. Enqueue is allowed only for `Pending` jobs and moves them to `Queued`. Start is allowed only for `Queued` jobs and moves them to `Processing`. Complete and fail are allowed only for `Processing` jobs. Cancel is allowed only for `Pending` or `Queued` jobs.
 
-This branch does not run FFmpeg, transcode video, generate HLS output, or cancel operating-system processes. The worker project reads queued jobs, claims them into `Processing`, and logs placeholder activity only.
+FFmpeg/HLS processing is configured through:
 
-Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`; queue notes live in `docs/architecture/video-processing-queue.md`; lifecycle notes live in `docs/architecture/video-processing-lifecycle.md`.
+```text
+VideoProcessing__FfmpegPath
+VideoProcessing__OutputRoot
+VideoProcessing__EnableExecution
+VideoProcessing__HlsSegmentDurationSeconds
+```
+
+`VideoProcessing__EnableExecution` defaults to `false`. When execution is disabled, the worker claims queued jobs into `Processing`, receives a disabled result from the processing service, and fails the job with a clear message. When execution is enabled, the service checks FFmpeg availability before attempting local HLS output.
+
+Default local HLS output shape:
+
+```text
+media-output/hls/{jobId}/master.m3u8
+media-output/hls/{jobId}/segment_%03d.ts
+```
+
+Generated media output and local FFmpeg binaries must not be committed. This branch does not upload HLS output to MinIO or publish playback URLs.
+
+Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`; queue notes live in `docs/architecture/video-processing-queue.md`; lifecycle notes live in `docs/architecture/video-processing-lifecycle.md`; FFmpeg/HLS notes live in `docs/architecture/ffmpeg-hls-processing.md`.
 
 ## Current Scope
 
@@ -361,5 +385,6 @@ This foundation currently includes:
 - Placeholder video processing queue and worker runner boundaries.
 - EF Core-backed video processing queue state transitions.
 - EF Core-backed video processing lifecycle state transitions.
+- FFmpeg/HLS command planning, availability checks, and guarded local execution foundation.
 
-Series, episode, collection management, video upload, watchlist features, review features, payment features, real video processing, and frontend implementation are intentionally out of scope for this branch.
+Series, episode, collection management, video upload, HLS publishing, watchlist features, review features, payment features, and frontend implementation are intentionally out of scope for this branch.

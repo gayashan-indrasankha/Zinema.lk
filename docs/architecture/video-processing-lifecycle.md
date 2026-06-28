@@ -62,7 +62,9 @@ The worker can read queued jobs and claim them:
 Queued -> Processing
 ```
 
-After claiming a job, the worker logs placeholder activity and stops. It does not run FFmpeg, inspect media files, generate HLS files, write output objects, or mark jobs completed automatically.
+After claiming a job, the worker calls `IVideoProcessingService`.
+
+When execution is disabled, the service does not run FFmpeg and the worker marks the claimed job as failed with a clear message. When execution is enabled, the worker marks a job completed only after the processing service reports success.
 
 ## Admin Lifecycle Endpoints
 
