@@ -29,6 +29,7 @@ PATCH /api/admin/processing-jobs/{id}/start
 PATCH /api/admin/processing-jobs/{id}/complete
 PATCH /api/admin/processing-jobs/{id}/fail
 PATCH /api/admin/processing-jobs/{id}/cancel
+GET /api/admin/processing/ffmpeg/status
 ```
 
 ## Job Status Values
@@ -219,11 +220,29 @@ Example:
 }
 ```
 
+## GET /api/admin/processing/ffmpeg/status
+
+Returns local FFmpeg configuration status for admins.
+
+The endpoint checks whether `VideoProcessing__FfmpegPath` is configured and whether the configured path can run an FFmpeg version check.
+
+Example response when FFmpeg is not configured:
+
+```json
+{
+  "isPathConfigured": false,
+  "isAvailable": false,
+  "ffmpegPath": null,
+  "version": null,
+  "message": "FFmpeg path is not configured."
+}
+```
+
 ## Notes
 
 - Controllers return DTOs only.
 - EF Core job read/write logic lives in Infrastructure.
 - Application defines DTOs, commands, queries, validation helpers, and interfaces.
 - Worker interfaces are placeholders for later processing branches.
-- The worker can claim queued jobs into `Processing`, but it does not complete or fail them automatically.
-- This branch does not execute real media processing.
+- The worker can claim queued jobs into `Processing` and call the video processing service.
+- FFmpeg execution is disabled by default and controlled by configuration.

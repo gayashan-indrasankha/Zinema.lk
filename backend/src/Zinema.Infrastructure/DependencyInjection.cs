@@ -44,6 +44,8 @@ public static class DependencyInjection
             configuration.GetSection(ObjectStorageOptions.SectionName));
         services.Configure<MediaUploadOptions>(
             configuration.GetSection(MediaUploadOptions.SectionName));
+        services.Configure<VideoProcessingOptions>(
+            configuration.GetSection(VideoProcessingOptions.SectionName));
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
@@ -53,6 +55,9 @@ public static class DependencyInjection
         services.AddScoped<IVideoProcessingJobService, VideoProcessingJobService>();
         services.AddScoped<IVideoProcessingJobLifecycleService, VideoProcessingJobLifecycleService>();
         services.AddScoped<IVideoProcessingQueue, VideoProcessingQueueService>();
+        services.AddScoped<IFfmpegAvailabilityChecker, FfmpegAvailabilityChecker>();
+        services.AddScoped<IFfmpegCommandBuilder, FfmpegHlsCommandBuilder>();
+        services.AddScoped<IVideoProcessingService, LocalVideoProcessingService>();
         services.AddSingleton<IObjectStorageService, ObjectStorageService>();
         services.AddScoped<ICatalogQueryService, CatalogQueryService>();
 
