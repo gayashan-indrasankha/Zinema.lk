@@ -24,6 +24,7 @@ This API creates job records only. It does not run FFmpeg, transcode video, gene
 POST /api/admin/media-assets/{id}/processing-jobs
 GET /api/admin/processing-jobs
 GET /api/admin/processing-jobs/{id}
+POST /api/admin/processing-jobs/{id}/enqueue
 PATCH /api/admin/processing-jobs/{id}/cancel
 ```
 
@@ -109,6 +110,22 @@ Returns one processing job.
 Responses:
 
 - `200 OK` when the job exists.
+- `404 Not Found` when the job does not exist.
+
+## POST /api/admin/processing-jobs/{id}/enqueue
+
+Moves a waiting job into the queued state.
+
+Allowed enqueue status:
+
+- `Pending`
+
+When enqueue succeeds, the job status becomes `Queued` and `queuedAt` is refreshed.
+
+Responses:
+
+- `200 OK` when the job is enqueued.
+- `400 Bad Request` when the job is already queued, processing, completed, failed, or cancelled.
 - `404 Not Found` when the job does not exist.
 
 ## PATCH /api/admin/processing-jobs/{id}/cancel
