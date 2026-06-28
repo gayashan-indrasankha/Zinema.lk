@@ -725,6 +725,90 @@ public class SolutionFoundationTests
     }
 
     [Fact]
+    public void HlsOutputManifestBuilderCreatesManifestFromSafePlan()
+    {
+        var jobId = Guid.Parse("bbbbbbbb-cccc-dddd-eeee-ffffffffffff");
+        var outputRoot = Path.Combine("media-output", "hls");
+        var outputPlan = CreateOutputPlan(jobId, outputRoot);
+        var generatedAt = new DateTimeOffset(2026, 6, 28, 12, 0, 0, TimeSpan.Zero);
+        var manifestBuilder = new HlsOutputManifestBuilder();
+
+        var result = manifestBuilder.BuildManifest(outputPlan, generatedAt);
+
+        Assert.True(result.IsSuccess);
+        Assert.True(result.Value.IsValid);
+        Assert.Empty(result.Value.ValidationErrors);
+        Assert.Equal(jobId, result.Value.ProcessingJobId);
+        Assert.Equal("master.m3u8", result.Value.MasterPlaylistFileName);
+        Assert.Equal($"{jobId:D}/master.m3u8", result.Value.RelativePlaybackPath);
+        Assert.Equal($"{jobId:D}/segment_%03d.ts", result.Value.SegmentRelativePathPattern);
+        Assert.False(Path.IsPathRooted(result.Value.RelativePlaybackPath));
+        Assert.DoesNotContain("..", result.Value.RelativePlaybackPath);
+        Assert.DoesNotContain("\\", result.Value.RelativePlaybackPath);
+        Assert.Equal(generatedAt, result.Value.GeneratedAt);
+    }
+
+    [Fact]
+    public void HlsOutputManifestBuilderRejectsPathsOutsideOutputRoot()
+    {
+        var jobId = Guid.Parse("cccccccc-dddd-eeee-ffff-000000000000");
+        var outputRoot = Path.GetFullPath(Path.Combine("media-output", "hls"));
+        var outsideDirectory = Path.GetFullPath(Path.Combine("media-output-outside", jobId.ToString("D")));
+        var outputPlan = new HlsOutputPlan(
+            jobId,
+            outputRoot,
+            outsideDirectory,
+            "master.m3u8",
+            Path.Combine(outsideDirectory, "master.m3u8"),
+            "segment_%03d.ts",
+            Path.Combine(outsideDirectory, "segment_%03d.ts"));
+        var manifestBuilder = new HlsOutputManifestBuilder();
+
+        var result = manifestBuilder.BuildManifest(outputPlan);
+
+        Assert.True(result.IsFailure);
+        Assert.Equal("VideoProcessingJob.Validation", result.Error.Code);
+    }
+
+    [Fact]
+    public void HlsOutputManifestValidationRejectsRootedRelativePlaybackPath()
+    {
+        var outputPlan = CreateOutputPlan(
+            Guid.Parse("dddddddd-eeee-ffff-0000-111111111111"),
+            Path.Combine("media-output", "hls"));
+
+        var errors = HlsOutputManifestValidation.Validate(
+            outputPlan,
+            Path.Combine(Path.DirectorySeparatorChar.ToString(), "hls", "master.m3u8"),
+            "job/segment_%03d.ts");
+
+        Assert.Contains("Relative playback path must not be rooted.", errors);
+    }
+
+    [Fact]
+    public void VideoProcessingExecutionResultCanCarryOutputManifest()
+    {
+        var jobId = Guid.Parse("eeeeeeee-ffff-0000-1111-222222222222");
+        var manifest = new HlsOutputManifestBuilder()
+            .BuildManifest(CreateOutputPlan(jobId, Path.Combine("media-output", "hls")))
+            .Value;
+
+        var result = new VideoProcessingExecutionResult(
+            jobId,
+            VideoProcessingExecutionStatus.Succeeded,
+            WasExecuted: true,
+            Succeeded: true,
+            Message: "Processing completed.",
+            OutputPlan: null,
+            Command: null,
+            ExitCode: 0,
+            OutputManifest: manifest);
+
+        Assert.NotNull(result.OutputManifest);
+        Assert.Equal($"{jobId:D}/master.m3u8", result.OutputManifest.RelativePlaybackPath);
+    }
+
+    [Fact]
     public async Task LocalVideoProcessingServiceReturnsDisabledResultWhenExecutionIsOff()
     {
         var availabilityChecker = new FakeFfmpegAvailabilityChecker(new FfmpegAvailabilityDto(
@@ -745,6 +829,7 @@ public class SolutionFoundationTests
                 FfmpegPath = "ffmpeg",
                 OutputRoot = Path.Combine("media-output", "hls")
             })),
+            new HlsOutputManifestBuilder(),
             availabilityChecker,
             NullLogger<LocalVideoProcessingService>.Instance);
 
@@ -939,6 +1024,7 @@ public class SolutionFoundationTests
         Assert.NotNull(serviceProvider.GetRequiredService<IVideoProcessingJobExecutionService>());
         Assert.NotNull(serviceProvider.GetRequiredService<IVideoProcessingService>());
         Assert.NotNull(serviceProvider.GetRequiredService<IFfmpegCommandBuilder>());
+        Assert.NotNull(serviceProvider.GetRequiredService<IHlsOutputManifestBuilder>());
         Assert.NotNull(serviceProvider.GetRequiredService<IFfmpegAvailabilityChecker>());
     }
 
@@ -1007,6 +1093,21 @@ public class SolutionFoundationTests
             null,
             now,
             null);
+    }
+
+    private static HlsOutputPlan CreateOutputPlan(Guid jobId, string outputRoot)
+    {
+        var fullOutputRoot = Path.GetFullPath(outputRoot);
+        var outputDirectory = Path.Combine(fullOutputRoot, jobId.ToString("D"));
+
+        return new HlsOutputPlan(
+            jobId,
+            fullOutputRoot,
+            outputDirectory,
+            "master.m3u8",
+            Path.Combine(outputDirectory, "master.m3u8"),
+            "segment_%03d.ts",
+            Path.Combine(outputDirectory, "segment_%03d.ts"));
     }
 
     private sealed class FakeFfmpegAvailabilityChecker(
