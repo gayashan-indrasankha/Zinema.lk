@@ -9,7 +9,9 @@ using Zinema.Infrastructure.Persistence;
 
 namespace Zinema.Infrastructure.Services;
 
-public sealed class VideoProcessingJobService(AppDbContext dbContext) : IVideoProcessingJobService
+public sealed class VideoProcessingJobService(
+    AppDbContext dbContext,
+    IVideoProcessingQueue videoProcessingQueue) : IVideoProcessingJobService
 {
     public async Task<Result<VideoProcessingJobDto>> CreateProcessingJobAsync(
         CreateVideoProcessingJobCommand command,
@@ -91,6 +93,16 @@ public sealed class VideoProcessingJobService(AppDbContext dbContext) : IVideoPr
         return job is null
             ? Result<VideoProcessingJobDto>.Failure(VideoProcessingJobErrors.ProcessingJobNotFound(id))
             : Result<VideoProcessingJobDto>.Success(job);
+    }
+
+    public Task<Result<VideoProcessingJobDto>> EnqueueProcessingJobAsync(
+        EnqueueVideoProcessingJobCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        var validation = VideoProcessingJobValidation.ValidateEnqueue(command.ProcessingJobId);
+        return validation is not null
+            ? Task.FromResult(Result<VideoProcessingJobDto>.Failure(validation))
+            : videoProcessingQueue.EnqueueAsync(command.ProcessingJobId, cancellationToken);
     }
 
     public async Task<Result<VideoProcessingJobDto>> CancelProcessingJobAsync(
