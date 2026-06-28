@@ -6,6 +6,7 @@ using Zinema.Application.Features.AdminCatalog;
 using Zinema.Application.Features.AdminMediaAssets;
 using Zinema.Application.Features.Auth;
 using Zinema.Application.Features.Catalog;
+using Zinema.Application.Features.VideoProcessingJobs;
 using Zinema.Infrastructure.Authentication;
 using Zinema.Infrastructure.Identity;
 using Zinema.Infrastructure.Persistence;
@@ -49,6 +50,7 @@ public static class DependencyInjection
         services.AddScoped<IAdminCatalogService, AdminCatalogService>();
         services.AddScoped<IAdminMediaAssetService, AdminMediaAssetService>();
         services.AddScoped<IAdminMediaAssetUploadService, AdminMediaAssetUploadService>();
+        services.AddScoped<IVideoProcessingJobService, VideoProcessingJobService>();
         services.AddSingleton<IObjectStorageService, ObjectStorageService>();
         services.AddScoped<ICatalogQueryService, CatalogQueryService>();
 
