@@ -340,7 +340,7 @@ VideoProcessing__EnableExecution
 VideoProcessing__HlsSegmentDurationSeconds
 ```
 
-`VideoProcessing__EnableExecution` defaults to `false`. When execution is disabled, the worker claims queued jobs into `Processing`, receives a disabled result from the processing service, and fails the job with a clear message. When execution is enabled, the service checks FFmpeg availability before attempting local HLS output.
+`VideoProcessing__EnableExecution` defaults to `false`. The worker reads queued jobs and delegates each job to the video processing job execution service. When execution is disabled, the processing service returns a disabled result and the execution service fails the job with a clear message. When execution is enabled, the service checks FFmpeg availability before attempting local HLS output.
 
 Default local HLS output shape:
 
@@ -351,7 +351,7 @@ media-output/hls/{jobId}/segment_%03d.ts
 
 Generated media output and local FFmpeg binaries must not be committed. This branch does not upload HLS output to MinIO or publish playback URLs.
 
-Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`; queue notes live in `docs/architecture/video-processing-queue.md`; lifecycle notes live in `docs/architecture/video-processing-lifecycle.md`; FFmpeg/HLS notes live in `docs/architecture/ffmpeg-hls-processing.md`.
+Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`; queue notes live in `docs/architecture/video-processing-queue.md`; lifecycle notes live in `docs/architecture/video-processing-lifecycle.md`; job execution notes live in `docs/architecture/video-processing-job-execution.md`; FFmpeg/HLS notes live in `docs/architecture/ffmpeg-hls-processing.md`.
 
 ## Current Scope
 
@@ -385,6 +385,7 @@ This foundation currently includes:
 - Placeholder video processing queue and worker runner boundaries.
 - EF Core-backed video processing queue state transitions.
 - EF Core-backed video processing lifecycle state transitions.
+- Video processing job execution orchestration.
 - FFmpeg/HLS command planning, availability checks, and guarded local execution foundation.
 
 Series, episode, collection management, video upload, HLS publishing, watchlist features, review features, payment features, and frontend implementation are intentionally out of scope for this branch.

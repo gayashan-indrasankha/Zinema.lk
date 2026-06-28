@@ -51,11 +51,10 @@ Zinema.Worker
   -> IVideoProcessingJobRunner
   -> IVideoProcessingQueue.GetQueuedJobsAsync
   -> queued job DTOs
-  -> IVideoProcessingJobLifecycleService.StartProcessingJobAsync
-  -> Processing status
+  -> IVideoProcessingJobExecutionService.ExecuteAsync
 ```
 
-The current worker runner reads queued jobs, claims them by moving them from `Queued` to `Processing`, and calls `IVideoProcessingService`.
+The current worker runner reads queued jobs and delegates execution. The execution service claims jobs by moving them from `Queued` to `Processing`, then calls `IVideoProcessingService`.
 
 When execution is disabled, the processing service returns a disabled result without running FFmpeg and the worker fails the claimed job with a clear message. When execution is enabled, processing must succeed before the worker marks the job completed.
 

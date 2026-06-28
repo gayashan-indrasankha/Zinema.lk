@@ -76,10 +76,11 @@ If `VideoProcessing__FfmpegPath` is empty, the checker reports that FFmpeg is no
 The worker:
 
 1. Reads queued jobs.
-2. Claims a queued job into `Processing`.
-3. Calls `IVideoProcessingService`.
-4. Completes the job only when processing succeeds.
-5. Fails the claimed job with a clear message when execution is disabled, FFmpeg is unavailable, validation fails, or FFmpeg returns a failure.
+2. Delegates each job to `IVideoProcessingJobExecutionService`.
+3. Lets the execution service claim the job into `Processing`.
+4. Calls `IVideoProcessingService`.
+5. Completes the job only when processing succeeds.
+6. Fails the claimed job with a clear message when execution is disabled, FFmpeg is unavailable, validation fails, or FFmpeg returns a failure.
 
 The worker does not delete source files and does not upload HLS output to MinIO in this branch.
 
