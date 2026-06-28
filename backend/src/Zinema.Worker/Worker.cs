@@ -1,6 +1,10 @@
+using Zinema.Application.Features.VideoProcessingJobs;
+
 namespace Zinema.Worker;
 
-public class Worker(ILogger<Worker> logger) : BackgroundService
+public class Worker(
+    ILogger<Worker> logger,
+    IVideoProcessingJobRunner videoProcessingJobRunner) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -10,6 +14,8 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
             {
                 logger.LogInformation("Zinema worker heartbeat at: {time}", DateTimeOffset.UtcNow);
             }
+
+            await videoProcessingJobRunner.RunNextAsync(stoppingToken);
 
             await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
         }
