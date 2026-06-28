@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Zinema.Application.Common.Results;
 using Zinema.Application.DTOs.Auth;
 using Zinema.Application.Features.AdminCatalog;
@@ -7,6 +8,8 @@ using Zinema.Application.Features.Catalog;
 using Zinema.Application.Features.VideoProcessingJobs;
 using Zinema.Domain.Entities;
 using Zinema.Domain.Enums;
+using Zinema.Infrastructure.Persistence;
+using Zinema.Infrastructure.Services;
 
 namespace Zinema.UnitTests;
 
@@ -368,5 +371,165 @@ public class SolutionFoundationTests
 
         Assert.True(query.IsFailure);
         Assert.Equal("VideoProcessingJob.Validation", query.Error.Code);
+    }
+
+    [Fact]
+    public void EnqueueVideoProcessingJobCommandCanCarryJobId()
+    {
+        var jobId = Guid.NewGuid();
+        var command = new EnqueueVideoProcessingJobCommand(jobId);
+
+        Assert.Equal(jobId, command.ProcessingJobId);
+    }
+
+    [Theory]
+    [InlineData(VideoProcessingJobStatus.Pending, true)]
+    [InlineData(VideoProcessingJobStatus.Queued, false)]
+    [InlineData(VideoProcessingJobStatus.Processing, false)]
+    [InlineData(VideoProcessingJobStatus.Completed, false)]
+    [InlineData(VideoProcessingJobStatus.Failed, false)]
+    [InlineData(VideoProcessingJobStatus.Cancelled, false)]
+    public void VideoProcessingJobEnqueueValidationAllowsOnlyPendingJobs(
+        VideoProcessingJobStatus status,
+        bool canEnqueue)
+    {
+        Assert.Equal(canEnqueue, VideoProcessingJobValidation.CanEnqueue(status));
+    }
+
+    [Fact]
+    public void VideoProcessingJobEnqueueValidationRejectsEmptyJobId()
+    {
+        var error = VideoProcessingJobValidation.ValidateEnqueue(Guid.Empty);
+
+        Assert.NotNull(error);
+        Assert.Equal("VideoProcessingJob.Validation", error.Code);
+    }
+
+    [Fact]
+    public void VideoProcessingJobEnqueueValidationRejectsQueuedJob()
+    {
+        var error = VideoProcessingJobValidation.ValidateEnqueue(VideoProcessingJobStatus.Queued);
+
+        Assert.NotNull(error);
+        Assert.Equal("VideoProcessingJob.InvalidStateTransition", error.Code);
+    }
+
+    [Fact]
+    public async Task VideoProcessingQueueReturnsNotFoundForMissingJob()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var queue = new VideoProcessingQueueService(dbContext);
+
+        var result = await queue.EnqueueAsync(Guid.NewGuid());
+
+        Assert.True(result.IsFailure);
+        Assert.Equal("VideoProcessingJob.NotFound", result.Error.Code);
+    }
+
+    [Fact]
+    public async Task VideoProcessingQueueMovesPendingJobToQueued()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var mediaAsset = CreateMediaAsset("media-assets/source.mp4");
+        var job = new VideoProcessingJob
+        {
+            MediaAssetId = mediaAsset.Id,
+            SourceStorageKey = mediaAsset.StorageKey,
+            Status = VideoProcessingJobStatus.Pending,
+            QueuedAt = DateTimeOffset.UtcNow.AddMinutes(-10)
+        };
+
+        dbContext.MediaAssets.Add(mediaAsset);
+        dbContext.VideoProcessingJobs.Add(job);
+        await dbContext.SaveChangesAsync();
+
+        var queue = new VideoProcessingQueueService(dbContext);
+        var result = await queue.EnqueueAsync(job.Id);
+
+        Assert.True(result.IsSuccess);
+        Assert.Equal(VideoProcessingJobStatus.Queued.ToString(), result.Value.Status);
+
+        var saved = await dbContext.VideoProcessingJobs.FirstAsync(item => item.Id == job.Id);
+        Assert.Equal(VideoProcessingJobStatus.Queued, saved.Status);
+    }
+
+    [Theory]
+    [InlineData(VideoProcessingJobStatus.Queued)]
+    [InlineData(VideoProcessingJobStatus.Completed)]
+    [InlineData(VideoProcessingJobStatus.Cancelled)]
+    public async Task VideoProcessingQueueRejectsNonPendingJobs(VideoProcessingJobStatus status)
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var job = new VideoProcessingJob
+        {
+            MediaAssetId = Guid.NewGuid(),
+            SourceStorageKey = "media-assets/source.mp4",
+            Status = status,
+            QueuedAt = DateTimeOffset.UtcNow
+        };
+
+        dbContext.VideoProcessingJobs.Add(job);
+        await dbContext.SaveChangesAsync();
+
+        var queue = new VideoProcessingQueueService(dbContext);
+        var result = await queue.EnqueueAsync(job.Id);
+
+        Assert.True(result.IsFailure);
+        Assert.Equal("VideoProcessingJob.InvalidStateTransition", result.Error.Code);
+    }
+
+    [Fact]
+    public async Task VideoProcessingQueueReadsQueuedJobsOnly()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var queuedMediaAsset = CreateMediaAsset("media-assets/queued.mp4");
+        var pendingMediaAsset = CreateMediaAsset("media-assets/pending.mp4");
+
+        dbContext.VideoProcessingJobs.AddRange(
+            new VideoProcessingJob
+            {
+                MediaAssetId = queuedMediaAsset.Id,
+                SourceStorageKey = queuedMediaAsset.StorageKey,
+                Status = VideoProcessingJobStatus.Queued,
+                QueuedAt = DateTimeOffset.UtcNow.AddMinutes(-5)
+            },
+            new VideoProcessingJob
+            {
+                MediaAssetId = pendingMediaAsset.Id,
+                SourceStorageKey = pendingMediaAsset.StorageKey,
+                Status = VideoProcessingJobStatus.Pending,
+                QueuedAt = DateTimeOffset.UtcNow.AddMinutes(-10)
+            });
+
+        dbContext.MediaAssets.AddRange(queuedMediaAsset, pendingMediaAsset);
+        await dbContext.SaveChangesAsync();
+
+        var queue = new VideoProcessingQueueService(dbContext);
+        var queuedJobs = await queue.GetQueuedJobsAsync(maxCount: 10);
+
+        Assert.Single(queuedJobs);
+        Assert.Equal(VideoProcessingJobStatus.Queued.ToString(), queuedJobs[0].Status);
+    }
+
+    private static AppDbContext CreateInMemoryDbContext()
+    {
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
+
+        return new AppDbContext(options);
+    }
+
+    private static MediaAsset CreateMediaAsset(string storageKey)
+    {
+        return new MediaAsset
+        {
+            Title = "Queue Test Source",
+            AssetType = "video-source",
+            ContentType = "video/mp4",
+            FileName = "source.mp4",
+            StorageKey = storageKey,
+            Status = MediaStatus.Uploaded
+        };
     }
 }
