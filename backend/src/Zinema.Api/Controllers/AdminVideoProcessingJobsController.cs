@@ -13,7 +13,8 @@ namespace Zinema.Api.Controllers;
 [Route("api/admin")]
 [Authorize(Roles = AuthRoles.Admin)]
 public sealed class AdminVideoProcessingJobsController(
-    IVideoProcessingJobService videoProcessingJobService) : ControllerBase
+    IVideoProcessingJobService videoProcessingJobService,
+    IVideoProcessingJobLifecycleService videoProcessingJobLifecycleService) : ControllerBase
 {
     [HttpPost("media-assets/{id:guid}/processing-jobs")]
     [ProducesResponseType(typeof(VideoProcessingJobDto), StatusCodes.Status201Created)]
@@ -89,6 +90,52 @@ public sealed class AdminVideoProcessingJobsController(
     {
         var result = await videoProcessingJobService.EnqueueProcessingJobAsync(
             new EnqueueVideoProcessingJobCommand(id),
+            cancellationToken);
+
+        return result.IsSuccess ? Ok(result.Value) : ToProblem(result.Error);
+    }
+
+    [HttpPatch("processing-jobs/{id:guid}/start")]
+    [ProducesResponseType(typeof(VideoProcessingJobDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<VideoProcessingJobDto>> Start(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var result = await videoProcessingJobLifecycleService.StartProcessingJobAsync(
+            id,
+            cancellationToken);
+
+        return result.IsSuccess ? Ok(result.Value) : ToProblem(result.Error);
+    }
+
+    [HttpPatch("processing-jobs/{id:guid}/complete")]
+    [ProducesResponseType(typeof(VideoProcessingJobDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<VideoProcessingJobDto>> Complete(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var result = await videoProcessingJobLifecycleService.CompleteProcessingJobAsync(
+            id,
+            cancellationToken);
+
+        return result.IsSuccess ? Ok(result.Value) : ToProblem(result.Error);
+    }
+
+    [HttpPatch("processing-jobs/{id:guid}/fail")]
+    [ProducesResponseType(typeof(VideoProcessingJobDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<VideoProcessingJobDto>> Fail(
+        Guid id,
+        [FromBody] FailVideoProcessingJobRequest? request,
+        CancellationToken cancellationToken)
+    {
+        var result = await videoProcessingJobLifecycleService.FailProcessingJobAsync(
+            (request ?? new FailVideoProcessingJobRequest()).ToCommand(id),
             cancellationToken);
 
         return result.IsSuccess ? Ok(result.Value) : ToProblem(result.Error);
