@@ -1,0 +1,45 @@
+name: .NET CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+  push:
+    branches:
+      - develop
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    name: Build and test backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore backend solution
+        run: dotnet restore backend/Zinema.sln
+
+      - name: Build backend solution
+        run: dotnet build backend/Zinema.sln --configuration Release --no-restore
+
+      - name: Test backend solution
+        run: dotnet test backend/Zinema.sln --configuration Release --no-build --logger "trx" --results-directory TestResults
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-test-results
+          path: TestResults/**/*.trx
+          if-no-files-found: ignore
