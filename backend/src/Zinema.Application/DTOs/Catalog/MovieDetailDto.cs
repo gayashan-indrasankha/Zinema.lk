@@ -11,4 +11,12 @@ public sealed record MovieDetailDto(
     IReadOnlyList<GenreDto> Genres,
     MediaAssetDto? Poster,
     MediaAssetDto? Backdrop,
-    IReadOnlyList<MediaAssetDto> MediaAssets);
+    IReadOnlyList<MediaAssetDto> MediaAssets)
+{
+    public CatalogPlaybackSummaryDto Playback { get; init; } = new(
+        Available: false,
+        PlaybackUrl: null,
+        ManifestUrl: null,
+        Status: "NoSource",
+        Reason: "Playback source is not available yet.");
+}

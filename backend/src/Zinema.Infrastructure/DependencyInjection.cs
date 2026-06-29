@@ -3,8 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Zinema.Application.Features.AdminCatalog;
+using Zinema.Application.Features.AdminMediaAssets;
 using Zinema.Application.Features.Auth;
 using Zinema.Application.Features.Catalog;
+using Zinema.Application.Features.VideoPlayback;
+using Zinema.Application.Features.VideoProcessingJobs;
 using Zinema.Infrastructure.Authentication;
 using Zinema.Infrastructure.Identity;
 using Zinema.Infrastructure.Persistence;
@@ -38,10 +41,28 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<AppDbContext>();
 
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.SectionName));
+        services.Configure<ObjectStorageOptions>(
+            configuration.GetSection(ObjectStorageOptions.SectionName));
+        services.Configure<MediaUploadOptions>(
+            configuration.GetSection(MediaUploadOptions.SectionName));
+        services.Configure<VideoProcessingOptions>(
+            configuration.GetSection(VideoProcessingOptions.SectionName));
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IAdminCatalogService, AdminCatalogService>();
+        services.AddScoped<IAdminMediaAssetService, AdminMediaAssetService>();
+        services.AddScoped<IAdminMediaAssetUploadService, AdminMediaAssetUploadService>();
+        services.AddScoped<IVideoProcessingJobService, VideoProcessingJobService>();
+        services.AddScoped<IVideoProcessingJobLifecycleService, VideoProcessingJobLifecycleService>();
+        services.AddScoped<IVideoProcessingQueue, VideoProcessingQueueService>();
+        services.AddScoped<IFfmpegAvailabilityChecker, FfmpegAvailabilityChecker>();
+        services.AddScoped<IFfmpegCommandBuilder, FfmpegHlsCommandBuilder>();
+        services.AddScoped<IHlsOutputManifestBuilder, HlsOutputManifestBuilder>();
+        services.AddScoped<IVideoProcessingService, LocalVideoProcessingService>();
+        services.AddScoped<IVideoProcessingJobExecutionService, VideoProcessingJobExecutionService>();
+        services.AddScoped<IVideoPlaybackOutputService, VideoPlaybackOutputService>();
+        services.AddSingleton<IObjectStorageService, ObjectStorageService>();
         services.AddScoped<ICatalogQueryService, CatalogQueryService>();
 
         return services;

@@ -8,6 +8,7 @@ This API currently supports:
 
 - Paginated movie browsing.
 - Movie detail lookup by slug.
+- Playback availability summary on movie detail responses.
 - Genre listing.
 
 It does not include create, update, delete, authentication, admin authorization, video upload, or FFmpeg processing.
@@ -170,7 +171,28 @@ GET /api/catalog/movies/sample-catalog-title
       "publicUrl": "https://cdn.example.com/poster.jpg",
       "fileSizeBytes": 100000
     }
-  ]
+  ],
+  "playback": {
+    "available": true,
+    "playbackUrl": "/api/videos/00000000-0000-0000-0000-000000000030/playback",
+    "manifestUrl": "/media-output/hls/00000000-0000-0000-0000-000000000200/master.m3u8",
+    "status": "Completed",
+    "reason": null
+  }
+}
+```
+
+When playback output is not ready, the movie detail response still succeeds and returns:
+
+```json
+{
+  "playback": {
+    "available": false,
+    "playbackUrl": null,
+    "manifestUrl": null,
+    "status": "Processing",
+    "reason": "Video processing is still running."
+  }
 }
 ```
 
@@ -233,5 +255,7 @@ Movie list responses use `PagedResultDto<T>`:
 - EF Core read queries live in Infrastructure.
 - Read-only queries use `AsNoTracking`.
 - Public movie queries default to published content.
+- Movie detail playback availability is a summary built from the playback output service.
+- Catalog responses do not expose source storage keys.
 - Application DTOs and query models live in `Zinema.Application`.
 - Integration tests that execute catalog queries will need a PostgreSQL test database in a later branch.

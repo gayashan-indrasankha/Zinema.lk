@@ -54,7 +54,7 @@ backend/
 
 - Background worker host for future video processing jobs.
 - Intended for media processing orchestration, queue handling, and scheduled work.
-- No FFmpeg processing is implemented in this foundation branch.
+- Includes guarded local FFmpeg/HLS processing foundations with execution disabled by default.
 
 `Zinema.UnitTests`
 
@@ -151,7 +151,7 @@ GET /api/catalog/movies/{slug}
 GET /api/catalog/genres
 ```
 
-Catalog controllers return DTOs only. EF Core query logic is implemented in Infrastructure through `ICatalogQueryService`, keeping controllers thin and Application independent from Infrastructure.
+Catalog controllers return DTOs only. EF Core query logic is implemented in Infrastructure through `ICatalogQueryService`, keeping controllers thin and Application independent from Infrastructure. Movie detail responses include a playback availability summary that uses the existing playback output service.
 
 Supported movie list query parameters:
 
@@ -171,6 +171,7 @@ Local test URLs:
 ```text
 GET http://localhost:5145/health
 GET http://localhost:5145/api/catalog/movies
+GET http://localhost:5145/api/catalog/movies/demo-action-feature
 GET http://localhost:5145/api/catalog/genres
 ```
 
@@ -244,6 +245,130 @@ Movie deletes archive the movie by setting its publish status to `Archived`. Gen
 
 Admin catalog endpoint documentation lives in `docs/api/admin-catalog-api.md`.
 
+## Admin Media Assets API
+
+Admin media asset endpoints require a JWT access token for a user with the `Admin` role.
+
+Media asset metadata endpoints:
+
+```text
+GET /api/admin/media-assets
+GET /api/admin/media-assets/{id}
+POST /api/admin/media-assets
+PUT /api/admin/media-assets/{id}
+DELETE /api/admin/media-assets/{id}
+```
+
+This API manages metadata only. It records fields such as title, asset type, content type, file name, storage key, optional public URL, file size, status, and catalog links.
+
+The metadata endpoints do not upload files, replace files, delete physical objects, run FFmpeg, or generate HLS output. `DELETE` archives metadata by setting media status to `Archived`.
+
+Admin media asset endpoint documentation lives in `docs/api/admin-media-assets-api.md`. Storage architecture notes live in `docs/architecture/media-storage.md`.
+
+## Admin Media Upload API
+
+Admin media upload requires a JWT access token for a user with the `Admin` role.
+
+Upload endpoint:
+
+```text
+POST /api/admin/media-assets/upload
+```
+
+This endpoint accepts `multipart/form-data`, uploads an image or source video to MinIO/S3-compatible object storage, and creates the related media asset metadata record after upload succeeds. Source video uploads are also connected to the existing video processing queue.
+
+Allowed upload content types:
+
+```text
+image/jpeg
+image/png
+image/webp
+video/mp4
+```
+
+Default max upload size:
+
+```text
+524288000 bytes
+```
+
+When the upload uses `assetType=video-source` and `contentType=video/mp4`, the backend creates a video processing job and moves it to `Queued`. Image uploads such as posters and backdrops are not queued.
+
+Local MinIO defaults are configured in `src/Zinema.Api/appsettings.Development.json` and can be overridden with environment variables:
+
+```text
+ObjectStorage__Endpoint=localhost:9000
+ObjectStorage__AccessKey=minioadmin
+ObjectStorage__SecretKey=minioadmin
+ObjectStorage__BucketName=zinema-media
+ObjectStorage__UseSsl=false
+ObjectStorage__EnsureBucketExists=true
+ObjectStorage__PublicBaseUrl=http://localhost:9000/zinema-media
+```
+
+When `ObjectStorage__EnsureBucketExists` is `true`, the API creates the bucket if it is missing. The upload request does not run FFmpeg, transcode media, or generate HLS output inline.
+
+Admin media upload endpoint documentation lives in `docs/api/admin-media-upload-api.md`.
+
+## Admin Video Processing Jobs API
+
+Admin video processing job endpoints require a JWT access token for a user with the `Admin` role.
+
+Processing job endpoints:
+
+```text
+POST /api/admin/media-assets/{id}/processing-jobs
+GET /api/admin/processing-jobs
+GET /api/admin/processing-jobs/{id}
+POST /api/admin/processing-jobs/{id}/enqueue
+PATCH /api/admin/processing-jobs/{id}/start
+PATCH /api/admin/processing-jobs/{id}/complete
+PATCH /api/admin/processing-jobs/{id}/fail
+PATCH /api/admin/processing-jobs/{id}/cancel
+```
+
+Processing diagnostics:
+
+```text
+GET /api/admin/processing/ffmpeg/status
+```
+
+Public playback output endpoint:
+
+```text
+GET /api/videos/{videoId}/playback
+```
+
+This API creates and tracks job records for media assets. Manual jobs start with status `Pending`. Source video uploads can create and enqueue jobs automatically, so those jobs start as `Queued`. Enqueue is allowed only for `Pending` jobs and moves them to `Queued`. Start is allowed only for `Queued` jobs and moves them to `Processing`. Complete and fail are allowed only for `Processing` jobs. Cancel is allowed only for `Pending` or `Queued` jobs.
+
+FFmpeg/HLS processing is configured through:
+
+```text
+VideoProcessing__FfmpegPath
+VideoProcessing__OutputRoot
+VideoProcessing__EnableExecution
+VideoProcessing__HlsSegmentDurationSeconds
+```
+
+`VideoProcessing__EnableExecution` defaults to `false`. The worker reads queued jobs and delegates each job to the video processing job execution service. When execution is disabled, the processing service returns a disabled result and the execution service fails the job with a clear message. When execution is enabled, the service checks FFmpeg availability before attempting local HLS output.
+
+Default local HLS output shape:
+
+```text
+media-output/hls/{jobId}/master.m3u8
+media-output/hls/{jobId}/segment_%03d.ts
+```
+
+Successful local HLS processing results can include an output manifest with playlist, segment, output directory, relative playback path, generated timestamp, and validation metadata.
+
+The playback output endpoint currently treats `videoId` as the source media asset ID. It returns safe playback path information only when completed processing output data is available. It does not create signed URLs, call a CDN, or expose absolute local machine paths.
+
+Public movie detail responses expose a small `playback` summary with availability, playback endpoint, safe manifest URL when ready, status, and reason. The catalog API does not run processing or include frontend code.
+
+Generated media output and local FFmpeg binaries must not be committed. This branch does not upload HLS output to MinIO or publish playback URLs.
+
+Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`; playback output endpoint documentation lives in `docs/api/video-playback-output-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`; queue notes live in `docs/architecture/video-processing-queue.md`; lifecycle notes live in `docs/architecture/video-processing-lifecycle.md`; job execution notes live in `docs/architecture/video-processing-job-execution.md`; output manifest notes live in `docs/architecture/video-processing-output-manifest.md`; FFmpeg/HLS notes live in `docs/architecture/ffmpeg-hls-processing.md`.
+
 ## Current Scope
 
 This foundation currently includes:
@@ -269,5 +394,18 @@ This foundation currently includes:
 - JWT Bearer authentication.
 - Role-based authorization foundation.
 - Admin-only catalog management APIs for movies and genres.
+- Admin-only media asset metadata management APIs.
+- Object storage URL abstraction foundation.
+- Admin-only image and source video upload to MinIO/S3-compatible object storage.
+- Automatic processing job enqueue for uploaded source videos.
+- Admin-only video processing job management APIs.
+- Placeholder video processing queue and worker runner boundaries.
+- EF Core-backed video processing queue state transitions.
+- EF Core-backed video processing lifecycle state transitions.
+- Video processing job execution orchestration.
+- FFmpeg/HLS command planning, availability checks, and guarded local execution foundation.
+- HLS output manifest foundation.
+- Video playback output API foundation.
+- Catalog movie detail playback availability summary.
 
-Series, episode, collection management, watchlist features, review features, payment features, video processing, and frontend implementation are intentionally out of scope for this branch.
+Series, episode, collection management, production HLS publishing, CDN/signed URL integration, watchlist features, review features, payment features, and frontend implementation are intentionally out of scope for this branch.
