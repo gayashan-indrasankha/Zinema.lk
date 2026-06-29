@@ -1035,6 +1035,130 @@ public class SolutionFoundationTests
     }
 
     [Fact]
+    public async Task CatalogMovieDetailIncludesPlaybackUnavailableWhenOutputIsMissing()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var movie = CreatePublishedMovie("catalog-playback-missing");
+        var sourceVideo = CreateMediaAsset("media-assets/catalog-missing-source.mp4");
+        sourceVideo.MovieId = movie.Id;
+
+        dbContext.Movies.Add(movie);
+        dbContext.MediaAssets.Add(sourceVideo);
+        await dbContext.SaveChangesAsync();
+
+        var service = CreateCatalogQueryService(dbContext);
+        var result = await service.GetMovieBySlugAsync(
+            GetMovieBySlugQuery.Create(movie.Slug));
+
+        Assert.True(result.IsSuccess);
+        Assert.False(result.Value.Playback.Available);
+        Assert.Equal("NotProcessed", result.Value.Playback.Status);
+        Assert.Null(result.Value.Playback.PlaybackUrl);
+        Assert.Null(result.Value.Playback.ManifestUrl);
+        Assert.Equal("Video processing has not started yet.", result.Value.Playback.Reason);
+    }
+
+    [Fact]
+    public async Task CatalogMovieDetailIncludesPlaybackAvailableWhenOutputExists()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var movie = CreatePublishedMovie("catalog-playback-ready");
+        var sourceVideo = CreateMediaAsset("media-assets/catalog-ready-source.mp4");
+        sourceVideo.MovieId = movie.Id;
+        var job = CreateProcessingJob(sourceVideo, VideoProcessingJobStatus.Completed);
+        job.CompletedAt = DateTimeOffset.UtcNow;
+        job.OutputStoragePrefix = "media-output/hls/catalog-ready";
+
+        dbContext.Movies.Add(movie);
+        dbContext.MediaAssets.Add(sourceVideo);
+        dbContext.VideoProcessingJobs.Add(job);
+        await dbContext.SaveChangesAsync();
+
+        var service = CreateCatalogQueryService(dbContext);
+        var result = await service.GetMovieBySlugAsync(
+            GetMovieBySlugQuery.Create(movie.Slug));
+
+        Assert.True(result.IsSuccess);
+        Assert.True(result.Value.Playback.Available);
+        Assert.Equal(VideoProcessingJobStatus.Completed.ToString(), result.Value.Playback.Status);
+        Assert.Equal($"/api/videos/{sourceVideo.Id:D}/playback", result.Value.Playback.PlaybackUrl);
+        Assert.Equal("/media-output/hls/catalog-ready/master.m3u8", result.Value.Playback.ManifestUrl);
+        Assert.Null(result.Value.Playback.Reason);
+    }
+
+    [Fact]
+    public async Task CatalogMovieDetailDoesNotExposeSourceStorageKeyInPlaybackSummary()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var movie = CreatePublishedMovie("catalog-playback-storage-safety");
+        var sourceVideo = CreateMediaAsset("media-assets/private-source-key.mp4");
+        sourceVideo.MovieId = movie.Id;
+        var poster = new MediaAsset
+        {
+            Title = "Catalog Poster",
+            AssetType = "poster",
+            ContentType = "image/jpeg",
+            FileName = "poster.jpg",
+            StorageKey = "media-assets/private-poster-key.jpg",
+            PublicUrl = "https://cdn.example.test/poster.jpg",
+            Status = MediaStatus.Ready,
+            MovieId = movie.Id
+        };
+        var job = CreateProcessingJob(sourceVideo, VideoProcessingJobStatus.Completed);
+        job.CompletedAt = DateTimeOffset.UtcNow;
+        job.OutputStoragePrefix = "media-output/hls/catalog-safe-output";
+
+        dbContext.Movies.Add(movie);
+        dbContext.MediaAssets.AddRange(sourceVideo, poster);
+        dbContext.VideoProcessingJobs.Add(job);
+        await dbContext.SaveChangesAsync();
+
+        var service = CreateCatalogQueryService(dbContext);
+        var result = await service.GetMovieBySlugAsync(
+            GetMovieBySlugQuery.Create(movie.Slug));
+
+        Assert.True(result.IsSuccess);
+        Assert.DoesNotContain(result.Value.MediaAssets, asset =>
+            asset.AssetType.Equals(MediaAssetProcessingRules.SourceVideoAssetType, StringComparison.OrdinalIgnoreCase));
+        Assert.DoesNotContain(sourceVideo.StorageKey, result.Value.Playback.PlaybackUrl ?? string.Empty);
+        Assert.DoesNotContain(sourceVideo.StorageKey, result.Value.Playback.ManifestUrl ?? string.Empty);
+        Assert.Equal("https://cdn.example.test/poster.jpg", result.Value.Poster?.PublicUrl);
+    }
+
+    [Fact]
+    public async Task CatalogMovieDetailIncludesSafePlaybackSummaryWhenSourceVideoIsMissing()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var movie = CreatePublishedMovie("catalog-playback-no-source");
+
+        dbContext.Movies.Add(movie);
+        await dbContext.SaveChangesAsync();
+
+        var service = CreateCatalogQueryService(dbContext);
+        var result = await service.GetMovieBySlugAsync(
+            GetMovieBySlugQuery.Create(movie.Slug));
+
+        Assert.True(result.IsSuccess);
+        Assert.False(result.Value.Playback.Available);
+        Assert.Equal("NoSource", result.Value.Playback.Status);
+        Assert.Null(result.Value.Playback.PlaybackUrl);
+        Assert.Null(result.Value.Playback.ManifestUrl);
+        Assert.Equal("Playback source is not available yet.", result.Value.Playback.Reason);
+    }
+
+    [Fact]
+    public void CatalogControllerKeepsMovieDetailRouteStable()
+    {
+        var method = typeof(CatalogController).GetMethod(
+            nameof(CatalogController.GetMovieBySlug));
+
+        Assert.NotNull(method);
+        var httpGet = Assert.Single(method.GetCustomAttributes(typeof(HttpGetAttribute), inherit: false)
+            .OfType<HttpGetAttribute>());
+        Assert.Equal("movies/{slug}", httpGet.Template);
+    }
+
+    [Fact]
     public async Task LocalVideoProcessingServiceReturnsDisabledResultWhenExecutionIsOff()
     {
         var availabilityChecker = new FakeFfmpegAvailabilityChecker(new FfmpegAvailabilityDto(
@@ -1286,6 +1410,27 @@ public class SolutionFoundationTests
             new FakeObjectStorageService(),
             processingJobService,
             Options.Create(new MediaUploadOptions()));
+    }
+
+    private static CatalogQueryService CreateCatalogQueryService(AppDbContext dbContext)
+    {
+        return new CatalogQueryService(
+            dbContext,
+            new VideoPlaybackOutputService(dbContext));
+    }
+
+    private static Movie CreatePublishedMovie(string slug)
+    {
+        return new Movie
+        {
+            Title = "Catalog Playback Test",
+            Slug = slug,
+            Description = "Catalog playback test movie.",
+            ReleaseYear = 2026,
+            RuntimeMinutes = 120,
+            Language = "English",
+            PublishStatus = PublishStatus.Published
+        };
     }
 
     private static VideoProcessingJob CreateProcessingJob(
