@@ -151,7 +151,7 @@ GET /api/catalog/movies/{slug}
 GET /api/catalog/genres
 ```
 
-Catalog controllers return DTOs only. EF Core query logic is implemented in Infrastructure through `ICatalogQueryService`, keeping controllers thin and Application independent from Infrastructure.
+Catalog controllers return DTOs only. EF Core query logic is implemented in Infrastructure through `ICatalogQueryService`, keeping controllers thin and Application independent from Infrastructure. Movie detail responses include a playback availability summary that uses the existing playback output service.
 
 Supported movie list query parameters:
 
@@ -171,6 +171,7 @@ Local test URLs:
 ```text
 GET http://localhost:5145/health
 GET http://localhost:5145/api/catalog/movies
+GET http://localhost:5145/api/catalog/movies/demo-action-feature
 GET http://localhost:5145/api/catalog/genres
 ```
 
@@ -362,6 +363,8 @@ Successful local HLS processing results can include an output manifest with play
 
 The playback output endpoint currently treats `videoId` as the source media asset ID. It returns safe playback path information only when completed processing output data is available. It does not create signed URLs, call a CDN, or expose absolute local machine paths.
 
+Public movie detail responses expose a small `playback` summary with availability, playback endpoint, safe manifest URL when ready, status, and reason. The catalog API does not run processing or include frontend code.
+
 Generated media output and local FFmpeg binaries must not be committed. This branch does not upload HLS output to MinIO or publish playback URLs.
 
 Video processing job endpoint documentation lives in `docs/api/video-processing-jobs-api.md`; playback output endpoint documentation lives in `docs/api/video-playback-output-api.md`. Pipeline architecture notes live in `docs/architecture/video-processing-pipeline.md`; queue notes live in `docs/architecture/video-processing-queue.md`; lifecycle notes live in `docs/architecture/video-processing-lifecycle.md`; job execution notes live in `docs/architecture/video-processing-job-execution.md`; output manifest notes live in `docs/architecture/video-processing-output-manifest.md`; FFmpeg/HLS notes live in `docs/architecture/ffmpeg-hls-processing.md`.
@@ -403,5 +406,6 @@ This foundation currently includes:
 - FFmpeg/HLS command planning, availability checks, and guarded local execution foundation.
 - HLS output manifest foundation.
 - Video playback output API foundation.
+- Catalog movie detail playback availability summary.
 
 Series, episode, collection management, production HLS publishing, CDN/signed URL integration, watchlist features, review features, payment features, and frontend implementation are intentionally out of scope for this branch.

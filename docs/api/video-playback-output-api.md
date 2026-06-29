@@ -6,6 +6,8 @@ The Video Playback Output API provides a public foundation endpoint for checking
 
 This branch does not add a frontend player, CDN integration, signed URLs, DRM, subscription rules, or production playback publishing.
 
+Public movie detail responses also include a small playback availability summary. That catalog summary is derived from this playback output service and does not replace the direct playback output endpoint.
+
 ## Endpoint
 
 ```text
@@ -58,6 +60,30 @@ The endpoint:
 - returns playable only when a completed job has a safe relative output path
 
 The endpoint does not expose absolute local machine paths. Unsafe rooted paths, absolute URLs, and traversal paths are not returned.
+
+## Catalog Integration
+
+`GET /api/catalog/movies/{slug}` includes a `playback` object for published movie details.
+
+The catalog response:
+
+- reports whether playback is available
+- links to this playback output endpoint when output is playable
+- includes the safe manifest URL when one is available
+- includes a status and reason when playback is not ready
+- does not expose source storage keys
+
+Example catalog playback summary:
+
+```json
+{
+  "available": true,
+  "playbackUrl": "/api/videos/00000000-0000-0000-0000-000000000100/playback",
+  "manifestUrl": "/media-output/hls/00000000-0000-0000-0000-000000000200/master.m3u8",
+  "status": "Completed",
+  "reason": null
+}
+```
 
 ## Status Codes
 
