@@ -89,6 +89,12 @@ dotnet test backend/tests/Zinema.IntegrationTests/Zinema.IntegrationTests.csproj
 
 The integration test host uses EF Core in-memory storage and does not require PostgreSQL, Redis, MinIO, FFmpeg, video files, or generated media output. More details live in `docs/testing/integration-tests.md`.
 
+## Continuous Integration
+
+GitHub Actions runs backend restore, Release build, and Release tests for pull requests targeting `develop` or `main`, and for pushes to `develop` or `main`.
+
+Workflow details live in `docs/setup/ci.md`.
+
 ## Database Setup
 
 The API is configured for PostgreSQL through the `DefaultConnection` connection string.
