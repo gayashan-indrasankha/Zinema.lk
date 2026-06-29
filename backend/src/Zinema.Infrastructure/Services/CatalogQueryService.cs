@@ -2,17 +2,23 @@ using Microsoft.EntityFrameworkCore;
 using Zinema.Application.Common.Errors;
 using Zinema.Application.Common.Results;
 using Zinema.Application.DTOs.Catalog;
+using Zinema.Application.DTOs.VideoPlayback;
+using Zinema.Application.Features.AdminMediaAssets;
 using Zinema.Application.Features.Catalog;
+using Zinema.Application.Features.VideoPlayback;
 using Zinema.Domain.Entities;
 using Zinema.Domain.Enums;
 using Zinema.Infrastructure.Persistence;
 
 namespace Zinema.Infrastructure.Services;
 
-public sealed class CatalogQueryService(AppDbContext dbContext) : ICatalogQueryService
+public sealed class CatalogQueryService(
+    AppDbContext dbContext,
+    IVideoPlaybackOutputService videoPlaybackOutputService) : ICatalogQueryService
 {
     private const string PosterAssetType = "poster";
     private const string BackdropAssetType = "backdrop";
+    private const string VideoMp4ContentType = "video/mp4";
 
     public async Task<PagedResultDto<MovieListItemDto>> GetMoviesAsync(
         GetMoviesQuery query,
@@ -96,10 +102,12 @@ public sealed class CatalogQueryService(AppDbContext dbContext) : ICatalogQueryS
                 Error.Create("Catalog.MovieNotFound", "Movie was not found."));
         }
 
+        var normalizedSlug = query.Slug.ToLowerInvariant();
+
         var movie = await dbContext.Movies
             .AsNoTracking()
             .Where(movie => movie.PublishStatus == query.PublishStatus)
-            .Where(movie => EF.Functions.ILike(movie.Slug, query.Slug))
+            .Where(movie => movie.Slug.ToLower() == normalizedSlug)
             .Select(movie => new MovieDetailDto(
                 movie.Id,
                 movie.Title,
@@ -134,9 +142,22 @@ public sealed class CatalogQueryService(AppDbContext dbContext) : ICatalogQueryS
                     .ToList()))
             .FirstOrDefaultAsync(cancellationToken);
 
-        return movie is null
-            ? Result<MovieDetailDto>.Failure(Error.Create("Catalog.MovieNotFound", "Movie was not found."))
-            : Result<MovieDetailDto>.Success(movie);
+        if (movie is null)
+        {
+            return Result<MovieDetailDto>.Failure(Error.Create("Catalog.MovieNotFound", "Movie was not found."));
+        }
+
+        var sourceVideoMediaAssetId = await GetSourceVideoMediaAssetIdAsync(
+            movie.Id,
+            cancellationToken);
+
+        var playback = sourceVideoMediaAssetId.HasValue
+            ? await GetPlaybackSummaryAsync(sourceVideoMediaAssetId.Value, cancellationToken)
+            : CreateUnavailablePlaybackSummary(
+                "NoSource",
+                "Playback source is not available yet.");
+
+        return Result<MovieDetailDto>.Success(movie with { Playback = playback });
     }
 
     public async Task<IReadOnlyList<GenreDto>> GetGenresAsync(
@@ -172,5 +193,71 @@ public sealed class CatalogQueryService(AppDbContext dbContext) : ICatalogQueryS
                 asset.PublicUrl,
                 asset.FileSizeBytes))
             .FirstOrDefault();
+    }
+
+    private async Task<Guid?> GetSourceVideoMediaAssetIdAsync(
+        Guid movieId,
+        CancellationToken cancellationToken)
+    {
+        return await dbContext.MediaAssets
+            .AsNoTracking()
+            .Where(asset => asset.MovieId == movieId)
+            .Where(asset => asset.AssetType.ToLower() == MediaAssetProcessingRules.SourceVideoAssetType)
+            .Where(asset => asset.ContentType.ToLower() == VideoMp4ContentType)
+            .OrderByDescending(asset => asset.CreatedAt)
+            .ThenBy(asset => asset.Id)
+            .Select(asset => (Guid?)asset.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    private async Task<CatalogPlaybackSummaryDto> GetPlaybackSummaryAsync(
+        Guid sourceVideoMediaAssetId,
+        CancellationToken cancellationToken)
+    {
+        var playbackOutput = await videoPlaybackOutputService.GetPlaybackOutputAsync(
+            sourceVideoMediaAssetId,
+            cancellationToken);
+
+        if (playbackOutput.IsFailure)
+        {
+            return CreateUnavailablePlaybackSummary(
+                "NoSource",
+                "Playback source is not available yet.");
+        }
+
+        return CreatePlaybackSummary(sourceVideoMediaAssetId, playbackOutput.Value);
+    }
+
+    private static CatalogPlaybackSummaryDto CreatePlaybackSummary(
+        Guid sourceVideoMediaAssetId,
+        VideoPlaybackOutputDto playbackOutput)
+    {
+        if (!playbackOutput.IsPlayable)
+        {
+            return CreateUnavailablePlaybackSummary(
+                playbackOutput.Status,
+                string.IsNullOrWhiteSpace(playbackOutput.Message)
+                    ? "Playback output is not ready yet."
+                    : playbackOutput.Message);
+        }
+
+        return new CatalogPlaybackSummaryDto(
+            Available: true,
+            PlaybackUrl: $"/api/videos/{sourceVideoMediaAssetId:D}/playback",
+            ManifestUrl: playbackOutput.PlaybackUrl,
+            Status: playbackOutput.Status,
+            Reason: null);
+    }
+
+    private static CatalogPlaybackSummaryDto CreateUnavailablePlaybackSummary(
+        string status,
+        string reason)
+    {
+        return new CatalogPlaybackSummaryDto(
+            Available: false,
+            PlaybackUrl: null,
+            ManifestUrl: null,
+            Status: status,
+            Reason: reason);
     }
 }
