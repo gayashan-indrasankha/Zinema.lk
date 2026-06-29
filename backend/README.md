@@ -274,7 +274,7 @@ Upload endpoint:
 POST /api/admin/media-assets/upload
 ```
 
-This endpoint accepts `multipart/form-data`, uploads an image to MinIO/S3-compatible object storage, and creates the related media asset metadata record after upload succeeds.
+This endpoint accepts `multipart/form-data`, uploads an image or source video to MinIO/S3-compatible object storage, and creates the related media asset metadata record after upload succeeds. Source video uploads are also connected to the existing video processing queue.
 
 Allowed upload content types:
 
@@ -282,13 +282,16 @@ Allowed upload content types:
 image/jpeg
 image/png
 image/webp
+video/mp4
 ```
 
 Default max upload size:
 
 ```text
-5242880 bytes
+524288000 bytes
 ```
+
+When the upload uses `assetType=video-source` and `contentType=video/mp4`, the backend creates a video processing job and moves it to `Queued`. Image uploads such as posters and backdrops are not queued.
 
 Local MinIO defaults are configured in `src/Zinema.Api/appsettings.Development.json` and can be overridden with environment variables:
 
@@ -302,7 +305,7 @@ ObjectStorage__EnsureBucketExists=true
 ObjectStorage__PublicBaseUrl=http://localhost:9000/zinema-media
 ```
 
-When `ObjectStorage__EnsureBucketExists` is `true`, the API creates the bucket if it is missing. This branch does not upload videos, run FFmpeg, transcode media, or generate HLS output.
+When `ObjectStorage__EnsureBucketExists` is `true`, the API creates the bucket if it is missing. The upload request does not run FFmpeg, transcode media, or generate HLS output inline.
 
 Admin media upload endpoint documentation lives in `docs/api/admin-media-upload-api.md`.
 
@@ -335,7 +338,7 @@ Public playback output endpoint:
 GET /api/videos/{videoId}/playback
 ```
 
-This API creates and tracks job records for media assets. New jobs start with status `Pending`. Enqueue is allowed only for `Pending` jobs and moves them to `Queued`. Start is allowed only for `Queued` jobs and moves them to `Processing`. Complete and fail are allowed only for `Processing` jobs. Cancel is allowed only for `Pending` or `Queued` jobs.
+This API creates and tracks job records for media assets. Manual jobs start with status `Pending`. Source video uploads can create and enqueue jobs automatically, so those jobs start as `Queued`. Enqueue is allowed only for `Pending` jobs and moves them to `Queued`. Start is allowed only for `Queued` jobs and moves them to `Processing`. Complete and fail are allowed only for `Processing` jobs. Cancel is allowed only for `Pending` or `Queued` jobs.
 
 FFmpeg/HLS processing is configured through:
 
@@ -390,7 +393,8 @@ This foundation currently includes:
 - Admin-only catalog management APIs for movies and genres.
 - Admin-only media asset metadata management APIs.
 - Object storage URL abstraction foundation.
-- Admin-only image upload to MinIO/S3-compatible object storage.
+- Admin-only image and source video upload to MinIO/S3-compatible object storage.
+- Automatic processing job enqueue for uploaded source videos.
 - Admin-only video processing job management APIs.
 - Placeholder video processing queue and worker runner boundaries.
 - EF Core-backed video processing queue state transitions.
@@ -400,4 +404,4 @@ This foundation currently includes:
 - HLS output manifest foundation.
 - Video playback output API foundation.
 
-Series, episode, collection management, video upload, production HLS publishing, CDN/signed URL integration, watchlist features, review features, payment features, and frontend implementation are intentionally out of scope for this branch.
+Series, episode, collection management, production HLS publishing, CDN/signed URL integration, watchlist features, review features, payment features, and frontend implementation are intentionally out of scope for this branch.

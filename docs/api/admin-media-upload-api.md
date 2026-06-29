@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Admin Media Upload API lets admin users upload image files to S3-compatible object storage and create the related `MediaAsset` metadata record after the upload succeeds.
+The Admin Media Upload API lets admin users upload media files to S3-compatible object storage and create the related `MediaAsset` metadata record after the upload succeeds.
 
 All endpoints require:
 
@@ -16,7 +16,7 @@ Required role:
 Admin
 ```
 
-This API supports image upload only in this branch. It does not upload videos, run FFmpeg, transcode media, or generate HLS output.
+This API supports image uploads and source video uploads. Source video uploads can create and enqueue a video processing job, but this endpoint does not run FFmpeg inline, transcode media during the request, or generate HLS output by itself.
 
 ## Endpoint
 
@@ -68,6 +68,25 @@ Uploaded assets are saved with status:
 Uploaded
 ```
 
+## Automatic Processing Queue
+
+When a completed upload has:
+
+```text
+assetType=video-source
+contentType=video/mp4
+```
+
+the API creates a video processing job for the new media asset and moves it into the existing `Queued` state.
+
+The upload response still returns the `MediaAsset` DTO. Admin clients can inspect the queued job through:
+
+```text
+GET /api/admin/processing-jobs?mediaAssetId={mediaAssetId}
+```
+
+Image uploads such as posters and backdrops are not queued for processing.
+
 ## Validation
 
 Allowed content types:
@@ -75,11 +94,12 @@ Allowed content types:
 - `image/jpeg`
 - `image/png`
 - `image/webp`
+- `video/mp4`
 
 Default max file size:
 
 ```text
-5242880 bytes
+524288000 bytes
 ```
 
 The API rejects:
@@ -116,6 +136,17 @@ curl -X POST "http://localhost:5145/api/admin/media-assets/upload" \
   -F "file=@poster.jpg;type=image/jpeg"
 ```
 
+Source video upload example:
+
+```bash
+curl -X POST "http://localhost:5145/api/admin/media-assets/upload" \
+  -H "Authorization: Bearer <admin-jwt-access-token>" \
+  -F "title=Demo Movie Source" \
+  -F "assetType=video-source" \
+  -F "movieId=00000000-0000-0000-0000-000000000001" \
+  -F "file=@source.mp4;type=video/mp4"
+```
+
 ## PowerShell Example
 
 ```powershell
@@ -128,6 +159,27 @@ $form = @{
     assetType = "poster"
     movieId = "00000000-0000-0000-0000-000000000001"
     file = Get-Item ".\poster.jpg"
+}
+
+Invoke-RestMethod `
+    -Method Post `
+    -Uri "http://localhost:5145/api/admin/media-assets/upload" `
+    -Headers $headers `
+    -Form $form
+```
+
+PowerShell source video upload:
+
+```powershell
+$headers = @{
+    Authorization = "Bearer <admin-jwt-access-token>"
+}
+
+$form = @{
+    title = "Demo Movie Source"
+    assetType = "video-source"
+    movieId = "00000000-0000-0000-0000-000000000001"
+    file = Get-Item ".\source.mp4"
 }
 
 Invoke-RestMethod `
@@ -162,6 +214,7 @@ Invoke-RestMethod `
 ## Responses
 
 - `201 Created` after the file is uploaded and metadata is created.
+- For source video uploads, `201 Created` also means a processing job was created and queued.
 - `400 Bad Request` for validation errors.
 - `404 Not Found` when a supplied catalog relation does not exist.
 - `409 Conflict` if the generated storage key is already used.
