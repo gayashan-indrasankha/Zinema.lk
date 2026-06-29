@@ -271,6 +271,18 @@ public class SolutionFoundationTests
     }
 
     [Fact]
+    public void MediaUploadValidationAcceptsAllowedVideoFile()
+    {
+        var error = MediaUploadValidation.ValidateUpload(
+            "source.mp4",
+            "video/mp4",
+            1200,
+            new MediaUploadOptions());
+
+        Assert.Null(error);
+    }
+
+    [Fact]
     public void MediaUploadValidationRejectsDangerousFileName()
     {
         var error = MediaUploadValidation.ValidateUpload(
@@ -287,8 +299,8 @@ public class SolutionFoundationTests
     public void MediaUploadValidationRejectsUnsupportedContentType()
     {
         var error = MediaUploadValidation.ValidateUpload(
-            "trailer.mp4",
-            "video/mp4",
+            "source.mkv",
+            "video/x-matroska",
             1200,
             new MediaUploadOptions());
 
@@ -310,6 +322,93 @@ public class SolutionFoundationTests
 
         Assert.NotNull(error);
         Assert.Equal("AdminMediaAsset.Validation", error.Code);
+    }
+
+    [Theory]
+    [InlineData("video-source", "video/mp4", true)]
+    [InlineData("VIDEO-SOURCE", "VIDEO/MP4", true)]
+    [InlineData("poster", "image/jpeg", false)]
+    [InlineData("video-source", "image/jpeg", false)]
+    [InlineData("trailer", "video/mp4", false)]
+    public void MediaAssetProcessingRulesQueuesOnlySourceVideoUploads(
+        string assetType,
+        string contentType,
+        bool shouldQueue)
+    {
+        Assert.Equal(
+            shouldQueue,
+            MediaAssetProcessingRules.ShouldQueueUploadedAsset(assetType, contentType));
+    }
+
+    [Fact]
+    public async Task AdminMediaAssetUploadServiceQueuesSourceVideoUpload()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var movie = new Movie
+        {
+            Title = "Upload Source Movie",
+            Slug = "upload-source-movie"
+        };
+
+        dbContext.Movies.Add(movie);
+        await dbContext.SaveChangesAsync();
+
+        var uploadService = CreateAdminMediaAssetUploadService(dbContext);
+        await using var content = new MemoryStream(new byte[] { 1, 2, 3 });
+
+        var result = await uploadService.UploadMediaAssetAsync(new UploadMediaAssetCommand(
+            "Demo Source",
+            MediaAssetProcessingRules.SourceVideoAssetType,
+            "source.mp4",
+            "video/mp4",
+            content.Length,
+            content,
+            movie.Id,
+            null,
+            null,
+            null));
+
+        Assert.True(result.IsSuccess);
+
+        var savedAsset = await dbContext.MediaAssets.SingleAsync();
+        var processingJob = await dbContext.VideoProcessingJobs.SingleAsync();
+
+        Assert.Equal(savedAsset.Id, processingJob.MediaAssetId);
+        Assert.Equal(savedAsset.StorageKey, processingJob.SourceStorageKey);
+        Assert.Equal(VideoProcessingJobStatus.Queued, processingJob.Status);
+    }
+
+    [Fact]
+    public async Task AdminMediaAssetUploadServiceDoesNotQueueImageUpload()
+    {
+        await using var dbContext = CreateInMemoryDbContext();
+        var movie = new Movie
+        {
+            Title = "Upload Poster Movie",
+            Slug = "upload-poster-movie"
+        };
+
+        dbContext.Movies.Add(movie);
+        await dbContext.SaveChangesAsync();
+
+        var uploadService = CreateAdminMediaAssetUploadService(dbContext);
+        await using var content = new MemoryStream(new byte[] { 1, 2, 3 });
+
+        var result = await uploadService.UploadMediaAssetAsync(new UploadMediaAssetCommand(
+            "Demo Poster",
+            "poster",
+            "poster.jpg",
+            "image/jpeg",
+            content.Length,
+            content,
+            movie.Id,
+            null,
+            null,
+            null));
+
+        Assert.True(result.IsSuccess);
+        Assert.Single(dbContext.MediaAssets);
+        Assert.Empty(dbContext.VideoProcessingJobs);
     }
 
     [Fact]
@@ -1154,6 +1253,7 @@ public class SolutionFoundationTests
         Assert.NotNull(serviceProvider.GetRequiredService<IHlsOutputManifestBuilder>());
         Assert.NotNull(serviceProvider.GetRequiredService<IFfmpegAvailabilityChecker>());
         Assert.NotNull(serviceProvider.GetRequiredService<IVideoPlaybackOutputService>());
+        Assert.NotNull(serviceProvider.GetRequiredService<IAdminMediaAssetUploadService>());
     }
 
     [Fact]
@@ -1173,6 +1273,19 @@ public class SolutionFoundationTests
             .Options;
 
         return new AppDbContext(options);
+    }
+
+    private static AdminMediaAssetUploadService CreateAdminMediaAssetUploadService(
+        AppDbContext dbContext)
+    {
+        var queue = new VideoProcessingQueueService(dbContext);
+        var processingJobService = new VideoProcessingJobService(dbContext, queue);
+
+        return new AdminMediaAssetUploadService(
+            dbContext,
+            new FakeObjectStorageService(),
+            processingJobService,
+            Options.Create(new MediaUploadOptions()));
     }
 
     private static VideoProcessingJob CreateProcessingJob(
@@ -1248,6 +1361,25 @@ public class SolutionFoundationTests
         {
             CallCount++;
             return Task.FromResult(availability);
+        }
+    }
+
+    private sealed class FakeObjectStorageService : IObjectStorageService
+    {
+        public string? BuildPublicUrl(string storageKey)
+        {
+            return $"http://storage.test/{storageKey}";
+        }
+
+        public Task<ObjectUploadResult> UploadAsync(
+            ObjectUploadRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(new ObjectUploadResult(
+                request.StorageKey,
+                BuildPublicUrl(request.StorageKey),
+                request.ContentLength,
+                request.ContentType));
         }
     }
 

@@ -16,7 +16,7 @@ Required role:
 Admin
 ```
 
-This API creates job records only. It does not run FFmpeg, transcode video, generate HLS output, or start operating-system processes.
+This API creates and tracks job records. It does not run FFmpeg, transcode video, generate HLS output, or start operating-system processes during admin API requests.
 
 ## Endpoints
 
@@ -49,6 +49,12 @@ New jobs are created with status:
 Pending
 ```
 
+Source video uploads create and enqueue a job automatically, so those jobs start in:
+
+```text
+Queued
+```
+
 ## POST /api/admin/media-assets/{id}/processing-jobs
 
 Creates a video processing job record for an existing media asset.
@@ -60,6 +66,8 @@ Responses:
 - `201 Created` when the job is created.
 - `400 Bad Request` when the media asset ID is invalid.
 - `404 Not Found` when the media asset does not exist.
+
+Admins usually do not need to call this endpoint after uploading a source video through `POST /api/admin/media-assets/upload` with `assetType=video-source` and `contentType=video/mp4`; the upload flow creates and enqueues the job automatically.
 
 Example response:
 

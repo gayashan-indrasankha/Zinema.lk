@@ -4,6 +4,7 @@ using Zinema.Application.Common.Errors;
 using Zinema.Application.Common.Results;
 using Zinema.Application.DTOs.AdminMediaAssets;
 using Zinema.Application.Features.AdminMediaAssets;
+using Zinema.Application.Features.VideoProcessingJobs;
 using Zinema.Domain.Entities;
 using Zinema.Domain.Enums;
 using Zinema.Infrastructure.Persistence;
@@ -13,6 +14,7 @@ namespace Zinema.Infrastructure.Services;
 public sealed class AdminMediaAssetUploadService(
     AppDbContext dbContext,
     IObjectStorageService objectStorageService,
+    IVideoProcessingJobService videoProcessingJobService,
     IOptions<MediaUploadOptions> uploadOptions) : IAdminMediaAssetUploadService
 {
     public async Task<Result<AdminMediaAssetDto>> UploadMediaAssetAsync(
@@ -107,6 +109,18 @@ public sealed class AdminMediaAssetUploadService(
 
         dbContext.MediaAssets.Add(mediaAsset);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        if (MediaAssetProcessingRules.ShouldQueueUploadedAsset(mediaAsset.AssetType, mediaAsset.ContentType))
+        {
+            var processingJob = await videoProcessingJobService.CreateAndEnqueueProcessingJobAsync(
+                new CreateVideoProcessingJobCommand(mediaAsset.Id),
+                cancellationToken);
+
+            if (processingJob.IsFailure)
+            {
+                return Result<AdminMediaAssetDto>.Failure(processingJob.Error);
+            }
+        }
 
         return Result<AdminMediaAssetDto>.Success(
             await GetMediaAssetDtoAsync(mediaAsset.Id, cancellationToken));

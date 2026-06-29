@@ -4,7 +4,7 @@
 
 The media storage foundation separates media metadata from physical object storage.
 
-This branch manages database metadata for media assets and supports admin image upload to S3-compatible object storage. It does not upload videos, process videos, generate HLS output, or run FFmpeg.
+This branch manages database metadata for media assets and supports admin image and source video upload to S3-compatible object storage. Source video uploads can enqueue processing jobs, but upload requests do not run FFmpeg or generate HLS output inline.
 
 ## Current Model
 
@@ -84,6 +84,7 @@ Admin multipart request
   -> Infrastructure upload service
   -> MinIO/S3-compatible object storage
   -> PostgreSQL media_assets table
+  -> video_processing_jobs table for source video uploads
 ```
 
 The API keeps `IFormFile` in the API layer. Application receives a stream-based command and does not reference ASP.NET Core upload types.
@@ -92,7 +93,7 @@ Upload validation checks:
 
 - Empty file.
 - Maximum file size.
-- Allowed image content types.
+- Allowed image and source video content types.
 - Dangerous file names.
 - Required catalog relation.
 - Existence of supplied catalog links.
@@ -103,9 +104,12 @@ Allowed upload content types:
 image/jpeg
 image/png
 image/webp
+video/mp4
 ```
 
 Uploaded media assets are stored with `MediaStatus.Uploaded`.
+
+When an uploaded asset is a source video (`assetType=video-source` and `contentType=video/mp4`), the upload service creates a processing job and enqueues it through the existing video processing queue service. Image assets are saved without processing jobs.
 
 ## Delete Behavior
 
@@ -118,7 +122,7 @@ Physical objects are not deleted. This avoids data loss while upload and process
 Later branches can add:
 
 - Presigned upload URLs.
-- Background job creation.
-- FFmpeg processing.
+- Additional video content types.
+- FFmpeg processing hardening.
 - HLS manifest and segment storage.
 - Storage cleanup policies.

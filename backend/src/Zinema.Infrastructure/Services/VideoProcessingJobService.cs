@@ -48,6 +48,21 @@ public sealed class VideoProcessingJobService(
             await GetProcessingJobDtoAsync(job.Id, cancellationToken));
     }
 
+    public async Task<Result<VideoProcessingJobDto>> CreateAndEnqueueProcessingJobAsync(
+        CreateVideoProcessingJobCommand command,
+        CancellationToken cancellationToken = default)
+    {
+        var createdJob = await CreateProcessingJobAsync(command, cancellationToken);
+        if (createdJob.IsFailure)
+        {
+            return createdJob;
+        }
+
+        return await EnqueueProcessingJobAsync(
+            new EnqueueVideoProcessingJobCommand(createdJob.Value.Id),
+            cancellationToken);
+    }
+
     public async Task<PagedResultDto<VideoProcessingJobDto>> GetProcessingJobsAsync(
         GetVideoProcessingJobsQuery query,
         CancellationToken cancellationToken = default)

@@ -34,6 +34,26 @@ Cancelled
 
 ## Admin Flow
 
+Source video uploads enqueue automatically after the uploaded `MediaAsset` record is created:
+
+```text
+POST /api/admin/media-assets/upload
+  -> IAdminMediaAssetUploadService
+  -> IVideoProcessingJobService.CreateAndEnqueueProcessingJobAsync
+  -> IVideoProcessingQueue
+  -> VideoProcessingQueueService
+  -> video_processing_jobs table
+```
+
+The upload path queues only source videos:
+
+```text
+assetType=video-source
+contentType=video/mp4
+```
+
+Admins can still enqueue manually:
+
 ```text
 POST /api/admin/processing-jobs/{id}/enqueue
   -> IVideoProcessingJobService

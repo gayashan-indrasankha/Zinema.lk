@@ -9,6 +9,16 @@ This branch creates API, service, queue, lifecycle, and guarded FFmpeg/HLS proce
 ## Current Flow
 
 ```text
+Admin source video upload
+  -> POST /api/admin/media-assets/upload
+  -> MediaAsset metadata is created
+  -> Video processing job is created
+  -> Existing queue transition moves job to Queued
+```
+
+Admins can still create a job manually for an existing media asset:
+
+```text
 Admin request
   -> POST /api/admin/media-assets/{id}/processing-jobs
   -> Application command
@@ -25,10 +35,16 @@ The job stores:
 - `queuedAt`
 - optional output/error/timing fields for later branches
 
-New jobs start as:
+Manual jobs start as:
 
 ```text
 Pending
+```
+
+Source video uploads create the job and enqueue it immediately:
+
+```text
+Queued
 ```
 
 ## Status Model
@@ -109,7 +125,6 @@ The existing `video_processing_jobs` table is used. The status column remains a 
 
 Later branches can add:
 
-- Queue-backed job dispatch.
 - Stronger worker job claiming.
 - Retry and attempt tracking.
 - Source file staging from object storage.
