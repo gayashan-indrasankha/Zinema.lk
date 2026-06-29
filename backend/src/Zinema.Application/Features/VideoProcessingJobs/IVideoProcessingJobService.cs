@@ -10,6 +10,10 @@ public interface IVideoProcessingJobService
         CreateVideoProcessingJobCommand command,
         CancellationToken cancellationToken = default);
 
+    Task<Result<VideoProcessingJobDto>> CreateAndEnqueueProcessingJobAsync(
+        CreateVideoProcessingJobCommand command,
+        CancellationToken cancellationToken = default);
+
     Task<PagedResultDto<VideoProcessingJobDto>> GetProcessingJobsAsync(
         GetVideoProcessingJobsQuery query,
         CancellationToken cancellationToken = default);
