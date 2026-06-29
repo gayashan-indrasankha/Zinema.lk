@@ -58,12 +58,12 @@ backend/
 
 `Zinema.UnitTests`
 
-- Future unit tests for domain and application behavior.
-- Includes one simple foundation test for the Result placeholder.
+- Unit tests for domain, application, infrastructure, and controller foundation behavior.
 
 `Zinema.IntegrationTests`
 
-- Placeholder project for future API and infrastructure integration tests.
+- API integration tests using `WebApplicationFactory<Program>` with test-safe configuration.
+- Basic coverage for health, public catalog, and protected admin endpoints.
 
 ## Build
 
@@ -72,6 +72,22 @@ From the repository root:
 ```bash
 dotnet build backend/Zinema.sln
 ```
+
+## Test
+
+Run all backend tests from the repository root:
+
+```powershell
+dotnet test backend/Zinema.sln
+```
+
+Run only API integration tests:
+
+```powershell
+dotnet test backend/tests/Zinema.IntegrationTests/Zinema.IntegrationTests.csproj
+```
+
+The integration test host uses EF Core in-memory storage and does not require PostgreSQL, Redis, MinIO, FFmpeg, video files, or generated media output. More details live in `docs/testing/integration-tests.md`.
 
 ## Database Setup
 
@@ -382,6 +398,7 @@ This foundation currently includes:
 - `/health` endpoint.
 - Worker project skeleton.
 - Unit and integration test project structure.
+- API integration test foundation with WebApplicationFactory.
 - Domain entities for the initial catalog model.
 - EF Core `AppDbContext`.
 - PostgreSQL registration through Infrastructure.
