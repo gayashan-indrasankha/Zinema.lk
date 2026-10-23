@@ -5,6 +5,12 @@ Audit date: 2026-10-23 (Asia/Colombo). Authoritative source: the existing extrac
 content. Checksums describe eligible working-tree bytes. Reference HEAD commit:
 `7e8d325c4fc206c3a2664652de99e560bae44795`.
 
+**Documentation-only recheck, 2026-10-23:** the original audit and clarification
+states below are historical snapshots at that reference, including statements
+that the three outputs were then untracked. They do not describe today's HEAD
+or undo later authorized work. The current-state reconciliation is recorded in
+section 16. The extracted workspace remains authoritative; no ZIP is required.
+
 ## 1. Executive Summary
 
 Zinema is an existing PHP/MySQL-compatible entertainment discovery and delivery
@@ -558,6 +564,60 @@ authority, historical ZIP status and HEAD/working-tree separation explicit. All
 176 path/checksum entries are retained; only manifest comment headers change.
 The manifest-file digest therefore changes while the recorded source checksums
 remain the same. The existing recovery records are not edited.
+
+### Current documentation-only recheck (2026-10-23)
+
+This follow-up continues the existing audit rather than repeating source
+investigation. All three ZL-9 documents already identify the extracted workspace
+as authoritative and the ZIP as historical/non-required. The necessary correction
+is to distinguish their original untracked-output statements from the present
+committed state. Existing recovery STATUS/DECISIONS and contribution records were
+read to reconcile subsequent authorized work; none is rolled back or repeated.
+
+| Current observation before this follow-up's edits | Executed result |
+| --- | --- |
+| Branch | `feat/zl-10-safe-public-export` |
+| HEAD | `a2e5aebf55320e891f5580e7b8825bb32e72cdd8` |
+| HEAD tree | `437f5a903c064aab5c2ec7462027af18caf2c848` |
+| Tracked files / index / working tree | 265 tracked; no staged paths, tracked edits or nonignored untracked files. All three ZL-9 documents are now tracked and committed. |
+| Original manifest | 176 unique eligible entries rehashed from current on-disk bytes; 173 match and three documented workflow inputs differ. No entries regenerated or replaced. |
+| Manifest-file integrity | Unchanged SHA-256: `aec9cc4cb1183c79ac2ab9d11ccaedac04db710ca204ccb26e3d11b5be58bb54`. |
+
+The three differences already explained by the existing recovery/publication
+records are below. These are current observations, not new baseline entries:
+
+| Original manifest input | Current working-tree SHA-256 |
+| --- | --- |
+| `.gitignore` | `688ec720004f587f903d4cb11f10dedf1d91f988a3838357a26acebd750ab0f7` |
+| `docs/recovery/DECISIONS.md` | `ef7f9670af059d82a16397f65b3caaae17bd0404443d03626c7b518f30191347` |
+| `docs/recovery/STATUS.md` | `810669fd484fabef617133dbe3ff9594f46c8d448f76b6c487fbe91daf1193c4` |
+
+They reflect prior authorized ignore and recovery-record changes, not unexplained
+application-source drift. The strict original-manifest recipe above is expected
+to report a mismatch for those changed inputs; do not restore them or update old
+hashes merely to make that historical comparison pass. The unchanged manifest
+and explicit deltas preserve evidence of both states. The later Git changeset
+contains only the ten previously reviewed audit/export/workflow paths; it does
+not alter existing application PHP/JS, SQL, dependencies or assets.
+
+Only BASELINE.md and an appended CONTRIBUTIONS.md clarification are changed by
+this follow-up. Those edits remain uncommitted working-tree content, outside
+HEAD and the original eligible-input manifest. HEAD, committed tree, branch and
+index are preserved. Recovery records, source and checksum manifest are not
+edited. No runtime tests, service/network/database operation, archive extraction,
+staging, commit or further ZL-10 work is performed. ZL-9 acceptance remains
+**COMPLETE within its documentation/static-audit scope**, with the three known
+historical workflow deltas explicitly reconciled rather than hidden.
+
+Executed follow-up verification: all 176 eligible files retained the hashes
+captured immediately before these documentation edits; the manifest is
+byte-identical and the complete prior contribution content is retained. Status
+shows only the two authorized Markdown edits, with unchanged HEAD/tree/branch
+and empty index. Ten local Markdown links and balanced code fences passed;
+`git diff --check` passed. Gitleaks 8.30.1 scanned only the three ZL-9 documents
+through fully redacted stdin: exit 0, no findings, no report files. Bounded
+document privacy checks passed. These are documentation/integrity checks, not
+application runtime tests or an inspection of excluded private content.
 
 ## 17. Unverified Claims and Open Questions
 
