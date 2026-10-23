@@ -681,8 +681,9 @@ origin/main 94f7708 has the same tree as implementation HEAD 804ec5a.
 Prepared two review units: refactor/zl-12-leaf-modules (four commits, PR #14), then
 feat/zl-13-14-environments-migrations with separate container, probe, migration,
 disposable-test, context-tooling, CI and documentation commits. The latter depends
-on the first; no PR merge or main write is performed. Use merge commits to preserve
-the incremental history and retarget the successor to main after its base merges.
+on the first; no PR merge or main write is performed. Final packaging has both
+PRs target main: merge #14 first, then #15 using merge commits to retain history.
+Shared ancestors disappear from #15's diff automatically; no retargeting is needed.
 
 Each exact staged snapshot is scanned with Gitleaks 8.30.1, with explicit stage
 membership, diff/whitespace checks and relevant parser/tests. Final refactor
@@ -699,3 +700,21 @@ contribution content remains intact. Earlier Docker/database execution evidence
 is preserved rather than reported as new publication execution. Final remote,
 CI and preservation evidence is recorded in the publication handoff. ZL-12,
 ZL-13 and ZL-14 remain PARTIAL regardless of publication.
+
+Final publication handoff: PR #14 (four refactor commits) and PR #15 (ten additional
+commits including this handoff) are open and ready for review:
+https://github.com/gayashan-indrasankha/Zinema.lk/pull/14 and
+https://github.com/gayashan-indrasankha/Zinema.lk/pull/15. Both target main; neither
+is merged. Complete outgoing history and every cumulative staged snapshot passed
+Gitleaks with full redaction. The integrated staged suite passed 145 tests and
+115 PHP/44 JS parsers; actionlint and all 98 inspected local links/fences passed.
+All 328 initial eligible inputs remain: only REFACTOR_EXECUTION, CONTRIBUTIONS,
+DECISIONS and STATUS documentation bytes changed during publication. Every initial
+source/configuration/test/SQL/baseline byte and the complete prior contribution
+prefix is preserved. Original 64 changed/new paths are committed. Before this
+handoff, index/worktree were clean and both published branch tips matched their
+local tips. Final post-handoff hash/status is reported separately to avoid a
+self-referential commit hash. Actual hosted PR/push runs for 4c183fb are in progress;
+final-tip checks must be verified after this handoff push, not inferred from local
+passes. No local services, database operations, live integrations or production
+resources were used by this publishing phase.

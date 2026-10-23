@@ -33,9 +33,31 @@ stash, history rewrite, application edit or private dump access was needed.
   new authorization. Private credentials, ignored data and historical private SQL
   are excluded. A secret scan is not an exhaustive security/privacy certification.
 
-Final PR references, hosted CI status, source-preservation and clean-status checks
-will be recorded in the publication handoff. ZL-12, ZL-13 and ZL-14 remain PARTIAL;
-publishing their implementation does not satisfy unresolved acceptance gates.
+Publication handoff: [PR #14](https://github.com/gayashan-indrasankha/Zinema.lk/pull/14)
+and [PR #15](https://github.com/gayashan-indrasankha/Zinema.lk/pull/15) are open,
+ready for review and both target main. Merge #14 first, then #15, using Create a
+merge commit to retain history. No retargeting is needed: shared ancestors drop
+from #15's diff when #14 merges. This final packaging replaces the earlier plan
+to target the second PR at the first branch.
+
+Four refactor commits plus ten environment/migration/documentation commits,
+including this handoff, preserve all 64 original changed/new paths. Before this
+handoff, branch tip 4c183fb and PR #14 tip 6f3baf7 were pushed successfully and the
+working tree/index were clean. All 328 initial eligible inputs remain; only four
+documentation files were intentionally updated during publication. Every original
+application, infrastructure, test, SQL, baseline and other input byte is preserved.
+The previous contribution record remains an exact prefix. All 98 reviewed local
+links/fences and actionlint pass; shellcheck/pyflakes are not installed.
+
+GitHub Actions is enabled. Actual PR and push runs for 4c183fb are IN PROGRESS
+(run 39993830225 / 39993776079), not a passed hosted check. The final handoff push
+will trigger checks for its new tip; their latest status and final clean/remote
+verification are reported at handoff. No containers or database services were
+started during this publication phase. Scan limitations and earlier runtime
+failures remain documented. ZL-12, ZL-13 and ZL-14 remain PARTIAL; publishing their
+implementation does not satisfy unresolved acceptance gates. Next recommended
+task: review/merge #14 then #15, then separately authorize the scoped ZL-14 schema
+and compatibility follow-up already described below. Do not start ZL-15.
 
 ## Latest implementation phase (preserved record)
 

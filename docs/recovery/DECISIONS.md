@@ -346,9 +346,10 @@ ZL-11 HEAD. Use refactor/zl-12-leaf-modules for the two compatible leaf moves an
 export closure. Use feat/zl-13-14-environments-migrations for coupled local
 infrastructure and the four-table subset. Preserve distinct Conventional Commits
 for substantial source, infrastructure, tests, CI and documentation groups.
-Target the second PR at the first branch so each review shows its own additions.
-Merge the refactor first, then retarget the dependent PR to main. Recommend merge
-commits to retain history; no PR is automatically merged.
+Final packaging: both PRs target main, avoiding an owner retargeting step. Merge
+PR #14 first and PR #15 second; the four shared refactor ancestors disappear from
+#15's diff after #14 merges. This supersedes the initial stacked-base proposal.
+Recommend merge commits to retain history; no PR is automatically merged.
 
 Verification: Explicit paths, staged-tree Gitleaks, staged/working diff inspection,
 whitespace and relevant parser/contract checks before each commit. Final staged
