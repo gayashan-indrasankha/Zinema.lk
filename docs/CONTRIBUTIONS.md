@@ -219,3 +219,35 @@ commit** to retain the incremental history; no PR is merged by this follow-up.
 The original baseline document/checksum bytes remain unchanged, and the original
 contribution record remains intact. Recommended next issue remains **Jira ZL-11**;
 it has not started.
+
+## ZL-9 - Documentation-only authority recheck (2026-10-23)
+
+The existing extracted workspace, working tree and uncommitted content remain
+authoritative; the ZIP is historical and is not required for acceptance. The
+original audit/provenance text above is retained. Its untracked/uncommitted-output
+statements describe the original ZL-9 handoff, not the present committed state.
+
+At this recheck's start, HEAD was
+`a2e5aebf55320e891f5580e7b8825bb32e72cdd8` on
+`feat/zl-10-safe-public-export`: 265 tracked files, clean working tree and empty
+index. All three ZL-9 documents were already committed by the later authorized
+publication work. Current eligible-input hashing checked all 176 original paths:
+173 match; `.gitignore` and recovery STATUS/DECISIONS differ as explained by the
+existing records. BASELINE section 16 records their current hashes. The original
+manifest and all 176 entries remain unchanged; no original source is restored.
+
+This continuation only adds historical/current-state clarification to BASELINE.md
+and appends this entry. It is AI-assisted documentation/verification, not a new
+source audit, feature implementation or claim of original authorship. These edits
+remain uncommitted and are not represented by HEAD. Existing contribution history,
+application/source/data, recovery records, Git references and index are preserved.
+No archive, live service, database, runtime test, staging/commit/push or further
+ZL-10 work is involved. Acceptance remains COMPLETE within the bounded ZL-9 scope;
+runtime/security/production readiness and excluded private contents remain unverified.
+
+Executed verification: 176 eligible inputs unchanged during this follow-up;
+manifest bytes and the complete prior contribution record preserved; ten local
+links, code fences and `git diff --check` passed. Gitleaks 8.30.1 scanned only
+the three ZL-9 documents through fully redacted stdin: exit 0, no findings or
+report files. Bounded privacy checks passed. Only the two authorized Markdown
+files are modified; HEAD/tree/branch and the empty index are unchanged.
