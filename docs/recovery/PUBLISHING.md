@@ -1,11 +1,32 @@
 # Initial source publication
 
+## Completed main integration
+
+The owner subsequently merged PRs #1-#7 into their configured bases. Only #1
+targeted main; the others targeted their preceding feature branches. Therefore
+main initially contained five commits. Those were the initial README, the three
+foundation commits and the first PR merge commit.
+
+The owner's subsequent explicit request authorized completing integration.
+[PR #8](https://github.com/gayashan-indrasankha/Zinema.lk/pull/8) merged the
+complete reviewed project from `feat/whatsapp-delivery` into main with merge
+commit `626e35110f2acb89391c56831daf2712ee9be08b`. All 26 original commits are
+preserved as ancestors. The integration tree exactly matched the reviewed source
+tree; source changes were not reapplied. Main contained 30 commits at this point,
+including its initial commit and GitHub merge commits.
+
+This documentation-only follow-up records the completed integration without
+altering application source. The old review order and handoff below are historical;
+new feature work should start from the integrated main. Existing feature branches
+are retained. Integration does not resolve the recorded runtime/security/schema
+risks or authorize deployment. See STATUS.md for executed verification and limits.
+
 Owner authorization: 2026-10-23. Target: `gayashan-indrasankha/Zinema.lk`, an
 existing public repository. Starting commit: `e2c239d` (`add readme`). The root
 was initialized by the owner after the earlier static discovery. The import is
 new history dated when performed; it does not reconstruct prior development.
 
-## Review order
+## Initial review order (historical)
 
 | Order | Branch | Scope | PR base |
 | --- | --- | --- | --- |
@@ -61,7 +82,7 @@ of all secrets, dependency safety or media rights. No application, database,
 WhatsApp connection, payment, email or production service is started in this
 phase. Known recovery defects remain listed in `PROJECT_DESCRIPTION.md`.
 
-## Published review stack
+## Published review stack (initial handoff)
 
 All seven PRs were created open and non-draft on 2026-10-23. None was merged.
 The final branch adds two documentation commits after its two source commits,

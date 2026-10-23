@@ -11,7 +11,9 @@ The initial authorization covered AGENTS.md/recovery-workflow setup. Subsequent
 owner requests authorized static project discovery and, on 2026-10-23, a reviewed
 GitHub import using feature branches, incremental commits and open PRs. The GitHub
 request authorizes publishing reviewed, sanitized source to the owner's existing
-repository; it does not authorize merging PRs, deployment or production access.
+repository. A subsequent explicit owner request on 2026-10-23 authorized merging
+the complete reviewed project into main and recording the integration. Deployment
+and production access remain unauthorized.
 Limit changes in this publishing phase to repository workflow, documentation and
 publication sanitization. Application repair and database reconstruction require
 a separate owner request. Do not infer completion of historical numbered phases.
