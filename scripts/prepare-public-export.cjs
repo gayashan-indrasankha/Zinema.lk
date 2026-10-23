@@ -5,11 +5,12 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const { TextDecoder } = require('node:util');
 
-const POLICY_VERSION = 'zl10-v1';
+const POLICY_VERSION = 'zl12-leaves-v1';
 const MANIFEST = 'public-export-manifest.json';
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
-const SOURCE_ROOTS = new Set(['Zinema.lk Website', 'whatsapp-bot-deploy', 'docs', 'scripts', '.github']);
+const SOURCE_ROOTS = new Set(['Zinema.lk Website', 'whatsapp-bot-deploy', 'docs', 'scripts', '.github', 'apps']);
 const APPROVED_PATHS = new Set([
+  "apps/web/src/Views/Ads.php",
   ".env.example",
   ".gitattributes",
   ".github/pull_request_template.md",
@@ -201,6 +202,7 @@ const APPROVED_PATHS = new Set([
   "whatsapp-bot-deploy/index.js",
   "whatsapp-bot-deploy/package-lock.json",
   "whatsapp-bot-deploy/package.json",
+  "whatsapp-bot-deploy/src/config/environment.js",
   "whatsapp-bot-deploy/test-scheduler.js"
 ]);
 const EXAMPLES = new Set([
@@ -229,6 +231,18 @@ const REASONS = new Set([
   'personal-path', 'private-url', 'sql-data-or-execution', 'unsafe-example',
   'invalid-json', 'source-changed'
 ]);
+
+// Exact reviewed compatibility dependencies; never approve an entire source tree.
+const MODULE_DEPENDENCIES = [
+  ['Zinema.lk Website/includes/ads.php', 'apps/web/src/Views/Ads.php'],
+  ['whatsapp-bot-deploy/config/environment.js', 'whatsapp-bot-deploy/src/config/environment.js']
+];
+function assertModuleDependencies(paths) {
+  const selected = new Set(paths);
+  for (const [shim, implementation] of MODULE_DEPENDENCIES) {
+    if (selected.has(shim) && !selected.has(implementation)) fail('MISSING_MODULE_DEPENDENCY');
+  }
+}
 
 class ExportError extends Error {
   constructor(code) { super(code); this.name = 'ExportError'; this.code = code; }
@@ -456,6 +470,7 @@ function buildPlan(options) {
     }
   }
   visit(source, '');
+  assertModuleDependencies(entries.map(entry => entry.path));
   entries.sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
   if (!entries.length) fail('NO_APPROVED_FILES');
   return { source, output, entries, exclusions, review };
@@ -476,6 +491,7 @@ function createParents(root, rel) {
   }
 }
 function performExport(plan) {
+  assertModuleDependencies(plan.entries.map(entry => entry.path));
   destination(plan.source, plan.output);
   // Validate all current bytes before creating any output.
   for (const entry of plan.entries) {
@@ -523,6 +539,7 @@ function validateExport(options) {
     expected.set(entry.path, entry);
     caseNames.add(entry.path.toLowerCase());
   }
+  assertModuleDependencies(expected.keys());
   const actual = new Set();
   function walk(dir, prefix) {
     noLinks(dir);
