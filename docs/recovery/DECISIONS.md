@@ -1,5 +1,22 @@
 # Recovery decisions
 
+## 2026-10-23 - Retain inherited whitespace and report partial verification
+
+Context: All staged source snapshots passed syntax and secret checks, but the
+imported legacy text produced 1,798 whitespace/EOF warnings from Git diff checks.
+
+Decision: Preserve those source lines during publication, record the non-clean
+check explicitly and mark the phase PARTIAL. Do not apply bulk whitespace edits
+to string/template bodies without behavior evidence merely to obtain a green check.
+
+Consequences: The requested branch/commit/PR workflow is prepared for review,
+while formatting validation remains unresolved. No functional readiness claim is
+made. A later authorized recovery phase should determine safe formatting changes.
+
+Verification: Warning counts and command outputs are preserved in private local
+execution records. PHP/JavaScript syntax and publication secret checks passed;
+the final counts and limits are recorded in STATUS.md.
+
 ## 2026-10-23 - Publish the reviewed legacy source as a dependent PR stack
 
 Context: The owner initialized a public GitHub repository and explicitly asked

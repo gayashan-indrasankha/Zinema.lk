@@ -23,8 +23,9 @@ branches still rely on its commit identities without first reconciling the stack
 
 Inspect working and staged changes; stage explicit paths. Run
 `node scripts/check-source.cjs` for tracked JavaScript and PHP syntax. Set
-`PHP_BINARY` to a local PHP executable if it is not on PATH. CI requires PHP;
-local absence is reported as an unperformed check. Run appropriate regression
+`PHP_BINARY` to a local PHP executable if it is not on PATH. `REQUIRE_PHP=true`
+makes an unavailable PHP executable fail the command; otherwise its absence is
+reported as an unperformed check. Run appropriate regression
 tests when changing behavior. Syntax success is not a functional test.
 
 Use Gitleaks 8.30.1 with `--redact=100` against a snapshot of the exact staged
