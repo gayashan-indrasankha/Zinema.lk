@@ -4,6 +4,47 @@ Updated: 2026-10-23.
 
 ## Current phase
 
+Owner-authorized integration into main: COMPLETE for Git integration. On
+2026-10-23 the owner explicitly requested completing the final merge. PR #8
+merged the complete reviewed project from `feat/whatsapp-delivery` into main
+using a merge commit, preserving all 26 original incremental commits.
+
+- Integration PR: https://github.com/gayashan-indrasankha/Zinema.lk/pull/8
+- Main integration commit: `626e35110f2acb89391c56831daf2712ee9be08b`.
+- GitHub reported the PR mergeable with a clean merge state; expected head SHA
+  was supplied to the merge operation. No branch protection was bypassed.
+- Local main was fast-forwarded to that merge. It contained 30 commits and its
+  tree `499372d1e7a41125962eb2d1d8412a2719e88ac7` exactly matched the reviewed
+  project tree. Every one of the original 26 commit SHAs passed an ancestry check.
+- Re-executed PHP 8.2.12 lint on 164 files and Node 24.13.1 syntax checks on 34
+  JavaScript/CJS files: zero failures. Gitleaks 8.30.1 scanned the 23 remaining
+  non-merge source commits before integration: no findings. The original three
+  foundation commits were already on main and had passed the publication checks.
+- This follow-up changes only AGENTS.md, STATUS.md, DECISIONS.md and PUBLISHING.md
+  to record authorization, integration and verification. Its explicit staged
+  paths, diff and secret scan are checked before commit; no application code is
+  changed. The record is integrated through a separate documentation-only PR.
+- Evidence: executed syntax/security/ancestry checks and externally verified
+  GitHub merge. No application behavior or production service was runtime tested.
+- Security limits and the 1,798 inherited whitespace findings below remain.
+  The earlier source-publication quality status remains PARTIAL; completing a Git
+  merge does not establish runtime, schema or security readiness.
+
+Final documentation commit/merge hashes, clean local status and remote agreement
+are reported at handoff and recorded in ignored local verification evidence.
+Existing feature branches and private preserved evidence are retained. No
+credentials were rotated, production service contacted or deployment performed.
+
+Exact next recommended Codex task:
+
+"Perform a read-only reconciliation of Zinema's existing recovery changes and SQL
+generations. Produce a canonical schema proposal, route/bootstrap map and
+prioritized defect list with source evidence. Include a behavior-safe proposal
+for the retained whitespace findings. Do not import data, start live integrations
+or change application behavior."
+
+## Prior publication handoff (historical)
+
 Owner-requested GitHub source-publication phase: PARTIAL. The requested seven
 branches and seven open, non-draft PRs are published for owner review. The final
 handoff brings the new Conventional Commit count to 26. Syntax and secret scans

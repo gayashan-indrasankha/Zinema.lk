@@ -1,5 +1,29 @@
 # Recovery decisions
 
+## 2026-10-23 - Integrate the complete reviewed source into main
+
+Context: The owner merged the seven original PRs. Only PR #1 targeted main;
+PRs #2-#7 targeted the preceding feature branches, so main retained only the
+repository foundations. The owner then explicitly requested completing the merge.
+
+Decision: Create PR #8 from `feat/whatsapp-delivery` into main and merge it with
+GitHub's merge method, supplying its expected head SHA. That branch contained all
+26 original project commits and exactly the reviewed source tree. Preserve branch
+history and feature branches; do not squash, rebase or rewrite existing commits.
+
+Rationale: One integration PR brings the complete reviewed project and original
+incremental history into main without reapplying application changes. Retained
+merge-only commits on other feature branches do not represent missing source.
+
+Consequences: Main now contains the full reviewed project. Record the completed
+merge through a documentation-only PR. Runtime recovery and unresolved legacy
+whitespace remain separate work; deployment and production access are not granted.
+
+Verification: PR #8 merged at `626e35110f2acb89391c56831daf2712ee9be08b`.
+All 26 original commit SHAs passed ancestry checks. Main's integration tree
+matched the reviewed tree. Re-executed 164 PHP and 34 JavaScript syntax checks
+passed; Gitleaks found no secrets in the remaining non-merge source history.
+
 ## 2026-10-23 - Retain inherited whitespace and report partial verification
 
 Context: All staged source snapshots passed syntax and secret checks, but the
