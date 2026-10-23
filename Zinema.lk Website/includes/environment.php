@@ -33,7 +33,7 @@ define('DB_HOST', recovery_required('DB_HOST'));
 define('DB_USER', recovery_required('DB_USER'));
 define('DB_PASS', recovery_required('DB_PASS'));
 define('DB_NAME', recovery_required('DB_NAME'));
-if (APP_ENV !== 'production' && (DB_HOST !== '127.0.0.1' || DB_NAME !== 'zinema_recovery_' . APP_ENV || strpos(DB_USER, 'zinema_recovery_') !== 0)) recovery_config_error('local database target');
+if (APP_ENV !== 'production' && ((DB_HOST !== '127.0.0.1' && !(DB_HOST === 'db' && recovery_env('RECOVERY_CONTAINER_MODE') === 'local')) || DB_NAME !== 'zinema_recovery_' . APP_ENV || strpos(DB_USER, 'zinema_recovery_') !== 0)) recovery_config_error('local database target');
 define('RECOVERY_SESSION_PATH', recovery_required('SESSION_SAVE_PATH'));
 if (!preg_match('~^(?:[A-Za-z]:[/\\\\]|/)~', RECOVERY_SESSION_PATH) || preg_match('~(?:^|[/\\\\])(?:whatsapp-session|\.wwebjs_auth)(?:[/\\\\]|$)~i', RECOVERY_SESSION_PATH)) recovery_config_error('SESSION_SAVE_PATH');
 foreach (['MAIL', 'OAUTH', 'WHATSAPP', 'MEDIA', 'EXTRACTOR', 'PAYMENT'] as $adapter) define($adapter . '_MODE', recovery_mode($adapter));
