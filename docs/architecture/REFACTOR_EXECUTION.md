@@ -2,7 +2,10 @@
 
 Date: 2026-10-23 (Asia/Colombo). **PARTIAL overall: two selected low-risk batches
 implemented and functionally verified; full HTTP/browser/database route acceptance
-remains blocked.** No ZL-13 work, Git staging/branch/commit/push or deployment.
+remains blocked.** The implementation audit below predates the owner's later
+publishing request. At that audit boundary no ZL-13 work, Git staging, branch,
+commit, push or deployment had been performed. Subsequent publication does not
+complete the deferred route acceptance gates.
 
 ## 1. Scope and authoritative source
 

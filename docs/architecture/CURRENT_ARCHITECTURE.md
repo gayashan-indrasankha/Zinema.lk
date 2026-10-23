@@ -7,6 +7,10 @@ on `feat/zl-10-safe-public-export`; the initial index was empty and two
 pre-existing documentation edits were preserved. No service, database, bot,
 browser session, scheduler, dependency install or external integration was run.
 
+ZL-12 implemented-state update: see the final section and REFACTOR_EXECUTION.md.
+Earlier sections preserve the ZL-11 audit snapshot; only the two explicitly
+listed low-risk boundaries are implemented and functionally tested.
+
 ## Observed structure and stack
 
 ```text
@@ -486,3 +490,77 @@ Completion is assessed as a documentation/planning task; runtime, rights and ven
 verification remain future gates. The [contribution extension](../CONTRIBUTIONS.md)
 records final checks and preservation. Recovery STATUS/DECISIONS remain historical
 inputs because this request permits only architecture and contribution edits.
+
+## ZL-12 implemented state — 2026-10-23
+
+This section records actual changes after the historical ZL-11 audit above.
+The [execution report](REFACTOR_EXECUTION.md) defines scope, evidence and rollback.
+ZL-12 is PARTIAL overall: two low-risk batches are functionally verified; complete
+HTTP/browser/database acceptance is blocked. TARGET_ARCHITECTURE remains proposed.
+
+| Existing responsibility / callers | Actual implementation now | Verified boundary |
+| --- | --- | --- |
+| W24 disabled ads; eight unchanged PHP consumers | includes/ads.php is an anchored require_once shim to repository-root apps/web/src/Views/Ads.php | Original implementation bytes and eight function/constants/output contracts preserved; three CWDs tested |
+| B02 pure bot configuration; index/API-client/forwarder imports | config/environment.js re-exports bot src/config/environment.js | Same CommonJS object/signatures; explicit synthetic validation and three consumer resolution contexts tested |
+| G04 safe exporter | Exact two canonical paths plus mandatory shim dependencies; policy zl12-leaves-v1 | Missing/rejected/removed modules fail closed during plan/export/validation; unknown app source still excluded |
+| Regression tests | tests/fixtures/ads-contract.php and tests/refactor/*.test.cjs | 53 new leaf/export/boundary cases plus 32 existing synthetic export tests: 85 passed, zero failed/skipped |
+
+No public handler, route, rewrite, asset, SQL, DB adapter, dependency/lock, entry
+guard or private state/media root was changed. The PHP canonical file is outside
+the unchanged website document root. Preserve the complete repository layout when
+packaging; website-folder-only copying is insufficient. The bot entry point and
+full M16 relocation remain in place/on HOLD.
+
+No service or production account was started. PHP and Node functions were executed
+only in isolated CLI characterization/fixture processes; this is narrower than a
+working site or bot. Full routes, browser playback, sessions and DB flows remain
+NOT TESTED/BLOCKED. [Security export](../SECURITY_EXPORT.md) records the precise
+policy review; the four prior holds remain. No Git mutation or ZL-13 work.
+
+
+## ZL-13 implemented environment boundary (2026-10-23)
+
+ZL-13 adds two local Compose services: non-root Apache/PHP and an isolated MySQL
+server, plus Node as a CLI test runtime inside the web image. No bot, extractor,
+worker, AI or other provider process is started. The website document root and
+ZL-12 module/shim paths remain intact. Runtime source is a reviewed image snapshot,
+without repository bind mounts. MySQL is internal/unpublished; web also has a
+scoped ingress bridge with loopback-only publishing. Web egress is possible.
+
+The only application edit permits DB_HOST=db with the explicit
+RECOVERY_CONTAINER_MODE=local flag, retaining default loopback and recovery-only
+database/user guards. Staging uses APP_ENV=test because no staging value exists
+in that PHP contract. Its credentials/server/volume/network are separate from CI
+and development. Empty DB availability through MySQLi/PDO is runtime verified;
+application schema and business journeys remain unverified. Readiness stays 503.
+
+This supersedes the earlier 'no ZL-13 work' statement only for the newly authorized
+environment phase; it does not change the ZL-12 historical results or complete
+ZL-14. See [matrix](../development/ENVIRONMENT_MATRIX.md) and
+[executed checks](../development/ENVIRONMENT_OPERATIONS.md). Full production
+services remain plans in the existing target/deployment architecture.
+
+
+## ZL-14 verified partial database implementation (2026-10-23)
+
+The owner limited schema work to site_settings, rate_limits, movie_parts and
+episode_parts, whose complete source definitions are independently available.
+Ordered SQL/checksums and a CLI runner now install that subset only on newly
+marked synthetic targets, with separate migration privileges, advisory locking,
+ledger states, exact metadata checks and tested recovery after implicit DDL.
+No complete canonical database is established. Twenty-four inventoried tables
+lack complete permitted definitions; current delivery generations also conflict.
+
+The disposable harness adds no permanent service: it reuses the ZL-13 images to
+create a distinct internal network/tmpfs-only test server, then removes only its
+owned temporary resources. Existing profile volumes remain unmigrated. CI includes
+this subset check. Full readiness remains 503. All legacy application PHP/Node,
+historical SQL and ZL-12 implementations retain their starting bytes.
+
+Runtime evidence confirms both original connection bootstraps work when explicitly
+included and legacy repeated PDO parameters remain supported. It also confirms
+settings/rate-limiter runtime CREATE calls fail under the DML-only account.
+Missing PDO route includes, complete account/catalogue/social/token DDL and actual
+mysql2 integration remain unresolved. No speculative repair or provider activation.
+See [inventory](../database/SCHEMA_INVENTORY.md),
+[access](../database/DATABASE_ACCESS.md) and [tests](../database/SCHEMA_TEST_RESULTS.md).
