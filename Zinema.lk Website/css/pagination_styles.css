@@ -1,0 +1,110 @@
+/* ===== PAGINATION STYLES (Desktop & Tablet Only) ===== */
+.pagination-wrapper {
+    display: none;
+    /* Hidden on mobile */
+    margin: 40px auto;
+    padding: 20px;
+    max-width: 1400px;
+}
+
+@media (min-width: 768px) {
+    .pagination-wrapper {
+        display: block;
+    }
+}
+
+/* Page Info */
+.pagination-info {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+/* Pagination Controls Container */
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Page Number Buttons */
+.page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    background: rgba(30, 30, 30, 0.8);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.page-btn:hover {
+    background: rgba(50, 50, 50, 0.9);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Active Page Button - Gradient to match site theme */
+.page-btn.active {
+    background: linear-gradient(135deg, rgba(42, 108, 255, 1), rgba(255, 51, 102, 0.85)) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+    cursor: default;
+    box-shadow: 0 4px 12px rgba(42, 108, 255, 0.3);
+    font-weight: 700;
+}
+
+.page-btn.active:hover {
+    transform: none;
+}
+
+/* Arrow Buttons (Previous/Next) */
+.page-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(30, 30, 30, 0.8);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.page-arrow:hover {
+    background: rgba(50, 50, 50, 0.9);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.page-arrow i {
+    font-size: 0.85rem;
+}
+
+/* Ellipsis */
+.page-ellipsis {
+    color: rgba(255, 255, 255, 0.5);
+    padding: 0 4px;
+    font-size: 1.1rem;
+}
+
+/* Mobile Override - Hide Pagination */
+@media (max-width: 767px) {
+    .pagination-wrapper {
+        display: none !important;
+    }
+}

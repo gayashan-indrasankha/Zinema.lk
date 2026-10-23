@@ -60,3 +60,61 @@ These checks cannot prove functional correctness, database compatibility, absenc
 of all secrets, dependency safety or media rights. No application, database,
 WhatsApp connection, payment, email or production service is started in this
 phase. Known recovery defects remain listed in `PROJECT_DESCRIPTION.md`.
+
+## Published review stack
+
+All seven PRs were created open and non-draft on 2026-10-23. None was merged.
+The final branch adds two documentation commits after its two source commits,
+for 26 new commits overall. Source-boundary hashes below exclude the final
+handoff commit to avoid a self-referential document hash.
+
+| Order | PR | Branch | New commits | Source boundary |
+| --- | --- | --- | --- | --- |
+| 1 | [#1](https://github.com/gayashan-indrasankha/Zinema.lk/pull/1) | `chore/repository-foundation` | 3 | `1dfd7c763e58` |
+| 2 | [#2](https://github.com/gayashan-indrasankha/Zinema.lk/pull/2) | `feat/website-foundation` | 4 | `8f91f9d464e8` |
+| 3 | [#3](https://github.com/gayashan-indrasankha/Zinema.lk/pull/3) | `feat/accounts-and-shots` | 3 | `2acdfe8e259a` |
+| 4 | [#4](https://github.com/gayashan-indrasankha/Zinema.lk/pull/4) | `feat/catalogue-and-playback` | 4 | `171346a0a624` |
+| 5 | [#5](https://github.com/gayashan-indrasankha/Zinema.lk/pull/5) | `feat/administration` | 3 | `40dc0b8faeef` |
+| 6 | [#6](https://github.com/gayashan-indrasankha/Zinema.lk/pull/6) | `feat/whatsapp-delivery` | 5 | `335bde895c1e` |
+| 7 | [#7](https://github.com/gayashan-indrasankha/Zinema.lk/pull/7) | `feat/video-extractor` | 4 | `375a989aa413` |
+
+Review in this order. Preserve the incremental history with merge commits and
+verify the next PR's base/diff after each merge. Main remains the owner's
+initial `e2c239d` until a reviewed merge is performed. No merge is authorized
+or performed by this task.
+
+## Incremental commit index
+
+| Commit | Conventional Commit subject |
+| --- | --- |
+| `6f7841382c13` | chore(repo): add publication exclusions and line ending rules |
+| `e2e991ec640b` | docs(recovery): establish source import and review workflow |
+| `1dfd7c763e58` | chore(quality): add non-executing syntax checks and PR template |
+| `899829a30540` | chore(config): import guarded website environment and shared helpers |
+| `0ba4dd533ed7` | chore(deps): import bundled PHPMailer with license notices |
+| `09930ec7bf55` | feat(web): import shared layout navigation and site assets |
+| `8f91f9d464e8` | docs(web): preserve historical starter and player reference notes |
+| `7ba6789208a0` | feat(auth): import account login and registration handlers |
+| `b0a54e49b2ae` | feat(auth): import email verification and password recovery flows |
+| `2acdfe8e259a` | feat(shots): import feed profile and social interactions |
+| `db4c2e080cdd` | feat(movies): import catalogue search and movie comments |
+| `84a2c18cb488` | feat(series): import series listings and episode selection |
+| `cc2a79d3a49e` | feat(collections): import grouped movie browsing |
+| `171346a0a624` | feat(playback): import trailer and player presentation paths |
+| `d661fb0b378b` | feat(admin): import console access layout and shared assets |
+| `3221f43957a1` | feat(admin): import catalogue and site management screens |
+| `40dc0b8faeef` | feat(analytics): import reporting and guarded maintenance sources |
+| `6cf01d93a149` | feat(delivery): import guarded website bridge and request tokens |
+| `1bcb511972c3` | chore(integrations): preserve quarantined download and payment handlers |
+| `739948ecc6f7` | chore(bot): import dependency lock and guarded configuration |
+| `7943754be043` | feat(bot): import delivery entry point queues and maintenance workers |
+| `335bde895c1e` | chore(database): preserve historical bot schemas for reconciliation |
+| `f50a57d3b58c` | chore(extractor): import environment and service manifest |
+| `375a989aa413` | feat(extractor): import guarded URL extraction service |
+
+The final `docs(recovery): record publication checks and PR handoff` commit
+contains the review links, verification record and contributor wording correction.
+The follow-up `docs(recovery): correct handoff whitespace and commit totals`
+removes an extra EOF blank line introduced by that handoff and records the final
+totals without amending history. Exact hashes are in the private execution ledger;
+the final published head is reported at handoff.
