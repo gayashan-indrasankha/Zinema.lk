@@ -64,8 +64,8 @@ phase. Known recovery defects remain listed in `PROJECT_DESCRIPTION.md`.
 ## Published review stack
 
 All seven PRs were created open and non-draft on 2026-10-23. None was merged.
-The final branch adds this documentation handoff after its two source commits,
-for 25 new commits overall. Source-boundary hashes below exclude the final
+The final branch adds two documentation commits after its two source commits,
+for 26 new commits overall. Source-boundary hashes below exclude the final
 handoff commit to avoid a self-referential document hash.
 
 | Order | PR | Branch | New commits | Source boundary |
@@ -76,7 +76,7 @@ handoff commit to avoid a self-referential document hash.
 | 4 | [#4](https://github.com/gayashan-indrasankha/Zinema.lk/pull/4) | `feat/catalogue-and-playback` | 4 | `171346a0a624` |
 | 5 | [#5](https://github.com/gayashan-indrasankha/Zinema.lk/pull/5) | `feat/administration` | 3 | `40dc0b8faeef` |
 | 6 | [#6](https://github.com/gayashan-indrasankha/Zinema.lk/pull/6) | `feat/whatsapp-delivery` | 5 | `335bde895c1e` |
-| 7 | [#7](https://github.com/gayashan-indrasankha/Zinema.lk/pull/7) | `feat/video-extractor` | 3 | `375a989aa413` |
+| 7 | [#7](https://github.com/gayashan-indrasankha/Zinema.lk/pull/7) | `feat/video-extractor` | 4 | `375a989aa413` |
 
 Review in this order. Preserve the incremental history with merge commits and
 verify the next PR's base/diff after each merge. Main remains the owner's
@@ -114,5 +114,7 @@ or performed by this task.
 
 The final `docs(recovery): record publication checks and PR handoff` commit
 contains the review links, verification record and contributor wording correction.
-Its exact hash is in the final handoff and local private execution ledger.
-
+The follow-up `docs(recovery): correct handoff whitespace and commit totals`
+removes an extra EOF blank line introduced by that handoff and records the final
+totals without amending history. Exact hashes are in the private execution ledger;
+the final published head is reported at handoff.
