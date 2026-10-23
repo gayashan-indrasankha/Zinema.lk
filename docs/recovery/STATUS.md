@@ -4,6 +4,119 @@ Updated: 2026-10-23.
 
 ## Current phase
 
+Owner-authorized ZL-9/ZL-10 review publication: local preparation COMPLETE;
+branches pushed and both review PRs opened. The owner explicitly requested
+incremental staging/commits and GitHub PRs after the ZL-10 preparation handoff.
+That later request authorizes publishing these reviewed changes to the existing
+repository; it does not authorize a real project export, PR merge or deployment.
+
+- [PR #10](https://github.com/gayashan-indrasankha/Zinema.lk/pull/10):
+  `docs/zl-9-baseline-provenance` -> `main`; two baseline/provenance commits,
+  ending at `76ec6df6ef75443f76db963d7ec47a7ab7b63248`.
+- [PR #11](https://github.com/gayashan-indrasankha/Zinema.lk/pull/11):
+  `feat/zl-10-safe-public-export` -> `main`; six ZL-10 commits, including this
+  final contribution/recovery handoff, follow the two ZL-9 ancestor commits.
+  Eight new Conventional Commits in total, without fabricated development dates.
+- Merge #10 first, then #11, using **Create a merge commit** for both to retain
+  the incremental history. Both target main; no retargeting is needed. Until #10
+  merges, #11 also displays the shared ZL-9 commits. No PR is merged here.
+- Exact paths/content were staged incrementally. The original ZL-9 contribution
+  prefix was staged through the index without changing the complete working
+  file; subsequent ZL-10 content is included in this final commit. Baseline and
+  checksum files remain byte-identical; original contribution history retained.
+- Before each commit: inspected status and working/staged diffs; checked staged
+  whitespace; Gitleaks 8.30.1 scanned exact staged text blobs with full redaction;
+  local syntax checks passed. The three existing logo/icon binaries were excluded
+  from text scanning and unchanged. No secret/data/session/media paths added.
+- Executed syntax checks with the available local PHP executable: 164 PHP and,
+  after staging both new tools, 36 JavaScript/CJS files; zero failures. All 32
+  synthetic export tests passed with zero failures/skips/cancellations. All 40
+  targeted ignore assertions and 265 required-path checks passed; four example
+  gates passed. Actual-source default dry run: 188 eligible files, four holds,
+  no output created. No functional application test or real export was executed.
+- Gitleaks outgoing-history scans passed for both branch ranges before initial
+  push. The final handoff commit is checked before its commit and the complete
+  outgoing history is checked again before the final push. This is a bounded
+  outgoing-change scan, not a full historical/privacy/vulnerability assessment.
+- Local and remote main started at
+  `7e8d325c4fc206c3a2664652de99e560bae44795` and are not advanced by this work.
+  Existing branches/history and private assets are retained. No reset, stash,
+  amend, history rewrite, force-push, production contact or account operation.
+- PR #11 was initially opened as a draft while this last record was prepared.
+  Final push, ready-for-review transition, remote head agreement, clean worktree
+  and last commit SHA are verified and reported at handoff after this commit.
+
+Evidence: executed local checks above and externally verified repository/main,
+branch publication and PR creation. Application logic, SQL, dependencies and
+assets remain unchanged. Existing risks and four export holds remain; no blanket
+security or runtime-readiness claim. ZL-11 has not started.
+
+Exact next recommended Codex task: **Jira ZL-11 - Map modules and classify keep,
+repair, isolate, archive**, after owner review of these PRs. Further real export,
+credential/account changes, destructive cleanup, deployment and production access
+need their own explicit authorization.
+
+## Prior ZL-10 preparation handoff (historical)
+
+Jira ZL-10 - Sanitize sensitive files and define safe public export: COMPLETE
+within local preparation and synthetic-validation scope. This record supersedes
+the next-task recommendations in the historical sections below. ZL-11 has not
+started. A real project export and publication still require explicit approval.
+
+- Authoritative input: current extracted working tree, including uncommitted
+  content. No ZIP was used. Starting main HEAD was
+  `7e8d325c4fc206c3a2664652de99e560bae44795`, tree
+  `7e01e85cc90bbd838144d5b9bddd01122036eea9`, with 259 tracked files and 32
+  reachable commits. The index was empty. Three untracked ZL-9 documents already
+  existed; they are prior work, not new ZL-10 implementation.
+- All 176 eligible ZL-9 source checksums matched before changes. The baseline
+  document and checksum manifest remain unchanged. The contribution log is
+  extended without changing its previous content. ZL-10 intentionally changes
+  three original manifest inputs: root `.gitignore`, this status record and
+  `DECISIONS.md`. These workflow/documentation deltas do not replace the baseline.
+- Extended root ignore rules; preserved nested rules and all component examples.
+  Appended clearly FUTURE / NOT IMPLEMENTED root example settings. Added
+  `scripts/prepare-public-export.cjs`, `scripts/test-public-export.cjs` and
+  `docs/SECURITY_EXPORT.md`; appended `docs/CONTRIBUTIONS.md` and recovery records.
+- The standard-library Node tool uses an explicit path allowlist and content
+  gates, defaults to a no-write dry run, rejects unsafe/existing destinations,
+  and separately validates hashes/manifests. No source normalization or repair.
+- Executed new-script syntax checks and 32 synthetic tests: all passed, zero
+  failed/skipped/cancelled. Fixtures exercised actual Windows junctions,
+  hardlinks, traversal, sensitive-file non-reading, tampering and SQL policy.
+  Ignore checks passed 21 sensitive-path and 19 required-file assertions. All
+  four example templates passed their content gate. Actual-source dry run
+  created no output directory; final counts are in `../SECURITY_EXPORT.md`.
+- **Statically inspected:** safe templates, ignore rules and export policy.
+  **Test-covered and executed:** export/validation behavior in synthetic local
+  fixtures. **Runtime verified:** only the new export utility, not application
+  features. **Externally verified:** none in ZL-10. No app, bot, payment,
+  extractor, database or production service was started/contacted.
+- Security inventory used metadata only for real environments, sessions, logs,
+  dumps and private recovery assets. Redacted local first-party checks held
+  three tracked files for local-path patterns and one SQL migration outside the
+  conservative schema-only grammar. See SECURITY_EXPORT for sanitized paths.
+  Originals, 70 bundled-library files and binary assets remain untouched.
+- New-artifact secret-scan results and preservation checks are recorded in
+  SECURITY_EXPORT and the contribution entry. No historical secret scan or full
+  vulnerability/privacy audit is claimed. Private-content preservation is
+  metadata/no-write evidence, not a claim that its contents were inspected.
+- Git history/HEAD/index preserved; no staging, commits, resets, stash, push,
+  real project export, account changes or publishing. Changes remain reviewable
+  and uncommitted. Existing application PHP/JS/SQL, dependencies and assets are
+  unchanged; application regression/runtime tests were not rerun for this scope.
+
+Remaining risks: bounded content heuristics can miss secrets; held candidates
+need review, dependency/media rights need review, and historical exposure remains
+unassessed. Obtain separate authorization for a real export, publication,
+credential/session changes or destructive cleanup. No runtime readiness claim.
+
+Exact next recommended Codex task: **Jira ZL-11 - Map modules and classify keep,
+repair, isolate, archive.** Continue from current working-tree evidence and
+existing recovery records; do not infer deletion authority from an export hold.
+
+## Prior integration handoff (historical)
+
 Owner-authorized integration into main: COMPLETE for Git integration. On
 2026-10-23 the owner explicitly requested completing the final merge. PR #8
 merged the complete reviewed project from `feat/whatsapp-delivery` into main

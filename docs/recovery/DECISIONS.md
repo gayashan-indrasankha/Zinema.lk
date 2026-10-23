@@ -1,5 +1,76 @@
 # Recovery decisions
 
+## 2026-10-23 - Publish ZL-9/ZL-10 as incremental review PRs to main
+
+Context: After the local ZL-10 handoff, the owner explicitly requested staging
+existing changes, logical Conventional Commits, new branches and open review PRs.
+This supplies publishing authorization for the reviewed changes to the existing
+repository. Earlier no-commit/no-push statements describe the previous phases;
+they do not require asking again for this specifically requested follow-up.
+
+Decision: Preserve original application/data/history and baseline bytes. Create
+two milestone branches and eight coherent commits: two ZL-9 audit/provenance
+commits, then six ZL-10 ignore/example/tool/test/security/handoff commits. Stage
+the original contribution prefix independently through the index, preserving the
+complete working file. Keep original development dates/authorship unverified.
+
+Rationale: These two Jira scopes are independently reviewable. Additional
+arbitrary branches or tiny edits would not improve review quality. Both PRs
+target main so owner merges integrate the commits into main. The ZL-10 branch
+shares the ZL-9 ancestors; merge the baseline PR first with a merge commit, then
+the export PR with a merge commit, retaining all eight Conventional Commits.
+
+Consequences: PR #10 is the baseline/provenance review; PR #11 is the export
+review. The second PR initially includes the shared baseline diff until #10
+merges. No PR is merged automatically and main is not advanced. No source repair,
+real project export, credential change, production access or deployment follows
+from permission to publish these reviewed changes. ZL-11 remains unstarted.
+
+Verification: Exact staged-tree secret scans and whitespace checks passed before
+commits; executed syntax checks covered 164 PHP and up to 36 JavaScript files.
+The 32 synthetic export tests, 40 targeted ignore checks, 265 required-path checks
+and four template gates passed. Default real-source dry run created no output.
+Outgoing history is scanned before each push; final upstream/readiness/clean
+status and final SHA are reported at handoff. Original baseline artifacts and
+contribution prefix are preserved; recovery/security guidance adds this follow-up.
+
+## 2026-10-23 - ZL-10: prepare an isolated export without changing legacy source
+
+Context: The owner authorized sensitive-category inventory, ignore/example
+protection, a conservative local exporter, synthetic tests and documentation.
+The current extracted working tree is authoritative, including uncommitted ZL-9
+records. Real secret/data stores must not be read and a real project export,
+publishing, source repairs and destructive cleanup are outside this task.
+
+Decision: Preserve application/data/history bytes. Extend root ignore rules,
+retain all existing examples and append explicitly unimplemented future root
+settings. Use a static reviewed path allowlist plus independent sensitive-path,
+UTF-8/JSON/example/SQL/content gates. Copy only approved current working-tree
+bytes after an explicit export action, to an absent external local directory;
+default to no-write dry run. Validate manifest membership, counts and hashes
+against source. Withhold uncertain files; never silently sanitize copied source.
+
+Rationale: Git tracking and extensions alone do not establish publication safety.
+Ignore rules cannot fix tracked/history exposure. Python was unavailable; Node
+24.13.1 and its standard library support the required implementation without new
+dependencies or executing application scripts. A narrow SQL grammar preserves
+reviewed schema references while withholding data/unknown statements.
+
+Consequences: The export is a review candidate, potentially incomplete at
+runtime because vendor/media and held files are excluded. Known tracked-file
+holds are documented with categories only. Manual review, rights/history
+assessment and explicit owner authorization remain required before a real
+export or publishing. No live credentials, sessions or production were used.
+Recovery-record updates are justified phase bookkeeping under AGENTS.md. The
+original ZL-9 manifest is retained rather than regenerated to hide these deltas.
+
+Verification: Both new tools passed Node syntax checks; 32 synthetic tests passed
+with no failures/skips/cancellations. Windows junction and hardlink tests executed.
+All 40 ignore assertions and four template checks passed. Actual-source default
+dry run created no output. Final preservation/security results are recorded in
+`../SECURITY_EXPORT.md` and the append-only contribution entry. These are executed
+local checks, not application runtime verification or an exhaustive security audit.
+
 ## 2026-10-23 - Integrate the complete reviewed source into main
 
 Context: The owner merged the seven original PRs. Only PR #1 targeted main;

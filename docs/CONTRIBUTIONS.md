@@ -156,3 +156,66 @@ private URLs, phone numbers or logs.
 Next recommended issue: **Jira ZL-10 - Sanitize sensitive files and define safe
 public export.** It is a recommendation only; no ZL-10 action is authorized or
 performed by this audit.
+
+## ZL-10 - Safe export preparation (2026-10-23)
+
+This entry extends the historical ZL-9 record above. ZL-10 was separately
+authorized and is now complete within local preparation/synthetic-test scope;
+the previous next-issue wording remains a historical ZL-9 statement. Current
+working-tree contributions below remain uncommitted and are not attested by HEAD.
+
+| Date | Jira Issue | Change | Files | Tests | Evidence | AI Assistance | Limitations |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-10-23 | ZL-10 | Metadata-only sensitive inventory; ignore/example protections; deny-by-default local export, validation and synthetic tests; security guidance and recovery handoff | `.gitignore`; `.env.example`; `scripts/prepare-public-export.cjs`; `scripts/test-public-export.cjs`; `docs/SECURITY_EXPORT.md`; this log; `docs/recovery/STATUS.md`; `docs/recovery/DECISIONS.md` | Both `node --check` commands passed; `node scripts/test-public-export.cjs`: 32 passed, zero failed/skipped/cancelled; `git check-ignore --no-index --stdin`: 21 positive and 19 negative assertions passed; four template gates passed; real-source default dry run created no output | SECURITY_EXPORT records policy, holds and executed verification; original 176-file baseline checked before changes and preserved with explicit workflow deltas | AI-assisted policy/design, implementation, documentation and local verification; owner review required; no unverifiable per-line/tool/model authorship claims | No real export/publication, app runtime testing, live services, account changes or historical exposure audit; bounded detectors and media/dependency rights still require independent review |
+
+Application source, migrations, dependency files and private data were preserved.
+The baseline document and original checksum manifest remain byte-identical; all
+previous content of this log remains unchanged. The only changed original
+manifest inputs are `.gitignore` and the two recovery records, intentionally
+modified by this issue. New-artifact secret-scan results and exact dry-run counts
+are recorded in SECURITY_EXPORT after execution. No claim is made that every
+secret was removed or that the repository was published by this work.
+
+Final verification: 188 files eligible in a no-write real-source dry run, four
+source candidates held. Gitleaks 8.30.1 scanned the eight new/modified artifacts
+through `stdin --redact=100 --no-banner --log-level error`: exit 0, no findings;
+no report files or raw matches retained. Of the original 176 eligible inputs,
+173 remain unchanged and the three workflow deltas above are explicit. HEAD,
+index and branch are preserved; private-file metadata checks passed without
+reading the protected contents. No historical/full-repository security scan is
+claimed by this entry.
+
+Next recommended issue: **Jira ZL-11 - Map modules and classify keep, repair,
+isolate, archive.** Not started. Separate approval is still required for a real
+project export, publishing, credential/account changes or destructive cleanup.
+
+## ZL-9/ZL-10 - Review publication follow-up (2026-10-23)
+
+The owner subsequently authorized staging, incremental commits, branch pushes
+and PR creation for the existing changes. Earlier statements that the work was
+uncommitted or publishing was unauthorized describe the earlier audit/preparation
+handoffs. This follow-up publishes those reviewed artifacts for review; it does
+not implement or re-date the legacy application, execute a real project export,
+merge a PR or authorize production access. Previous contribution content above
+is retained without revision.
+
+| Date | Jira Issue | Change | Files | Tests | Evidence | AI Assistance | Limitations |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-10-23 | ZL-9 / ZL-10 publication follow-up | Incremental review of existing work: two baseline/provenance commits and six export/protection/test/documentation commits; branch publication and two review PRs | The same ten baseline/export/workflow paths already identified above; additional handoff wording only in this log, SECURITY_EXPORT and recovery STATUS/DECISIONS | Per-commit staged-tree Gitleaks and whitespace checks; syntax: 164 PHP and up to 36 JS/CJS files, zero failures; 32 synthetic tests passed; 40 targeted ignore and 265 required-path checks passed; four template gates passed; dry run: 188 eligible files, four holds, no output | [PR #10](https://github.com/gayashan-indrasankha/Zinema.lk/pull/10), baseline tip `76ec6df6ef75443f76db963d7ec47a7ab7b63248`; [PR #11](https://github.com/gayashan-indrasankha/Zinema.lk/pull/11), final handoff SHA reported after commit/push | AI-assisted grouping, explicit staging, verification and PR preparation; owner reviews and approves merges | Scans cover exact staged text and outgoing changes, not every historical secret; existing binaries excluded from text scans and unchanged; no feature/runtime verification, real export, deployment or account changes |
+
+Commit sequence before this final handoff commit:
+
+- `70d4635`: `docs(baseline): record ZL-9 source audit and integrity manifest`
+- `76ec6df`: `docs(provenance): document ZL-9 project history and AI assistance`
+- `4748282`: `chore(security): extend ZL-10 private artifact exclusions`
+- `93a4d51`: `docs(config): describe disabled future AI and delivery settings`
+- `78a665d`: `feat(export): add deny-by-default public export preparation`
+- `e726552`: `test(export): cover exclusion rules and filesystem safety`
+- `7aa28ff`: `docs(security): document ZL-10 export policy and review gates`
+
+The eighth commit records the ZL-10 contribution entry and this recovery handoff.
+Both PRs target `main`. Review/merge #10 first and then #11 with **Create a merge
+commit** to retain the incremental history; no PR is merged by this follow-up.
+The original baseline document/checksum bytes remain unchanged, and the original
+contribution record remains intact. Recommended next issue remains **Jira ZL-11**;
+it has not started.
