@@ -1,0 +1,294 @@
+# ZL-13 reviewed build inputs only. Real environments, Git and private stores never enter context.
+**
+!.github/
+.github/*
+!apps/
+apps/*
+!database/
+database/*
+!infra/
+infra/*
+!scripts/
+scripts/*
+!tests/
+tests/*
+!whatsapp-bot-deploy/
+whatsapp-bot-deploy/*
+!Zinema.lk Website/
+Zinema.lk Website/*
+!.github/workflows/
+.github/workflows/*
+!apps/web/
+apps/web/*
+!database/migrations/
+database/migrations/*
+!infra/environments/
+infra/environments/*
+!infra/mysql/
+infra/mysql/*
+!infra/php/
+infra/php/*
+!infra/runtime/
+infra/runtime/*
+!tests/database/
+tests/database/*
+!tests/environment/
+tests/environment/*
+!tests/fixtures/
+tests/fixtures/*
+!tests/refactor/
+tests/refactor/*
+!whatsapp-bot-deploy/config/
+whatsapp-bot-deploy/config/*
+!whatsapp-bot-deploy/src/
+whatsapp-bot-deploy/src/*
+!Zinema.lk Website/admin/
+Zinema.lk Website/admin/*
+!Zinema.lk Website/api/
+Zinema.lk Website/api/*
+!Zinema.lk Website/assets/
+Zinema.lk Website/assets/*
+!Zinema.lk Website/css/
+Zinema.lk Website/css/*
+!Zinema.lk Website/fb-video-api/
+Zinema.lk Website/fb-video-api/*
+!Zinema.lk Website/includes/
+Zinema.lk Website/includes/*
+!Zinema.lk Website/js/
+Zinema.lk Website/js/*
+!Zinema.lk Website/pages/
+Zinema.lk Website/pages/*
+!apps/web/src/
+apps/web/src/*
+!infra/environments/ci/
+infra/environments/ci/*
+!infra/environments/development/
+infra/environments/development/*
+!infra/environments/staging/
+infra/environments/staging/*
+!whatsapp-bot-deploy/src/config/
+whatsapp-bot-deploy/src/config/*
+!Zinema.lk Website/admin/assets/
+Zinema.lk Website/admin/assets/*
+!Zinema.lk Website/admin/cron/
+Zinema.lk Website/admin/cron/*
+!Zinema.lk Website/api/includes/
+Zinema.lk Website/api/includes/*
+!Zinema.lk Website/api/whatsapp/
+Zinema.lk Website/api/whatsapp/*
+!Zinema.lk Website/assets/css/
+Zinema.lk Website/assets/css/*
+!Zinema.lk Website/assets/images/
+Zinema.lk Website/assets/images/*
+!Zinema.lk Website/assets/js/
+Zinema.lk Website/assets/js/*
+!Zinema.lk Website/includes/PHPMailer/
+Zinema.lk Website/includes/PHPMailer/*
+!apps/web/src/Views/
+apps/web/src/Views/*
+!Zinema.lk Website/includes/PHPMailer/src/
+Zinema.lk Website/includes/PHPMailer/src/*
+!.dockerignore
+!.gitattributes
+!.github/workflows/ci.yml
+!Zinema.lk Website/.htaccess
+!Zinema.lk Website/_bottom_nav.php
+!Zinema.lk Website/_pagination.php
+!Zinema.lk Website/_top_nav.php
+!Zinema.lk Website/admin/_layout.php
+!Zinema.lk Website/admin/analytics.php
+!Zinema.lk Website/admin/assets/admin.css
+!Zinema.lk Website/admin/assets/admin.js
+!Zinema.lk Website/admin/collections.php
+!Zinema.lk Website/admin/config.php
+!Zinema.lk Website/admin/cron/cleanup-tokens.php
+!Zinema.lk Website/admin/cron/reset-daily-stats.php
+!Zinema.lk Website/admin/episodes.php
+!Zinema.lk Website/admin/functions.php
+!Zinema.lk Website/admin/index.php
+!Zinema.lk Website/admin/login.php
+!Zinema.lk Website/admin/logout.php
+!Zinema.lk Website/admin/manage_shots.php
+!Zinema.lk Website/admin/movies.php
+!Zinema.lk Website/admin/run_migration.php
+!Zinema.lk Website/admin/series.php
+!Zinema.lk Website/admin/settings.php
+!Zinema.lk Website/admin/trailers.php
+!Zinema.lk Website/ajax_forgot_password.php
+!Zinema.lk Website/ajax_login.php
+!Zinema.lk Website/ajax_resend_verification.php
+!Zinema.lk Website/ajax_reset_password.php
+!Zinema.lk Website/ajax_signup.php
+!Zinema.lk Website/api/add_comment.php
+!Zinema.lk Website/api/auth-handler.php
+!Zinema.lk Website/api/check-session.php
+!Zinema.lk Website/api/collections.php
+!Zinema.lk Website/api/comments.php
+!Zinema.lk Website/api/favorite_shot.php
+!Zinema.lk Website/api/get_comments.php
+!Zinema.lk Website/api/includes/comment_helpers.php
+!Zinema.lk Website/api/like_shot.php
+!Zinema.lk Website/api/live_search.php
+!Zinema.lk Website/api/movies.php
+!Zinema.lk Website/api/payment-notify.php
+!Zinema.lk Website/api/record_view.php
+!Zinema.lk Website/api/search_content.php
+!Zinema.lk Website/api/series.php
+!Zinema.lk Website/api/server-check.php
+!Zinema.lk Website/api/subscribe.php
+!Zinema.lk Website/api/track.php
+!Zinema.lk Website/api/trailers.php
+!Zinema.lk Website/api/whatsapp/add-message-id.php
+!Zinema.lk Website/api/whatsapp/bot-error.php
+!Zinema.lk Website/api/whatsapp/bot-heartbeat.php
+!Zinema.lk Website/api/whatsapp/config.php
+!Zinema.lk Website/api/whatsapp/get-aging-messages.php
+!Zinema.lk Website/api/whatsapp/get-all-message-ids.php
+!Zinema.lk Website/api/whatsapp/get-message-id.php
+!Zinema.lk Website/api/whatsapp/get-message-ids.php
+!Zinema.lk Website/api/whatsapp/get-movie-parts.php
+!Zinema.lk Website/api/whatsapp/get-popular-content.php
+!Zinema.lk Website/api/whatsapp/get-popular-files.php
+!Zinema.lk Website/api/whatsapp/log-cache-warming.php
+!Zinema.lk Website/api/whatsapp/log-forward.php
+!Zinema.lk Website/api/whatsapp/log-refresh.php
+!Zinema.lk Website/api/whatsapp/mark-used.php
+!Zinema.lk Website/api/whatsapp/needs-refresh.php
+!Zinema.lk Website/api/whatsapp/refresh-stats.php
+!Zinema.lk Website/api/whatsapp/update-cache-message-id.php
+!Zinema.lk Website/api/whatsapp/update-daily-stats.php
+!Zinema.lk Website/api/whatsapp/update-forward-stats.php
+!Zinema.lk Website/api/whatsapp/validate-token.php
+!Zinema.lk Website/assets/css/style.css
+!Zinema.lk Website/assets/images/logo.png
+!Zinema.lk Website/assets/images/tab-logo.png
+!Zinema.lk Website/assets/js/download.js
+!Zinema.lk Website/assets/js/main.js
+!Zinema.lk Website/assets/js/trailers.js
+!Zinema.lk Website/collection-details.php
+!Zinema.lk Website/collections.php
+!Zinema.lk Website/css/comments.css
+!Zinema.lk Website/css/desktop-scroll-fix.css
+!Zinema.lk Website/css/desktop-tablet.css
+!Zinema.lk Website/css/nav_spacing.css
+!Zinema.lk Website/css/pages.css
+!Zinema.lk Website/css/pagination_styles.css
+!Zinema.lk Website/css/profile-style.css
+!Zinema.lk Website/css/responsive.css
+!Zinema.lk Website/css/search_popup_styles.css
+!Zinema.lk Website/css/shots-style.css
+!Zinema.lk Website/css/style.css
+!Zinema.lk Website/css/trailer-feed.css
+!Zinema.lk Website/css/video-player.css
+!Zinema.lk Website/download.php
+!Zinema.lk Website/favicon.ico
+!Zinema.lk Website/fb-video-api/environment.js
+!Zinema.lk Website/fb-video-api/index.js
+!Zinema.lk Website/fb-video-api/package.json
+!Zinema.lk Website/find_movies.php
+!Zinema.lk Website/google-callback.php
+!Zinema.lk Website/includes/PHPMailer/LICENSE
+!Zinema.lk Website/includes/PHPMailer/src/Exception.php
+!Zinema.lk Website/includes/PHPMailer/src/PHPMailer.php
+!Zinema.lk Website/includes/PHPMailer/src/SMTP.php
+!Zinema.lk Website/includes/TrailerManager.php
+!Zinema.lk Website/includes/ads.php
+!Zinema.lk Website/includes/csrf_helper.php
+!Zinema.lk Website/includes/database.php
+!Zinema.lk Website/includes/environment.php
+!Zinema.lk Website/includes/footer.php
+!Zinema.lk Website/includes/functions.php
+!Zinema.lk Website/includes/header.php
+!Zinema.lk Website/includes/mailer.php
+!Zinema.lk Website/includes/rate_limiter.php
+!Zinema.lk Website/includes/settings.php
+!Zinema.lk Website/includes/whatsapp_token.php
+!Zinema.lk Website/index.php
+!Zinema.lk Website/js/activeNav.js
+!Zinema.lk Website/js/collection.js
+!Zinema.lk Website/js/collections.js
+!Zinema.lk Website/js/comments.js
+!Zinema.lk Website/js/countdown-timer.js
+!Zinema.lk Website/js/download-handler.js
+!Zinema.lk Website/js/main.js
+!Zinema.lk Website/js/main.min.js
+!Zinema.lk Website/js/nav.js
+!Zinema.lk Website/js/navbar.js
+!Zinema.lk Website/js/series.js
+!Zinema.lk Website/js/subscribe.js
+!Zinema.lk Website/js/tracker.js
+!Zinema.lk Website/js/trailer-feed.js
+!Zinema.lk Website/js/tv-series.js
+!Zinema.lk Website/js/video-player.js
+!Zinema.lk Website/login.php
+!Zinema.lk Website/logout.php
+!Zinema.lk Website/manifest.json
+!Zinema.lk Website/movie-comments.php
+!Zinema.lk Website/movie-details.php
+!Zinema.lk Website/movies.php
+!Zinema.lk Website/package-lock.json
+!Zinema.lk Website/pages/download.php
+!Zinema.lk Website/pages/movie-detail.php
+!Zinema.lk Website/pages/trailers.php
+!Zinema.lk Website/profile.php
+!Zinema.lk Website/reset-password.php
+!Zinema.lk Website/series-details.php
+!Zinema.lk Website/signup.php
+!Zinema.lk Website/sitemap.php
+!Zinema.lk Website/trailers.php
+!Zinema.lk Website/tv-series.php
+!Zinema.lk Website/verify-email.php
+!Zinema.lk Website/whatsapp-watch.php
+!apps/web/src/Views/Ads.php
+!compose.yaml
+!database/Runner.php
+!database/migrations.json
+!database/migrations/0001_site_settings.sql
+!database/migrations/0002_rate_limits.sql
+!database/migrations/0003_movie_parts.sql
+!database/migrations/0004_episode_parts.sql
+!infra/environment-files.json
+!infra/environments/ci/.env.example
+!infra/environments/development/.env.example
+!infra/environments/staging/.env.example
+!infra/mysql/10-restrict-user.sh
+!infra/mysql/Dockerfile
+!infra/php/Dockerfile
+!infra/php/local.ini
+!infra/php/site.conf
+!infra/php/start.sh
+!infra/runtime/database-audit.php
+!infra/runtime/database.php
+!infra/runtime/health.php
+!scripts/database-test.cjs
+!scripts/environment.cjs
+!scripts/migrate.php
+!scripts/prepare-public-export.cjs
+!scripts/test-public-export.cjs
+!scripts/verify.cjs
+!tests/database/access.php
+!tests/database/digest.php
+!tests/database/integration.php
+!tests/database/legacy-parts.json
+!tests/database/migrations.test.cjs
+!tests/database/runner-driver.php
+!tests/environment/environment.test.cjs
+!tests/environment/health-driver.php
+!tests/fixtures/ads-contract.php
+!tests/refactor/export-dependencies.test.cjs
+!tests/refactor/leaf-contracts.test.cjs
+!tests/refactor/module-boundaries.test.cjs
+!whatsapp-bot-deploy/config/api-client.js
+!whatsapp-bot-deploy/config/auto-refresher.js
+!whatsapp-bot-deploy/config/cache-warmer.js
+!whatsapp-bot-deploy/config/database.js
+!whatsapp-bot-deploy/config/environment.js
+!whatsapp-bot-deploy/config/file-manager.js
+!whatsapp-bot-deploy/config/health-monitor.js
+!whatsapp-bot-deploy/config/multi-tier-forwarder.js
+!whatsapp-bot-deploy/config/upload-queue.js
+!whatsapp-bot-deploy/index.js
+!whatsapp-bot-deploy/package-lock.json
+!whatsapp-bot-deploy/package.json
+!whatsapp-bot-deploy/src/config/environment.js
+!whatsapp-bot-deploy/test-scheduler.js
