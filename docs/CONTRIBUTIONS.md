@@ -251,3 +251,210 @@ links, code fences and `git diff --check` passed. Gitleaks 8.30.1 scanned only
 the three ZL-9 documents through fully redacted stdin: exit 0, no findings or
 report files. Bounded privacy checks passed. Only the two authorized Markdown
 files are modified; HEAD/tree/branch and the empty index are unchanged.
+
+## ZL-11 - Module inventory and reversible restructuring blueprint (2026-10-23)
+
+Owner-authorized static architecture phase: COMPLETE within inventory/design
+scope. The existing extracted workspace and uncommitted changes were authoritative;
+no ZIP was used. Phase entry was HEAD
+`a2e5aebf55320e891f5580e7b8825bb32e72cdd8` on
+`feat/zl-10-safe-public-export`, with an empty index and existing modifications
+to BASELINE.md and this log. Previous contribution content is retained in full;
+the existing BASELINE edit is not changed by ZL-11.
+
+| Date | Jira issue | Work completed | Files | Verification actually executed | AI assistance | Limits / next task |
+| --- | --- | --- | --- | --- | --- | --- |
+| 2026-10-23 | ZL-11 | Static first-party dependency/route/DDL inventory, 51-group dispositions, current/target architecture, 28-item debt register, reversible migration and test gates; planned-only AI/privacy/delivery boundaries | New docs/architecture/MODULE_INVENTORY.md, CURRENT_ARCHITECTURE.md, TARGET_ARCHITECTURE.md, MIGRATION_PLAN.md, TECHNICAL_DEBT.md; append this log | Direct PHP 8.2.12 -n -l: 101 first-party files passed; Node 24.13.1 --check: 36 files passed. 150 literal PHP include candidates exist; three computed paths statically traced. 16 bot endpoint files exist; eight referenced targets absent. Inventory accounts for 265 tracked paths, including 70 grouped vendor files. 126 local doc links/code fences/privacy checks passed. Gitleaks 8.30.1 redacted stdin scan of five new docs: exit 0, no findings/reports. 188 pre-append protected hashes unchanged; HEAD/tree/branch/index unchanged | AI-assisted source inspection, classification/design, documentation and local verification; no invented per-line authorship/model attribution | Dynamic/deployment dependencies, installed schema, app runtime and rights unverified; no tests installed or app/project scripts run; ZL-12 recommended, not started |
+
+Module statistics are responsibility groups, not feature counts: KEEP 10,
+REPAIR 22, ISOLATE 12, ARCHIVE CANDIDATE 2, UNRESOLVED 5. Two excluded/metadata
+groups are additional and not counted as tracked-source modules. Archive
+candidates remain in place; no file is approved for deletion. Planned AI,
+voice, ranking/retrieval and delivery simulation are proposals only.
+
+Important observations include PDO/MySQLi and SQL-generation mismatches,
+token validity/acknowledgement gaps, relative-URL/state-path coupling, conditional
+public-feed extraction and unprotected generated warmer-state filename. These
+are documented for separate work, not repaired or demonstrated as live exploits.
+The direct git check-ignore probe for the warmer-state path returned exit 1
+(not ignored); its actual contents were not opened.
+
+Parser commands were invoked directly over approved first-party files; neither
+application modules nor existing project start/test/check scripts were executed.
+The historical ZL-10 result of 32 synthetic export tests remains historical and
+is not counted as a ZL-11 runtime test. No server, database, scheduler, provider,
+real media/account, installation, public export or network service was used.
+
+Final artifact/source/prefix checks are repeated after this append and reported
+at handoff. Only the five new documents and this append are ZL-11 changes;
+recovery records and original baseline/checksum files remain unchanged from
+phase entry. No staging, commits, branches, reset, history rewrite or publishing.
+Future task: **Jira ZL-12 - Reorganize source into modular folders without
+breaking URLs**, beginning with the prerequisite fixture/compatibility/rollback
+gates in MIGRATION_PLAN. Do not bulk-move source, change document roots or start
+that task automatically.
+
+Final ZL-11 verification passed after the append: 187 protected existing text
+files byte-identical, complete previous contribution prefix retained, and only
+the intended log append differs among 188 protected paths. All 128 local links
+across six artifacts resolve; code-fence/privacy/whitespace checks passed.
+Gitleaks scanned the six artifacts with full redaction: exit 0, no findings or
+report files. Original manifest, existing BASELINE edit, HEAD/tree/branch and
+empty index are preserved. Application runtime and Mermaid rendering remain
+NOT VERIFIED; no later Jira phase or Git publication was performed.
+
+
+## ZL-11 — Production architecture extension and supplied Jira mapping (2026-10-23)
+
+This entry appends to the completed static inventory record; it does not replace
+prior contribution history or restart ZL-9/ZL-10. The authoritative input remains
+the extracted workspace and current working-tree content, including owner edits.
+The original ZIP is historical only. HEAD remains
+a2e5aebf55320e891f5580e7b8825bb32e72cdd8 on feat/zl-10-safe-public-export;
+the index was empty. The pre-existing BASELINE edit and baseline manifest remain
+preserved. Existing architecture drafts were extended, not discarded.
+
+**ZL-11 acceptance: COMPLETE for architecture documentation and planning only.**
+Production readiness is NOT ESTABLISHED. No issue is assumed complete from local
+source, and no Jira task, issue status or configured dependency was changed.
+
+Created five focused production designs:
+
+- [STREAMING_ARCHITECTURE.md](architecture/STREAMING_ARCHITECTURE.md)
+- [AI_ARCHITECTURE.md](architecture/AI_ARCHITECTURE.md)
+- [WHATSAPP_DELIVERY_ARCHITECTURE.md](architecture/WHATSAPP_DELIVERY_ARCHITECTURE.md)
+- [PRODUCTION_DEPLOYMENT.md](architecture/PRODUCTION_DEPLOYMENT.md)
+- [PRODUCTION_GAP_ANALYSIS.md](architecture/PRODUCTION_GAP_ANALYSIS.md)
+
+Carefully updated the existing [inventory](architecture/MODULE_INVENTORY.md),
+[current architecture](architecture/CURRENT_ARCHITECTURE.md),
+[target architecture](architecture/TARGET_ARCHITECTURE.md),
+[migration plan](architecture/MIGRATION_PLAN.md) and
+[debt register](architecture/TECHNICAL_DEBT.md). Original source/path dossiers,
+51 group classifications, route/DDL evidence and M01–M21 relocation mappings remain.
+The extension documents eight journeys, 24 separate capability gaps, minimum/growth
+private-origin HLS delivery, AI/voice contracts, conditional messaging, deployment,
+security/rights, operational recovery and reversible release gates.
+
+A targeted static check found the existing trailer thumbnail exec command in
+admin/trailers.php:17–29 interpolates an unquoted upload-derived path. Added TD29,
+bringing the source debt register from 28 to 29 items. No exploit, upload, decoder
+or application handler was executed. The same targeted first-party search found
+no Hls/m3u8/dash.js integration or rights-expiry/territory/entitlement/rights-holder
+field matches. These bounded searches do not establish deployed-system absence.
+
+The owner supplied 12 epics and 43 story keys/titles as the planning reference,
+reporting verification through their connected Atlassian account. All module
+dossiers, 28 prior debt items, TD29 and 24 gap categories now map to relevant existing
+stories; no new keys or duplicate issues were invented. Dependencies inferred by
+architecture are labelled **PROPOSED DEPENDENCY**, not independently checked Jira
+links. Earlier read-only backlog attempts failed: the web reader could not access
+the page, and browser/desktop runtime initialization reported a missing path.
+No further Jira browser access was attempted after the supplied-list instruction.
+
+Executed checks in this extension, before this append:
+
+- Read-only Git status/HEAD/tree/branch/index inspection and metadata/hash capture;
+  reused the prior static inventory and parser results rather than rerunning the audit.
+- Trusted inline Node standard-library documentation checker: ten architecture
+  files plus contribution log; 187 local links resolved; balanced code fences,
+  no trailing whitespace/replacement characters, bounded sensitive-pattern checks;
+  195 nonvendor tracked paths accounted for plus 70 grouped vendor paths.
+- Count assertions passed: 51 groups, 24 gap categories, 43 supplied stories,
+  eight explicit journeys and 29 debt dossiers.
+- Gitleaks 8.30.1 redacted stdin scan of those eleven artifacts: exit 0, no findings
+  and no report files. Scanner stdout/stderr was captured, not exposed raw.
+- git diff --check: exit 0. Git HEAD/tree/branch and empty index unchanged.
+- SHA-256 comparison: all 258 tracked text paths represented by the preserved
+  eligible-source baseline plus extension-start snapshot matched before this append.
+  This comprises the 188 eligible source/document paths plus 70 bundled vendor text
+  paths; four example templates and three binaries are outside this text-hash scope.
+  The existing contribution log was still exactly 25,695 bytes before appending.
+  Final verification after the append checks the full previous prefix by its digest,
+  and requires only this intended log append to differ among the 258 text paths.
+
+The earlier continuing ZL-11 parser results remain: PHP 8.2.12 -n -l passed for
+101 first-party files and Node 24.13.1 --check passed for 36 JS/CJS files. They were
+not rerun in this production extension; they are syntax evidence, not functional
+tests. Historical ZL-10 synthetic export tests were not rerun or relabelled app tests.
+No project script, service, bot, scheduler, database, encoder, media player, cloud,
+AI/voice or payment integration was executed. No source/configuration/migration/
+dependency change, file move/delete, installation, Git mutation, commit, branch,
+push, deployment, paid operation or live infrastructure contact occurred.
+The only network attempt was the owner-supplied Jira planning page; no application
+external integration or stored credential was used.
+
+AI assistance supported static interpretation, planning, documentation and bounded
+validation. No unverifiable model/per-line authorship or historical feature dates
+are claimed. Provider facts/prices are **REQUIRES CURRENT VENDOR VERIFICATION**;
+rights/privacy/legal clearance, installed schema, actual runtime behavior, hosting
+and recovery/SLO objectives remain unverified future acceptance gates. Mermaid
+source is provided but not rendered. Secret scans are bounded artifact checks,
+not a complete historical/security/legal assessment.
+
+Recovery STATUS/DECISIONS remain preserved historical inputs because the current
+request limits writes to architecture and contribution documentation. Current
+handoff decisions/status are recorded here and in the architecture documents.
+
+Exact next recommended task: **ZL-12 — Refactor modules incrementally without route
+regressions**, beginning with current-state reconciliation and the smallest covered
+leaf. Missing environment/regression gates map to ZL-13/31; do not move affected
+code before those gates are available. ZL-12 has NOT started.
+
+Final production-extension verification: all 197 local links across eleven artifacts
+resolve; 51 groups, 24 gaps, 43 supplied stories, eight journeys and 29 debt items
+match their assertions. Of 258 protected tracked text paths, 257 remain byte-identical;
+only this authorized contribution append differs, and its complete previous
+25,695-byte prefix matches the captured SHA-256 digest. HEAD/tree/branch/index and
+the pre-existing BASELINE/manifest content remain unchanged. A final whitespace
+check first reported an extra blank line at this log EOF; it was removed before
+repeating the document/secret/whitespace and preservation checks. No source was
+changed to make a check pass.
+
+
+## ZL-9/ZL-11 — Incremental review publication (2026-10-23)
+
+The owner's explicit request authorizes publication of the already prepared
+documentation through incremental commits and review PRs. Earlier statements that
+no commits were made remain accurate historical audit records. This follow-up
+does not implement architecture or start ZL-12.
+
+- [PR #12](https://github.com/gayashan-indrasankha/Zinema.lk/pull/12):
+  docs/zl-9-authority-clarification -> main, two commits for baseline authority
+  clarification and its contribution entry; tip 087b9d3b3f009ce5d820f316b80d0d868802d7c0.
+- [PR #13](https://github.com/gayashan-indrasankha/Zinema.lk/pull/13):
+  docs/zl-11-production-architecture -> main, ten architecture-document commits
+  and this final contribution/recovery handoff. Eleven ZL-11 commits plus the two
+  shared clarification ancestors; thirteen unique new commits overall.
+- Merge #12 first, then #13, using **Create a merge commit** to preserve the
+  incremental history. Both target main; #13's shared diff reduces after #12.
+  No PR was merged. #13 was initially draft while the final handoff was prepared;
+  final ready-for-review state, remote SHA and clean status are checked after push.
+- Staged exact document paths step by step, beginning with baseline/provenance,
+  then module inventory/current/target, specialized streaming/AI/delivery/operations,
+  gaps/debt/migration and handoff. The ZL-9 contribution prefix was staged directly
+  through the index, retaining the full working file and all later ZL-11 content.
+- Before every commit: reviewed status and working/staged changes; document/link/
+  fence/count/privacy and staged whitespace checks passed; Gitleaks 8.30.1 scanned
+  exact index text with full redaction; five synthetic sensitive-ignore probes
+  passed. Three unchanged existing binaries were excluded from text scans.
+- Executed node scripts/check-source.cjs with PHP_BINARY pointing to the available
+  PHP 8.2.12 binary and REQUIRE_PHP=true: 164 PHP and 36 JS/CJS files, zero syntax
+  failures. Later documentation commits reused this result only while preservation
+  checks confirmed all source bytes unchanged. No functional/runtime test claimed.
+- Complete outgoing-history scans passed before the initial pushes; the final
+  handoff is checked before commit and the resulting range again before final push.
+- All 272 snapshot paths outside this log and the two recovery records remain
+  byte-identical; the entire prior contribution prefix is retained. Source, SQL,
+  dependencies, examples/binaries, baseline manifest/clarification and architecture
+  bytes remain unchanged. Prior recovery content is retained as historical records.
+
+AI assistance supported commit grouping, explicit staging, validation and PR
+preparation. Full commit results are recorded in Git; no development dates,
+feature completion or per-line authorship is invented. See
+[recovery status](recovery/STATUS.md) and [decisions](recovery/DECISIONS.md).
+Final commit hash and ready PR state are reported after publication.
+Scans cover exact staged/outgoing content, not every historical/private asset;
+rights, vendor facts, runtime and production readiness remain unverified.
+No real export, deployment, live integration, database/account operation,
+history rewrite, credential change or additional Jira task was performed.
