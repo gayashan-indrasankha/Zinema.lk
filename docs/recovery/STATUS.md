@@ -4,6 +4,68 @@ Updated: 2026-10-23.
 
 ## Current phase
 
+Owner-authorized ZL-9 clarification / ZL-11 review publication, 2026-10-23.
+Architecture planning is COMPLETE within static documentation scope; production
+readiness remains NOT VERIFIED. The owner's latest request explicitly authorizes
+staging, logical commits, new review branches and PR publication for the existing
+documentation. Earlier no-commit statements describe the audit phases.
+
+- Verified GitHub PRs #10 and #11 are merged. Refreshed origin/main is
+  45b9309f4a25a4d6a8646509a8c15f9221b28043, whose tree matches the audit base.
+  The local main branch is preserved; these changes are on new review branches.
+- [PR #12](https://github.com/gayashan-indrasankha/Zinema.lk/pull/12):
+  docs/zl-9-authority-clarification -> main, two documentation commits ending at
+  087b9d3b3f009ce5d820f316b80d0d868802d7c0.
+- [PR #13](https://github.com/gayashan-indrasankha/Zinema.lk/pull/13):
+  docs/zl-11-production-architecture -> main, ten focused architecture commits
+  plus this contribution/recovery handoff: eleven ZL-11 commits.
+- Thirteen unique new Conventional Commits across both branches. PR #13 shares
+  #12's two ancestor commits until #12 merges. Merge #12 first and then #13 using
+  **Create a merge commit** to retain all thirteen; both already target main.
+- PR #12 was opened ready. PR #13 was initially draft while this final handoff
+  was prepared; its final push/readiness and remote SHA agreement are verified
+  after this commit and reported to the owner. No PR is merged here.
+- Explicit paths were staged per document/responsibility. The ZL-9 contribution
+  prefix was staged directly through the index without altering the complete
+  working file. No blanket staging, amended history or fabricated authorship.
+- The ten architecture documents cover 265 original tracked paths in 51 groups:
+  KEEP 10, REPAIR 22, ISOLATE 12, ARCHIVE CANDIDATE 2, UNRESOLVED 5; 24 production
+  gap categories, eight journeys, 29 source debt items and the owner-supplied
+  twelve-epic/43-story Jira map. Inferred sequencing is PROPOSED DEPENDENCY.
+- Before every commit: status and working/staged changes reviewed; document/link/
+  count/privacy checks and staged whitespace passed; Gitleaks 8.30.1 scanned the
+  exact index text blobs with full redaction. Three existing binaries were
+  excluded from text scans and checked unchanged. Five synthetic sensitive-path
+  ignore probes passed. No secret/data/session/media files were staged.
+- PHP syntax: 164 files; JavaScript syntax: 36 files; zero failures. Executed once
+  for this documentation publication; unchanged source hashes justify reuse for
+  later documentation-only commits. No application functional/runtime test.
+- Complete outgoing-history scans passed before the initial branch pushes.
+  The final handoff is scanned before commit, and the entire resulting outgoing
+  history is checked again before the final push.
+- All 275 original tracked/current-architecture snapshot paths are accounted for.
+  The 272 paths outside the contribution and two recovery records remain
+  byte-identical, including source, baseline clarification, checksum manifest,
+  dependency files, examples/binaries and architecture documents. The complete
+  previous contribution prefix is retained; recovery history is preserved below.
+  Final clean status and remote agreement are reported after commit/push.
+
+Security limitations: bounded staged/outgoing scans are not a complete historical
+secret, privacy, vulnerability or rights audit. Existing export holds remain.
+Canonical schema, authentication/admin/upload safety, licensed rights and private
+HLS/CDN, reproducible staging/tests, operations/restore and release gates remain
+future work. WhatsApp delivery is CONDITIONAL; AI/voice are proposals. Vendor
+facts/prices require current verification. No live service, database, account,
+deployment, paid operation, real export, Git reset/rewrite or ZL-12 work occurred.
+
+Current architectural decisions are in docs/architecture and the appended
+contribution log. Exact next recommended Codex task:
+**ZL-12 — Refactor modules incrementally without route regressions**, starting with
+current-state reconciliation and one covered leaf. Missing environment/regression
+prerequisites map to ZL-13/31; do not move affected behavior before those gates.
+
+## Prior ZL-9/ZL-10 publication handoff (historical)
+
 Owner-authorized ZL-9/ZL-10 review publication: local preparation COMPLETE;
 branches pushed and both review PRs opened. The owner explicitly requested
 incremental staging/commits and GitHub PRs after the ZL-10 preparation handoff.

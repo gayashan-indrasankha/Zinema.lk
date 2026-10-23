@@ -1,5 +1,48 @@
 # Recovery decisions
 
+## 2026-10-23 — Publish ZL-9 clarification and ZL-11 architecture for review
+
+Context: The owner requested incremental staging/Conventional Commits, review
+branches and ready PRs for the existing unstaged documentation. This supersedes
+the earlier audit-only no-commit restriction for this publication follow-up.
+GitHub confirms PRs #10/#11 merged; current origin/main is 45b9309f4a25a4d6a8646509a8c15f9221b28043
+with the same tree as the audit base. Existing source and uncommitted document
+bytes must be preserved.
+
+Decision: Create docs/zl-9-authority-clarification from current origin/main, with
+two commits for BASELINE and the matching contribution prefix. Create
+docs/zl-11-production-architecture on those commits, with ten substantial document
+commits and one final contribution/recovery handoff. Stage exact paths; stage the
+ZL-9 prefix through the index while retaining the entire working file. Use docs
+commit types because this work does not implement application features.
+
+Rationale: The authority clarification and architecture blueprint are distinct
+reviews. One commit per substantial architecture document gives useful review
+boundaries without manufacturing tiny edits or claiming historical development.
+Both PRs target main; #12 merges before #13 so the latter's shared two ancestor
+commits disappear from its diff automatically. Merge commits preserve all thirteen
+unique new commits without retargeting or squash reconciliation.
+
+Consequences: PR #12 ends at 087b9d3b3f009ce5d820f316b80d0d868802d7c0.
+PR #13 initially contains the ten architecture commits through
+fc0aca1e8ddfcac1be31905dc52a9e9332ed73c2, then this final handoff. The final SHA is
+reported after commit/push. It was opened draft until final checks; readiness is
+verified before handoff. PRs remain unmerged. Local/remote main are not advanced.
+No ZL-12 code, new framework, schema repair, live integration or deployment follows
+from permission to publish documentation.
+
+Verification: Reviewed .gitignore and exact staged/working paths/content before
+each commit; redacted Gitleaks scans of exact index text, document checks, staged
+whitespace and five sensitive ignore probes passed. PHP 164 / JS 36 syntax checks
+passed once; source remains identical throughout later documentation-only commits.
+Scanned complete outgoing history before initial pushes and repeat for the final
+handoff. Snapshot checks retain all source/examples/binaries, checksum/BASELINE and
+ten architecture document bytes; contribution history is a preserved prefix.
+The recovery records retain their prior content as historical entries.
+Final remote SHA/readiness, source preservation and clean worktree are checked
+after the final push. These are publication/static checks, not runtime/security/
+legal/production certification. Existing export holds and architecture risks remain.
+
 ## 2026-10-23 - Publish ZL-9/ZL-10 as incremental review PRs to main
 
 Context: After the local ZL-10 handoff, the owner explicitly requested staging
