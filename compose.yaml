@@ -1,0 +1,100 @@
+name: ${ZINEMA_PROJECT:?Use the environment helper}
+services:
+  db:
+    user: "999:999"
+    image: ${ZINEMA_PROJECT}-mysql:zl13
+    build:
+      context: .
+      dockerfile: infra/mysql/Dockerfile
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:?Required}
+      MYSQL_USER: ${DB_USER:?Required}
+      MYSQL_PASSWORD: ${DB_PASS:?Required}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Required}
+      MYSQL_INITDB_SKIP_TZINFO: "1"
+      MYSQL_ROOT_HOST: localhost
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
+    volumes:
+      - mysql_data:/var/lib/mysql
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m,uid=999,gid=999
+      - /var/run/mysqld:rw,nosuid,size=16m,uid=999,gid=999,mode=0755
+    networks: [isolated]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: "no"
+    pids_limit: 256
+    mem_limit: 1g
+    cpus: 1.0
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent", "--host=127.0.0.1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 30s
+    logging: &bounded_logs
+      driver: json-file
+      options: {max-size: "5m", max-file: "2"}
+    labels: &owned_labels
+      io.zinema.phase: zl13
+      io.zinema.profile: ${ZINEMA_PROFILE}
+  web:
+    user: "33:33"
+    image: ${ZINEMA_PROJECT}-web:zl13
+    build:
+      context: .
+      dockerfile: infra/php/Dockerfile
+    environment:
+      ZINEMA_PROFILE: ${ZINEMA_PROFILE:?Required}
+      APP_ENV: ${APP_ENV:?Required}
+      BASE_URL: ${BASE_URL:?Required}
+      DB_HOST: db
+      DB_NAME: ${DB_NAME:?Required}
+      DB_USER: ${DB_USER:?Required}
+      DB_PASS: ${DB_PASS:?Required}
+      RECOVERY_CONTAINER_MODE: local
+      SESSION_SAVE_PATH: /runtime/sessions
+      RES_OPTIONS: "attempts:1 timeout:1"
+      MAIL_MODE: disabled
+      OAUTH_MODE: disabled
+      WHATSAPP_MODE: disabled
+      MEDIA_MODE: disabled
+      EXTRACTOR_MODE: disabled
+      PAYMENT_MODE: disabled
+      ALLOW_LIVE_INTEGRATIONS: "false"
+      ALLOW_LIVE_WHATSAPP: "false"
+      ALLOW_PRODUCTION_API: "false"
+      FUTURE_AI_ENABLED: "false"
+    ports: ["127.0.0.1:${WEB_PORT:?Required}:8080"]
+    depends_on:
+      db: {condition: service_healthy}
+    tmpfs:
+      - /runtime:rw,noexec,nosuid,size=16m,uid=33,gid=33,mode=0700
+      - /tmp:rw,noexec,nosuid,size=32m,uid=33,gid=33
+    networks: [isolated, ingress]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: "no"
+    pids_limit: 128
+    mem_limit: 512m
+    cpus: 1.0
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1:8080/__health/live') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+    logging: *bounded_logs
+    labels: *owned_labels
+networks:
+  isolated:
+    internal: true
+    labels: *owned_labels
+  ingress:
+    driver: bridge
+    labels: *owned_labels
+volumes:
+  mysql_data:
+    labels: *owned_labels
