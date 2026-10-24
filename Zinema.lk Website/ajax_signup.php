@@ -64,26 +64,10 @@ try {
         $existingUser = $result->fetch_assoc();
         $stmt->close();
         
-        // Check if the existing account is unverified AND expired
-        if (isset($existingUser['is_verified']) && $existingUser['is_verified'] == 0) {
-            // Check if verification has expired (24 hours passed)
-            if ($existingUser['verification_expires'] && strtotime($existingUser['verification_expires']) < time()) {
-                // Delete the expired unverified account - allow real owner to register
-                $deleteStmt = $conn->prepare("DELETE FROM users WHERE id = ?");
-                $deleteStmt->bind_param("i", $existingUser['id']);
-                $deleteStmt->execute();
-                $deleteStmt->close();
-                // Continue with registration
-            } else {
-                // Unverified but not expired yet - don't allow
-                echo json_encode(['success' => false, 'message' => 'Email already registered but not verified. Please check your inbox or wait 24 hours to try again.']);
-                exit;
-            }
-        } else {
-            // Verified account exists
-            echo json_encode(['success' => false, 'message' => 'Email already registered. Please login or use a different email.']);
-            exit;
-        }
+        // Existing identities are never deleted/replaced by an unauthenticated signup.
+        // Recovery and verification remain separate; do not expose account status.
+        echo json_encode(['success' => false, 'message' => 'Registration could not be completed. Use account recovery if needed.']);
+        exit;
     } else {
         $stmt->close();
     }

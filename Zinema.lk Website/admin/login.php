@@ -1,7 +1,7 @@
 <?php
 // Enable error reporting for debugging (remove in production)
 error_reporting(E_ALL);
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 
 require_once 'config.php';
 $error = '';
@@ -31,14 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Location: index.php');
                 exit;
             } else {
-                $error = 'Invalid username or password!';
+                $error = 'Unable to sign in. Please try again.';
             }
         } else {
-            $error = 'Invalid username or password!';
+            $error = 'Unable to sign in. Please try again.';
         }
         $stmt->close();
     } catch (Exception $e) {
-        $error = 'Login system error: ' . $e->getMessage();
+        $error = 'Unable to sign in. Please try again.';
     }
 }
 ?>
