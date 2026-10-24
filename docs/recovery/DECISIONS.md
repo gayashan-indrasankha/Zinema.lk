@@ -545,3 +545,28 @@ Consequences: PARTIAL, no production activation, user lockout, Git/history write
 provider operation or ZL-20. ZL-31/33/48/51/53/55 are PROPOSED DEPENDENCY follow-ups,
 not newly configured Jira links or completion claims. See final STATUS/test report
 for integrity, scan, cleanup and approval limits.
+
+## 2026-10-24 - Publish existing ZL-15 through ZL-19 work as dependent feature PRs
+
+Context: owner explicitly requested commits/branches/open PRs after local task
+completion. Existing PRs #14/#15 remain open. Current working tree with 209 dirty
+paths is authoritative; earlier task-specific no-commit wording records historical
+implementation boundaries and does not override this new publishing instruction.
+
+Decision: five feature branches, 33 logical Conventional Commits, explicit path
+staging and per-commit cumulative staged-tree scans/checks. Preserve source bytes
+and old commits. Stage shared validation at coherent per-feature versions without
+overwriting current working files; keep dependent documentation links together.
+All PRs target main, merged in #14/#15/#16/#17/#18/#19/#20 order using merge commits.
+This preserves incremental ancestry and avoids the original import's feature-base
+merges leaving main incomplete. Do not merge or squash automatically.
+
+Verification: exact integration snapshots pass 246/332/388/524/566 tests; changed
+parsers/JSON, documentation, whitespace, workflow lint and staged/outgoing history
+Gitleaks scans pass. Prior browser/container/SQL evidence is not relabeled as a
+new local publication test. Hosted outcomes are checked per exact remote tip.
+
+Consequences: published for owner review, not deployment or Jira completion.
+Production partial statuses and private-data protections remain. Final source/
+remote-ref/index preservation is independently checked at handoff; commit hashes
+are in Git history and the PRs rather than a self-referential final document hash.

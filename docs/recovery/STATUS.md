@@ -2,7 +2,32 @@
 
 Updated: 2026-10-24.
 
-## Current phase - Jira ZL-19 (PARTIAL)
+## Current phase - ZL-15 through ZL-19 publication (READY FOR OWNER REVIEW)
+
+Current owner request authorizes staging, incremental commits and PR publication.
+Five feature branches /33 logical new Conventional Commits preserve all 209 initial
+dirty paths; no code rewrite, history rewrite, production operation or PR merge.
+Main stays 94f7708; prior ZL-12/ZL-13/ZL-14 PRs #14/#15 are still prerequisites.
+Merge #14, #15, then #16-#20 in order using Create a merge commit. All target main;
+shared ancestor diffs reduce after earlier merges. See [review table](PUBLISHING.md).
+
+Local exact staged-tree full suites pass 246/332/388/524/566 respectively, zero
+failure/skip; per-commit staged-tree and outgoing-history redacted scans pass.
+Changed parsers, links/fences/whitespace and actionlint pass; shellcheck/pyflakes
+not run. #16/#17/#18 hosted runs passed while preparing this record; current
+final-head hosted status is on each PR, not predeclared here. Earlier browser/
+container/SQL checks remain historical implementation evidence, not newly executed
+local publication checks. All Jira production acceptance statuses remain PARTIAL.
+
+The 461 original working files were byte-preserved through the 32 implementation
+commits. This final handoff changes only four recovery/contribution documents;
+all application/SQL/baseline/test/vendor bytes and prior contribution prefix remain
+preserved. No actual private SQL/environment/session/media was read or staged.
+No new real-account requirement, provider, deployment, main merge or ZL-20.
+Next task: owner review/merge in the stated order; missing production schema/MFA/
+recovery/shared-store/rights gates remain blocked regardless of publication.
+
+## Previous implementation phase - Jira ZL-19 (PARTIAL)
 
 Owner authorized ZL-19 local authentication/admin hardening. Current extracted
 working tree remains authoritative, including all prior dirty work. ZL-19 is

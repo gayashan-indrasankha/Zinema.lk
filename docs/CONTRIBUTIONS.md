@@ -1070,3 +1070,36 @@ provider/production access, account/password conversion, staging/commit/push or
 ZL-20. Production release requires verified sanitized identity DDL, shared stores,
 TLS/mail, vetted MFA and owner recovery, full route/upload controls and approved
 compatibility rollout. No local implementation implies Jira completion.
+
+## 2026-10-24 - ZL-15 through ZL-19 incremental publication and review handoff
+
+Owner requested staging/commits, feature branches and PRs. AI-assisted inventory,
+coherent splitting of 209 initial dirty paths, explicit staging/diff review,
+verification and PR descriptions. Five branches and 33 new Conventional Commits:
+6 licensed rights, 5 catalogue, 7 authorized HLS, 7 integration quarantine and
+8 authentication/recovery handoff. The 14 existing prerequisite commit identities
+are retained. No invented history, empty commits, source rewrite or automatic merge.
+
+Exact staged snapshots pass 246/332/388/524/566 tests with zero failure/skip; final
+context 174 PHP/68 JS parsers on PHP 8.2.12/Node 24.13.1. Every cumulative staged
+text tree and outgoing history is redacted-scanned with existing checksum-verified
+Gitleaks 8.30.1; no findings. Explicit path/mode/content membership, staged and
+working diffs, parsers/JSON, documentation links/fences, whitespace and actionlint
+pass. Shellcheck/pyflakes not run. Three unchanged binaries/private ignored material
+are outside text scanning; absence of findings is not exhaustive certification.
+
+Current working bytes were preserved through implementation commits. The final
+publication commit changes only PUBLISHING, STATUS, DECISIONS and this append;
+prior contribution entries remain exact. Hosted CI is verified separately against
+PR tips; #16/#17/#18 passed while preparing this record, with remaining final-head
+outcomes linked on GitHub. No local browser/container/SQL suite was rerun merely
+to commit; earlier evidence is preserved with its actual scope and date.
+
+PRs: [#16](https://github.com/gayashan-indrasankha/Zinema.lk/pull/16), [#17](https://github.com/gayashan-indrasankha/Zinema.lk/pull/17),
+[#18](https://github.com/gayashan-indrasankha/Zinema.lk/pull/18), [#19](https://github.com/gayashan-indrasankha/Zinema.lk/pull/19),
+[#20](https://github.com/gayashan-indrasankha/Zinema.lk/pull/20). Merge #14, #15 and then these in order with Create a merge
+commit; all target main and shared ancestry reduces after prerequisite merges.
+Main unchanged; no production/private SQL/session/credential/media/provider action,
+deployment, real-account requirement, Jira completion or ZL-20. Production scope
+remains PARTIAL. Next task is owner review/merge, with missing account schema and
+owner recovery required before production identity rollout.
