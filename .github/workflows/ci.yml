@@ -39,6 +39,18 @@ jobs:
         run: node scripts/database-test.cjs ci content
       - name: Verify catalogue SQL and read-only entitlement boundary
         run: node scripts/database-test.cjs ci catalogue
+      - name: Install pinned playback verification tools
+        run: |
+          npm ci --ignore-scripts --no-audit --no-fund --prefix tests/playback/tools
+          node tests/playback/tools/node_modules/playwright-core/cli.js install --with-deps chromium
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends ffmpeg
+      - name: Generate original HLS and verify the browser journey
+        env:
+          ZL17_MEDIA: .recovery-private/zl17-fixture
+        run: |
+          node scripts/playback-fixture.cjs .recovery-private/zl17-fixture
+          node tests/playback/browser.cjs
       - name: Verify dependency boundaries and schema hold
         run: |
           node scripts/environment.cjs health ci
