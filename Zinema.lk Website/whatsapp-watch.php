@@ -1,4 +1,7 @@
 <?php
+// ZL-18: quarantine before configuration, body logging, SQL or external actions.
+require_once __DIR__ . '/includes/integrations.php';
+\Zinema\Integrations\FeatureGate::deny('external_media');
 // Live delivery only; local fake delivery will use a separate adapter.
 require_once __DIR__ . '/includes/environment.php';
 if (APP_ENV !== 'production' || WHATSAPP_MODE !== 'live') recovery_config_error('WhatsApp delivery disabled');

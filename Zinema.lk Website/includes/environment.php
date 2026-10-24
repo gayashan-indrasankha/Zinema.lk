@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/integrations.php';
 // Pure configuration: no DB, session, file creation, dotenv loading or network I/O.
 function recovery_config_error($key) {
     http_response_code(503);
@@ -21,6 +22,8 @@ function recovery_url($key, $local) {
     return rtrim($value, '/');
 }
 function recovery_mode($name) {
+    // No legacy flag or production environment can authorize these providers.
+    if (in_array($name, ['WHATSAPP', 'EXTRACTOR', 'PAYMENT', 'MEDIA'], true)) return 'disabled';
     $mode = recovery_env($name . '_MODE', 'disabled');
     if (!in_array($mode, ['disabled', 'local', 'live'], true)) recovery_config_error($name . '_MODE');
     if ($mode === 'live' && (APP_ENV !== 'production' || recovery_env('ALLOW_LIVE_INTEGRATIONS') !== 'true')) recovery_config_error($name . '_MODE');
@@ -53,6 +56,8 @@ foreach (['PAYMENT_APP_ID', 'PAYMENT_APP_SECRET'] as $key) define($key, PAYMENT_
 define('PAYMENT_API_URL', PAYMENT_MODE === 'disabled' ? '' : recovery_url('PAYMENT_API_URL', PAYMENT_MODE === 'local'));
 // Legacy payment handlers stay disabled independently of these future adapter settings.
 function recovery_require_adapter($name) {
+    $features = ['WHATSAPP'=>'whatsapp', 'EXTRACTOR'=>'extraction', 'PAYMENT'=>'payments', 'MEDIA'=>'external_media'];
+    if (isset($features[$name])) \Zinema\Integrations\FeatureGate::deny($features[$name]);
     if (constant($name . '_MODE') === 'disabled') recovery_config_error($name . ' integration disabled');
 }
 function recovery_browser_policy() {

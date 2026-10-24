@@ -1,4 +1,7 @@
 <?php
+// ZL-18: quarantine before configuration, body logging, SQL or external actions.
+require_once __DIR__ . '/../../includes/integrations.php';
+\Zinema\Integrations\FeatureGate::deny('whatsapp');
 /**
  * Get messages older than X days that need refreshing
  * Prevents "Download failed" by identifying content that will expire soon

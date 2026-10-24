@@ -1,4 +1,7 @@
 <?php
+// ZL-18: quarantine before configuration, body logging, SQL or external actions.
+require_once __DIR__ . '/../../includes/integrations.php';
+\Zinema\Integrations\FeatureGate::deny('whatsapp');
 /**
  * Bot Heartbeat API
  * Receives health status from bot instances

@@ -1,4 +1,7 @@
 <?php
+// ZL-18: quarantine before configuration, body logging, SQL or external actions.
+require_once __DIR__ . '/../../includes/integrations.php';
+\Zinema\Integrations\FeatureGate::deny('whatsapp');
 /**
  * Update Daily Stats API
  * Updates daily statistics for bots
