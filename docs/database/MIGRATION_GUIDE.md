@@ -100,3 +100,21 @@ fingerprints, impact review, a verified encrypted backup, a separate migration
 identity, restore rehearsal and explicit target authorization. None is supplied
 or authorized by this partial installer. See [backup/restore](BACKUP_RESTORE.md)
 and [actual results](SCHEMA_TEST_RESULTS.md).
+
+## 2026-10-24 - Explicit ZL-15 synthetic rights extension
+
+The original four-table manifest and applied SQL are unchanged. An explicit
+ContentMigrations profile combines those versions with 0005 content_rights_records
+and 0006 content_rights_events, both checksummed CREATE-only workflow definitions.
+They are not canonical movies/series/episodes/accounts tables and have no foreign
+keys to missing contracts. The same target/UUID/marker, lock, ledger and drift
+checks apply. The only Runner change is a regression-tested VARCHAR(20) parser
+correction; the original restrictive loader still accepts exactly four tables.
+
+Use node scripts/database-test.cjs ci content to verify the six-version profile
+on a NEW labelled tmpfs-only server, never existing profile volumes. The CLI
+scripts/migrate-content.php is available only for that strict disposable contract.
+Do not run the original four-version CLI against an extended ledger; unknown
+versions are intentionally refused. See [content operations](../content/CONTENT_OPERATIONS.md)
+and [executed results](../content/CONTENT_TEST_RESULTS.md). Full schema/readiness
+and production migration remain blocked.
