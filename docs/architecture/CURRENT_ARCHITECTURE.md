@@ -564,3 +564,81 @@ Missing PDO route includes, complete account/catalogue/social/token DDL and actu
 mysql2 integration remain unresolved. No speculative repair or provider activation.
 See [inventory](../database/SCHEMA_INVENTORY.md),
 [access](../database/DATABASE_ACCESS.md) and [tests](../database/SCHEMA_TEST_RESULTS.md).
+
+## 2026-10-24 - ZL-15 isolated rights-workflow foundation (PARTIAL)
+
+apps/web/src/Content/ adds pure PHP validation/policy, a protected workflow service,
+default-deny authorization/canonical lookup ports and synthetic-only PDO persistence.
+Two new workflow tables store bounded versioned aggregates and append-only audit;
+no replacement catalogue or FK to unverified movie/account tables. Explicit
+ContentMigrations loading reuses the restricted ZL-14 engine and preserves its
+original manifest/SQL. One regression-tested parser correction limits integer
+width normalization to INT/BIGINT rather than stripping VARCHAR(20)'s length.
+
+Rights checks distinguish metadata, artwork, full-film/episode, preview and subtitle
+permissions, territory, channel, time, human review and revocation. Actual streaming
+always remains denied. No HTTP/admin UI, real auth, upload, external media fetch,
+CDN, bot, extractor or AI integration is added. Every old website/bot/extractor
+source byte is retained. Live catalogue/RBAC and full route acceptance remain
+blocked. See [architecture](../content/CATALOGUE_ARCHITECTURE.md),
+[policy](../content/PUBLISHING_POLICY.md) and [tests](../content/CONTENT_TEST_RESULTS.md).
+Existing ZL-14 records above remain historical; ZL-15 has now been explicitly
+requested and locally implemented, without commits/publishing or ZL-16.
+
+## 2026-10-24 - ZL-16 catalogue boundary (PARTIAL)
+
+An additive api/catalogue/v1.php delegates to apps/web/src/Catalogue/: validated
+query/controller, SearchService, explicit serializer, rights/entitlement ports,
+signed contextual pagination and guarded synthetic PDO search. Pure ZL-15 policy
+is reused without changing its CLI-only workflow bootstrap. Public composition
+is deliberately unconfigured (503); no frontend or legacy endpoint is rewired.
+Verified rights projection is tested, not promoted to a complete canonical schema.
+No new SQL/index, actual media delivery, auth provider or AI consumer exists.
+See [API architecture](../api/SEARCH_ARCHITECTURE.md),
+[contracts](../api/CATALOGUE_API.md) and [evidence](../api/CATALOGUE_TEST_RESULTS.md).
+
+## 2026-10-24 - ZL-17 playback foundation (PARTIAL)
+
+New apps/web/src/Playback/ services expose additive link/details/session/media
+PHP entries and a pure catalogue-backed view. Shots movie/series actions resolve
+current policy through a validated Shot ID. Movie Watch now opens availability
+instead of injecting video_url as an MP4; series default handlers remain intact.
+The new player selects native HLS or local pinned hls.js, bounds retries/expiry,
+and optionally stores progress per opaque context in the current tab.
+
+Only an explicit CLI/CLI-server synthetic provider is available. It validates a
+marked private generated package and protects master/variants/segments/captions/
+ranges through fresh rights/entitlement checks. Public factories remain closed
+with 503; no full canonical/account schema, real rights/identity integration, CDN,
+production origin protection or server watch-history contract is established.
+See [implementation](../streaming/PLAYBACK_ARCHITECTURE.md),
+[authorization](../streaming/PLAYBACK_AUTHORIZATION.md) and
+[executed evidence](../streaming/PLAYBACK_TEST_RESULTS.md).
+
+## 2026-10-24 - ZL-18 centralized integration quarantine (PARTIAL)
+
+config/integration-policy.json is consumed by small PHP/Node gates. All four
+targeted live providers stay unavailable even with production/live flags. Node
+entry/module/action, PHP route/token-helper/admin/cron and legacy UI guards retain
+the old implementations while stopping provider/session/queue/payment side effects.
+A separate synthetic in-memory simulator models token/cache-forward/queue outcomes;
+it has no live transport or persistent work. ZL-17 modules/media policy are unchanged.
+
+Legacy previews/direct media and delivery/payment controls show unavailable. The
+verified original HLS path still passes browser tests; canonical/auth/provider
+production integration remains partial. Private historical variants, actual
+deployments and separate mail/OAuth approval remain unresolved, not certified
+contained by managed-image tests. See [inventory](../security/INTEGRATION_QUARANTINE.md),
+[tests](../security/QUARANTINE_TEST_RESULTS.md) and
+[provider boundary](../integrations/WHATSAPP_STATUS.md).
+
+## 2026-10-24 - ZL-19 isolated identity boundary
+
+PARTIAL: additive apps/web/src/Identity services plus synthetic HTTP/browser
+fixtures. No production binding or new public privileged route. Existing legacy
+edits are CSRF malformed-input/expiry checks, admin error suppression and prevention
+of anonymous expired-account deletion. Existing session/role/schema/provider
+contracts otherwise remain unresolved. Content/Catalogue/Playback and ZL-18 gates
+are preserved. See [current authentication analysis](../security/AUTHENTICATION_ARCHITECTURE.md)
+and [execution report](../security/ZL19_EXECUTION_REPORT.md). MFA enrollment/recovery,
+shared stores and comprehensive legacy route integration are release blockers.

@@ -52,6 +52,7 @@ jobs:
           node scripts/playback-fixture.cjs .recovery-private/zl17-fixture
           node tests/playback/browser.cjs
           node tests/quarantine/browser.cjs
+          node tests/identity/browser.cjs
       - name: Verify dependency boundaries and schema hold
         run: |
           node scripts/environment.cjs health ci

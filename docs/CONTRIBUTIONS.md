@@ -718,3 +718,388 @@ self-referential commit hash. Actual hosted PR/push runs for 4c183fb are in prog
 final-tip checks must be verified after this handoff push, not inferred from local
 passes. No local services, database operations, live integrations or production
 resources were used by this publishing phase.
+
+## 2026-10-24 - Jira ZL-15 licensed catalogue and rights foundation (PARTIAL)
+
+AI-assisted development: Codex inspected the current extracted source and existing
+recovery/database records, drafted the current-to-target map before module changes,
+and implemented and tested the bounded foundation under owner instructions. This
+records actual new work, not original authorship, commercial rights verification
+or a claim that Jira is complete.
+
+Implemented apps/web/src/Content/ contracts, validation, rights policy, protected
+workflow and PDO repository. Added default-deny authority/canonical lookup ports,
+asset-specific holder/grant/territory/channel/time checks, independent human review,
+publication/unpublication/revocation, immutable canonical associations, bounded
+metadata discovery and CAS/audit atomicity. Public playback remains denied. No
+legacy admin/UI/API/upload, bot, extractor, AI or real media integration was added.
+
+Added database/content-migrations.json, explicit ContentMigrations loader, versions
+0005 content_rights_records and 0006 content_rights_events, and CLI/test integration.
+These are interim workflow/audit tables, not replacement catalogue tables or a
+fully normalized production schema. No FK to unverified catalogue/users. Original
+four SQL files/manifest/checksums remain unchanged. Fixed one reproduced Runner
+parser defect: only integer display widths normalize, preserving VARCHAR(20).
+No legacy PHP/MySQLi/PDO business behavior was altered.
+
+Extended reviewed Docker context/ignore, verify/test harness, workflow and environment
+context test. Added tests/content/ and six docs/content/ guides; updated README,
+architecture, migration/CI/security guides and recovery records. No new dependency.
+A dedicated synthetic service role has records SELECT/INSERT/UPDATE, audit
+SELECT/INSERT and marker SELECT only. Current bootstrap is CLI-only; real RBAC,
+CSRF, catalogue writes/lookup and public streaming remain explicit integration holds.
+
+Executed: baseline host 145 passes; final host/image 246 tests, no failures/skips,
+128 PHP/46 JS parsers (host PHP 8.2.12/Node 24.13.1; image 8.2.35/24.22.1). Broader
+source parsers: 189 PHP/47 JS, zero failures. Disposable MySQL 8.4.13 rights checks
+pass 13 migration and 19 service assertions, a real concurrent editor race (one
+commit/one stale rejection) and excessive-privilege refusal. Original 42 database
+assertions, legacy access probes, encrypted synthetic backup/restore and outage
+recovery pass. Existing settings/rate-limiter DDL blockers remain, not concealed.
+Managed CI audit still has zero app tables; live/dependencies 200, ready 503.
+Final image has exactly 222 approved inputs with no extra/missing/hash mismatch.
+Context Gitleaks passes 219 text inputs; final expanded scan and teardown evidence
+are appended below. Actionlint 1.7.7 passes; shellcheck/pyflakes and hosted execution
+of these uncommitted changes are NOT RUN.
+
+Failures were investigated: scan flagged a synthetic setting key (fixture simplified,
+no allowlist); new migration exposed the VARCHAR width parser defect (failing
+regression then fix); driver native-prepare false/zero shape required precise
+acceptance in the new repository. Corrected runs pass and failed temp runs cleaned
+up. No raw credential, contract, user data or protected dump was exposed/read.
+
+Initial state: clean index/tree, 328 tracked files, branch
+feat/zl-13-14-environments-migrations at 958dd9eaf97c72ea6e76648eae6814d775f03641.
+No staging, commit, branch/ref write, reset, stash, history rewrite, fetch or push.
+Prior contribution content is preserved as a byte prefix. All legacy website/bot/
+extractor, historical SQL, original four migrations and baseline records are
+preserved. No production database, real WhatsApp/extractor/provider or ZL-16 work.
+
+ZL-15 remains PARTIAL: missing canonical catalogue/accounts/admin DDL and verified
+RBAC/CSRF, unverified legacy route/browser compatibility, real licensing/evidence
+operations, normalized production rights relationships, entitlement and protected
+media delivery block completion. See docs/content/CONTENT_TEST_RESULTS.md for
+actual commands/scenarios, acceptance gaps, dependency boundaries and Jira comment.
+
+Final ZL-15 verification: all 328 initial eligible files remain (312 byte-identical,
+16 reviewed tooling/documentation changes), plus 24 new files; no unexpected change
+or deletion. All website/bot/extractor source, historical SQL, four original SQL
+migrations/manifest, dependency assets and baseline records are byte-preserved.
+The entire previous contribution record is an exact prefix. HEAD remains
+958dd9eaf97c72ea6e76648eae6814d775f03641; branch/local heads/tags are unchanged and
+index is empty. Changes remain unstaged/uncommitted; no Git publishing occurred.
+
+Final host and image suites pass 246 tests and 128 PHP/46 JS parsers; full eligible
+source parsing passes 189 PHP/47 JS. Rights DB results: 13 migration +19 service
+assertions, one winner/one rejected stale editor in actual concurrent processes,
+and excessive-privilege refusal. Original 42 DB assertions and synthetic encrypted
+backup/outage checks pass. Image audit: exactly 222 paths, no extra/missing/hash
+mismatch. Expanded Gitleaks 8.30.1 scan: 233 reviewed text inputs, exit 0, no findings;
+private legacy stores/history/binaries excluded. 90 inspected local links, Markdown
+fences/new-text checks and git diff --check pass. Actionlint passes; shellcheck/
+pyflakes and hosted execution of these changes are NOT RUN. Unconfigured content
+migration CLI returns MIGRATION_TARGET_REFUSED before a connection attempt.
+
+Local HTTP probes for new Content/bootstrap.php, content-migrations.json and content
+test driver paths all return 404 under the website document root. Managed CI
+connectivity/audit still shows zero app tables and readiness 503. Normal shutdown
+completes: zero ZL-15 containers/networks, zero managed containers, all three original
+managed database volumes retained. No production, real users/media/agreements,
+WhatsApp, extractor, paid AI, private dump or ZL-16 work. ZL-15 remains PARTIAL.
+
+## 2026-10-24 - ZL-16 catalogue API/search and entitlement boundary (PARTIAL)
+
+AI-assisted implementation by the coding assistant, reviewed through executed
+local checks; no claim of independent human review or legal licence approval.
+The owner explicitly requested ZL-16 against the current extracted workspace,
+including all uncommitted ZL-15 work. Read/audited existing route consumers,
+verified partial database/rights contracts, and recorded the initial API design.
+
+Added apps/web/src/Catalogue/ (7 PHP files), the additive website
+api/catalogue/v1.php entry, tests/catalogue/ (7 test/fixture files) and seven
+API guides. Updated reviewed context/.dockerignore, verify/database harness, CI,
+README, current architecture, security/CI guides and recovery records. No existing
+website/bot/extractor or Content module, SQL definition or migration manifest was
+changed. No guessed canonical/account/subscription schema or new index.
+
+Implemented native prepared title search, metadata filters, four allowlisted
+sorts, contextual signed keyset pagination, canonical/parent checks, separate
+current asset rights and requester entitlements, bounded validation/DTO/error/
+resource controls. Public factory stays disconnected with 503; no real auth,
+territory/licence/grant provider or media delivery was fabricated. Playback and
+preview remain unavailable even if synthetic eligibility passes.
+
+Executed: host/image parser and full suite 332 passes, no failures/skips; 141 PHP /
+48 JS context parsers; full eligible syntax 202 PHP / 49 JS. Catalogue MySQL:
+13 migration prerequisites +24 assertions on 524 fictional records, SELECT-only
+reader DML refusal, excess privilege refusal, outage/recovery. Existing rights
+suite 13+19, actual concurrent-edit conflict and privilege gate pass. Original
+42 database assertions, legacy PDO/MySQLi probes, encrypted synthetic backup/
+restore and outage/recovery pass. HTTP tests/probes verify additive safe failure,
+forged input rejection, metadata filtering in a test-only composition and hidden
+ID denial. Legacy full-browser flows remain unverified.
+
+Measured 20 service reads/page size 20: p50 70.69 ms, p95 82.60 ms, max 102.12 ms,
+max JSON 8,886 bytes. Search ALL/filesort; detail existing unique reference index.
+Not a scalability/SLA claim. Initial fixture failures were corrected without
+weakening CLI bootstrap or clock-rollback guards; final regressions pass.
+
+Image audit matches all 237 reviewed host paths/hashes. Context Gitleaks passed
+234 text files; final expanded scan and preservation/teardown below. Actionlint
+passes, shellcheck/pyflakes NOT RUN; hosted CI for these uncommitted changes NOT
+VERIFIED. No production/private dump, real media/users, WhatsApp, extractor, AI,
+payment, cloud, Git write or later Jira task. Canonical schema, real rights,
+trusted identity/territory/age/grants, distributed limits, protected delivery and
+legacy integration keep ZL-16 PARTIAL. See docs/api/CATALOGUE_TEST_RESULTS.md.
+
+## Final ZL-16 handoff verification
+
+All 352 starting eligible files remain: 340 byte-identical and 12 reviewed shared
+CI/tooling/documentation updates; 22 new files (374 total). No unexpected source
+change or deletion. All pre-existing website/bot/extractor/Content module bytes,
+SQL files/manifests, dependency/baseline evidence and previous contribution prefix
+are preserved. Git HEAD/tree/branch/local heads/tags unchanged, empty index;
+62 current dirty paths include the 40 pre-existing ZL-15 paths. No Git writes.
+
+Final Gitleaks 8.30.1 expanded scan: 279 reviewed text inputs, exit 0, no findings;
+private stores/history/binaries excluded. Context scan separately passed 234 text
+inputs. Actionlint passes (shellcheck/pyflakes NOT RUN). 84 local links checked,
+none broken, Markdown fences balanced and git diff --check passes (existing
+LF-to-CRLF advisory only). No current hosted CI execution was performed.
+
+Final host/image suites: 332 passes, no failure/skip; context syntax 141 PHP/48 JS.
+Full eligible syntax: 202 PHP/49 JS. Catalogue SQL prerequisites 13 plus 24 checks,
+reader/excess-privilege/outage gates pass. Prior content/database regression suites
+pass as listed above. Final image exactly 237 matching host paths/hashes.
+
+Managed CI audit: least privilege verified, zero application tables, schemaReady
+false; HTTP live/dependency/ready 200/200/503. Owned CI services stopped normally,
+all three existing managed database volumes retained. No ZL-14/ZL-15/ZL-16
+fixture containers/networks remain; no managed ZL-13 containers remain. No private
+SQL, production, real users/media/licences, messaging/extractor/paid AI/cloud,
+commit/push or ZL-17 work occurred. ZL-16 remains PARTIAL.
+
+## 2026-10-24 - ZL-17 authorized HLS/navigation foundation (PARTIAL)
+
+AI-assisted implementation by the coding assistant, with executed local checks;
+no independent human review or real legal distribution approval is claimed.
+Owner authorized ZL-17 against the current extracted workspace, preserving all
+prior working-tree ZL-15/ZL-16 changes and prohibiting commits/push/production/
+private SQL/live providers or automatic ZL-18.
+
+Audited Shot associations, direct movie MP4/player/progress behavior, series/iframe
+paths, rewrites and upstream partial contracts. Added Playback services/API/view,
+validated Shot resolution, exact-origin session issuance and current per-resource
+rights/entitlement/version/digest checks. Default provider/composition stays
+unconfigured. Added native-HLS/MSE player, safe metadata DOM, bounded failures,
+privacy-limited events and opt-in tab-local resume. Generated original 12-second
+HLS/tone/captions, with no copyrighted inputs or production media. Exact hls.js
+1.7.3 vendor/licence/hash and playwright-core 1.64.1 test lock recorded.
+
+Reviewed legacy changes are limited to index Shot links, movie Watch replacement
+(removing raw MP4 interpolation/URL logging and unscoped progress writes), and
+additive catalogue-view gates in movie/series details. Existing series defaults,
+other website/bot/extractor, Content/Catalogue modules and SQL/manifests preserved.
+No new schema, history store, real CDN signing, media ingestion/encoding service,
+payment, AI, WhatsApp or extraction activation.
+
+Created seven streaming guides, updated architecture/README/CI/security/API cross
+references and recovery records. Strict image context 265 paths (262 text), still
+six SQL files; generated media, state/session keys, node_modules and browser
+profiles excluded. Existing verification runner/CI extended, no duplicate pipeline.
+
+Executed host/image: 388 tests, zero failures/skips, context parsers 156 PHP/56 JS.
+Full eligible syntax 217 PHP/57 JS. New PHP/player unit tests 56, plus 49 actual
+Chrome browser/protocol checks. Desktop native HLS and forced-MSE 390px viewport
+play/seek/captions/progress/recovery pass; not physical mobile/Safari evidence.
+Missing/corrupt resources, expired descriptor, no-cookie resources, origin denial,
+revocation/expiry, protected range and teardown pass. Public Apache APIs remain
+503 with no-store, view pages 200, private module/media paths 404. Managed CI
+has zero app tables and readiness 503. Historical fresh-MySQL suites were not
+rerun in this no-schema-change phase; their prior reports remain historical.
+
+Last local startup samples 4,647 ms native /5,903 ms forced MSE; repeated runs
+varied about 1.34-6.081 seconds. Two-sample fixture evidence, no speedup/SLA or
+production scale claim. Image inventory exactly matches 265 host paths/hashes.
+Gitleaks context 262 and expanded 314 reviewed text inputs pass; private stores,
+history/generated media/binaries excluded. npm audit reports zero known package
+advisories; actionlint passes, shellcheck/pyflakes NOT RUN, hosted CI NOT VERIFIED.
+
+ZL-17 PARTIAL: canonical/account/media contracts, real rights/identity/territory/
+age/grant operations, distributed limits, protected CDN/origin, real devices,
+full legacy end-to-end/security/load/release checks remain blocked/unverified.
+Prior contribution prefix and Git HEAD/tree/refs/index preservation, final links
+and cleanup are recorded in the handoff. ZL-18 recommended separately, not started.
+
+## Final ZL-17 handoff verification
+
+All 374 starting eligible files remain: 358 byte-identical, 16 authorized reviewed
+application/tooling/documentation updates, plus 35 new files (409 total). No
+unexpected change/deletion. Earlier Content/Catalogue implementations, all SQL/
+manifests, bots/extractor, baseline/dependency evidence and prior contribution
+prefix are byte-preserved. Only index Shot actions, movie Watch/player removal
+and additive movie/series view gates change existing application source. Git
+HEAD/tree/branch/local heads/tags remain unchanged, index empty; 101 current dirty
+paths include all 62 pre-existing paths. No staging, commit, push or history writes.
+
+Host/image full suite passes 388 tests, zero failure/skip; 156 PHP/56 JS context
+parsers. Full eligible syntax passes 217 PHP/57 JS. Actual browser/protocol suite
+passes 49 assertions with generated original HLS; native desktop Chrome plus
+forced-MSE mobile viewport, not Safari/physical-device certification. Last startup
+samples 4,647/5,903 ms, no production SLA claim. Image exactly 265 host-matching
+paths/hashes. Context Gitleaks 262 and expanded 314 text inputs pass; private stores,
+history/generated media/binaries excluded. npm audit zero reported advisories;
+actionlint passes, shellcheck/pyflakes NOT RUN, hosted CI NOT VERIFIED. 102 local
+links resolve (including URL-encoded spaces), fences balanced, git diff --check
+passes with only the existing line-ending advisory.
+
+Managed CI audit retains zero application tables and ready 503; normal shutdown
+completed, zero managed containers and all three original database volumes
+retained. Temporary generator containers used --rm; loopback browser servers were
+stopped by ownership-scoped cleanup. No ZL-17 fixture container/network remains.
+No production/private SQL/real media/users/licences, live WhatsApp/extractor,
+payment/AI/cloud, publishing or ZL-18 work. ZL-17 remains PARTIAL.
+
+## 2026-10-24 - ZL-18 integration quarantine (PARTIAL)
+
+AI-assisted implementation by the coding assistant with executed local checks;
+no independent human/provider/legal approval is claimed. Continued from the
+current extracted 409-file workspace and 101 existing dirty paths, preserving
+prior ZL-15/16/17 work. No commit/push/deploy, production, live sessions/providers,
+real transactions/media/recipients or automatic ZL-19.
+
+Inventoried startup/import/callback/queue/cron/browser/admin paths. Added shared
+JSON policy with PHP/Node fail-closed gates: live WhatsApp, extraction, payments
+and legacy external media cannot activate through flags. Added 10 Node entry and
+114 method/action guards, 31 early PHP route guards, nine token-helper operation
+checks and sanitized capability status. Preserved all historical token, cached
+forwarding, queue/retry/refresh and extraction bodies; no existing queue/private
+store was accessed or deleted. Bot dev no longer starts a filesystem watcher.
+
+Added a bounded offline token/queue/cache-forward/extraction simulator with no
+transport/store/timer, affected UI unavailable controls and disabled origin/embed/
+episode fallbacks. Central controls do not replace trusted auth/rights/CDN work.
+Prior Playback/Content/Catalogue and HLS/progress files stay byte-preserved.
+Seven security/integration guides, static operation evidence, architecture/CI/
+README/security export, contribution and recovery records updated.
+
+Verification: host/image 524 tests, zero failures/skips; context syntax 161 PHP /
+63 JS, full eligible syntax 222 PHP /64 JS. Dedicated read-only network-none
+container: 134 quarantine tests pass with zero mounts/private sessions. Direct
+entry tripwires observe zero transport/provider-import/store-write/private-read/
+timer activity. Actual browser unavailable UI 8 assertions and unchanged HLS
+49 assertions pass; no external request. 31 host routes deny GET/POST; in image
+30 are guarded and withheld admin source is absent/404. Fake payment callbacks
+cannot reach entitlement SQL. No schema/database harness change; managed CI audit
+retains zero app tables and readiness 503. Historical fresh DB suites not rerun.
+
+Strict context 279 paths/276 text; exact image/hash and final cleanup evidence
+below. Expanded Gitleaks passes 338 reviewed text/JSON inputs; private stores,
+history/generated media/binaries excluded. Actionlint passes; shellcheck/pyflakes
+NOT RUN, hosted CI NOT VERIFIED. Corrected earlier test expectations for obsolete
+flag activation/error text, a report-parser regex and a whitespace check failure;
+no security guard relaxed. Full local results and exact file delta are recorded
+in docs/security/QUARANTINE_TEST_RESULTS.md.
+
+PARTIAL: private historical variants, deployed processes/schedules/provider state,
+full legacy canonical/account/admin flows, separate unresolved mail/OAuth approval
+and broader release/security/device gates remain unverified. Managed-image testing
+does not control arbitrary owner-run private scripts or globally firewall web
+egress. Recommend ZL-19 separately; no subsequent Jira task was started.
+
+## Final ZL-18 handoff verification
+
+All 409 initial eligible inputs remain: 342 byte-identical, 67 reviewed authorized
+source/tooling/documentation updates, plus 22 new files (431 total), no deletion.
+Content/Catalogue/Playback, HLS/progress source, SQL/migration manifests and baseline
+evidence are unchanged. Ten historical Node implementation bodies are identical
+to initial bytes after removing only guard additions. Previous contribution history
+is an exact prefix. Git HEAD/tree/branch/local heads/tags unchanged; index empty;
+176 current dirty paths include all prior 101. No staging/commit/push/history write.
+
+Final host/image full suite 524 passes, no failure/skip; context syntax 161 PHP/63 JS,
+full eligible syntax 222 PHP/64 JS. Read-only network-none quarantine run 134 passes,
+no host/session mounts. Actual unavailable-UI 8 and unchanged HLS 49 browser checks
+pass with zero external operations. Final image exactly 279 reviewed host-matching
+paths/hashes, no extras/missing/symlinks. Expanded Gitleaks passes 338 reviewed
+text/JSON inputs; excluded private stores/history/generated media/binaries are not
+certified. Actionlint passes; shellcheck/pyflakes NOT RUN; hosted CI NOT VERIFIED.
+113 local links resolve, Markdown fences balanced and git diff --check passes
+(existing line-ending advisory only). The flagged trailing space was corrected.
+
+Managed CI audit retains zero app tables and readiness 503; owned services stopped
+normally, zero managed containers, all three existing database volumes retained.
+Network-none verification containers used --rm; temporary HTTP/browser servers
+closed through owned cleanup. No ZL-18 fixture container/network remains. No real
+session, payment, WhatsApp message, extraction, private SQL, production operation,
+real media/recipient, credential rotation, deploy or ZL-19 work occurred.
+ZL-18 remains PARTIAL for the explicit private/deployed and full-integration gaps.
+
+## 2026-10-24 - ZL-19 authentication/admin security foundation (PARTIAL)
+
+AI-assisted source audit, implementation and executed local verification. Audited
+109 eligible first-party website PHP sources lexically with bounded manual auth/
+admin tracing; 57 relevant source inventory entries, not a complete runtime graph.
+Added apps/web/src/Identity typed services and tests/identity contract, real PHP
+HTTP/session, actual legacy-controller and Chromium protocol fixtures. Implemented
+password hashing/verification/gradual rehash, generic isolated registration/login,
+bounded abuse controls, digest purpose-bound recovery, epoch/session lifecycle,
+CSRF, explicit permissions, audit failure rollback and image upload inspection.
+
+Legacy changes are limited to includes/csrf_helper.php input/expiry robustness,
+admin/login.php generic errors/display suppression, ajax_signup.php preservation
+of existing expired unverified identities. Existing real hash/session/account
+requirements and earlier Content/Catalogue/Playback/quarantine source are preserved.
+MFA is NOT implemented; MissingStepUp denies new privileged permissions. Existing
+legacy admin flags/CSRF/uploads remain release blockers. No authentication migration
+or guessed identity DDL; four base/two rights SQL definitions remain byte-identical.
+
+Final host PHP 8.2.12/Node 24.13.1 and pinned image PHP 8.2.35/Node 24.22.1: 566 tests
+pass, zero failure/skip, context syntax 174 PHP/68 JS. Full eligible syntax 235 PHP/
+69 JS passes. Read-only network-none 176 tests pass, no host/session mounts. Actual
+identity browser 18, original HLS 49 and quarantine UI 8 pass; no external request.
+Exact image manifest has 297 matching paths, no symlinks. Managed schema readiness
+remains blocked, no app migration. Hosted CI, production SQL/MFA/mail/HTTPS/owner
+recovery, complete legacy journeys and fresh advisory audit are NOT VERIFIED/RUN.
+
+Ten required auth guides plus safe route inventory/full execution report; existing
+README/architecture/CI/security-export/recovery records updated. Previous contribution
+entries are preserved as an exact prefix. Source/Git/secret scan/cleanup evidence
+is recorded in final recovery STATUS. No real identity/private SQL/session/key/
+provider/production access, account/password conversion, staging/commit/push or
+ZL-20. Production release requires verified sanitized identity DDL, shared stores,
+TLS/mail, vetted MFA and owner recovery, full route/upload controls and approved
+compatibility rollout. No local implementation implies Jira completion.
+
+## 2026-10-24 - ZL-15 through ZL-19 incremental publication and review handoff
+
+Owner requested staging/commits, feature branches and PRs. AI-assisted inventory,
+coherent splitting of 209 initial dirty paths, explicit staging/diff review,
+verification and PR descriptions. Five branches and 33 new Conventional Commits:
+6 licensed rights, 5 catalogue, 7 authorized HLS, 7 integration quarantine and
+8 authentication/recovery handoff. The 14 existing prerequisite commit identities
+are retained. No invented history, empty commits, source rewrite or automatic merge.
+
+Exact staged snapshots pass 246/332/388/524/566 tests with zero failure/skip; final
+context 174 PHP/68 JS parsers on PHP 8.2.12/Node 24.13.1. Every cumulative staged
+text tree and outgoing history is redacted-scanned with existing checksum-verified
+Gitleaks 8.30.1; no findings. Explicit path/mode/content membership, staged and
+working diffs, parsers/JSON, documentation links/fences, whitespace and actionlint
+pass. Shellcheck/pyflakes not run. Three unchanged binaries/private ignored material
+are outside text scanning; absence of findings is not exhaustive certification.
+
+Current working bytes were preserved through implementation commits. The final
+publication commit changes only PUBLISHING, STATUS, DECISIONS and this append;
+prior contribution entries remain exact. Hosted CI is verified separately against
+PR tips; #16/#17/#18 passed while preparing this record, with remaining final-head
+outcomes linked on GitHub. No local browser/container/SQL suite was rerun merely
+to commit; earlier evidence is preserved with its actual scope and date.
+
+PRs: [#16](https://github.com/gayashan-indrasankha/Zinema.lk/pull/16), [#17](https://github.com/gayashan-indrasankha/Zinema.lk/pull/17),
+[#18](https://github.com/gayashan-indrasankha/Zinema.lk/pull/18), [#19](https://github.com/gayashan-indrasankha/Zinema.lk/pull/19),
+[#20](https://github.com/gayashan-indrasankha/Zinema.lk/pull/20). Merge #14, #15 and then these in order with Create a merge
+commit; all target main and shared ancestry reduces after prerequisite merges.
+Main unchanged; no production/private SQL/session/credential/media/provider action,
+deployment, real-account requirement, Jira completion or ZL-20. Production scope
+remains PARTIAL. Next task is owner review/merge, with missing account schema and
+owner recovery required before production identity rollout.

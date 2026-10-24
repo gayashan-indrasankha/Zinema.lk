@@ -1,0 +1,1086 @@
+{
+  "issue": "ZL-19",
+  "classification": "STATICALLY_INSPECTED",
+  "method": "Initial working-tree lexical locations plus bounded manual auth/admin source tracing; not a runtime route/call graph or installed schema",
+  "eligibleWebsitePhpCount": 109,
+  "privateSqlAndSessionStoresInspected": false,
+  "productionVerified": false,
+  "entries": [
+    {
+      "path": "Zinema.lk Website/admin/_layout.php",
+      "lines": 17,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/analytics.php",
+      "lines": 92,
+      "session": [],
+      "adminGuard": [
+        3
+      ],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/collections.php",
+      "lines": 150,
+      "session": [],
+      "adminGuard": [
+        3
+      ],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        9,
+        24,
+        50,
+        53
+      ],
+      "upload": [
+        40,
+        40,
+        42,
+        44,
+        44
+      ],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/config.php",
+      "lines": 57,
+      "session": [
+        13
+      ],
+      "adminGuard": [
+        52
+      ],
+      "userGuard": [
+        30
+      ],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/cron/cleanup-tokens.php",
+      "lines": 93,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        29,
+        35,
+        41
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/admin/cron/reset-daily-stats.php",
+      "lines": 96,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        41,
+        55
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/admin/episodes.php",
+      "lines": 355,
+      "session": [],
+      "adminGuard": [
+        3
+      ],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        25,
+        65,
+        117
+      ],
+      "upload": [
+        50,
+        50,
+        56,
+        59,
+        59,
+        97,
+        97,
+        108,
+        111,
+        111
+      ],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/functions.php",
+      "lines": 18,
+      "session": [
+        5
+      ],
+      "adminGuard": [
+        3
+      ],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/index.php",
+      "lines": 36,
+      "session": [],
+      "adminGuard": [
+        3
+      ],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/login.php",
+      "lines": 73,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [
+        15,
+        27,
+        28,
+        28
+      ],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/logout.php",
+      "lines": 7,
+      "session": [
+        2
+      ],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/manage_shots.php",
+      "lines": 708,
+      "session": [],
+      "adminGuard": [
+        4
+      ],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        72,
+        102,
+        123
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/movies.php",
+      "lines": 328,
+      "session": [],
+      "adminGuard": [
+        3
+      ],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        25,
+        65,
+        117
+      ],
+      "upload": [
+        50,
+        50,
+        56,
+        59,
+        59,
+        97,
+        97,
+        108,
+        111,
+        111
+      ],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/run_migration.php",
+      "lines": 45,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Existing unconditional recovery denial"
+    },
+    {
+      "path": "Zinema.lk Website/admin/series.php",
+      "lines": 293,
+      "session": [],
+      "adminGuard": [
+        3
+      ],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        25,
+        62,
+        117
+      ],
+      "upload": [
+        47,
+        47,
+        53,
+        56,
+        56,
+        97,
+        97,
+        108,
+        111,
+        111
+      ],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/settings.php",
+      "lines": 247,
+      "session": [],
+      "adminGuard": [
+        11
+      ],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/trailers.php",
+      "lines": 321,
+      "session": [],
+      "adminGuard": [
+        3
+      ],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        35,
+        36,
+        57,
+        86,
+        87
+      ],
+      "upload": [
+        10,
+        17,
+        21,
+        21
+      ],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy admin flag guard; granular authorization/MFA not established"
+    },
+    {
+      "path": "Zinema.lk Website/admin/whatsapp-bot-tracking.php",
+      "lines": 534,
+      "session": [],
+      "adminGuard": [
+        9
+      ],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/ajax_forgot_password.php",
+      "lines": 87,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [
+        19
+      ],
+      "write": [
+        57,
+        63
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/ajax_login.php",
+      "lines": 140,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [
+        20
+      ],
+      "write": [
+        82
+      ],
+      "upload": [],
+      "auth": [
+        42,
+        56,
+        56
+      ],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/ajax_resend_verification.php",
+      "lines": 78,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [
+        19
+      ],
+      "write": [
+        57
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/ajax_reset_password.php",
+      "lines": 111,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [
+        18
+      ],
+      "write": [
+        82,
+        91
+      ],
+      "upload": [],
+      "auth": [
+        75,
+        82
+      ],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/ajax_signup.php",
+      "lines": 153,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [
+        21
+      ],
+      "write": [
+        72,
+        112
+      ],
+      "upload": [],
+      "auth": [
+        105,
+        105,
+        112,
+        113
+      ],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/api/add_comment.php",
+      "lines": 53,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        36
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/api/auth-handler.php",
+      "lines": 97,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        77
+      ],
+      "upload": [],
+      "auth": [
+        21,
+        28,
+        28,
+        76,
+        76,
+        77,
+        78
+      ],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/api/comments.php",
+      "lines": 193,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        122,
+        177,
+        181
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/api/favorite_shot.php",
+      "lines": 70,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        31,
+        49
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/api/includes/comment_helpers.php",
+      "lines": 78,
+      "session": [
+        5
+      ],
+      "adminGuard": [],
+      "userGuard": [
+        6
+      ],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/api/like_shot.php",
+      "lines": 101,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        42,
+        67
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/api/payment-notify.php",
+      "lines": 56,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        33,
+        40
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/api/search_content.php",
+      "lines": 107,
+      "session": [
+        7
+      ],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/api/subscribe.php",
+      "lines": 97,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [
+        15
+      ],
+      "csrf": [],
+      "write": [
+        79
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/api/track.php",
+      "lines": 37,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        22
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/api/trailers.php",
+      "lines": 106,
+      "session": [
+        15
+      ],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/api/whatsapp/add-message-id.php",
+      "lines": 115,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        51,
+        58,
+        86,
+        88
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/api/whatsapp/bot-error.php",
+      "lines": 52,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        26,
+        38
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/api/whatsapp/bot-heartbeat.php",
+      "lines": 73,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        41,
+        57
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/api/whatsapp/log-cache-warming.php",
+      "lines": 44,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        29
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/api/whatsapp/log-forward.php",
+      "lines": 69,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        47,
+        51
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/api/whatsapp/log-refresh.php",
+      "lines": 54,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        37
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/api/whatsapp/mark-used.php",
+      "lines": 54,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        35
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/api/whatsapp/update-cache-message-id.php",
+      "lines": 57,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        30,
+        37
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/api/whatsapp/update-daily-stats.php",
+      "lines": 43,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        26
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/api/whatsapp/update-forward-stats.php",
+      "lines": 70,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        44,
+        50
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "ZL-18 live quarantine precedes historical body"
+    },
+    {
+      "path": "Zinema.lk Website/google-callback.php",
+      "lines": 162,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        108,
+        144
+      ],
+      "upload": [],
+      "auth": [
+        144
+      ],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/includes/TrailerManager.php",
+      "lines": 315,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        125,
+        152,
+        158,
+        191,
+        197,
+        224
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/includes/csrf_helper.php",
+      "lines": 83,
+      "session": [
+        13,
+        33,
+        62
+      ],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [
+        31
+      ],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/includes/rate_limiter.php",
+      "lines": 204,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        169,
+        181,
+        195,
+        199
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/includes/settings.php",
+      "lines": 144,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        57
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/includes/whatsapp_token.php",
+      "lines": 389,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        31,
+        169,
+        175,
+        226,
+        366,
+        382
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/login.php",
+      "lines": 249,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [
+        13
+      ],
+      "write": [],
+      "upload": [],
+      "auth": [
+        24,
+        33,
+        33
+      ],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/logout.php",
+      "lines": 23,
+      "session": [
+        3
+      ],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/movie-comments.php",
+      "lines": 58,
+      "session": [
+        6
+      ],
+      "adminGuard": [],
+      "userGuard": [
+        8
+      ],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/movie-details.php",
+      "lines": 552,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        40
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/signup.php",
+      "lines": 298,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [
+        13
+      ],
+      "write": [
+        56
+      ],
+      "upload": [],
+      "auth": [
+        53,
+        53,
+        56,
+        57
+      ],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/trailers.php",
+      "lines": 84,
+      "session": [
+        6
+      ],
+      "adminGuard": [],
+      "userGuard": [
+        9
+      ],
+      "csrf": [],
+      "write": [],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    },
+    {
+      "path": "Zinema.lk Website/verify-email.php",
+      "lines": 143,
+      "session": [],
+      "adminGuard": [],
+      "userGuard": [],
+      "csrf": [],
+      "write": [
+        34
+      ],
+      "upload": [],
+      "auth": [],
+      "confidence": "STATICALLY_INSPECTED",
+      "productionIntegration": "NOT_VERIFIED",
+      "note": "Legacy source contract only; see grouped flow analysis"
+    }
+  ]
+}

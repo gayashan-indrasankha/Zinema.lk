@@ -34,12 +34,12 @@ function validate_csrf_token($token) {
     }
     
     // Check if token exists in session
-    if (!isset($_SESSION['csrf_token']) || !isset($_SESSION['csrf_token_time'])) {
+    if (!is_string($token) || strlen($token) !== 64 || !ctype_xdigit($token) || !isset($_SESSION['csrf_token'], $_SESSION['csrf_token_time']) || !is_string($_SESSION['csrf_token']) || !is_int($_SESSION['csrf_token_time'])) {
         return false;
     }
     
     // Check if token has expired (1 hour expiration)
-    if (time() - $_SESSION['csrf_token_time'] > 3600) {
+    if (time() < $_SESSION['csrf_token_time'] || time() - $_SESSION['csrf_token_time'] >= 3600) {
         unset($_SESSION['csrf_token']);
         unset($_SESSION['csrf_token_time']);
         return false;
@@ -64,7 +64,7 @@ function get_csrf_token() {
     
     // Return existing token if valid
     if (isset($_SESSION['csrf_token']) && isset($_SESSION['csrf_token_time'])) {
-        if (time() - $_SESSION['csrf_token_time'] <= 3600) {
+        if (validate_csrf_token($_SESSION['csrf_token'])) {
             return $_SESSION['csrf_token'];
         }
     }

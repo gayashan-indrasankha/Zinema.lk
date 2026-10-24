@@ -1,4 +1,79 @@
-# Initial source publication
+# Publication and review history
+
+## Current publication - ZL-15 through ZL-19 (2026-10-24)
+
+The owner explicitly authorized staging the current unstaged changes, incremental
+Conventional Commits, feature branches, publishing and open review PRs. This
+supersedes earlier task-specific no-commit instructions for this publication only.
+Deployment, production access, provider activation, Jira completion and merging
+PRs are not authorized by this review handoff.
+
+All 209 initially dirty paths were explicitly reviewed and assigned to five
+feature branches. There are **33 new Conventional Commits**: 6 rights, 5 catalogue,
+7 playback, 7 quarantine, and 8 identity/handoff. Thirty-two preserve the existing
+implementation; the last records publication evidence and the review order.
+No empty/artificial commits, backdating, source rewrite, amend/rebase, stash/reset
+or squash. Git preserves the earlier 14 prerequisite commits from PRs #14/#15.
+
+| Order | PR | Branch | Own new commits | Local staged-tree tests | Base |
+| --- | --- | --- | --- | --- | --- |
+| 1 | [#16](https://github.com/gayashan-indrasankha/Zinema.lk/pull/16) | `feat/zl-15-licensed-catalogue` | 6 | 246 passed | main |
+| 2 | [#17](https://github.com/gayashan-indrasankha/Zinema.lk/pull/17) | `feat/zl-16-catalogue-entitlements` | 5 | 332 passed | main |
+| 3 | [#18](https://github.com/gayashan-indrasankha/Zinema.lk/pull/18) | `feat/zl-17-authorized-hls-playback` | 7 | 388 passed | main |
+| 4 | [#19](https://github.com/gayashan-indrasankha/Zinema.lk/pull/19) | `fix/zl-18-integration-quarantine` | 7 | 524 passed | main |
+| 5 | [#20](https://github.com/gayashan-indrasankha/Zinema.lk/pull/20) | `feat/zl-19-authentication-security` | 8 | 566 passed | main |
+
+
+**Merge existing [#14](https://github.com/gayashan-indrasankha/Zinema.lk/pull/14), then [#15](https://github.com/gayashan-indrasankha/Zinema.lk/pull/15),
+then #16, #17, #18, #19 and #20 in that order, using Create a merge commit.**
+All PRs target main, so no retargeting is needed. Later branches contain earlier
+commits by ancestry; those shared commits/diffs disappear as prerequisites merge.
+Do not squash/rebase a predecessor while later branches retain its commit IDs.
+Main stays at 94f7708be599be3def497ccb2bea133f40cfc450 until owner-approved merges.
+The older feature tips and Git history are retained. No PR was merged here.
+
+### Publication verification and limits
+
+- Each commit received status, explicit stage-membership and working/staged diff
+  review, changed-file parsers/JSON checks, staged whitespace and redacted Gitleaks
+  8.30.1 scanning of its complete cumulative staged text tree. Sensitive paths,
+  Git links and unreviewed media were rejected; three unchanged logo/icon binaries
+  were excluded from text scanning. .gitignore was inspected before committing.
+- Relevant isolated groups passed before their test commits; each feature's exact
+  staged integration tree passed its full suite as shown above, zero failure/skip.
+  The final executable context has 174 PHP and 68 JS parsers, host PHP 8.2.12 and
+  Node 24.13.1. Documentation-only commits reused the unchanged executable checks.
+- Shared CI/test/manifest files were staged at feature-appropriate versions while
+  current working files remained intact. Interlinked catalogue docs were kept
+  together, and their later playback section was committed with playback. Every
+  changed local document link/fence passed before its commit; actionlint passed
+  the workflow versions (shellcheck/pyflakes NOT RUN).
+- Complete outgoing histories were scanned before pushes, not only the final
+  source. No findings. Ignored private SQL, environments, session/auth stores,
+  generated media, dependencies, logs and unrelated archives were not inspected
+  or published. A scoped scan is not exhaustive security/privacy assurance.
+- Before the handoff, all 461 original working files were byte-identical to the
+  start snapshot and all original changes were committed. The final handoff edits
+  only PUBLISHING, STATUS, DECISIONS and CONTRIBUTIONS; application, migration,
+  baseline/checksum, vendor and test files remain exact original working bytes.
+  The full previous contribution history is an exact prefix.
+- Earlier implementation reports retain executed browser/container/SQL evidence.
+  Those local runtime checks were not repeated just to create commits. Hosted
+  Actions is checked separately: #16, #17 and #18 already passed while this record
+  was prepared ([rights run](https://github.com/gayashan-indrasankha/Zinema.lk/actions/runs/40073669212),
+  [catalogue run](https://github.com/gayashan-indrasankha/Zinema.lk/actions/runs/40073683833),
+  [playback run](https://github.com/gayashan-indrasankha/Zinema.lk/actions/runs/40073768058)).
+  Final-head results for #19/#20 belong to their current PR checks; this immutable
+  record does not predeclare their outcome. Publication itself does not certify
+  production authentication, complete schema, MFA/recovery, mail/TLS or licensing.
+
+All ZL-15 through ZL-19 production acceptance statuses remain PARTIAL. See the
+feature guides and [ZL-19 execution report](../security/ZL19_EXECUTION_REPORT.md).
+Next owner task: review/merge the PRs in the stated order. Production identity work
+first needs the approved sanitized account DDL and rehearsed owner recovery.
+ZL-20 is not started. The initial import records below are historical.
+
+## Initial source publication (historical)
 
 ## Completed main integration
 

@@ -68,3 +68,53 @@ The verified database definition currently covers four tables only. See the
 [executed results](docs/database/SCHEMA_TEST_RESULTS.md). The new test harness
 uses a fresh disposable database; it does not migrate existing environment volumes.
 ZL-14 remains PARTIAL and application readiness remains blocked.
+
+## Licensed catalogue foundation (ZL-15)
+
+The isolated rights-workflow service and two additive test migrations are PARTIAL.
+They do not enable real publication or integrate the unverified legacy admin/schema.
+Start with [catalogue architecture](docs/content/CATALOGUE_ARCHITECTURE.md),
+[rights model](docs/content/CONTENT_RIGHTS_MODEL.md),
+[ingestion](docs/content/INGESTION_WORKFLOW.md),
+[publishing policy](docs/content/PUBLISHING_POLICY.md),
+[executed tests](docs/content/CONTENT_TEST_RESULTS.md) and
+[operations](docs/content/CONTENT_OPERATIONS.md). Public streaming remains denied.
+
+## Catalogue API boundary (ZL-16)
+
+The additive [catalogue API](docs/api/CATALOGUE_API.md), [search service](docs/api/SEARCH_ARCHITECTURE.md)
+and [entitlement policy](docs/api/ENTITLEMENT_POLICY.md) are tested locally with
+synthetic data. ZL-16 remains PARTIAL. The real endpoint fails closed with 503;
+canonical/identity/rights integration and protected media delivery are unresolved.
+See [executed results](docs/api/CATALOGUE_TEST_RESULTS.md) and
+[integration gates](docs/api/INTEGRATION_GUIDE.md). Legacy callers are unchanged.
+
+## Authorized HLS foundation (ZL-17)
+
+ZL-17 is PARTIAL: local synthetic HLS, verified Shot-link resolution, a scoped
+playback session, per-resource authorization and opt-in tab-local progress are
+implemented and tested. Production playback remains unconfigured. Start with
+[playback architecture](docs/streaming/PLAYBACK_ARCHITECTURE.md),
+[actual tests](docs/streaming/PLAYBACK_TEST_RESULTS.md) and
+[operations/rollback](docs/streaming/STREAMING_OPERATIONS.md). No real media or
+CDN is enabled. Existing movie Watch no longer inserts an unprotected MP4 URL.
+
+## Integration quarantine (ZL-18)
+
+Unapproved payment, legacy extraction, unofficial delivery and external-media
+operations are blocked regardless of environment flags. Historical code is
+preserved; a separate offline simulator has no provider transport. ZL-17 original
+local HLS remains independently tested. ZL-18 is PARTIAL because private/deployed
+entry points and full legacy integration remain unverified. See
+[inventory](docs/security/INTEGRATION_QUARANTINE.md),
+[feature controls](docs/security/FEATURE_FLAGS.md) and
+[executed checks](docs/security/QUARANTINE_TEST_RESULTS.md).
+
+## Identity hardening foundation (ZL-19)
+
+ZL-19 is PARTIAL. [Identity architecture](docs/security/AUTHENTICATION_ARCHITECTURE.md)
+and [executed checks](docs/security/AUTH_TEST_RESULTS.md) describe isolated PHP
+security services and three narrow legacy fixes. No production identity adapter,
+MFA enrollment/recovery or complete admin/API hardening is enabled. Review the
+[release blockers and rollback](docs/security/AUTH_ROLLBACK.md) before any rollout.
+Existing account/session requirements are not replaced without recovery approval.
