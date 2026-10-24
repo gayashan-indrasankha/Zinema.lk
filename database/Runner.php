@@ -122,7 +122,7 @@ final class Runner {
                 if (!preg_match('/^(\w+)\s+(VARCHAR\(\d+\)|INT\(11\)|BIGINT\(20\))(.*)$/iD', $part, $column)) throw new MigrationFailure('UNSUPPORTED_COLUMN_DEFINITION');
             }
             [$all, $name, $type, $rest] = $column;
-            $type = strtolower((string)preg_replace('/\((?:11|20)\)/', '', $type));
+            $type = strtolower((string)preg_replace('/^(INT|BIGINT)\((?:11|20)\)$/i', '$1', $type));
             $primary = stripos($rest, 'PRIMARY KEY') !== false;
             $default = null;
             if (preg_match("/DEFAULT\\s+('([^']*)'|NULL|CURRENT_TIMESTAMP(?:\\(\\))?|[0-9]+)/i", $rest, $d)) {

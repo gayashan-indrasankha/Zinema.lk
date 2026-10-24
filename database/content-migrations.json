@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "scope": "synthetic-rights-extension",
+  "fullApplicationReady": false,
+  "migrations": [
+    {
+      "version": "0005",
+      "file": "database/content-migrations/0005_content_rights_records.sql",
+      "table": "content_rights_records",
+      "sha256": "1b71fed3928c9b46a08b04361c678a0c45d83dce7944af0760f6c9b7b4250489",
+      "source": "ZL-15 isolated rights-workflow contract; no existing catalogue DDL inferred"
+    },
+    {
+      "version": "0006",
+      "file": "database/content-migrations/0006_content_rights_events.sql",
+      "table": "content_rights_events",
+      "sha256": "ba5b866a54a931606ff1432fc319df7034ff77d6b7513b350b74cc8c9f502d17",
+      "source": "ZL-15 isolated rights-workflow contract; no existing catalogue DDL inferred"
+    }
+  ]
+}
