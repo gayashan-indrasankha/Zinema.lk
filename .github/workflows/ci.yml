@@ -37,6 +37,8 @@ jobs:
         run: node scripts/database-test.cjs ci
       - name: Verify isolated rights workflow on a different disposable database
         run: node scripts/database-test.cjs ci content
+      - name: Verify catalogue SQL and read-only entitlement boundary
+        run: node scripts/database-test.cjs ci catalogue
       - name: Verify dependency boundaries and schema hold
         run: |
           node scripts/environment.cjs health ci
