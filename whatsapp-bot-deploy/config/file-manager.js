@@ -1,3 +1,5 @@
+// ZL-18: quarantine before dependency imports, sessions, timers or configuration.
+require('../../shared/integration-gate.cjs').blockEntry('whatsapp', module);
 /**
  * Local File Manager
  * Manages local video files for the Ultimate Multi-Bot System
@@ -13,6 +15,7 @@ const path = require('path');
 
 class FileManager {
     constructor(basePath) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (!basePath || !path.isAbsolute(basePath)) throw new Error('Explicit absolute local media path required.');
         this.basePath = basePath;
         this.ensureDirectories();
@@ -22,6 +25,7 @@ class FileManager {
      * Ensure base directories exist
      */
     ensureDirectories() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const dirs = [
             this.basePath,
             path.join(this.basePath, 'movies'),
@@ -45,6 +49,7 @@ class FileManager {
      * @returns {string|null} File path or null if not found
      */
     getFilePath(contentType, contentId, partNumber = null) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const typeFolder = contentType === 'movie' ? 'movies' : 'episodes';
         const contentFolder = path.join(this.basePath, typeFolder, String(contentId));
 
@@ -88,6 +93,7 @@ class FileManager {
      * @returns {boolean}
      */
     hasLocalFile(contentType, contentId, partNumber = null) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         return this.getFilePath(contentType, contentId, partNumber) !== null;
     }
 
@@ -99,6 +105,7 @@ class FileManager {
      * @returns {object|null}
      */
     getFileInfo(contentType, contentId, partNumber = null) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const filePath = this.getFilePath(contentType, contentId, partNumber);
         if (!filePath) return null;
 
@@ -123,6 +130,7 @@ class FileManager {
      * @returns {string} Folder path
      */
     ensureContentFolder(contentType, contentId) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const typeFolder = contentType === 'movie' ? 'movies' : 'episodes';
         const contentFolder = path.join(this.basePath, typeFolder, String(contentId));
 
@@ -143,6 +151,7 @@ class FileManager {
      * @returns {string}
      */
     getSavePath(contentType, contentId, partNumber = null, extension = '.mp4') {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const folder = this.ensureContentFolder(contentType, contentId);
         const fileName = partNumber ? `part_${partNumber}${extension}` : `full${extension}`;
         return path.join(folder, fileName);
@@ -158,6 +167,7 @@ class FileManager {
      * @returns {string} Saved file path
      */
     async saveFile(contentType, contentId, partNumber, buffer, extension = '.mp4') {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const savePath = this.getSavePath(contentType, contentId, partNumber, extension);
 
         await fs.promises.writeFile(savePath, buffer);
@@ -174,6 +184,7 @@ class FileManager {
      * @returns {Buffer|null}
      */
     async readFile(contentType, contentId, partNumber = null) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const filePath = this.getFilePath(contentType, contentId, partNumber);
         if (!filePath) return null;
 
@@ -190,6 +201,7 @@ class FileManager {
      * @returns {number} Total size in MB
      */
     async getTotalDiskUsage() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             const totalSize = await this.getFolderSize(this.basePath);
             return Math.round(totalSize / (1024 * 1024));
@@ -202,6 +214,7 @@ class FileManager {
      * Recursively get folder size
      */
     async getFolderSize(folderPath) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         let totalSize = 0;
 
         try {
@@ -229,6 +242,7 @@ class FileManager {
      * @returns {Array}
      */
     async listAllFiles() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const files = [];
 
         for (const type of ['movies', 'episodes']) {
@@ -269,6 +283,7 @@ class FileManager {
      * Extract part number from filename
      */
     extractPartNumber(fileName) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const match = fileName.match(/part_(\d+)/);
         return match ? parseInt(match[1]) : null;
     }
@@ -277,6 +292,7 @@ class FileManager {
      * Format bytes to human readable
      */
     formatBytes(bytes) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
@@ -288,6 +304,7 @@ class FileManager {
      * Delete local file
      */
     async deleteFile(contentType, contentId, partNumber = null) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const filePath = this.getFilePath(contentType, contentId, partNumber);
         if (filePath && fs.existsSync(filePath)) {
             await fs.promises.unlink(filePath);

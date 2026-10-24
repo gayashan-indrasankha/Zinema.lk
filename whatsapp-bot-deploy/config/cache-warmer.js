@@ -1,3 +1,5 @@
+// ZL-18: quarantine before dependency imports, sessions, timers or configuration.
+require('../../shared/integration-gate.cjs').blockEntry('whatsapp', module);
 /**
  * Cache Warmer
  * Proactively refreshes videos from local disk to WhatsApp cache
@@ -15,6 +17,7 @@ const path = require('path');
 
 class CacheWarmer {
     constructor(sock, fileManager, cacheGroupId) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.sock = sock; // Baileys socket
         this.fileManager = fileManager;
         this.cacheGroupId = cacheGroupId;
@@ -52,6 +55,7 @@ class CacheWarmer {
      * Update socket reference after reconnection (called from index.js)
      */
     updateSocket(newSock) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.sock = newSock;
         this.socketReady = true;
         this.bytesUploadedThisSession = 0; // Reset — fresh connection
@@ -70,6 +74,7 @@ class CacheWarmer {
      * Returns true if reconnected, false if timed out
      */
     async waitForReconnection(maxWaitMs = 120000) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.socketReady) return true;
 
         console.log(`⏳ Waiting up to ${maxWaitMs / 1000}s for socket to reconnect...`);
@@ -93,6 +98,7 @@ class CacheWarmer {
      * Generate a visual progress bar
      */
     generateProgressBar(current, total, width = 20) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const percent = Math.round((current / total) * 100);
         const filled = Math.round((current / total) * width);
         const empty = width - filled;
@@ -104,6 +110,7 @@ class CacheWarmer {
      * Send progress update to WhatsApp (rate limited to avoid flooding)
      */
     async sendProgressUpdate(current, total, warmed, errors, skipped = 0) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (!this.progressChatId || !this.sock) return;
 
         const now = Date.now();
@@ -132,6 +139,7 @@ class CacheWarmer {
      * need LONG cooldowns between them to avoid rate limiting
      */
     getSmartDelay(filePath) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             const stats = fs.statSync(filePath);
             const sizeMB = stats.size / 1024 / 1024;
@@ -150,6 +158,7 @@ class CacheWarmer {
      * Check if an error indicates a connection drop
      */
     isConnectionError(error) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const msg = error.message || '';
         return msg.includes('close') || msg.includes('Stream Errored') ||
             msg.includes('reconnect') || msg.includes('Connection') ||
@@ -164,6 +173,7 @@ class CacheWarmer {
      *   > 1GB: 10min base + 2min per 100MB   (1.7GB → ~45.7 min, 2GB → ~51 min)
      */
     getUploadTimeout(filePath) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             const stats = fs.statSync(filePath);
             const sizeMB = stats.size / 1024 / 1024;
@@ -189,6 +199,7 @@ class CacheWarmer {
      * Only non-timeout errors (network blips, etc.) are retried.
      */
     async sendMessageWithRetry(jid, content, filePath = null) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const timeoutMs = filePath ? this.getUploadTimeout(filePath) : 10 * 60 * 1000;
         const fileSize = filePath ? (fs.existsSync(filePath) ? fs.statSync(filePath).size : 0) : 0;
 
@@ -239,6 +250,7 @@ class CacheWarmer {
      * Log progress to console with visual bar
      */
     logProgress(current, total, fileName) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const progressBar = this.generateProgressBar(current, total);
         console.log(`\n${progressBar}`);
         console.log(`📤 Current: ${fileName}`);
@@ -248,6 +260,7 @@ class CacheWarmer {
      * Set API client (called after initialization)
      */
     setApiClient(apiClient) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.apiClient = apiClient;
     }
 
@@ -255,6 +268,7 @@ class CacheWarmer {
      * Load warming state from file
      */
     loadState() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             if (fs.existsSync(this.stateFile)) {
                 const data = fs.readFileSync(this.stateFile, 'utf8');
@@ -270,6 +284,7 @@ class CacheWarmer {
      * Save warming state to file
      */
     saveState(state) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             fs.writeFileSync(this.stateFile, JSON.stringify(state, null, 2), 'utf8');
             console.log(`💾 Saved warming state: ${state.remainingFiles?.length || 0} files remaining`);
@@ -282,6 +297,7 @@ class CacheWarmer {
      * Clear warming state file
      */
     clearState() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             if (fs.existsSync(this.stateFile)) {
                 fs.unlinkSync(this.stateFile);
@@ -296,6 +312,7 @@ class CacheWarmer {
      * Check if current time is within warming window (12:00 AM - 5:00 AM)
      */
     isWithinWarmingWindow() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const now = new Date();
         const hour = now.getHours();
         // 12:00 AM (0) to 5:00 AM (4) - hours 0-4 inclusive
@@ -306,6 +323,7 @@ class CacheWarmer {
      * Start the cache warmer - runs on startup and schedules automatic refresh
      */
     async start(warmOnStartup = true) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         // PROACTIVE DAILY REFRESH (3 AM) - Refresh messages older than 10 days
         // This prevents "Download failed" by refreshing BEFORE they expire (~14 days)
         this.proactiveJob = schedule.scheduleJob('0 3 * * *', async () => {
@@ -336,6 +354,7 @@ class CacheWarmer {
      * Stop the scheduler
      */
     stop() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.job) {
             this.job.cancel();
             this.job = null;
@@ -355,6 +374,7 @@ class CacheWarmer {
      * This runs daily at 3 AM to proactively prevent "Download failed" errors
      */
     async refreshAgingMessages() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (!this.apiClient) {
             console.log(`⚠️ No API client, cannot check message ages`);
             return { refreshed: 0 };
@@ -411,6 +431,7 @@ class CacheWarmer {
      * @param {boolean} ignoreTimeWindow - If true, bypass time window check (for manual commands)
      */
     async warmAllLocalFiles(forceRefresh = false, ignoreTimeWindow = false) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.isRunning) {
             console.log(`⚠️ Cache warming already in progress`);
             return { success: false, message: 'Already running' };
@@ -565,6 +586,7 @@ class CacheWarmer {
      * @param {string} progressChatId - Chat ID to send progress updates
      */
     async warmIdRange(contentType, startId, endId, ignoreTimeWindow = true, progressChatId = null) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.isRunning) {
             return { success: false, message: 'Already running' };
         }
@@ -726,6 +748,7 @@ class CacheWarmer {
      * HYBRID: Parts → video, Full file → document
      */
     async warmSingleFile(contentType, contentId, partNumber, filePath) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (!this.cacheGroupId) {
             console.log(`⚠️ No cache group ID configured, skipping warm for ${filePath}`);
             return null;
@@ -796,6 +819,7 @@ class CacheWarmer {
      * Update message ID in database
      */
     async updateMessageId(contentType, contentId, partNumber, messageId) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (!this.apiClient) {
             console.log(`⚠️ API client not set, skipping message ID update`);
             return;
@@ -819,6 +843,7 @@ class CacheWarmer {
      * Get warming statistics
      */
     getStats() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         return {
             ...this.stats,
             isRunning: this.isRunning,

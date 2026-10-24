@@ -25,9 +25,10 @@ function readConfig(env = process.env) {
     const botInstanceId = required('BOT_INSTANCE_ID');
     if (!/^\d+$/.test(botInstanceId)) fail('BOT_INSTANCE_ID');
     return Object.freeze({appEnv, apiUrl:apiUrl.replace(/\/$/, ''), apiKey, sessionPath, mediaPath, botInstanceId,
-        liveWhatsApp: appEnv === 'production' && env.ALLOW_LIVE_WHATSAPP === 'true'});
+        liveWhatsApp: false});
 }
 function assertLiveWhatsAppEnabled(config) {
-    if (!config.liveWhatsApp) fail('live WhatsApp startup disabled; use a fake adapter in recovery');
+    // Caller-created DTOs and legacy approval flags are not provider approval.
+    fail('live WhatsApp startup disabled; use the isolated simulator in recovery');
 }
 module.exports = {readConfig, assertLiveWhatsAppEnabled};

@@ -1,3 +1,5 @@
+// ZL-18: quarantine before dependency imports, sessions, timers or configuration.
+require('../../shared/integration-gate.cjs').blockEntry('whatsapp', module);
 /**
  * Health Monitor Module
  * Reports bot health status to database for admin dashboard
@@ -7,6 +9,7 @@ const os = require('os');
 
 class HealthMonitor {
     constructor(botInstanceId, apiClient, client) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.botInstanceId = botInstanceId;
         this.apiClient = apiClient;
         this.client = client;
@@ -18,6 +21,7 @@ class HealthMonitor {
      * Start sending heartbeats
      */
     start(intervalSeconds = 30) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         console.log(`💓 Health monitor started (reporting every ${intervalSeconds}s)`);
 
         // Send initial heartbeat immediately
@@ -33,6 +37,7 @@ class HealthMonitor {
      * Stop sending heartbeats
      */
     stop() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.interval) {
             clearInterval(this.interval);
             this.interval = null;
@@ -44,6 +49,7 @@ class HealthMonitor {
      * Send heartbeat to server
      */
     async sendHeartbeat() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             const healthData = await this.collectHealthData();
 
@@ -64,6 +70,7 @@ class HealthMonitor {
      * Collect current health metrics
      */
     async collectHealthData() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const uptime = Math.floor((Date.now() - this.startTime) / 1000);
         const memoryUsage = process.memoryUsage();
         const diskUsage = await this.getLocalDiskUsage();
@@ -82,6 +89,7 @@ class HealthMonitor {
      * Get local file storage disk usage
      */
     async getLocalDiskUsage() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             if (global.fileManager) {
                 return await global.fileManager.getTotalDiskUsage();
@@ -96,6 +104,7 @@ class HealthMonitor {
      * Report error to server
      */
     async reportError(errorMessage) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             await this.apiClient.request('bot-error.php', {
                 bot_id: this.botInstanceId,
@@ -111,6 +120,7 @@ class HealthMonitor {
      * Update daily statistics
      */
     async updateDailyStats(successful, failed) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             await this.apiClient.request('update-daily-stats.php', {
                 bot_id: this.botInstanceId,

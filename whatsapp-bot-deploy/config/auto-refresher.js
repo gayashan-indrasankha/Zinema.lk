@@ -1,3 +1,5 @@
+// ZL-18: quarantine before dependency imports, sessions, timers or configuration.
+require('../../shared/integration-gate.cjs').blockEntry('whatsapp', module);
 /**
  * Auto Refresher (Tier 2 Maintenance)
  * Periodically forwards media from Storage Groups to Cache Group to keep them 'hot'
@@ -9,6 +11,7 @@ const path = require('path');
 
 class AutoRefresher {
     constructor(sock, apiClient, cacheGroupId, storageGroupIds = []) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.sock = sock;
         this.apiClient = apiClient;
         this.cacheGroupId = cacheGroupId;
@@ -37,6 +40,7 @@ class AutoRefresher {
      * Update socket reference after reconnection (called from index.js)
      */
     updateSocket(newSock) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.sock = newSock;
         this.socketReady = true;
         this.bytesUploadedThisSession = 0;
@@ -54,6 +58,7 @@ class AutoRefresher {
      * Returns true if reconnected, false if timed out
      */
     async waitForReconnection(maxWaitMs = 120000) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.socketReady) return true;
 
         console.log(`⏳ Waiting up to ${maxWaitMs / 1000}s for socket to reconnect...`);
@@ -77,6 +82,7 @@ class AutoRefresher {
      * Generate a visual progress bar
      */
     generateProgressBar(current, total, width = 20) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const percent = Math.round((current / total) * 100);
         const filled = Math.round((current / total) * width);
         const empty = width - filled;
@@ -88,6 +94,7 @@ class AutoRefresher {
      * Log progress to console with visual bar
      */
     logProgress(current, total, fileName) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const progressBar = this.generateProgressBar(current, total);
         console.log(`\n${progressBar}`);
         console.log(`📤 Current: ${fileName}`);
@@ -97,6 +104,7 @@ class AutoRefresher {
      * Send progress update to WhatsApp (rate limited to avoid flooding)
      */
     async sendProgressUpdate(notifyJid, current, total, refreshed, errors) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (!notifyJid || !this.sock) return;
 
         const now = Date.now();
@@ -123,6 +131,7 @@ class AutoRefresher {
      * WhatsApp drops the connection after ~5GB of rapid uploads
      */
     getSmartDelay(filePath) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             const stats = fs.statSync(filePath);
             const sizeMB = stats.size / 1024 / 1024;
@@ -141,6 +150,7 @@ class AutoRefresher {
      * Check if an error indicates a connection drop
      */
     isConnectionError(error) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const msg = error.message || '';
         return msg.includes('close') || msg.includes('Stream Errored') ||
             msg.includes('reconnect') || msg.includes('Connection') ||
@@ -153,6 +163,7 @@ class AutoRefresher {
      * Base: 3 minutes + 1 minute per 100MB
      */
     getUploadTimeout(filePath) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             const stats = fs.statSync(filePath);
             const sizeMB = stats.size / 1024 / 1024;
@@ -170,6 +181,7 @@ class AutoRefresher {
      * Timeouts are NOT retried — they indicate rate limiting.
      */
     async sendMessageWithRetry(jid, content, filePath = null) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const timeoutMs = filePath ? this.getUploadTimeout(filePath) : 10 * 60 * 1000;
         const fileSize = filePath ? (fs.existsSync(filePath) ? fs.statSync(filePath).size : 0) : 0;
 
@@ -215,6 +227,7 @@ class AutoRefresher {
      * Start the auto refresher schedule
      */
     start() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (!this.cacheGroupId || this.storageGroupIds.length === 0) {
             console.log('⚠️ AutoRefresher: Cache group or Storage groups missing. Disabled.');
             return;
@@ -233,6 +246,7 @@ class AutoRefresher {
      * Run the full refresh cycle across all storage groups
      */
     async runRefreshCycle(manualNotifyJid = null) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.isRefreshing) {
             if (manualNotifyJid) {
                 await this.sock.sendMessage(manualNotifyJid, { text: '⚠️ Refresh already in progress!' });
@@ -327,6 +341,7 @@ class AutoRefresher {
     }
 
     stop() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.job) {
             this.job.cancel();
             this.job = null;
@@ -342,6 +357,7 @@ class AutoRefresher {
      * @param {string} notifyJid - JID to send progress notifications to
      */
     async refreshIdRange(contentType, startId, endId, notifyJid = null) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.isRefreshing) {
             if (notifyJid) {
                 await this.sock.sendMessage(notifyJid, { text: '⚠️ Refresh already in progress!' });
@@ -509,6 +525,7 @@ class AutoRefresher {
      * @param {string} filePath - Path to the local file
      */
     async refreshSingleFile(contentType, contentId, partNumber, filePath) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const fs = require('fs');
         const path = require('path');
 

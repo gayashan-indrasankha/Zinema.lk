@@ -1,3 +1,5 @@
+// ZL-18: quarantine before dependency imports, sessions, timers or configuration.
+require('../../shared/integration-gate.cjs').blockEntry('whatsapp', module);
 throw new Error('Legacy direct database adapter disabled during recovery.');
 const mysql = require('mysql2/promise');
 // No automatic environment-file loading.

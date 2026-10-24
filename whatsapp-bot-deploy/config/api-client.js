@@ -1,3 +1,5 @@
+// ZL-18: quarantine before dependency imports, sessions, timers or configuration.
+require('../../shared/integration-gate.cjs').blockEntry('whatsapp', module);
 /**
  * WhatsApp Bot - API Client
  * Handles communication with the API Bridge on Namecheap
@@ -16,6 +18,7 @@ const API_KEY = recoveryConfig.apiKey;
  * @returns {Promise<object>} - API response
  */
 async function apiRequest(endpoint, data = {}) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     return new Promise((resolve, reject) => {
         const url = new URL(`${API_URL}/${endpoint}`);
         const isHttps = url.protocol === 'https:';
@@ -77,6 +80,7 @@ async function apiRequest(endpoint, data = {}) {
  * @returns {Promise<object>} - Validation result
  */
 async function getTokenData(token) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         const response = await apiRequest('validate-token.php', { token });
         console.log('🎫 Token Validation Result:', JSON.stringify(response, null, 2));
@@ -93,6 +97,7 @@ async function getTokenData(token) {
  * @returns {Promise<boolean>} - Success status
  */
 async function markTokenAsUsed(tokenId) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         const response = await apiRequest('mark-used.php', { token_id: tokenId });
         return response.success === true;
@@ -111,6 +116,7 @@ async function markTokenAsUsed(tokenId) {
  * @param {string|null} errorMessage - Error message if failed
  */
 async function logForward(tokenId, userPhone, userChatId, status, errorMessage = null) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         await apiRequest('log-forward.php', {
             token_id: tokenId,
@@ -132,6 +138,7 @@ async function logForward(tokenId, userPhone, userChatId, status, errorMessage =
  * @returns {Promise<object|null>} - Message ID data
  */
 async function getMessageId(contentType, contentId) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         const response = await apiRequest('get-message-id.php', {
             content_type: contentType,
@@ -154,6 +161,7 @@ async function getMessageId(contentType, contentId) {
  * @returns {Promise<object>} - Result
  */
 async function addMessageId(contentType, contentId, messageId, fileName = null, partNumber = null) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         const requestData = {
             content_type: contentType,
@@ -181,6 +189,7 @@ async function addMessageId(contentType, contentId, messageId, fileName = null, 
  * @returns {Promise<boolean>} - True if needs refresh
  */
 async function needsRefresh(messageId) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         const response = await apiRequest('needs-refresh.php', { message_id: messageId });
         return response.needs_refresh !== false;
@@ -197,6 +206,7 @@ async function needsRefresh(messageId) {
  * @param {string} fileType - video, document, image
  */
 async function logRefresh(messageId, fileName = '', fileType = 'video') {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         await apiRequest('log-refresh.php', {
             message_id: messageId,
@@ -213,6 +223,7 @@ async function logRefresh(messageId, fileName = '', fileType = 'video') {
  * @returns {Promise<object>} - Stats object with total_files and total_refreshes
  */
 async function getRefreshStats() {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         const response = await apiRequest('refresh-stats.php', {});
         return {
@@ -230,6 +241,7 @@ async function getRefreshStats() {
  * @returns {Promise<boolean>} - Connection status
  */
 async function testConnection() {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         // Try a simple validation request with dummy token
         await apiRequest('validate-token.php', { token: 'TEST_CONNECTION' });
@@ -255,6 +267,7 @@ async function testConnection() {
  * Update cache message ID via API
  */
 async function updateCacheMessageId(contentType, contentId, partNumber, cacheMessageId) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         await apiRequest('update-cache-message-id.php', {
             content_type: contentType,
@@ -273,6 +286,7 @@ async function updateCacheMessageId(contentType, contentId, partNumber, cacheMes
  * Update forward statistics
  */
 async function updateForwardStats(tokenId, hitType) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         await apiRequest('update-forward-stats.php', {
             token_id: tokenId,
@@ -287,6 +301,7 @@ async function updateForwardStats(tokenId, hitType) {
  * Get popular files for cache warming
  */
 async function getPopularFiles(limit, botId) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         const response = await apiRequest('get-popular-files.php', {
             limit: limit || 50,
@@ -303,6 +318,7 @@ async function getPopularFiles(limit, botId) {
  * Send bot heartbeat
  */
 async function sendHeartbeat(botId, queueSize, diskUsageMb, memoryUsageMb) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         await apiRequest('bot-heartbeat.php', {
             bot_id: botId,
@@ -321,6 +337,7 @@ async function sendHeartbeat(botId, queueSize, diskUsageMb, memoryUsageMb) {
  * Report bot error
  */
 async function reportError(botId, errorMessage) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         await apiRequest('bot-error.php', {
             bot_id: botId,
@@ -335,6 +352,7 @@ async function reportError(botId, errorMessage) {
  * Update daily stats
  */
 async function updateDailyStats(botId, successful, failed) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         await apiRequest('update-daily-stats.php', {
             bot_id: botId,
@@ -350,6 +368,7 @@ async function updateDailyStats(botId, successful, failed) {
  * Log cache warming operation
  */
 async function logCacheWarming(botId, contentType, contentId, partNumber, success, errorMessage = null) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         await apiRequest('log-cache-warming.php', {
             bot_id: botId,
@@ -370,6 +389,7 @@ async function logCacheWarming(botId, contentType, contentId, partNumber, succes
  * @returns {Promise<object>} - { success, messages: [{content_type, content_id, part_number}] }
  */
 async function getAgingMessages(daysOld = 10) {
+    require('../../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         const response = await apiRequest('get-aging-messages.php', {
             days_old: daysOld
