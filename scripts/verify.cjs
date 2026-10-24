@@ -23,7 +23,8 @@ if (failures.length) {
 const tests = ['scripts/test-public-export.cjs',
   ...fs.readdirSync('tests/refactor').filter(p => p.endsWith('.test.cjs')).map(p => 'tests/refactor/' + p),
   ...fs.readdirSync('tests/environment').filter(p => p.endsWith('.test.cjs')).map(p => 'tests/environment/' + p),
-  ...fs.readdirSync('tests/database').filter(p => p.endsWith('.test.cjs')).map(p => 'tests/database/' + p)];
+  ...fs.readdirSync('tests/database').filter(p => p.endsWith('.test.cjs')).map(p => 'tests/database/' + p),
+  ...fs.readdirSync('tests/content').filter(p => p.endsWith('.test.cjs')).map(p => 'tests/content/' + p)];
 const result = cp.spawnSync(process.execPath, ['--test', ...tests], {
   encoding: 'utf8', timeout: 120000, maxBuffer: 4e6,
   env: { ...environment.cleanEnvironment(), PHP_BINARY: process.env.PHP_BINARY || 'php' }

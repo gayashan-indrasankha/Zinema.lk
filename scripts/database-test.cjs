@@ -6,10 +6,12 @@ const cp = require('node:child_process');
 const crypto = require('node:crypto');
 const environment = require('./environment.cjs');
 function failure(code) { throw Object.assign(new Error(code), { code }); }
-async function main(profile = 'ci') {
+async function main(profile = 'ci', suite = 'database') {
+  if (!['database', 'content'].includes(suite)) failure('UNKNOWN_DATABASE_TEST_SUITE');
+  const phase = { database: 'zl14', content: 'zl15' }[suite];
   await environment.main(['config', profile]); // checks local Linux daemon and the reviewed Compose plan
   const settings = environment.validateSettings(environment.parseSettings(fs.readFileSync(environment.managedPaths(profile).local, 'utf8')), profile);
-  const run = crypto.randomBytes(12).toString('hex'), name = 'zinema-zl14-' + run;
+  const run = crypto.randomBytes(12).toString('hex'), name = 'zinema-' + phase + '-' + run;
   const password = () => 'LOCAL_ONLY_' + crypto.randomBytes(32).toString('hex');
   const rootPassword = password(), appPassword = password(), migrationPassword = password();
   const token = crypto.randomBytes(32).toString('hex'), markerHash = crypto.createHash('sha256').update(token).digest('hex');
@@ -30,7 +32,7 @@ async function main(profile = 'ci') {
   function owned() {
     if (!container) failure('NO_OWNED_TEST_CONTAINER');
     const labels = JSON.parse(docker(['inspect','--format','{{json .Config.Labels}}',container]).stdout);
-    if (labels['io.zinema.phase'] !== 'zl14' || labels['io.zinema.run'] !== run) failure('UNOWNED_DATABASE_REFUSED');
+    if (labels['io.zinema.phase'] !== phase || labels['io.zinema.run'] !== run) failure('UNOWNED_DATABASE_REFUSED');
   }
   function rootSql(sql) {
     owned();
@@ -39,11 +41,11 @@ async function main(profile = 'ci') {
   }
   try {
     if (docker(['network','inspect',name], { allowFailure: true }).status === 0) failure('TEST_RESOURCE_COLLISION');
-    docker(['network','create','--internal','--label','io.zinema.phase=zl14','--label','io.zinema.run=' + run,name]); networkCreated = true;
+    docker(['network','create','--internal','--label','io.zinema.phase=' + phase,'--label','io.zinema.run=' + run,name]); networkCreated = true;
     const rootEnv = { MYSQL_ROOT_PASSWORD: rootPassword, MYSQL_DATABASE: 'zinema_recovery_test',
       MYSQL_USER: 'zinema_recovery_ci', MYSQL_PASSWORD: appPassword, MYSQL_INITDB_SKIP_TZINFO: '1', MYSQL_ROOT_HOST: 'localhost' };
     const created = docker(['create','--pull','never','--name',name + '-db','--user','999:999',
-      '--network',name,'--network-alias','db','--label','io.zinema.phase=zl14','--label','io.zinema.run=' + run,
+      '--network',name,'--network-alias','db','--label','io.zinema.phase=' + phase,'--label','io.zinema.run=' + run,
       '--label','com.docker.compose.project=' + name,'--label','com.docker.compose.service=database-test',
       '--read-only','--cap-drop','ALL','--security-opt','no-new-privileges:true',
       '--memory','1g','--pids-limit','256','--cpus','1',
@@ -83,11 +85,12 @@ async function main(profile = 'ci') {
     const php = (script, changes = {}, allowFailure = false) => {
       const env = { ...shared, ...changes };
       const output = docker(['run','--pull','never','--rm','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges:true',
-        '--network',name,'--user','33:33','--label','io.zinema.phase=zl14','--label','io.zinema.run=' + run,
+        '--network',name,'--user','33:33','--label','io.zinema.phase=' + phase,'--label','io.zinema.run=' + run,
         '--label','com.docker.compose.project=' + name,'--label','com.docker.compose.service=database-test',
         '--tmpfs','/tmp:rw,noexec,nosuid,size=32m,uid=33,gid=33',
         '--tmpfs','/runtime:rw,noexec,nosuid,size=16m,uid=33,gid=33,mode=0700',
-        ...Object.keys(env).flatMap(k => ['--env',k]),'--entrypoint','php',settings.ZINEMA_PROJECT + '-web:zl13',script], { env, allowFailure });
+        ...Object.keys(env).flatMap(k => ['--env',k]),'--entrypoint',script.endsWith('.cjs') ? 'node' : 'php',settings.ZINEMA_PROJECT + '-web:zl13',
+        script], { env, allowFailure, timeout: 120000 });
       if (output.status !== 0) {
         let error;
         for (const line of (output.stderr + '\n' + output.stdout).split('\n')) {
@@ -97,6 +100,31 @@ async function main(profile = 'ci') {
       }
       return JSON.parse(output.stdout.trim());
     };
+    if (suite === 'content') {
+      const migrations = php('tests/content/database.php', { ZL15_MODE: 'migrations' });
+      if (migrations.exit) failure('CONTENT_MIGRATION_FIXTURE_FAILED');
+      process.stdout.write(JSON.stringify({ contentMigrations: migrations }) + '\n');
+      const servicePassword = password();
+      rootSql("CREATE USER 'zinema_content_service'@'%' IDENTIFIED BY '" + servicePassword + "';\n" +
+        "GRANT SELECT,INSERT,UPDATE ON zinema_recovery_test.content_rights_records TO 'zinema_content_service'@'%';\n" +
+        "GRANT SELECT,INSERT ON zinema_recovery_test.content_rights_events TO 'zinema_content_service'@'%';\n" +
+        "GRANT SELECT ON zinema_recovery_test.recovery_test_target TO 'zinema_content_service'@'%';\n");
+      const service = php('tests/content/database.php', { ZL15_MODE: 'service', ZL15_CONTENT_PASSWORD: servicePassword });
+      if (service.exit) failure('CONTENT_SERVICE_FIXTURE_FAILED');
+      const { raceId, raceVersion, ...summary } = service;
+      process.stdout.write(JSON.stringify({ contentService: summary }) + '\n');
+      const race = php('tests/content/race.cjs', { ZL15_CONTENT_PASSWORD: servicePassword,
+        ZL15_RACE_ID: raceId, ZL15_RACE_VERSION: String(raceVersion) });
+      if (race.exit || !race.passed) failure('CONTENT_RACE_UNVERIFIED');
+      process.stdout.write(JSON.stringify({ contentConcurrency: race }) + '\n');
+      rootSql("GRANT UPDATE ON zinema_recovery_test.content_rights_events TO 'zinema_content_service'@'%';");
+      try {
+        const excessive = php('tests/content/database.php', { ZL15_MODE: 'overprivileged', ZL15_CONTENT_PASSWORD: servicePassword });
+        if (excessive.exit || !excessive.overprivilegedIdentityRefused) failure('CONTENT_PRIVILEGE_GATE_UNVERIFIED');
+        process.stdout.write(JSON.stringify({ contentPrivilegeGate: excessive }) + '\n');
+      } finally { rootSql("REVOKE UPDATE ON zinema_recovery_test.content_rights_events FROM 'zinema_content_service'@'%';"); }
+      return; // Finally still removes this new tmpfs-only server/network.
+    }
     const integration = php('tests/database/integration.php');
     process.stdout.write(JSON.stringify({ databaseIntegration: integration }) + '\n');
     const access = php('tests/database/access.php', { DB_USER: 'zinema_recovery_ci', DB_PASS: appPassword,
@@ -142,7 +170,7 @@ async function main(profile = 'ci') {
   }
 }
 module.exports = { main };
-if (require.main === module) main(process.argv[2]).catch(error => {
+if (require.main === module) main(process.argv[2], process.argv[3]).catch(error => {
   process.stderr.write(JSON.stringify({ error: /^[A-Z_]+$/.test(error.code || '') ? error.code : 'DATABASE_TEST_FAILED', detailsWithheld: true }) + '\n');
   process.exitCode = 1;
 });

@@ -20,6 +20,8 @@ Zinema.lk Website/*
 .github/workflows/*
 !apps/web/
 apps/web/*
+!database/content-migrations/
+database/content-migrations/*
 !database/migrations/
 database/migrations/*
 !infra/environments/
@@ -30,6 +32,8 @@ infra/mysql/*
 infra/php/*
 !infra/runtime/
 infra/runtime/*
+!tests/content/
+tests/content/*
 !tests/database/
 tests/database/*
 !tests/environment/
@@ -84,6 +88,8 @@ Zinema.lk Website/assets/images/*
 Zinema.lk Website/assets/js/*
 !Zinema.lk Website/includes/PHPMailer/
 Zinema.lk Website/includes/PHPMailer/*
+!apps/web/src/Content/
+apps/web/src/Content/*
 !apps/web/src/Views/
 apps/web/src/Views/*
 !Zinema.lk Website/includes/PHPMailer/src/
@@ -239,9 +245,19 @@ Zinema.lk Website/includes/PHPMailer/src/*
 !Zinema.lk Website/tv-series.php
 !Zinema.lk Website/verify-email.php
 !Zinema.lk Website/whatsapp-watch.php
+!apps/web/src/Content/CatalogueService.php
+!apps/web/src/Content/Contracts.php
+!apps/web/src/Content/PdoRepository.php
+!apps/web/src/Content/Policy.php
+!apps/web/src/Content/Validation.php
+!apps/web/src/Content/bootstrap.php
 !apps/web/src/Views/Ads.php
 !compose.yaml
+!database/ContentMigrations.php
 !database/Runner.php
+!database/content-migrations.json
+!database/content-migrations/0005_content_rights_records.sql
+!database/content-migrations/0006_content_rights_events.sql
 !database/migrations.json
 !database/migrations/0001_site_settings.sql
 !database/migrations/0002_rate_limits.sql
@@ -262,10 +278,18 @@ Zinema.lk Website/includes/PHPMailer/src/*
 !infra/runtime/health.php
 !scripts/database-test.cjs
 !scripts/environment.cjs
+!scripts/migrate-content.php
 !scripts/migrate.php
 !scripts/prepare-public-export.cjs
 !scripts/test-public-export.cjs
 !scripts/verify.cjs
+!tests/content/content.test.cjs
+!tests/content/contracts.php
+!tests/content/database.php
+!tests/content/fixtures.php
+!tests/content/migration-driver.php
+!tests/content/race.cjs
+!tests/content/race.php
 !tests/database/access.php
 !tests/database/digest.php
 !tests/database/integration.php

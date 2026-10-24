@@ -35,6 +35,8 @@ jobs:
         run: node scripts/environment.cjs test ci
       - name: Verify four-table migrations on a new disposable database
         run: node scripts/database-test.cjs ci
+      - name: Verify isolated rights workflow on a different disposable database
+        run: node scripts/database-test.cjs ci content
       - name: Verify dependency boundaries and schema hold
         run: |
           node scripts/environment.cjs health ci

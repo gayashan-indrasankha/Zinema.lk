@@ -141,11 +141,15 @@ function checkContext() {
   const manifest = JSON.parse(fs.readFileSync(path.join(root, 'infra/environment-files.json'), 'utf8'));
   if (manifest.schemaVersion !== 1 || new Set(manifest.files).size !== manifest.files.length) fail('INVALID_CONTEXT_MANIFEST');
   const migrationManifest = JSON.parse(fs.readFileSync(path.join(root, 'database/migrations.json'), 'utf8'));
-  const reviewedSql = new Map(migrationManifest.migrations.map(m => [m.file, m.sha256]));
+  const contentManifest = JSON.parse(fs.readFileSync(path.join(root, 'database/content-migrations.json'), 'utf8'));
+  const exactContentFiles = ['database/content-migrations/0005_content_rights_records.sql', 'database/content-migrations/0006_content_rights_events.sql'];
+  if (contentManifest.scope !== 'synthetic-rights-extension' || contentManifest.fullApplicationReady !== false ||
+      JSON.stringify(contentManifest.migrations.map(m => m.file)) !== JSON.stringify(exactContentFiles)) fail('UNREVIEWED_CONTENT_SQL_PROFILE');
+  const reviewedSql = new Map([...migrationManifest.migrations, ...contentManifest.migrations].map(m => [m.file, m.sha256]));
   for (const file of manifest.files) {
     if (typeof file !== 'string' || file.includes('\\') || file.includes('..') || path.isAbsolute(file) ||
         /(?:^|\/)(?:\.git|\.recovery-private|node_modules|uploads|whatsapp-session|logs|backups)(?:\/|$)|(?:^|\/)\.env$/i.test(file) ||
-        (/\.sql$/i.test(file) && (!/^database\/migrations\/\d{4}_[a-z_]+\.sql$/.test(file) || !reviewedSql.has(file)))) fail('PRIVATE_CONTEXT_INPUT_REFUSED');
+        (/\.sql$/i.test(file) && (!/^database\/(?:migrations|content-migrations)\/\d{4}_[a-z_]+\.sql$/.test(file) || !reviewedSql.has(file)))) fail('PRIVATE_CONTEXT_INPUT_REFUSED');
     const full = path.join(root, file);
     if (!fs.existsSync(full) || fs.lstatSync(full).isSymbolicLink() || !fs.lstatSync(full).isFile()) fail('MISSING_OR_UNSAFE_CONTEXT_INPUT');
     let parent = path.dirname(full);
@@ -155,7 +159,7 @@ function checkContext() {
     }
     if (/\.sql$/.test(file)) {
       const sql = fs.readFileSync(full, 'utf8');
-      if (!/^CREATE TABLE (?:site_settings|rate_limits|movie_parts|episode_parts) \(/.test(sql) ||
+      if (!/^CREATE TABLE (?:site_settings|rate_limits|movie_parts|episode_parts|content_rights_records|content_rights_events) \(/.test(sql) ||
           (sql.match(/;/g) || []).length !== 1 || /\b(?:DROP|TRUNCATE|INSERT|DELETE|GRANT|DEFINER|OUTFILE)\b/i.test(sql) ||
           crypto.createHash('sha256').update(sql).digest('hex') !== reviewedSql.get(file)) fail('UNREVIEWED_SQL_CONTEXT_INPUT');
     }

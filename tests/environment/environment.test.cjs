@@ -113,7 +113,8 @@ test('reviewed build context exactly matches deny-by-default Docker exclusions',
   assert.ok(paths.includes('whatsapp-bot-deploy/src/config/environment.js'));
   assert.equal(paths.some(p => /(?:^|\/)\.env$|\.recovery-private|whatsapp-session/.test(p)), false);
   const migrations = JSON.parse(fs.readFileSync(path.join(root,'database/migrations.json'),'utf8'));
-  assert.deepEqual(paths.filter(p => /\.sql$/.test(p)).sort(), migrations.migrations.map(m => m.file).sort());
+  const content = JSON.parse(fs.readFileSync(path.join(root,'database/content-migrations.json'),'utf8'));
+  assert.deepEqual(paths.filter(p => /\.sql$/.test(p)).sort(), [...migrations.migrations, ...content.migrations].map(m => m.file).sort());
   assert.equal(paths.includes('Zinema.lk Website/Database.sql'), false);
   assert.equal(paths.includes('Zinema.lk Website/admin/whatsapp-bot-tracking.php'), false);
 });
