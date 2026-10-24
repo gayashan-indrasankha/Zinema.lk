@@ -34,7 +34,7 @@ for (const [name, changes] of [
 test('fully explicit fixture settings pass static validation only', () => assert.equal(probe('settings').accepted,true));
 
 test('legacy direct database adapter remains disabled before provider imports', () => {
-  assert.throws(() => require('../../whatsapp-bot-deploy/config/database.js'), /Legacy direct database adapter disabled/);
+  assert.throws(() => require('../../whatsapp-bot-deploy/config/database.js'), e => e.code === 'INTEGRATION_DISABLED');
 });
 function tokenReader(rows) {
   const source = fs.readFileSync(path.join(root,'whatsapp-bot-deploy/config/database.js'),'utf8');

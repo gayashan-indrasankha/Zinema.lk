@@ -97,13 +97,13 @@ test('live flag alone cannot enable WhatsApp outside production', () => {
     assert.throws(() => assertLiveWhatsAppEnabled(actual), /startup disabled/);
   }
 });
-test('production approval and live flag remain separate configuration gates', () => {
+test('production approval flags cannot enable an unapproved provider', () => {
   const env = { ...fixture(), APP_ENV: 'production', API_URL: 'https://example.invalid/api/',
     ALLOW_PRODUCTION_API: 'true' };
   assert.equal(readConfig(env).liveWhatsApp, false);
   const approved = readConfig({ ...env, ALLOW_LIVE_WHATSAPP: 'true' });
-  assert.equal(approved.liveWhatsApp, true);
-  assert.equal(assertLiveWhatsAppEnabled(approved), undefined);
+  assert.equal(approved.liveWhatsApp, false);
+  assert.throws(() => assertLiveWhatsAppEnabled(approved), /startup disabled/);
   // Only pure validation is called; no bot entry point, HTTP client or live socket is imported.
 });
 test('default process config uses only the explicitly supplied synthetic child environment', () => {
