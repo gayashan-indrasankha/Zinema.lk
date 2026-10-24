@@ -248,3 +248,6 @@ function handlePopupSearch(query) {
     }, 300);
 }
 </script>
+
+<!-- Quarantined integrations have safe, non-actionable controls. -->
+<script src="<?php echo BASE_URL; ?>/js/integration-status.js"></script>

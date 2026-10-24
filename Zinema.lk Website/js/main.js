@@ -46,6 +46,10 @@
     };
 
     const openPlayer = (title, videoUrl) => {
+        if (videoPlayer) { videoPlayer.pause(); videoPlayer.removeAttribute('src'); }
+        if (modalTitle) modalTitle.textContent = 'This delivery method is currently unavailable.';
+        playerDialog?.showModal();
+        return; // No legacy direct-source fallback; authorized HLS uses its separate component.
         if (!playerDialog || !videoPlayer || !modalTitle || !videoUrl) {
             console.error("Player elements missing or invalid video URL:", { 
                 playerDialog, 
