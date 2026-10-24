@@ -1,4 +1,10 @@
 <?php
+// ZL-17: additive verified-catalogue view; never falls through to legacy media.
+if (isset($_GET['catalogue'])) {
+    $playbackType = 'movie';
+    require dirname(__DIR__).'/apps/web/src/Playback/view.php';
+    exit;
+}
 // Include database connection
 require_once 'admin/config.php';
 require_once 'includes/ads.php';
@@ -518,14 +524,9 @@ $og_type = "video.movie";
 
                     <!-- Action Buttons -->
                     <div class="action-buttons">
-                        <?php if (!empty($movie['video_url'])): ?>
-                            <div id="video-container">
-                                <button class="btn btn-watch" id="watchNowBtn" onclick="playMovie(<?php echo $movie['id']; ?>, '<?php echo addslashes($movie['video_url']); ?>')">
-                                    <i class="fas fa-play"></i>
-                                    <span>Watch Now</span>
-                                </button>
-                            </div>
-                        <?php endif; ?>
+                        <a class="btn btn-watch" href="movie-details.php?catalogue=1&amp;id=<?php echo rawurlencode((string)$movie['id']); ?>">
+                            <span>Check playback availability</span>
+                        </a>
                         <a href="<?php echo BASE_URL; ?>/download.php?id=<?php echo $movie['id']; ?>" class="btn btn-whatsapp">
                             <i class="fab fa-whatsapp"></i>
                             <span>WhatsApp Packages මගින් නරඹන්න.</span>
@@ -545,95 +546,6 @@ $og_type = "video.movie";
 
 
     
-    <!-- Video.js Player Implementation -->
-    <script>
-        // ========================================
-        // DIRECT VIDEO STREAMING IMPLEMENTATION
-        // ========================================
-        
-        // Global variables
-        let videoPlayer = null;
-        let modalOpen = false;
-        let currentVideoUrl = null;
-        
-        // ========================================
-        // INLINE VIDEO PLAYER FUNCTION
-        // ========================================
-        
-        async function playMovie(movieId, dbVideoUrl) {
-            const container = document.getElementById('video-container');
-            if (!container) return;
-
-            // Show loader
-            container.innerHTML = `
-                <div class="video-loader">
-                    <div class="video-loader-spinner"></div>
-                    <p class="video-loader-text">Loading video...</p>
-                </div>
-            `;
-
-            try {
-                console.log('📡 Playing movie ID:', movieId);
-                console.log('🎬 Video URL:', dbVideoUrl);
-                
-                // Add small delay for smooth UX
-                await new Promise(resolve => setTimeout(resolve, 300));
-                
-                // Replace loader with video player with custom controls
-                container.innerHTML = `
-                    <div class="video-wrapper" style="position: relative; width: 100%; background: #000; border-radius: 8px; overflow: hidden;">
-                        <video 
-                            id="moviePlayer"
-                            controls 
-                            autoplay 
-                            playsinline
-                            poster="<?php 
-                                $v_poster = $movie['cover_image'];
-                                if (!preg_match('/^http/', $v_poster)) {
-                                    $v_poster = BASE_URL . '/' . ltrim($v_poster, '/');
-                                }
-                                echo htmlspecialchars($v_poster); 
-                            ?>"
-                            style="width: 100%; display: block;">
-                            <source src="${dbVideoUrl}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                `;
-                
-                // Get video element and add functionality
-                const video = document.getElementById('moviePlayer');
-                
-                if (video) {
-                    // Save progress tracking
-                    video.addEventListener('timeupdate', function() {
-                        if (this.duration > 0) {
-                            localStorage.setItem(`movie_${movieId}_progress`, this.currentTime);
-                        }
-                    });
-                    
-                    // Check for saved progress
-                    const savedTime = localStorage.getItem(`movie_${movieId}_progress`);
-                    if (savedTime && parseFloat(savedTime) > 10) {
-                        video.currentTime = parseFloat(savedTime);
-                    }
-                }
-                
-                console.log('🎬 Video player loaded successfully');
-                
-            } catch (error) {
-                console.error('❌ Error loading video:', error);
-                
-                // Show error and restore button
-                alert('Failed to load video: ' + error.message);
-                container.innerHTML = `
-                    <button class="btn btn-watch" onclick="playMovie(${movieId}, '${dbVideoUrl.replace(/'/g, "\\'")}')">
-                        <i class="fas fa-play"></i>
-                        <span>Watch Now</span>
-                    </button>
-                `;
-            }
-        }
-    </script>
+    <!-- Authorized HLS playback is resolved through the catalogue view. -->
 </body>
 </html>
