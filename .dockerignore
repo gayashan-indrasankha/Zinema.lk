@@ -32,6 +32,8 @@ infra/mysql/*
 infra/php/*
 !infra/runtime/
 infra/runtime/*
+!tests/catalogue/
+tests/catalogue/*
 !tests/content/
 tests/content/*
 !tests/database/
@@ -76,6 +78,8 @@ whatsapp-bot-deploy/src/config/*
 Zinema.lk Website/admin/assets/*
 !Zinema.lk Website/admin/cron/
 Zinema.lk Website/admin/cron/*
+!Zinema.lk Website/api/catalogue/
+Zinema.lk Website/api/catalogue/*
 !Zinema.lk Website/api/includes/
 Zinema.lk Website/api/includes/*
 !Zinema.lk Website/api/whatsapp/
@@ -88,6 +92,8 @@ Zinema.lk Website/assets/images/*
 Zinema.lk Website/assets/js/*
 !Zinema.lk Website/includes/PHPMailer/
 Zinema.lk Website/includes/PHPMailer/*
+!apps/web/src/Catalogue/
+apps/web/src/Catalogue/*
 !apps/web/src/Content/
 apps/web/src/Content/*
 !apps/web/src/Views/
@@ -127,6 +133,7 @@ Zinema.lk Website/includes/PHPMailer/src/*
 !Zinema.lk Website/ajax_signup.php
 !Zinema.lk Website/api/add_comment.php
 !Zinema.lk Website/api/auth-handler.php
+!Zinema.lk Website/api/catalogue/v1.php
 !Zinema.lk Website/api/check-session.php
 !Zinema.lk Website/api/collections.php
 !Zinema.lk Website/api/comments.php
@@ -245,6 +252,13 @@ Zinema.lk Website/includes/PHPMailer/src/*
 !Zinema.lk Website/tv-series.php
 !Zinema.lk Website/verify-email.php
 !Zinema.lk Website/whatsapp-watch.php
+!apps/web/src/Catalogue/Access.php
+!apps/web/src/Catalogue/Contracts.php
+!apps/web/src/Catalogue/Controller.php
+!apps/web/src/Catalogue/PdoSearchRepository.php
+!apps/web/src/Catalogue/Query.php
+!apps/web/src/Catalogue/Search.php
+!apps/web/src/Catalogue/bootstrap.php
 !apps/web/src/Content/CatalogueService.php
 !apps/web/src/Content/Contracts.php
 !apps/web/src/Content/PdoRepository.php
@@ -283,6 +297,13 @@ Zinema.lk Website/includes/PHPMailer/src/*
 !scripts/prepare-public-export.cjs
 !scripts/test-public-export.cjs
 !scripts/verify.cjs
+!tests/catalogue/catalogue.test.cjs
+!tests/catalogue/contracts.php
+!tests/catalogue/database.php
+!tests/catalogue/fixtures.php
+!tests/catalogue/http-router.php
+!tests/catalogue/http.test.cjs
+!tests/catalogue/unavailable.php
 !tests/content/content.test.cjs
 !tests/content/contracts.php
 !tests/content/database.php

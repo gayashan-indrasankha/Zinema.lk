@@ -7,8 +7,8 @@ const crypto = require('node:crypto');
 const environment = require('./environment.cjs');
 function failure(code) { throw Object.assign(new Error(code), { code }); }
 async function main(profile = 'ci', suite = 'database') {
-  if (!['database', 'content'].includes(suite)) failure('UNKNOWN_DATABASE_TEST_SUITE');
-  const phase = { database: 'zl14', content: 'zl15' }[suite];
+  if (!['database', 'content', 'catalogue'].includes(suite)) failure('UNKNOWN_DATABASE_TEST_SUITE');
+  const phase = { database: 'zl14', content: 'zl15', catalogue: 'zl16' }[suite];
   await environment.main(['config', profile]); // checks local Linux daemon and the reviewed Compose plan
   const settings = environment.validateSettings(environment.parseSettings(fs.readFileSync(environment.managedPaths(profile).local, 'utf8')), profile);
   const run = crypto.randomBytes(12).toString('hex'), name = 'zinema-' + phase + '-' + run;
@@ -90,7 +90,7 @@ async function main(profile = 'ci', suite = 'database') {
         '--tmpfs','/tmp:rw,noexec,nosuid,size=32m,uid=33,gid=33',
         '--tmpfs','/runtime:rw,noexec,nosuid,size=16m,uid=33,gid=33,mode=0700',
         ...Object.keys(env).flatMap(k => ['--env',k]),'--entrypoint',script.endsWith('.cjs') ? 'node' : 'php',settings.ZINEMA_PROJECT + '-web:zl13',
-        script], { env, allowFailure, timeout: 120000 });
+        ...(suite === 'catalogue' && script.endsWith('.php') ? ['-d','mysqlnd.net_read_timeout=2'] : []),script], { env, allowFailure, timeout: suite === 'catalogue' ? 300000 : 120000 });
       if (output.status !== 0) {
         let error;
         for (const line of (output.stderr + '\n' + output.stdout).split('\n')) {
@@ -100,10 +100,34 @@ async function main(profile = 'ci', suite = 'database') {
       }
       return JSON.parse(output.stdout.trim());
     };
-    if (suite === 'content') {
+    if (suite === 'content' || suite === 'catalogue') {
       const migrations = php('tests/content/database.php', { ZL15_MODE: 'migrations' });
       if (migrations.exit) failure('CONTENT_MIGRATION_FIXTURE_FAILED');
-      process.stdout.write(JSON.stringify({ contentMigrations: migrations }) + '\n');
+      process.stdout.write(JSON.stringify({ [suite === 'catalogue' ? 'catalogueMigrationPrerequisites' : 'contentMigrations']: migrations }) + '\n');
+      if (suite === 'catalogue') {
+        const readerPassword = password();
+        rootSql("CREATE USER 'zinema_catalogue_reader'@'%' IDENTIFIED BY '" + readerPassword + "';\n" +
+          "GRANT SELECT ON zinema_recovery_test.content_rights_records TO 'zinema_catalogue_reader'@'%';\n" +
+          "GRANT SELECT ON zinema_recovery_test.recovery_test_target TO 'zinema_catalogue_reader'@'%';\n");
+        const env = { ZL16_READER_PASSWORD: readerPassword };
+        const integration = php('tests/catalogue/database.php', env);
+        if (integration.exit) failure('CATALOGUE_DATABASE_FIXTURE_FAILED');
+        process.stdout.write(JSON.stringify({ catalogueDatabase: integration }) + '\n');
+        rootSql("GRANT UPDATE ON zinema_recovery_test.content_rights_records TO 'zinema_catalogue_reader'@'%';");
+        try {
+          const excessive = php('tests/catalogue/database.php', { ...env, ZL16_MODE: 'overprivileged' });
+          if (excessive.exit || !excessive.overprivilegedReaderRefused) failure('CATALOGUE_READER_PRIVILEGES_UNVERIFIED');
+          process.stdout.write(JSON.stringify(excessive) + '\n');
+        } finally { rootSql("REVOKE UPDATE ON zinema_recovery_test.content_rights_records FROM 'zinema_catalogue_reader'@'%';"); }
+        docker(['pause',container]);
+        try {
+          const unavailable = php('tests/catalogue/unavailable.php', env, true);
+          if (unavailable.exit !== 1 || unavailable.error !== 'CATALOGUE_UNAVAILABLE') failure('CATALOGUE_OUTAGE_UNVERIFIED');
+        } finally { docker(['unpause',container]); }
+        if (!php('tests/catalogue/unavailable.php', env).databaseReachable) failure('CATALOGUE_RECOVERY_UNVERIFIED');
+        process.stdout.write(JSON.stringify({ catalogueDatabaseOutage: 'failed closed', recovered: true }) + '\n');
+        return;
+      }
       const servicePassword = password();
       rootSql("CREATE USER 'zinema_content_service'@'%' IDENTIFIED BY '" + servicePassword + "';\n" +
         "GRANT SELECT,INSERT,UPDATE ON zinema_recovery_test.content_rights_records TO 'zinema_content_service'@'%';\n" +
