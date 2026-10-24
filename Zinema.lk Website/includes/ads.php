@@ -1,18 +1,3 @@
 <?php
-/**
- * Ads Management - DISABLED
- * All ad networks removed.
- */
-
-define('ADS_ENABLED', false);
-define('SMART_LINK_URL', '');
-
-function renderMobileBannerAd() {}
-function renderDesktopBannerAd() {}
-function renderRectangleAd() {}
-function renderResponsiveBannerAd() {}
-function getSmartLinkUrl() { return ''; }
-function renderSocialBar() {}
-function renderPopunder() {}
-function renderNativeBanner() {}
-?>
+// Legacy include path retained; disabled ad helpers live outside the website root.
+require_once __DIR__ . '/../../apps/web/src/Views/Ads.php';
