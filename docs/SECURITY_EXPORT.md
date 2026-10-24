@@ -484,3 +484,78 @@ a separate scoped role, server UUID and synthetic target marker; database names
 alone never authorize writes. Backup encryption/restore is tested in memory, with
 no plaintext/key file. Legacy application source and integration guards remain
 unchanged. See [database evidence](database/SCHEMA_TEST_RESULTS.md) for scope/limits.
+
+## 2026-10-24 - ZL-15 rights-workflow privacy and build context
+
+The new CLI-only service lives outside the website document root and has no
+HTTP/admin, upload, document-serving or media-fetch adapter. It stores synthetic
+metadata with opaque holder/asset/evidence references, not agreements, contacts,
+real credentials or media. Public playback stays denied. Existing direct media
+URLs are unchanged and not secured by this disconnected component.
+
+Docker context explicitly adds the content modules/tests, extension loader/CLI,
+manifest and exactly two workflow SQL definitions, with checksum and CREATE-only
+checks. Together with the four unchanged original migrations this is six reviewed
+SQL files, not an SQL-directory allowlist. Current strict context: 222 files;
+219 are text. The public exporter policy is unchanged: new paths do not gain
+publication/export approval automatically. No real export or Git publish occurs.
+
+The context Gitleaks scan passed after a synthetic setting-key false positive was
+corrected without an allowlist. Wider documentation/changed-text scanning and its
+limits are recorded in the recovery handoff. No private Database.sql, environment,
+auth/session store, user data, log or private media was read/copied into tests.
+Only the managed synthetic local test configuration is used for Docker checks.
+See [security/test limits](content/CONTENT_TEST_RESULTS.md) and
+[operations](content/CONTENT_OPERATIONS.md).
+
+## 2026-10-24 - ZL-16 additive metadata API
+
+Context explicitly adds 15 Catalogue/API/test files: 237 total, 234 text, still
+six exact reviewed SQL definitions. No private/historical SQL, real credentials
+or media enters this context. New public entry is disconnected and returns 503;
+no export/publishing approval is conferred. Legacy origin paths remain outside
+its enforcement. Tests use fictional metadata/users/licences and a guarded
+SELECT-only identity on a fresh disposable database. See
+[API controls](api/API_SECURITY.md) and [executed scope](api/CATALOGUE_TEST_RESULTS.md).
+
+## 2026-10-24 - ZL-17 HLS test and public boundary
+
+Strict context adds 28 explicitly reviewed text paths: Playback/API/view/player,
+exact vendor file/licence/notice, synthetic generator and tests/tool lockfiles.
+265 total files / 262 text, still six SQL definitions. Node modules, generated
+HLS, browser profiles and synthetic state/session keys remain ignored/private
+and outside the website root. Context does not confer public-export approval.
+
+Default playback factory issues no access. The local CLI-only provider verifies
+asset package hashes; every fixture resource and range rechecks contextual rights
+and entitlement. No raw media origin, private SQL or signing credential is used.
+The former movie direct-MP4 insertion/URL logger was removed, but other legacy
+media/episode/iframe paths are not comprehensively secured by this change.
+See [controls](streaming/PLAYBACK_AUTHORIZATION.md) and
+[executed scope/limits](streaming/PLAYBACK_TEST_RESULTS.md).
+
+## 2026-10-24 - ZL-18 integration controls and retained evidence
+
+Runtime context explicitly adds shared policy/gates/offline simulator, safe PHP
+status/include/UI and quarantine tests. Final 279 files /276 text, still six exact
+SQL definitions. No private variant, session, dump, log, media, provider dependency
+or real environment is added. The historical admin tracking file remains withheld
+from the managed image; its early denial is tested on host and absence in image.
+
+Historical implementation bodies and all private stores remain preserved. No
+quarantine flag grants live approval. Existing public-export rules do not
+automatically approve/package these new shared dependencies; a later publication
+phase must review the complete runtime dependency closure. No real export/push
+was performed. See [controls and remaining exposure](security/INTEGRATION_QUARANTINE.md)
+and [scan/test scope](security/QUARANTINE_TEST_RESULTS.md).
+
+## 2026-10-24 - ZL-19 local identity work
+
+No export/publication occurred. New Identity definitions and tests are explicitly
+reviewed in the local CI image manifest; this does not alter the public-export
+allowlist or approve publishing private material. Snapshot/checksums refer to the
+phase-start working tree including prior uncommitted work. No private SQL, real
+account/remember token/session, key or environment instance was inspected. Only
+fictional test tokens are held in owned temporary state and removed after tests.
+Legacy admin/session and MFA limitations remain release blockers, as described in
+[identity architecture](security/AUTHENTICATION_ARCHITECTURE.md).

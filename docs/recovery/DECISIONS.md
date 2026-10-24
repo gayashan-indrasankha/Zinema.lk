@@ -361,3 +361,187 @@ Consequences: Existing partial acceptance states remain. Publication does not
 repair unresolved schemas, runtime DDL or route wiring, enable live providers,
 authorize production, or start ZL-15. Historical no-commit statements apply to
 the earlier audit boundaries. Preserve current source and ignored recovery data.
+
+## 2026-10-24 - ZL-15 protected rights foundation with explicit integration hold
+
+Context: Owner explicitly authorized local ZL-15 implementation using permitted
+source and the existing extracted workspace. ZL-14 lacks complete catalogue/account
+DDL and safe admin/RBAC integration. No Git staging/commits/push or automatic ZL-16.
+The latest request supersedes earlier no-ZL-15 continuation statements only for
+this authorized task; prior recovery records remain historical evidence.
+
+Decision: Keep all legacy routes and MySQLi/PDO behavior untouched. Build a CLI-only
+rights service with default-deny Authorization and canonical Catalogue ports,
+independent human-review actions, versioned publication scope, current-time asset
+policy and bounded safe metadata discovery. canStream always denies while actual
+entitlement/protected delivery are absent. No UI/endpoint/upload/fetch/storage/CDN,
+real administrator identity, licence agreement or external provider is introduced.
+
+Decision: Distinct logical holder/asset/grant entities inside one bounded workflow
+aggregate; two additive tables for its projection/version and append-only audit.
+This avoids duplicating movies/series or guessing catalogue FKs, but is not a
+fully normalized production rights schema. Shared-holder normalization, global
+queries, SQL CHECK/FK relationships and production persistence remain gated.
+A separate narrowly privileged synthetic service identity cannot mutate audit rows
+or perform DDL/DELETE. CAS update and audit insertion form one DML transaction.
+
+Decision: Preserve four original migration files/manifest and strict loader.
+An explicit two-table extension profile reuses ZL-14 target/UUID/marker, locking,
+ledger, drift and recovery. Fix a reproduced parser bug that stripped VARCHAR(20)
+as well as integer display widths; normalize only INT/BIGINT. A failing-then-passing
+regression and original four-table DB suite verify that correction.
+
+Verification: Host/image 246 test passes; context parsers 128 PHP/46 JS. Rights
+MySQL tests: 13 migrations, 19 service assertions, actual competing editors and
+excessive-privilege refusal. Original 42 DB assertions, access probes, encrypted
+synthetic backup/restore and outage recovery pass. Managed CI volume remains at
+zero application tables and ready 503. Image inventory exactly 222 host-matching
+files. Context secret scan passes 219 text inputs after a synthetic-key false
+positive was corrected without suppressing rules. Full verification/limits in
+content/CONTENT_TEST_RESULTS.md. Hosted workflow for these changes is NOT RUN.
+
+Consequences: PARTIAL, not production rights approval. Full canonical/RBAC/CSRF,
+legal evidence operations, entitlement, protected media and legacy end-to-end
+compatibility are unresolved. Existing direct media links are not secured by the
+new disconnected module. No ZL-16 work or publishing is automatically authorized.
+
+## 2026-10-24 - ZL-16: isolated versioned catalogue boundary
+
+Context: existing API shapes expose unverified catalogue/media fields and have
+active legacy callers; ZL-14 has no complete permitted canonical/account DDL,
+ZL-15 provides synthetic workflow tables and policy but no production authority.
+
+Decision: preserve all existing callers/source bytes. Add one physical v1.php
+resource entry and small pure Catalogue services with trusted ports. Public
+factory remains unconfigured; real SQL tests use only the verified rights
+projection on a fresh marked disposable database. No guessed tables or new index.
+Reuse unchanged asset rights policy; independently require canonical existence,
+requester/asset/operation/territory/channel entitlement and parent discovery.
+Preview/playback eligibility is distinct from actual delivery, always unavailable.
+
+Decision: explicit metadata DTO, no hidden counts/origins/evidence, private/no-store,
+query/response/candidate/time bounds, contextual HMAC keyset cursor and safe errors.
+Use a bounded process-local limiter only as a tested adapter; production shared
+limits and trusted context remain blocking integration work. Search JSON/LIKE scan
+cost is disclosed; do not label 524-row timings production performance evidence.
+
+Verification: host/image 332 tests, 141 PHP/48 JS context parsers, full eligible
+202 PHP/49 JS; actual HTTP safe failures. Catalogue 13 prerequisite +24 SQL checks,
+read-only/excess-privilege/outage gates; old content/database regressions pass.
+Measured p50 70.69/p95 82.60/max 102.12 ms, page 20, 20 samples; search ALL/filesort.
+Initial HTTP CLI-guard and clock-rewind fixture failures were corrected in tests,
+not by relaxing guards. Image exactly 237 host-matching files. Security/preservation
+and final teardown recorded in STATUS and API test report. Hosted CI NOT VERIFIED.
+
+Consequences: ZL-16 PARTIAL, no live catalogue/entitlement enforcement certification.
+ZL-17/ZL-19/ZL-20-25/ZL-44/ZL-45/ZL-55 relationships are PROPOSED DEPENDENCIES, not
+verified Jira edges or completion claims. No Git commit/publish or subsequent task.
+
+## 2026-10-24 - ZL-17: local protected HLS, production unavailable
+
+Context: Shot links trust legacy association fields, movie Watch inserts a raw
+MP4 URL and logs it, progress is unscoped/unthrottled. Canonical/account schemas,
+real rights/identity/grants and CDN/provider authorization remain unresolved.
+
+Decision: preserve all prior source/work; narrowly replace Shot movie/series
+navigation with a validated current-policy resolver and movie direct Watch with
+an additive catalogue-backed view. Retain default series routes/handlers and all
+unrelated source. New public factories remain unconfigured, with no fixture flag.
+No speculative SQL, real media, paid/cloud/provider or subsequent issue activation.
+
+Decision: reuse independent canonical, asset-rights and requester-entitlement
+checks. Issue a short-lived same-origin scoped HttpOnly session; recheck every
+master/variant/segment/caption/range, asset version and provider digest. Only
+CLI/CLI-server marked original fixture bytes inside ignored recovery storage are
+supported. The package cannot be fetched through a static public origin. Future
+CDN integration requires a separate verified provider/descriptor and complete edge/
+origin access tests. Local byte serving is not a production CDN or DRM.
+
+Decision: native-HLS first, pinned self-hosted hls.js MSE fallback, no MP4/embed/
+origin fallback, finite watchdog/retry/expiry and teardown. Opt-in sessionStorage
+progress is opaque-context/version scoped, throttled and expiring; no unverified
+account/history schema. One-cookie concurrent-title limitation is documented.
+Safe bounded in-memory events are not production analytics.
+
+Verification: host/image 388 tests and 156 PHP/56 JS context parsers, full eligible
+217 PHP/57 JS. Actual Chrome 49 protocol/browser checks cover decoded native/MSE
+playback, captions, progress and recovery plus resource/origin/revocation/expiry
+checks. Last startup 4,647/5,903 ms; no improvement/SLA/scalability claim. Image
+265 exact hashes, context/expanded secret scans 262/314 text pass, npm advisories
+zero reported, actionlint passes; shellcheck/pyflakes/hosted CI not run. Managed
+CI remains zero app tables and ready 503. Source/Git/cleanup proof in final handoff.
+
+Consequences: PARTIAL, production CDN/private-origin and complete canonical/
+identity/licensing/legacy/device integration remain blocked or NOT VERIFIED.
+ZL-18/19/ZL-41-45 are proposed follow-up dependencies, not verified Jira edges or
+completion claims. No commit, publication, deployment or automatic ZL-18.
+
+## 2026-10-24 - ZL-18: provider approval is not an environment flag
+
+Context: historical production flags could satisfy bot startup; workers/helpers
+could be imported independently; payments already exited before side effects but
+used scattered responses. Extraction/cached-origin/browser fallback had separate
+callers. ZL-17 original HLS and all prior dirty work must remain intact.
+
+Decision: shared JSON feature policy and small PHP/Node gates, with immutable live
+denial for four targeted capabilities. Retain existing mode variable conventions;
+only separate test/local simulators may run, never historical live implementations.
+Guard entries before dependency/config/session/DB/log/timer activity and sensitive
+methods/callbacks independently. Preserve token/queue/cache-forward/refresh and
+extractor bodies and all data. Return safe 403/no-store capability errors, and
+make affected UI non-actionable. No Boolean enables provider approval or fabricated
+payment/official messaging/CDN integration.
+
+Decision: block legacy browser cached-origin, extraction, iframe and episode-media
+fallbacks without redesigning browsing or coupling HLS to WhatsApp. Keep Playback/
+Content/Catalogue and generated HLS source byte-preserved. Simulation uses bounded
+fictional in-memory identifiers only; no persistence can queue future live work.
+Protected private variants remain excluded/unread; do not claim arbitrary local
+or production script isolation. Existing mail/OAuth controls stay separately
+unresolved for future auth/approval review.
+
+Verification: host/image 524 tests, network-none 134, browser unavailable UI 8 and
+unchanged actual HLS 49 checks; full eligible syntax 222 PHP/64 JS. Direct route/
+module and operation tripwires show no external side effect. Ten Node historical
+bodies match initial hashes after guard-only stripping. Context 279 reviewed files,
+expanded secret scan 338 text inputs passes, actionlint passes; shellcheck/pyflakes
+and hosted CI not run. Zero managed app tables/readiness 503, no schema migration.
+Final Git/checksum/image/cleanup records in STATUS and quarantine test report.
+
+Consequences: ZL-18 PARTIAL; private/deployed variants, external schedules/provider
+state and full DB/auth/admin/browser production coverage are not verified. No
+commit, publication, production action, data deletion or automatic ZL-19. ZL-19,
+ZL-28-30, ZL-44-45 and ZL-54 are proposed follow-ups, not verified Jira edges.
+
+## 2026-10-24 - ZL-19: identity integration requires schema and recovery evidence
+
+Context: existing HTML/AJAX/JSON/OAuth/admin flags disagree; complete permitted
+account DDL remains missing and real recovery is unverified. Current dirty source
+is authoritative and production account requirements cannot be replaced without
+compatibility/recovery tests and approved rollout.
+
+Decision: implement pure typed PHP Identity services with explicit transactional
+Store, MailSink, Clock and session-bound StepUp ports. No guessed SQL, public
+privileged endpoint, framework or production fixture switch. Use supported PHP
+password crypto, digest one-use recovery, epoch invalidation, explicit permissions,
+bounded HMAC abuse keys, CSRF and fixed non-secret audit. Upload inspection never
+persists without a verified safe storage/ownership/re-encoding path. All privileged
+permissions deny with MissingStepUp; no mock MFA counts as implementation.
+
+Decision: do not install an unverified TOTP implementation or activate mandatory
+MFA before encrypted-key lifecycle, verified account binding and owner recovery.
+Retain legacy access requirements; fix only account-preserving signup behavior,
+malformed CSRF rejection and admin error disclosure. Legacy session/admin/CSRF/
+upload and provider identity gaps stay explicit release blockers.
+
+Verification: host/image 566 passes, full syntax 235 PHP/69 JS; read-only network-
+none 176, identity browser 18, HLS 49 and quarantine UI 8. Image exactly 297 hashes.
+Synthetic Store rollback and real PHP session checks do not verify SQL persistence,
+production MFA/mail or full legacy route integration. No new dependencies or SQL.
+Offline image containers inherit Compose project labels without runtime service
+ownership labels, so audit/down must follow their exit; guard refusal is preserved.
+
+Consequences: PARTIAL, no production activation, user lockout, Git/history writes,
+provider operation or ZL-20. ZL-31/33/48/51/53/55 are PROPOSED DEPENDENCY follow-ups,
+not newly configured Jira links or completion claims. See final STATUS/test report
+for integrity, scan, cleanup and approval limits.
