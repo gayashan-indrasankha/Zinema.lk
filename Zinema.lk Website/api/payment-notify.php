@@ -1,7 +1,7 @@
 <?php
 // Phase 2: quarantined before any bootstrap, SQL, logging or network activity.
-http_response_code(403);
-exit('Disabled during recovery.');
+require_once __DIR__ . '/../includes/integrations.php';
+\Zinema\Integrations\FeatureGate::deny('payments');
 
 
 // This script is called by IDEAMART, not the user.

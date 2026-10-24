@@ -34,6 +34,10 @@ class VideoPlayer {
     }
 
     loadVideo() {
+        this.isLoading = false;
+        this.hasError = true;
+        this.container.textContent = 'This delivery method is currently unavailable.';
+        return; // Historical embed implementation retained below, never used as fallback.
         // Create iframe
         const iframe = document.createElement('iframe');
         iframe.allow = 'autoplay; fullscreen; encrypted-media';

@@ -827,8 +827,8 @@ $schema_data = [
                                     <?php foreach ($episodes as $episode): ?>
                                         <div class="episode-item" 
                                              data-season="<?php echo $episode['season_number']; ?>" 
-                                             data-video-url="<?php echo htmlspecialchars($episode['video_url'] ?? ''); ?>"
-                                             onclick="playEpisode(<?php echo $episode['id']; ?>, '<?php echo addslashes($episode['video_url'] ?? ''); ?>')">
+                                             data-video-url="<?php echo '' /* unapproved media locator withheld */; ?>"
+                                             onclick="playEpisode(<?php echo $episode['id']; ?>, '<?php echo '' /* unapproved media locator withheld */; ?>')">
                                             <?php 
                                                 $ep_thumb = !empty($episode['thumb_image']) ? $episode['thumb_image'] : $series['cover_image'];
                                                 
@@ -992,6 +992,9 @@ $schema_data = [
 
         // Play episode function
         async function playEpisode(episodeId, videoUrl) {
+            const unavailableContainer = document.getElementById('video-container');
+            if (unavailableContainer) { unavailableContainer.textContent = 'Episode playback is currently unavailable.'; unavailableContainer.style.display = 'block'; }
+            return; // Preserve season/episode browsing without an unapproved origin fallback.
             const container = document.getElementById('video-container');
             const actionButtons = document.getElementById('action-buttons');
             const downloadBtn = document.getElementById('download-btn');

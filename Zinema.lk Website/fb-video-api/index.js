@@ -1,3 +1,5 @@
+// ZL-18: no HTTP/framework/browser import or listener in legacy extraction.
+require('../../shared/integration-gate.cjs').blockEntry('extraction', module);
 const recoveryConfig = require('./environment').readConfig();
 const express = require('express');
 const cors = require('cors');
@@ -102,6 +104,7 @@ const extractVideoUrlFromHtml = (html) => {
  * HTTP-based extraction (fast, ~200-500ms)
  */
 const extractViaHttp = async (videoUrl) => {
+    require('../../shared/integration-gate.cjs').assertLive('extraction');
     const normalizedUrl = normalizeUrl(videoUrl);
     
     const response = await got(normalizedUrl, {
@@ -151,6 +154,7 @@ const loadPuppeteer = async () => {
  * Puppeteer-based extraction (slower, ~3-8s, but more reliable)
  */
 const extractViaPuppeteer = async (videoUrl) => {
+    require('../../shared/integration-gate.cjs').assertLive('extraction');
     const { puppeteer, chromium } = await loadPuppeteer();
     
     let browser = null;

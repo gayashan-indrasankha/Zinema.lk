@@ -107,3 +107,13 @@ ZL-7 owns feasibility/adapters; ZL-3 token/data consistency; ZL-40 rights/consen
 ZL-39 secrets/security/reliability; ZL-8 fake-contract tests. Existing stories: ZL-28 technical feasibility, ZL-54 official approval,
 ZL-29 optional adapter, ZL-30 redemption/observability and ZL-18 quarantine;
 see [the supplied Jira map](PRODUCTION_GAP_ANALYSIS.md).
+
+## 2026-10-24 - ZL-18 runtime disposition
+
+The historical cached-forwarding/queue architecture above remains preserved, not
+production approved. Central entry/action guards now deny all live startup/API/
+worker/cron/token behavior, independent of flags. A separate bounded offline
+simulator has no transport or real store. No source/queue/session deletion or
+platform approval occurred. ZL-28/29/30/54 remain proposed future decisions. See
+[actual status](../integrations/WHATSAPP_STATUS.md) and
+[executed denial evidence](../security/QUARANTINE_TEST_RESULTS.md).

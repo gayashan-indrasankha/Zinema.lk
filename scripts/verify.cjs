@@ -26,7 +26,8 @@ const tests = ['scripts/test-public-export.cjs',
   ...fs.readdirSync('tests/database').filter(p => p.endsWith('.test.cjs')).map(p => 'tests/database/' + p),
   ...fs.readdirSync('tests/content').filter(p => p.endsWith('.test.cjs')).map(p => 'tests/content/' + p),
   ...fs.readdirSync('tests/catalogue').filter(p => p.endsWith('.test.cjs')).map(p => 'tests/catalogue/' + p),
-  ...fs.readdirSync('tests/playback').filter(p => p.endsWith('.test.cjs')).map(p => 'tests/playback/' + p)];
+  ...fs.readdirSync('tests/playback').filter(p => p.endsWith('.test.cjs')).map(p => 'tests/playback/' + p),
+  ...fs.readdirSync('tests/quarantine').filter(p => p.endsWith('.test.cjs')).map(p => 'tests/quarantine/' + p)];
 const result = cp.spawnSync(process.execPath, ['--test', ...tests], {
   encoding: 'utf8', timeout: 120000, maxBuffer: 4e6,
   env: { ...environment.cleanEnvironment(), PHP_BINARY: process.env.PHP_BINARY || 'php' }

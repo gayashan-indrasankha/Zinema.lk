@@ -92,12 +92,17 @@ test('local opt-in cannot authorize an arbitrary database hostname', () => {
   assert.equal(php('config', '', { DB_HOST: 'example.invalid', RECOVERY_CONTAINER_MODE: 'local' }).http, 503);
 });
 for (const [key, value] of [['APP_ENV', undefined], ['DB_PASS', undefined], ['DB_NAME', 'unrelated'],
-  ['MAIL_MODE', 'live'], ['PAYMENT_MODE', 'live'], ['WHATSAPP_MODE', 'live']]) {
+  ['MAIL_MODE', 'live']]) {
   test('pure bootstrap safely rejects invalid configuration: ' + key, () => {
     const result = php('config', '', { [key]: value });
     assert.equal(result.http, 503);
     assert.ok(result.output.startsWith('Recovery configuration unavailable:'));
     assert.equal(result.output.includes('FAKE_TEST_PASSWORD'), false);
+  });
+}
+for (const key of ['PAYMENT_MODE', 'WHATSAPP_MODE', 'EXTRACTOR_MODE', 'MEDIA_MODE']) {
+  test('unapproved mode cannot activate through bootstrap: ' + key, () => {
+    assert.equal(php('config', '', { [key]: 'live', ALLOW_LIVE_INTEGRATIONS:'true' }).output, 'configuration_valid');
   });
 }
 test('existing bot lockfile agrees with its manifest without running install scripts', () => {

@@ -1,3 +1,5 @@
+// ZL-18: quarantine before dependency imports, sessions, timers or configuration.
+require('../../shared/integration-gate.cjs').blockEntry('whatsapp', module);
 /**
  * Upload Queue with Rate Limiting and Concurrency Control
  * Prevents flooding WhatsApp servers when many files need uploading
@@ -7,6 +9,7 @@ const EventEmitter = require('events');
 
 class UploadQueue extends EventEmitter {
     constructor(options = {}) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         super();
         this.maxConcurrent = options.maxConcurrent || 2;      // Max simultaneous uploads
         this.delayBetweenUploads = options.delayBetweenUploads || 5000;  // 5 second gap
@@ -31,6 +34,7 @@ class UploadQueue extends EventEmitter {
      * @returns {Promise} - Resolves when upload completes
      */
     enqueue(task) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         return new Promise((resolve, reject) => {
             const key = `${task.contentType}_${task.contentId}_${task.partNumber || 0}`;
 
@@ -77,6 +81,7 @@ class UploadQueue extends EventEmitter {
      * Process the queue with rate limiting
      */
     async processQueue() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.processing) return;
         this.processing = true;
 
@@ -109,6 +114,7 @@ class UploadQueue extends EventEmitter {
      * Process a single upload task
      */
     async processTask(task) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.activeCount++;
         console.log(`📤 Processing: ${task.key} (${this.activeCount}/${this.maxConcurrent} active)`);
 
@@ -141,6 +147,7 @@ class UploadQueue extends EventEmitter {
      * @param {Function} handler - async (task) => result
      */
     setUploadHandler(handler) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.uploadHandler = handler;
     }
 
@@ -148,6 +155,7 @@ class UploadQueue extends EventEmitter {
      * Get current queue status
      */
     getStatus() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         return {
             queueLength: this.queue.length,
             activeCount: this.activeCount,
@@ -161,6 +169,7 @@ class UploadQueue extends EventEmitter {
      * Clear the entire queue
      */
     clear() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const cleared = this.queue.length;
         this.queue.forEach(task => {
             task.reject(new Error('Queue cleared'));
@@ -175,6 +184,7 @@ class UploadQueue extends EventEmitter {
      * Boost priority for a specific content
      */
     boostPriority(contentType, contentId, partNumber) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const key = `${contentType}_${contentId}_${partNumber || 0}`;
         const task = this.queue.find(t => t.key === key);
         if (task) {
@@ -190,6 +200,7 @@ class UploadQueue extends EventEmitter {
     }
 
     sleep(ms) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

@@ -143,15 +143,16 @@ if ($result && $result->num_rows > 0) {
         <div class="shots-container">
             <?php if (!empty($shots_feed)): ?>
                 <?php foreach ($shots_feed as $shot): ?>
-                    <div class="shot-item" data-shot-id="<?php echo $shot['id']; ?>" data-fb-share-url="<?php echo htmlspecialchars($shot['fb_share_url'] ?? ''); ?>" data-cached-url="<?php echo htmlspecialchars($shot['shot_video_file'] ?? ''); ?>">
+                    <div class="shot-item" data-shot-id="<?php echo $shot['id']; ?>" data-fb-share-url="<?php echo '' /* unapproved extraction/media reference withheld */; ?>" data-cached-url="<?php echo '' /* unapproved extraction/media reference withheld */; ?>">
                         <!-- Shot Video Player -->
+                        <p class="integration-unavailable" role="status">Preview unavailable. Check linked content availability.</p>
                         <div class="shot-video-player">
                             <!-- Loading spinner -->
                             <div class="video-loading-spinner" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5; display: none;">
                                 <div style="width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 1s linear infinite;"></div>
                             </div>
                             <video 
-                                data-src="<?php echo htmlspecialchars($shot['shot_video_file'] ?? ''); ?>" 
+                                data-src="<?php echo '' /* unapproved extraction/media reference withheld */; ?>"
                                 preload="none"
                                 loop
                                 muted 
@@ -451,6 +452,11 @@ if ($result && $result->num_rows > 0) {
 
         // ===== Dynamic CDN URL Fetching with Buffer-Before-Play =====
         async function loadVideoWithFreshCdn(shotItem) {
+            const unavailableVideo = shotItem.querySelector('video');
+            if (unavailableVideo) { unavailableVideo.pause(); unavailableVideo.removeAttribute('src'); }
+            const loading = shotItem.querySelector('.video-loading-spinner');
+            if (loading) loading.style.display = 'none';
+            return; // Legacy extraction/cached-origin fallback quarantined. Use authorized HLS for approved assets.
             const video = shotItem.querySelector('video');
             if (!video) return;
             
@@ -565,6 +571,7 @@ if ($result && $result->num_rows > 0) {
         
         // ===== Apply Video Source with Buffer-Before-Play & Smooth Transition =====
         function applyVideoSource(video, url, spinner) {
+            return; // No unapproved cached media source.
             video.src = url;
             video.preload = 'auto'; // Start buffering immediately
             

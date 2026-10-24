@@ -1,3 +1,5 @@
+// ZL-18: quarantine before dependency imports, sessions, timers or configuration.
+require('../../shared/integration-gate.cjs').blockEntry('whatsapp', module);
 /**
  * Multi-Tier Forwarder
  * Implements 4-tier forwarding strategy with AUTO-RECOVERY
@@ -10,6 +12,7 @@ const UploadQueue = require('./upload-queue');
 
 class MultiTierForwarder {
     constructor(client, fileManager, apiClient, cacheGroupId = null, storageGroupIds = []) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.client = client;
         this.fileManager = fileManager;
         this.apiClient = apiClient;
@@ -61,6 +64,7 @@ class MultiTierForwarder {
     }
 
     setStore(store) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.store = store;
     }
 
@@ -68,6 +72,7 @@ class MultiTierForwarder {
      * Called by index.js after socket reconnects — mirrors AutoRefresher pattern
      */
     updateSocket(newClient) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.client = newClient;
         this.socketReady = true;
         console.log(`🔌 MultiTierForwarder: Socket updated after reconnection`);
@@ -81,6 +86,7 @@ class MultiTierForwarder {
      * Wait up to maxWaitMs for the socket to reconnect (max 90s)
      */
     async waitForReconnection(maxWaitMs = 90000) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.socketReady) return true;
         console.log(`⏳ MultiTierForwarder: Waiting up to ${maxWaitMs / 1000}s for socket reconnect...`);
         return new Promise(resolve => {
@@ -99,11 +105,13 @@ class MultiTierForwarder {
 
     // Generate the video caption with instructions
     getVideoCaption() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         return '';
     }
 
     // Load message cache from disk
     loadMessageCache() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             if (fs.existsSync(this.messageCacheFile)) {
                 const data = fs.readFileSync(this.messageCacheFile, 'utf8');
@@ -120,6 +128,7 @@ class MultiTierForwarder {
 
     // Save message cache to disk
     saveMessageCache() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             const dir = path.dirname(this.messageCacheFile);
             if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -136,12 +145,14 @@ class MultiTierForwarder {
 
     // Add message to persistent cache
     addToMessageCache(messageId, messageObj) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         this.messageCache.set(messageId, messageObj);
         // Save immediately after each add to ensure persistence
         this.saveMessageCache();
     }
 
     loadQueue() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             if (fs.existsSync(this.queueFile)) {
                 const data = fs.readFileSync(this.queueFile, 'utf8');
@@ -157,6 +168,7 @@ class MultiTierForwarder {
     }
 
     saveQueue() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             const dir = path.dirname(this.queueFile);
             if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -171,6 +183,7 @@ class MultiTierForwarder {
     }
 
     isNightTime() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const now = new Date();
         const hour = now.getHours();
         const minute = now.getMinutes();
@@ -180,6 +193,7 @@ class MultiTierForwarder {
     }
 
     async forwardVideo(chatId, tokenData) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const { content_type, content_id, message_id, part_number } = tokenData;
         const operationKey = `${content_type}_${content_id}_${part_number || 0}`;
 
@@ -257,6 +271,7 @@ class MultiTierForwarder {
     }
 
     async tryTier1Forward(chatId, messageId) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             console.log(`🔍 TIER 1: Checking for messageId=${messageId}`);
 
@@ -353,6 +368,7 @@ class MultiTierForwarder {
     }
 
     async tryTier2Forward(chatId, contentType, contentId, partNumber, messageId) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             console.log(`🔍 TIER 2: Attempting forward for ${contentType}_${contentId}${partNumber ? '_part' + partNumber : ''}`);
 
@@ -452,6 +468,7 @@ class MultiTierForwarder {
      * This goes through the upload queue to prevent flooding
      */
     async tryTier3Upload(chatId, contentType, contentId, partNumber, priority = 0) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         // Add to upload queue with priority
         try {
             const result = await this.uploadQueue.enqueue({
@@ -472,6 +489,7 @@ class MultiTierForwarder {
      * Actually perform the Tier 3 upload (called by queue)
      */
     async performTier3Upload(chatId, contentType, contentId, partNumber) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             const uploadKey = `${contentType}_${contentId}_${partNumber || 0}`;
 
@@ -551,6 +569,7 @@ class MultiTierForwarder {
     }
 
     async processPendingRequests() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (this.pendingColdRequests.size === 0) return { processed: 0 };
         let processed = 0, failed = 0;
 
@@ -595,6 +614,7 @@ class MultiTierForwarder {
     }
 
     queueForNight(operationKey, chatId, tokenData) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         if (!this.pendingColdRequests.has(operationKey)) {
             // Store users as objects with chatId AND token
             this.pendingColdRequests.set(operationKey, { tokenData, users: [] });
@@ -610,6 +630,7 @@ class MultiTierForwarder {
     }
 
     async broadcastToWaiters(operationKey, sentMessage) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const op = this.activeOperations.get(operationKey);
         if (!op || !sentMessage) return;
         for (const waiter of op.waiters) {
@@ -623,6 +644,7 @@ class MultiTierForwarder {
     }
 
     async waitForActiveOperation(operationKey, chatId) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         return new Promise(resolve => {
             const op = this.activeOperations.get(operationKey);
             op.waiters.push({ chatId, resolve });
@@ -630,6 +652,7 @@ class MultiTierForwarder {
     }
 
     async updateMessageId(contentType, contentId, partNumber, messageId) {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         try {
             await this.apiClient.addMessageId(contentType, contentId, messageId, null, partNumber || 0);
         } catch (e) {
@@ -638,6 +661,7 @@ class MultiTierForwarder {
     }
 
     getStats() {
+        require('../../shared/integration-gate.cjs').assertLive('whatsapp');
         const total = this.stats.tier1Hits + this.stats.tier2Hits + this.stats.tier3Hits + this.stats.tier4Queued;
         return {
             ...this.stats,

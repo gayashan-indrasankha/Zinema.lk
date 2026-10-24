@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "features": {
+    "whatsapp": {
+      "flag": "WHATSAPP_MODE",
+      "simulation": true,
+      "message": "WhatsApp delivery is currently unavailable."
+    },
+    "extraction": {
+      "flag": "EXTRACTOR_MODE",
+      "simulation": true,
+      "message": "External video extraction is disabled."
+    },
+    "payments": {
+      "flag": "PAYMENT_MODE",
+      "simulation": false,
+      "message": "Payments are currently unavailable."
+    },
+    "external_media": {
+      "flag": "MEDIA_MODE",
+      "simulation": false,
+      "message": "This delivery method is currently unavailable."
+    }
+  }
+}

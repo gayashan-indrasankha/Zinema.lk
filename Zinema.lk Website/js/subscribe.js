@@ -8,6 +8,13 @@
     const submitBtn = document.getElementById("submitBtnModal");
     const closeBtn = document.getElementById("closeSubscribeBtn");
 
+    // Backend policy is permanently unavailable for unapproved payments.
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Payments are currently unavailable.'; }
+    if (messageArea) messageArea.textContent = 'Payments are currently unavailable.';
+    form?.addEventListener('submit', event => event.preventDefault());
+    closeBtn?.addEventListener('click', () => modal.close());
+    return;
+
     // Function to close the modal
     const closeModal = () => {
         modal.close();

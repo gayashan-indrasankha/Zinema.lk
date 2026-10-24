@@ -1,3 +1,5 @@
+// ZL-18: no environment flag constitutes live provider approval.
+require('../shared/integration-gate.cjs').blockEntry('whatsapp', module);
 // Fail before loading Baileys, authentication stores or timers.
 const recoveryConfig = require('./config/environment').readConfig();
 require('./config/environment').assertLiveWhatsAppEnabled(recoveryConfig);
@@ -337,6 +339,7 @@ const messageQueue = new MessageQueue();
  * Main Baileys Connection Function
  */
 async function connectToWhatsApp() {
+    require('../shared/integration-gate.cjs').assertLive('whatsapp');
     const sessionPath = recoveryConfig.sessionPath;
 
     // Ensure session directory exists
@@ -607,6 +610,7 @@ async function onConnectionOpen() {
  * Handle incoming messages - FIXED FOR BAILEYS
  */
 async function handleMessage(msg) {
+    require('../shared/integration-gate.cjs').assertLive('whatsapp');
     try {
         // Skip messages sent by the bot itself
         if (msg.key.fromMe) return;

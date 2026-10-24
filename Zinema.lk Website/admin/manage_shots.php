@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../includes/integrations.php';
 require_once 'config.php';
 check_login();
 $admin_id = $_SESSION['admin_id'];
@@ -48,7 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_shot'])) {
         $extract_url = $api_url . '/api/extract?url=' . urlencode($fb_share_url);
         
         $response = false;
-        if (EXTRACTOR_MODE !== 'disabled') {
+        if (\Zinema\Integrations\FeatureGate::status('extraction')['available']) {
+        \Zinema\Integrations\FeatureGate::requireLive('extraction');
         $ch = curl_init($extract_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
@@ -509,6 +511,7 @@ if ($shots_result && $shots_result->num_rows > 0) {
         const API_URL = '<?php echo $api_url; ?>';
         
         async function checkApiHealth() {
+            return; // No legacy extractor probe in quarantine.
             const btn = document.getElementById('btn-check-api');
             const indicator = document.getElementById('api-indicator');
             const details = document.getElementById('api-details');
@@ -569,6 +572,8 @@ if ($shots_result && $shots_result->num_rows > 0) {
         // TEST VIDEO URL EXTRACTION
         // ============================================
         async function testVideoUrl() {
+            document.getElementById('test-result').textContent = 'External video extraction is disabled.';
+            return;
             const fbUrl = document.getElementById('fb_share_url').value.trim();
             const resultSpan = document.getElementById('test-result');
             

@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/integrations.php';
 /**
  * WhatsApp Token Generation Functions
  * Generates unique, single-use tokens for WhatsApp video forwarding
@@ -14,6 +15,7 @@ require_once __DIR__ . '/settings.php';
  * @return string 12-character token
  */
 function generateUniqueToken() {
+    \Zinema\Integrations\FeatureGate::requireLive('whatsapp');
     $characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Excluding I, O, 0, 1 to avoid confusion
     $token = '';
     $length = 12;
@@ -36,6 +38,7 @@ function generateUniqueToken() {
  * @return array|false Token data on success, false on failure, or rate limit error array
  */
 function createWhatsAppToken($conn, $contentId, $contentType, $expiryMinutes = 180, $partNumber = null) {
+    \Zinema\Integrations\FeatureGate::requireLive('whatsapp');
     // Rate limiting check - DISABLED
     // To re-enable, uncomment the code below:
     /*
@@ -205,6 +208,7 @@ function createWhatsAppToken($conn, $contentId, $contentType, $expiryMinutes = 1
  * @return string WhatsApp wa.me URL
  */
 function getWhatsAppLink($token, $botNumber) {
+    \Zinema\Integrations\FeatureGate::requireLive('whatsapp');
     // Remove + if present
     $botNumber = str_replace('+', '', $botNumber);
     $message = urlencode("!get {$token}");
@@ -218,6 +222,7 @@ function getWhatsAppLink($token, $botNumber) {
  * @return int Number of deleted tokens
  */
 function cleanupExpiredTokens($conn) {
+    \Zinema\Integrations\FeatureGate::requireLive('whatsapp');
     $stmt = $conn->prepare("DELETE FROM whatsapp_tokens WHERE expires_at < NOW() AND is_used = 0");
     $stmt->execute();
     $deletedCount = $stmt->affected_rows;
@@ -232,6 +237,7 @@ function cleanupExpiredTokens($conn) {
  * @return array Statistics about tokens
  */
 function getTokenStats($conn) {
+    \Zinema\Integrations\FeatureGate::requireLive('whatsapp');
     $stats = [
         'total' => 0,
         'used' => 0,
@@ -265,6 +271,7 @@ function getTokenStats($conn) {
  * @return bool True if group mode is enabled
  */
 function isGroupModeEnabled($conn) {
+    \Zinema\Integrations\FeatureGate::requireLive('whatsapp');
     return getSetting($conn, 'group_mode_enabled', '0') === '1';
 }
 
@@ -276,6 +283,7 @@ function isGroupModeEnabled($conn) {
  * @return array|null Group data with invite_link, group_jid, group_name, or null if none available
  */
 function getActiveDistributionGroup($conn) {
+    \Zinema\Integrations\FeatureGate::requireLive('whatsapp');
     // First, check if group mode is enabled
     if (!isGroupModeEnabled($conn)) {
         return null;
@@ -354,6 +362,7 @@ function getActiveDistributionGroup($conn) {
  * @return bool Success
  */
 function updateSetting($conn, $key, $value) {
+    \Zinema\Integrations\FeatureGate::requireLive('whatsapp');
     $stmt = $conn->prepare("UPDATE site_settings SET setting_value = ?, updated_at = NOW() WHERE setting_key = ?");
     $stmt->bind_param("ss", $value, $key);
     $result = $stmt->execute();
@@ -369,6 +378,7 @@ function updateSetting($conn, $key, $value) {
  * @return bool Success
  */
 function markGroupAsFull($conn, $groupId) {
+    \Zinema\Integrations\FeatureGate::requireLive('whatsapp');
     $stmt = $conn->prepare("UPDATE distribution_groups SET is_full = TRUE, updated_at = NOW() WHERE id = ?");
     $stmt->bind_param("i", $groupId);
     $result = $stmt->execute();

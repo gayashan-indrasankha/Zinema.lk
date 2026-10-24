@@ -1,4 +1,7 @@
 <?php
+// ZL-18: quarantine before configuration, body logging, SQL or external actions.
+require_once __DIR__ . '/../includes/integrations.php';
+\Zinema\Integrations\FeatureGate::deny('whatsapp');
 // Use admin config for consistent session, connection and auth
 require_once 'config.php';
 
