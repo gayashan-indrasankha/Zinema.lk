@@ -1,0 +1,274 @@
+{
+  "date": "2026-10-24",
+  "scope": "eligible first-party targeted sources only; lexical evidence, not complete dataflow proof",
+  "findings": [
+    {
+      "path": "Zinema.lk Website/admin/manage_shots.php",
+      "inManagedContext": true,
+      "operations": [
+        {
+          "kind": "transport",
+          "lines": [
+            58
+          ]
+        }
+      ],
+      "entryGate": false,
+      "operationGuards": 1
+    },
+    {
+      "path": "Zinema.lk Website/api/payment-notify.php",
+      "inManagedContext": true,
+      "operations": [
+        {
+          "kind": "entitlement",
+          "lines": [
+            33,
+            40
+          ]
+        }
+      ],
+      "entryGate": true,
+      "operationGuards": 0
+    },
+    {
+      "path": "Zinema.lk Website/api/subscribe.php",
+      "inManagedContext": true,
+      "operations": [
+        {
+          "kind": "transport",
+          "lines": [
+            60
+          ]
+        },
+        {
+          "kind": "entitlement",
+          "lines": [
+            79
+          ]
+        }
+      ],
+      "entryGate": true,
+      "operationGuards": 0
+    },
+    {
+      "path": "Zinema.lk Website/fb-video-api/index.js",
+      "inManagedContext": true,
+      "operations": [
+        {
+          "kind": "transport",
+          "lines": [
+            110
+          ]
+        },
+        {
+          "kind": "extraction",
+          "lines": [
+            106,
+            136,
+            142,
+            143,
+            150,
+            156,
+            158,
+            163,
+            198,
+            273,
+            278
+          ]
+        }
+      ],
+      "entryGate": true,
+      "operationGuards": 2
+    },
+    {
+      "path": "whatsapp-bot-deploy/config/api-client.js",
+      "inManagedContext": true,
+      "operations": [
+        {
+          "kind": "transport",
+          "lines": [
+            42
+          ]
+        }
+      ],
+      "entryGate": true,
+      "operationGuards": 18
+    },
+    {
+      "path": "whatsapp-bot-deploy/config/auto-refresher.js",
+      "inManagedContext": true,
+      "operations": [
+        {
+          "kind": "transport",
+          "lines": [
+            121,
+            191,
+            252,
+            262,
+            304,
+            333,
+            363,
+            382,
+            503,
+            511
+          ]
+        },
+        {
+          "kind": "scheduler",
+          "lines": [
+            237
+          ]
+        }
+      ],
+      "entryGate": true,
+      "operationGuards": 15
+    },
+    {
+      "path": "whatsapp-bot-deploy/config/cache-warmer.js",
+      "inManagedContext": true,
+      "operations": [
+        {
+          "kind": "transport",
+          "lines": [
+            127,
+            209,
+            735
+          ]
+        },
+        {
+          "kind": "scheduler",
+          "lines": [
+            329,
+            335,
+            341
+          ]
+        }
+      ],
+      "entryGate": true,
+      "operationGuards": 23
+    },
+    {
+      "path": "whatsapp-bot-deploy/config/health-monitor.js",
+      "inManagedContext": true,
+      "operations": [
+        {
+          "kind": "transport",
+          "lines": [
+            56,
+            109,
+            125
+          ]
+        },
+        {
+          "kind": "scheduler",
+          "lines": [
+            31
+          ]
+        }
+      ],
+      "entryGate": true,
+      "operationGuards": 8
+    },
+    {
+      "path": "whatsapp-bot-deploy/config/multi-tier-forwarder.js",
+      "inManagedContext": true,
+      "operations": [
+        {
+          "kind": "transport",
+          "lines": [
+            285,
+            306,
+            362,
+            403,
+            414,
+            458,
+            538,
+            590,
+            599,
+            602,
+            641
+          ]
+        },
+        {
+          "kind": "session",
+          "lines": [
+            41,
+            42,
+            45,
+            113,
+            154
+          ]
+        }
+      ],
+      "entryGate": true,
+      "operationGuards": 22
+    },
+    {
+      "path": "whatsapp-bot-deploy/index.js",
+      "inManagedContext": true,
+      "operations": [
+        {
+          "kind": "transport",
+          "lines": [
+            685,
+            698,
+            738,
+            744,
+            753,
+            767,
+            784,
+            805,
+            809,
+            819,
+            825,
+            833,
+            837,
+            842,
+            847,
+            853,
+            856,
+            858,
+            871,
+            875,
+            885,
+            891,
+            899,
+            903,
+            908,
+            913,
+            935,
+            941,
+            960,
+            964,
+            975,
+            986,
+            993,
+            996
+          ]
+        },
+        {
+          "kind": "session",
+          "lines": [
+            18,
+            19,
+            352,
+            356
+          ]
+        },
+        {
+          "kind": "scheduler",
+          "lines": [
+            374
+          ]
+        }
+      ],
+      "entryGate": true,
+      "operationGuards": 2
+    }
+  ],
+  "privateHistoricalVariants": "EXCLUDED / UNREAD / NOT VERIFIED",
+  "mailOauth": "UNRESOLVED production approval; existing guards retained, not expanded by ZL-18",
+  "managedWebEgress": "not globally disabled; separate network-none test proves only tested contracts",
+  "productionSchedules": "NOT ACCESSED / NOT VERIFIED"
+}
