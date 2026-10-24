@@ -1,0 +1,6 @@
+'use strict';
+const {test}=require('node:test'),assert=require('node:assert/strict'),cp=require('node:child_process'),path=require('node:path'),fs=require('node:fs'),os=require('node:os');
+const root=path.resolve(__dirname,'../..');
+function run(name){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'zinema-zl19-'));try {const env=process.platform==='win32'?{SystemRoot:process.env.SystemRoot||'C:\\Windows'}:{};return cp.spawnSync(process.env.PHP_BINARY||'php',['-n',...(process.platform==='win32'&&name.startsWith('upload valid PNG')?['-d','extension='+path.join(path.dirname(process.env.PHP_BINARY),'ext/php_fileinfo.dll')]:[]),'-d','session.save_path='+dir,'tests/identity/contracts.php',name],{cwd:root,env,encoding:'utf8',timeout:20000});}finally{if(path.dirname(dir)!==os.tmpdir()||!path.basename(dir).startsWith('zinema-zl19-')||fs.lstatSync(dir).isSymbolicLink())throw Error('UNSAFE_CLEANUP');for(const file of fs.readdirSync(dir)) {if(!/^sess_[a-zA-Z0-9,-]+$/.test(file))throw Error('UNEXPECTED_FIXTURE_FILE');fs.unlinkSync(path.join(dir,file));}fs.rmdirSync(dir);}}
+const list=run('list');assert.equal(list.status,0);
+for(const name of JSON.parse(list.stdout))test('ZL-19 '+name,()=>{const r=run(name);assert.equal(r.status,0,r.stderr);assert.equal(r.stderr,'');assert.deepEqual(JSON.parse(r.stdout),{passed:true});});
