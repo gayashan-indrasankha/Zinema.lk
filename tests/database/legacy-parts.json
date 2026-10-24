@@ -1,0 +1,13 @@
+{
+  "scope": "two historical part CREATE statements only; no ALTER/token/rows",
+  "tables": [
+    {
+      "source": "Zinema.lk Website/migrations/movie_parts.sql",
+      "sql": "CREATE TABLE IF NOT EXISTS `movie_parts` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `movie_id` int(11) NOT NULL,\n  `part_number` int(11) NOT NULL,\n  `message_id` varchar(255) NOT NULL,\n  `file_name` varchar(500) DEFAULT NULL,\n  `file_size` bigint(20) DEFAULT NULL,\n  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `unique_movie_part` (`movie_id`, `part_number`),\n  KEY `idx_movie_id` (`movie_id`),\n  KEY `idx_message_id` (`message_id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
+    },
+    {
+      "source": "Zinema.lk Website/migrations/episode_parts.sql",
+      "sql": "CREATE TABLE IF NOT EXISTS `episode_parts` (\n  `id` int(11) NOT NULL AUTO_INCREMENT,\n  `episode_id` int(11) NOT NULL,\n  `part_number` int(11) NOT NULL,\n  `message_id` varchar(255) NOT NULL,\n  `file_name` varchar(500) DEFAULT NULL,\n  `file_size` bigint(20) DEFAULT NULL,\n  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,\n  `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`),\n  UNIQUE KEY `unique_episode_part` (`episode_id`, `part_number`),\n  KEY `idx_episode_id` (`episode_id`),\n  KEY `idx_message_id` (`message_id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;"
+    }
+  ]
+}

@@ -119,7 +119,8 @@ disabled, with explicit fake credentials and no live group/phone identifiers.
 ## 6. Public Export Inclusion Policy
 
 Tool: [scripts/prepare-public-export.cjs](../scripts/prepare-public-export.cjs).
-Policy version: `zl10-v1`. Node standard library only; Python was unavailable and
+Original ZL-10 policy version: `zl10-v1`; current ZL-12 policy is
+`zl12-leaves-v1` (exact refactor delta in section 20). Node standard library only; Python was unavailable and
 no interpreter or package was installed.
 
 Inclusion requires **all** of the following:
@@ -401,3 +402,85 @@ Use the current workspace, existing baseline and this export policy. Produce a
 dependency/route map and evidence-based module classifications without deleting
 or restructuring source. Do not interpret an export exclusion as a deletion
 recommendation. ZL-11 is not started by ZL-10.
+
+## 20. ZL-12 refactor dependency review — 2026-10-23
+
+The original ZL-10 policy/results above remain historical evidence. Current policy
+version is **zl12-leaves-v1**. The [ZL-12 execution report](architecture/REFACTOR_EXECUTION.md)
+documents two byte-preserving internal relocations and their retained legacy shims.
+
+Reviewed and approved exactly two additional text-source paths for this local
+candidate planner:
+
+- apps/web/src/Views/Ads.php — unchanged original disabled PHP ad functions.
+- whatsapp-bot-deploy/src/config/environment.js — unchanged original pure parser.
+
+The apps root is traversable only along exact approved path prefixes; no whole-tree
+or new test/document approval. Independent sensitive-directory/name/content rules
+remain. The root and component ignores/examples are unchanged. Unknown app source
+is excluded before opening its contents.
+
+The selected legacy shim requires its matching canonical implementation. Planning,
+pre-write export validation and manifest validation enforce that exact relationship;
+MISSING_MODULE_DEPENDENCY stops a broken or tampered candidate. Eleven new synthetic
+cases cover pairs, absent/content-held implementations, mutated plans/manifests and
+unapproved code; the existing 32 export tests continue to pass. No live source export
+was written. Synthetic exports use fictional fixture bytes only.
+
+Current actual-source no-write plan: **190 eligible files**, the same four manual
+holds (three personal-path categories and one SQL grammar hold), no output created.
+This is the original 188 eligible paths plus the two reviewed implementations.
+It does not clear existing holds, grant media rights or authorize publication.
+Old zl10-v1 manifests require their matching policy/review and are not silently
+accepted by the new versioned validator. No existing real export was altered.
+
+Rollback of helper placement and these exact policy changes must be reviewed
+together; do not leave an exportable shim pointing to an excluded module. All
+other Git/publication, secret/private-data and production approval boundaries remain.
+
+
+## ZL-13 local container boundary (2026-10-23)
+
+The new Docker build manifest in infra/environment-files.json is a separate,
+exact local build-input review. It is not the public export allowlist and does
+not authorize publishing the new infrastructure files. The zl12-leaves-v1 export
+policy, its two canonical helper dependencies, four holds and historical baseline
+records remain unchanged. No real export or remote push was performed.
+
+The final CI image contains exactly 190 reviewed files, including .dockerignore;
+no actual .env, Git history, SQL dumps, uploads, private sessions/logs or recovery
+stores are present. Parent exceptions are followed by child exclusions, then
+individual file exceptions. Docker's matcher was verified against new fictional
+.env/SQL/Git fixtures. The held admin tracking page is omitted from the image.
+Initial broader ignore rules were corrected before the final image; the aborted
+attempt's local BuildKit cache was not inspected or pruned.
+
+Generated profile configurations are ignored, independent and not build inputs.
+Gitleaks 8.30.1 scans 187 reviewed text files through redacted stdin in a no-mount,
+no-network container. This is a bounded scan, not full history/PII assurance.
+Local Docker administrators can inspect runtime configuration; production secrets
+must never be placed in these profiles. Web ingress permits egress, while every
+provider mode/live flag remains disabled. No provider account was contacted.
+See [operations](development/ENVIRONMENT_OPERATIONS.md) for results and limits.
+
+
+## ZL-14 reviewed schema-only build inputs (2026-10-23)
+
+The Docker context now permits exactly four new source-backed SQL migration paths
+listed in database/migrations.json. Their CREATE-only shape, one-statement boundary
+and SHA-256 bytes are checked before build; all other SQL/dumps remain excluded.
+The reviewed context totals 204 files, including synthetic tests and the existing
+ZL-12 modules. A sanitized JSON fixture contains only the two original part CREATE
+statements, with comments removed, no token ALTERs and no data rows.
+
+This is local build approval, not a public export policy change. The existing
+zl12-leaves-v1 public exporter and holds remain untouched; no real export or remote
+publication occurs. The excluded private Database.sql is not accessed/copied and
+is not a fallback schema source. No real credentials, sessions or data are used.
+
+New generated credentials/run markers stay in process/container memory. Root is
+limited to a newly created, verified empty tmpfs-only server. The runner requires
+a separate scoped role, server UUID and synthetic target marker; database names
+alone never authorize writes. Backup encryption/restore is tested in memory, with
+no plaintext/key file. Legacy application source and integration guards remain
+unchanged. See [database evidence](database/SCHEMA_TEST_RESULTS.md) for scope/limits.

@@ -2,7 +2,284 @@
 
 Updated: 2026-10-23.
 
-## Current phase
+## Current publication phase
+
+The owner subsequently authorized staging the existing ZL-12/ZL-13/ZL-14 work,
+incremental Conventional Commits, feature-branch publication and review-ready PRs.
+This supersedes the earlier implementation-only Git restrictions below; those
+statements remain historical evidence, not a prohibition on this publishing task.
+No merge, deployment, production access or ZL-15 is authorized by this task.
+
+Continued from 804ec5a with 328 eligible existing inputs, an empty index and 64
+changed/new paths. Refreshed origin/main at 94f7708; its tree matches 804ec5a and
+GitHub confirms ZL-11 PR #13 merged. New work starts from that main tip. No reset,
+stash, history rewrite, application edit or private dump access was needed.
+
+- Review [PR #14](https://github.com/gayashan-indrasankha/Zinema.lk/pull/14) first:
+  four commits for ads, pure bot configuration, export closure and refactor evidence.
+- The dependent feat/zl-13-14-environments-migrations branch groups the tightly
+  coupled environment and database infrastructure while separating containers,
+  probes, migrations, disposable tests, context tooling, CI and documentation into
+  focused commits. This avoids publishing an environment tip whose reviewed
+  context refers to absent migration files.
+- Exact staged snapshots receive Gitleaks 8.30.1 scanning, explicit path and diff
+  review, whitespace checks and relevant parser/contract checks before commits.
+  The refactor tip passes 85 tests; the integrated infrastructure snapshot passes
+  145 tests and 115 PHP/44 JavaScript parsers using PHP 8.2.12 and Node 24.13.1.
+  Earlier executed Docker and 42 database assertions remain in the implementation
+  evidence below; they are not described as newly executed publishing checks.
+- Original working-tree source bytes are preserved. The refactor execution record
+  receives a historical-boundary clarification; recovery records document this
+  new authorization. Private credentials, ignored data and historical private SQL
+  are excluded. A secret scan is not an exhaustive security/privacy certification.
+
+Publication handoff: [PR #14](https://github.com/gayashan-indrasankha/Zinema.lk/pull/14)
+and [PR #15](https://github.com/gayashan-indrasankha/Zinema.lk/pull/15) are open,
+ready for review and both target main. Merge #14 first, then #15, using Create a
+merge commit to retain history. No retargeting is needed: shared ancestors drop
+from #15's diff when #14 merges. This final packaging replaces the earlier plan
+to target the second PR at the first branch.
+
+Four refactor commits plus ten environment/migration/documentation commits,
+including this handoff, preserve all 64 original changed/new paths. Before this
+handoff, branch tip 4c183fb and PR #14 tip 6f3baf7 were pushed successfully and the
+working tree/index were clean. All 328 initial eligible inputs remain; only four
+documentation files were intentionally updated during publication. Every original
+application, infrastructure, test, SQL, baseline and other input byte is preserved.
+The previous contribution record remains an exact prefix. All 98 reviewed local
+links/fences and actionlint pass; shellcheck/pyflakes are not installed.
+
+GitHub Actions is enabled. Actual PR and push runs for 4c183fb are IN PROGRESS
+(run 39993830225 / 39993776079), not a passed hosted check. The final handoff push
+will trigger checks for its new tip; their latest status and final clean/remote
+verification are reported at handoff. No containers or database services were
+started during this publication phase. Scan limitations and earlier runtime
+failures remain documented. ZL-12, ZL-13 and ZL-14 remain PARTIAL; publishing their
+implementation does not satisfy unresolved acceptance gates. Next recommended
+task: review/merge #14 then #15, then separately authorize the scoped ZL-14 schema
+and compatibility follow-up already described below. Do not start ZL-15.
+
+## Latest implementation phase (preserved record)
+
+**Jira ZL-14 - Reconcile canonical SQL schema and reliable database access: PARTIAL.**
+2026-10-23 (Asia/Colombo). The owner confirmed no sanitized full schema is available,
+limited migrations to four independently verified definitions, prohibited private
+dump access and speculative application changes, and requested all safe partial
+work. No Git staging/commits/push, production access or automatic ZL-15.
+
+- Starting state: branch docs/zl-11-production-architecture, HEAD
+  804ec5ab07503c3fb0c311b4349443b87184e28f, 275 tracked + 32 pre-existing untracked
+  inputs. Existing ZL-12/ZL-13 work preserved. Inspected 48 nonprivate source parent
+  directories; no nested .git. Private Database.sql was not accessed/copied.
+- Inventoried six SQL references, two embedded CREATE definitions and major
+  PHP/Node consumers. Evidence index covers 39 named tables/views, 34 directly
+  queried; 24 have no complete permitted definition. Historical token/message/
+  bot/routine/view generations conflict and are not silently merged.
+- Four versioned LF/checksummed CREATE migrations: site_settings (actual source
+  name), rate_limits, movie_parts and episode_parts. This is a verified partial
+  subset, NOT the complete canonical database. No other feature table invented.
+- New PHP runner/CLI: file/order/checksum preflight, strict local synthetic target,
+  server UUID and hashed marker checks, separate scoped migration role, advisory
+  locking, running/applied/failed ledger, exact metadata/drift validation and
+  tested post-implicit-commit forward recovery. No DROP/reset/conversion command.
+- New temporary harness reuses ZL-13 images but creates a separate uniquely
+  labelled internal network/tmpfs-only MySQL server, verifies zero initial
+  non-system tables and no persistent mounts/ports, then removes its own resources.
+  Existing dev/staging/CI volumes are not migrated or reset.
+- Host/image regression suite: 145 passed, zero failures/skips; reviewed-context
+  parsers 115 PHP / 44 JS. Final database assertions: 42 passed, zero failed.
+  Fresh/repeated install, historical two-part fixture adoption and row preservation,
+  locking, file/history/schema/ledger drift, post-DDL SQL failure recovery, running
+  state recovery, marker/UUID/credential rejection, bound values, nullability,
+  uniqueness and DML rollback verified on synthetic targets.
+- Original PDO/MySQLi bootstraps verified when explicitly included; repeated PDO
+  named parameters preserved. Two legacy runtime CREATE calls are observed
+  compatibility failures under DML-only privileges. Source is unchanged; missing
+  PDO route wiring/full account/catalogue/social schema remain blockers.
+- Offline Node query-shape tests use a mock pool only. Actual mysql2 SQL/pool/
+  delivery integration remains NOT VERIFIED; existing disabled adapter unchanged.
+- Synthetic logical backup encrypted/decrypted in memory and restored to a
+  different verified empty target matches structure/data hashes; restored ledger
+  skips all four versions. No plaintext/key file or operational backup artifact.
+- Paused-server rejection/recovery verified after bounding mysqlnd read timeout
+  during the new migration connection's construction and restoring the prior
+  process setting. Initial timeout and inherited Compose-label failures were
+  investigated/corrected without weakening ownership guards or changing legacy PHP.
+- Tiny-fixture EXPLAIN selects unique_movie_part, setting_key and idx_ip_action.
+  No measured speed improvement or speculative index/FK/cascade is claimed.
+- Current Docker context: 204 exact reviewed inputs; only four new SQL paths,
+  CREATE-only shape and checksum verified. Public export policy unchanged.
+  Gitleaks 8.30.1: 201 context text inputs passed. Updated actionlint passed;
+  hosted GitHub Actions NOT RUN (no commit/push), shellcheck/pyflakes NOT RUN.
+- Managed CI startup/HTTP checks retain live/dependencies 200 and ready 503.
+  Its audit still shows DML-only account and zero application tables; normal
+  shutdown preserves the volume. No real data/media/session or live provider used.
+- Six database guides plus SCHEMA_EVIDENCE.json created; contribution, setup,
+  architecture, security and decisions updated. All application/historical SQL/
+  package/baseline/ZL-12 bytes preserved; exploratory PHP edits withdrawn and
+  checked against starting hashes. Final preservation/expanded scan/link/teardown
+  evidence is recorded in the contribution handoff.
+
+Final checks: all 307 initial inputs remain; 289 byte-identical, 18 intended
+infrastructure/documentation changes and 21 new files. Every initial application,
+tracked historical SQL, baseline checksum and prior contribution-prefix byte is
+preserved. Full parsers: 176 PHP / 45 JS, zero failures. All 84 inspected local
+links, Markdown fences and whitespace checks pass. Expanded Gitleaks scan: 219
+reviewed text inputs, exit 0. Final image: 204 files, no extra/missing paths or
+SHA mismatches. Zero ZL-14 containers/networks and zero managed containers remain;
+all three original environment volumes are retained. Scan scope excludes private
+stores, Git history and binaries; no blanket secret/PII assurance is claimed.
+
+Git metadata observation: HEAD/tree/local branches/tags and staged state remain
+unchanged. During this session origin/main moved from 45b9309f4a25 to
+94f7708be599, and origin/HEAD resolves to that new value. No fetch, remote update,
+commit or ref-write command was issued by this task. The all-refs equality check
+therefore does not pass; this external remote-tracking change is recorded and
+left intact. It does not change the authoritative working-tree source baseline.
+
+**Unresolved:** 24 missing complete schema definitions, conflicting current
+token/message/view/routine contracts, runtime DDL coupling, missing PDO route
+includes and full application/Node compatibility. No verified full historical/
+production upgrade, canonical referential integrity or production backup/migration.
+Full application readiness remains 503. ZL-14 is not complete; ZL-15 is unstarted.
+
+Exact next recommended task: resume ZL-14 with independently approved sanitized
+DDL, indexes/defaults/constraints/collation and migration history for each missing
+contract, plus an owner-scoped PHP/runtime-DDL compatibility plan. The private
+dump is not a fallback. ZL-15 remains a downstream task, not automatic continuation.
+See [inventory](../database/SCHEMA_INVENTORY.md),
+[migration guide](../database/MIGRATION_GUIDE.md) and
+[execution results](../database/SCHEMA_TEST_RESULTS.md).
+
+## Earlier recovery records
+
+## Previous phase: ZL-13 (preserved record)
+
+**Jira ZL-13 - Build reproducible local staging and CI environments: PARTIAL.**
+2026-10-23 (Asia/Colombo). Owner-authorized local implementation only; no Git
+staging/commits/push, production provisioning or automatic ZL-14 work.
+
+- Continued from branch docs/zl-11-production-architecture at HEAD
+  804ec5ab07503c3fb0c311b4349443b87184e28f with existing uncommitted ZL-12 changes:
+  275 tracked paths plus seven existing untracked files, 282 protected inputs.
+- Added two-service Docker Compose infrastructure, strict reviewed build context,
+  digest-pinned runtimes, separate dev/staging/CI templates and generated ignored
+  local credentials, safe helper commands, three minimal health probes, CLI DB
+  audit, synthetic configuration/security tests and least-privilege pinned CI.
+- Sole application edit: existing pure PHP configuration accepts DB_HOST=db only
+  with RECOVERY_CONTAINER_MODE=local. Default loopback, recovery DB/user prefix
+  and local URL/live-integration guards remain. No business behavior rewrite.
+- Both container builds and all three local profile startups verified. Runtime
+  ports are loopback-only; databases have distinct owned volumes and no published
+  ports. MySQL is internal; web also has scoped ingress and CAN egress.
+- Local host and each image profile: 109 PHP / 42 JS parsers pass; 125 synthetic
+  tests pass with zero failures/skips. Images run PHP 8.2.35 and Node 24.22.1;
+  host baseline PHP 8.2.12 / Node 24.13.1. MySQL image 8.4.13 selected/pinned.
+  Broader preserved/new-source sweep: 170 PHP / 43 JS, zero syntax failures.
+- Each profile returns live 200 / dependencies 200 / ready 503 schema_unverified.
+  CSS 200 and seven sensitive/disabled paths 403. DB audits verify both drivers,
+  DML-only app access and zero application tables. Wrong fictional credentials,
+  DB stop/recovery and web restart verified without data deletion.
+- Actual Docker matcher passes fictional .env/SQL/Git exclusion fixture; final
+  CI image has exactly 190 reviewed files, no extra/missing inputs. Gitleaks
+  8.30.1 scoped scan: 187 text files, exit 0, redacted/no findings. actionlint
+  1.7.7 passes; official checksum verified; shellcheck/pyflakes NOT RUN.
+  Final expanded scan adds changed documentation: 198 text inputs, exit 0.
+  All 58 inspected local links, Markdown fences and diff whitespace pass.
+- Final teardown stopped all three owned projects, retaining their DB volumes and
+  ignored local configurations. No original data, SQL, sessions or media imported.
+  Post-teardown inspection confirms zero owned containers and all three DB volumes.
+- Added five docs/development guides; appended contribution/architecture/security
+  and decision records; README links and Linux config line-ending rules updated.
+  Existing ZL-12 canonical implementations/shims/tests/export policy and baseline
+  checksum documents are preserved. Final preservation: 274/282 starting inputs
+  byte-identical, eight intended changed paths, zero missing/unexpected changes.
+  HEAD/tree/branch/all refs/index unchanged; prior contribution prefix retained.
+
+**Blockers and limits:** No verified canonical application schema, fixture/reset
+contract, full bootstrap/auth/session/catalogue/browser/player regression or
+production readiness. ZL-14 remains unstarted. GitHub Actions is statically
+validated and reproduced locally, but remote execution is PENDING (no push).
+Provider npm installation/vulnerability audit, live integration tests, persistent
+uploads, remote staging/TLS and production operations are NOT RUN. PHP 8.2 needs
+an upgrade before security support ends 2026-12-31; apt resolution is not hermetic.
+Web egress is possible. An initial broad-context build was aborted and corrected;
+its local BuildKit cache was not inspected/pruned. Scanner scope excludes private
+stores, history/binaries and cannot prove absence of every secret/PII pattern.
+
+Observed failures and their corrections, commands, ownership/rollback rules and
+evidence classifications are in
+[ENVIRONMENT_OPERATIONS](../development/ENVIRONMENT_OPERATIONS.md).
+Infrastructure/driver/HTTP observations are runtime verified only within the
+tested local boundaries; pure regressions are test-covered and executed. No
+claim of full application or external verification.
+
+Exact next recommended owner-authorized task: **ZL-14 - Reconcile canonical SQL
+schema and reliable database access**, preserving this working tree and reviewing
+migrations/synthetic fixtures before extending readiness or stateful behavior.
+Do not start it automatically.
+
+## Earlier recovery records
+
+## Previous phase: ZL-12 (preserved record)
+
+**Jira ZL-12 — Refactor modules incrementally without route regressions: PARTIAL.**
+2026-10-23 (Asia/Colombo). The owner authorized safe implementation and tests, but
+explicitly prohibited commits/push/deployment and automatic ZL-13 work. This
+supersedes earlier publication authorization for this new phase.
+
+- Initial branch docs/zl-11-production-architecture; HEAD
+  804ec5ab07503c3fb0c311b4349443b87184e28f; clean worktree, empty index, 275 tracked
+  paths. Preserved current source rather than restoring ZIP/old checkout content.
+- B1/M01/W24: disabled ads implementation now in apps/web/src/Views/Ads.php;
+  includes/ads.php remains an anchored shim. Eight PHP consumers retain paths.
+- B2/narrow B02/M16 slice: pure parser now in bot src/config/environment.js;
+  config/environment.js remains a CommonJS shim. Entry/client/forwarder imports
+  and runtime/private state are unchanged; full M16 remains High/HOLD.
+- Both canonical implementations are byte-identical to their pre-refactor sources.
+  Added 35 characterization, 11 export-dependency and seven boundary/rollback tests.
+  With the existing 32 synthetic export cases: **85 passed, zero failures/skips**.
+- Before edits: 35 leaf and 32 existing export tests passed. B1 reached 73 passes;
+  B2 reached 78; final direct-module/rollback additions reached 85.
+- Direct parsers include tracked/new code: **166 PHP / 40 JS/CJS**, zero failures.
+  These are syntax results, not page/browser/database verification.
+- Narrow exporter update reviews two exact canonical paths and enforces paired
+  dependencies in planning, pre-write and manifest validation; version
+  zl12-leaves-v1. No real export. Actual-source dry run: 190 eligible, four unchanged
+  holds, no output created. Five synthetic ignore probes pass; ignores/templates
+  are unchanged.
+- All 275 original tracked paths remain; only two helper wrappers, the reviewed
+  exporter and explicitly listed developer/architecture/security/recovery docs
+  change. BASELINE/checksum, public handlers/assets, SQL, locks/manifests, guards
+  and prior contribution prefix remain preserved. HEAD/tree/branch/all refs/index
+  unchanged. Final bounded redacted scan and preservation totals are recorded in
+  REFACTOR_EXECUTION and the appended contribution record.
+- Rehearsed PHP and Node rollback/reapply in isolated fictional fixtures. No
+  workspace rollback, source deletion, session/media migration or external contact.
+- Checked 25 nonprivate tracked parent directories: no nested .git. Private
+  preserved history and sensitive stores were not opened or moved.
+
+Complete HTTP/Apache rewrite/access-denial, canonical DB/auth/session, browser/
+player and service/worker compatibility remain BLOCKED/NOT TESTED. No known
+introduced critical regression, but those important ZL-11 acceptance gates cannot
+be claimed passed. No broad refactor, DB/schema repair, new feature/framework,
+dependency installation, live bot/extractor/payment, Git staging/commit/branch/
+push, deployment or paid operation occurred.
+
+Current facts, before/after route matrix, test commands, rollback and deferred
+work are in docs/architecture/REFACTOR_EXECUTION.md. CURRENT_ARCHITECTURE reflects
+only the two implemented boundaries; TARGET remains planned.
+Exact next recommended task: **ZL-13 — Build reproducible local staging and CI
+environments**, to enable further route-sensitive verification. ZL-14 owns canonical
+DB reconciliation and ZL-31 the broader regression gates. Dependencies are proposed;
+none of those issues is executed automatically.
+
+Final checks: 266 original tracked paths byte-identical; nine intended changes,
+both original helper implementations retained exactly; all 48 local doc links
+and whitespace/privacy checks pass. Gitleaks 8.30.1 scanned 16 changed/new artifacts
+with full redaction: exit 0, no findings/reports. No historical/private scan claimed.
+
+## Prior ZL-9/ZL-11 review publication handoff (historical)
 
 Owner-authorized ZL-9 clarification / ZL-11 review publication, 2026-10-23.
 Architecture planning is COMPLETE within static documentation scope; production

@@ -1,0 +1,47 @@
+name: ZL-13 isolated environment checks
+on:
+  pull_request:
+  push:
+    branches: [main, "feat/**", "fix/**", "chore/**", "docs/**"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: zl13-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  isolated-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # verified v6 ref
+        with:
+          node-version: "24.22.1"
+          package-manager-cache: false
+      - name: Validate isolated configuration
+        run: |
+          node scripts/environment.cjs doctor
+          node scripts/environment.cjs init ci
+          node scripts/environment.cjs config ci
+      - name: Scan reviewed text without mounts or network
+        run: node scripts/environment.cjs secrets
+      - name: Build and start isolated services
+        run: node scripts/environment.cjs up ci
+      - name: Run parsers and synthetic regression tests
+        run: node scripts/environment.cjs test ci
+      - name: Verify four-table migrations on a new disposable database
+        run: node scripts/database-test.cjs ci
+      - name: Verify dependency boundaries and schema hold
+        run: |
+          node scripts/environment.cjs health ci
+          node scripts/environment.cjs audit ci
+      - name: Stop owned services and retain volumes
+        if: always()
+        run: |
+          if [ -f infra/environments/ci/.env ]; then
+            node scripts/environment.cjs down ci
+          fi

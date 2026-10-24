@@ -1,5 +1,48 @@
 # Recovery decisions
 
+## 2026-10-23 — ZL-12: refactor only tested dependency-free leaves
+
+Context: The owner requested actual safe implementation of the ZL-11 plan while
+prohibiting Git commits/push and later tasks. Starting HEAD
+804ec5ab07503c3fb0c311b4349443b87184e28f on docs/zl-11-production-architecture had
+a clean worktree/empty index. Canonical database and complete HTTP/browser fixtures
+are still unavailable; broad bootstrap/page/worker movement would be unverified.
+
+Decision: Implement M01/W24 disabled ads behind its existing PHP include and only
+the side-effect-free B02 parser portion of M16 behind its existing CommonJS import.
+Retain exact original implementation bytes in canonical files, explicit relative
+shims and all current callers. Full M16 entry/package/scheduler/state movement and
+all high-risk route/DB/security changes stay on HOLD. No class/framework conversion.
+
+Rationale: Both modules can be characterized and executed without application
+bootstrap, database, real environment files, live accounts or worker timers.
+Thirty-five baseline contracts passed before source edits; 32 original export
+tests also passed. Preserve false/empty ad behavior and pure config validation,
+not merely parser acceptance.
+
+Packaging consequence: A relocated helper omitted by the exporter would break a
+candidate. Approve exactly the two reviewed canonical text paths, retain every
+independent sensitive exclusion and bump to zl12-leaves-v1. Enforce exact shim/
+implementation dependencies in plan/export/manifest validation; do not approve
+whole app/test/document trees. Four existing holds remain; no real export.
+
+Verification: B1 baseline plus new paired-export checks reached 73 passing tests;
+B2 reached 78; direct modules, three consumer import contexts and isolated rollback/
+reapply checks brought final total to 85, zero failed/skipped. Direct syntax:
+166 PHP / 40 JS/CJS, zero failures. Current-source no-write plan: 190 eligible,
+four unchanged holds, no output. SHA-256 proves both canonical files retain initial
+bytes; unchanged public handler/asset/guard/schema/config-root contracts are static
+evidence, not runtime page or production assertions.
+
+Status: PARTIAL for ZL-12 overall, with both selected low-risk batches functionally
+verified. Full HTTP/Apache/browser/schema acceptance is not available; next proposal
+is ZL-13 environment work, then relevant ZL-14/31 gates. No next issue executed.
+Rollback is a guarded current-session copyback/import correction, rehearsed only
+in isolated synthetic fixtures; preserve later owner edits and never reset Git,
+restore an archive, delete originals or mutate private runtime state.
+HEAD/refs/index remain untouched; contribution history is append-only.
+Security/export limitations and exact files/commands are in REFACTOR_EXECUTION.md.
+
 ## 2026-10-23 — Publish ZL-9 clarification and ZL-11 architecture for review
 
 Context: The owner requested incremental staging/Conventional Commits, review
@@ -205,3 +248,116 @@ Rationale: Code comments establish current text, not historical authorization, t
 Consequences: Reconciliation of prior changes and schema generations is the next recommended task.
 
 Verification: Presence of guards and Git modifications statically inspected; historical provenance not yet verified.
+
+
+## 2026-10-23 - ZL-13 reproducible local environments with an explicit schema hold
+
+Context: The owner authorized implementing development, restricted local staging
+and CI from the existing extracted working tree, preserving uncommitted ZL-12
+changes. No commits, publishing, production resources or ZL-14 schema work.
+
+Decision: Use digest-pinned PHP 8.2.35/Apache, Node 24 (observed 24.22.1) and MySQL
+8.4.13. Retain the website-only document root and .htaccess. Node runs synthetic
+tests rather than a live integration. Two services are sufficient. MySQL is on an
+internal network; web also needs a scoped ingress bridge because this engine did
+not publish the internal-only service port. Bind only to 127.0.0.1. Web egress is
+possible and is not described as firewall-denied. All providers remain disabled.
+
+Decision: Three profiles have independent generated local credentials and named
+volumes. Preserve actual PHP variable names and APP_ENV values; staging/CI use
+test. Permit hostname db only with an explicit local container opt-in while
+retaining all existing non-production target guards. No application tables,
+schema merge, dump import, media or account seeds. The app identity has DML only.
+
+Decision: Distinguish liveness, driver connectivity and schema readiness. Ready
+returns 503 until ZL-14 supplies verified schema assertions. No health endpoint
+runs legacy bootstrap DDL. Keep immutable action refs, least-privilege Actions
+permissions, bounded diagnostics, and no artifacts/deployment. GitHub execution
+is pending; local workflow reproduction is not a remote CI pass.
+
+Consequences: Source changes need a rebuild; new build paths need explicit review.
+Sessions are ephemeral; database volumes survive normal teardown. Uploads are
+unavailable on read-only source. PHP 8.2 needs a supported-version migration before
+its 2026-12-31 security support end. Debian build-package resolution is not fully
+hermetic. Bot/extractor dependencies and business workflows remain unverified.
+An aborted build may retain local cache; do not run broad pruning as cleanup.
+
+Verification: Three local profiles started, loopback/DB-volume isolation checked;
+125 synthetic tests and 109 PHP/42 JS parsers passed in the image. Dependency
+checks/audits show both drivers available, least privilege and zero application
+tables; readiness remains 503. Wrong synthetic credentials, DB outage/recovery,
+web restart, actual Docker context exclusion fixture and final exact image
+inventory were verified. Gitleaks scoped scan and actionlint passed. See
+docs/development/ENVIRONMENT_OPERATIONS.md for commands, failures and limitations.
+
+
+## 2026-10-23 - ZL-14 four-table subset, strict synthetic migration boundary
+
+Context: The owner requested database reconciliation, then confirmed no sanitized
+full DDL is available. Explicitly limit migrations to four independently defined
+tables, keep existing PHP/MySQLi/PDO behavior, do not invent missing schemas or
+open/copy the private dump, and report PARTIAL. No commits/push/production/ZL-15.
+
+Decision: Retain site_settings (the actual settings table name), rate_limits,
+movie_parts and episode_parts only. Their versioned CREATE statements and LF
+checksums are the partial definition authority. Preserve historical SQL files,
+all app source and repeated PDO named-parameter behavior. Exploratory app edits
+were withdrawn and their exact initial hashes verified. No runtime DDL repair,
+native-prepare conversion, table alias, missing token field or FK is guessed.
+
+Decision: Use a small PHP runner rather than an ORM. Validate files/order/checksum
+before connecting, and require local test role/name/UUID/hashed synthetic marker
+before writes. Advisory lock precedes ledger creation; running/applied/failed
+records track attempts with fixed errors. Verify schema/ledger drift and reconcile
+post-commit failures only when the reviewed definition exactly matches. No DROP,
+automatic conversion or production-capable runner is introduced.
+
+Decision: Use existing ZL-13 images with a new independently labelled internal
+network/tmpfs-only MySQL server. Verify zero non-system tables and no persistent/
+bind mounts before bootstrap. Fresh credentials and a separate scoped migration
+role; no existing profile volumes changed. CI gets the same check; hosted execution
+pending. Exactly four reviewed new SQL files are permitted in build context, not
+public export. No SQL dump/private row data is read.
+
+Verification: Host/image suites 145 passes; final DB assertions 42 passes, including
+historical two-part adoption, checksum/schema/ledger drift, locking, post-DDL SQL
+failure recovery, marker/UUID rejection and prepared-value integrity. Original
+bootstraps/repeated PDO parameters verified on the subset; runtime CREATE calls
+in two legacy helpers are observed compatibility failures, left unchanged. Backup
+encrypted in memory/restored to an empty separate target with identical schema/
+rows and a valid ledger. Paused-server failure/recovery passed after bounding
+mysqlnd greeting/read timeout only during migration connection construction.
+
+Consequences: PARTIAL, with 24 missing complete DDL definitions plus unresolved
+token/message/routine generations and full route/mysql2 compatibility. No timing
+improvement claim from tiny-fixture EXPLAIN. No FK/cascade to unknown parent tables.
+No operational persistent backup/key artifact, cloud DR or production migration.
+Resume ZL-14 with approved missing schema/compatibility evidence; do not start
+ZL-15 automatically. Detailed commands, corrected test failures and evidence limits
+are in docs/database/SCHEMA_TEST_RESULTS.md.
+
+## 2026-10-23 - Publish existing work as two dependent review units
+
+Context: The owner explicitly requested staging, incremental commits, feature
+branches and open PRs after the implementation-only ZL-12/ZL-13/ZL-14 tasks.
+
+Decision: Start from refreshed origin/main 94f7708, whose tree equals the reviewed
+ZL-11 HEAD. Use refactor/zl-12-leaf-modules for the two compatible leaf moves and
+export closure. Use feat/zl-13-14-environments-migrations for coupled local
+infrastructure and the four-table subset. Preserve distinct Conventional Commits
+for substantial source, infrastructure, tests, CI and documentation groups.
+Final packaging: both PRs target main, avoiding an owner retargeting step. Merge
+PR #14 first and PR #15 second; the four shared refactor ancestors disappear from
+#15's diff after #14 merges. This supersedes the initial stacked-base proposal.
+Recommend merge commits to retain history; no PR is automatically merged.
+
+Verification: Explicit paths, staged-tree Gitleaks, staged/working diff inspection,
+whitespace and relevant parser/contract checks before each commit. Final staged
+refactor passes 85 tests; integrated infrastructure passes 145 tests and 115 PHP /
+44 JavaScript parsers. Full staged suite at integration supplements per-group
+parsing; no claim that every intermediate commit implements the final environment.
+
+Consequences: Existing partial acceptance states remain. Publication does not
+repair unresolved schemas, runtime DDL or route wiring, enable live providers,
+authorize production, or start ZL-15. Historical no-commit statements apply to
+the earlier audit boundaries. Preserve current source and ignored recovery data.

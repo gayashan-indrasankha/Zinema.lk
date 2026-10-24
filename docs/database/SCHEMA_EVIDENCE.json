@@ -1,0 +1,2252 @@
+{
+  "schemaVersion": 1,
+  "scope": "static first-party source only; private Database.sql excluded and unopened",
+  "sourceFiles": 134,
+  "quotedSqlCandidates": 278,
+  "limitations": "Quoted SQL and static identifiers only; dynamic identifiers and SELECT * do not establish a complete column/type contract.",
+  "historicalSqlSources": [
+    {
+      "path": "Zinema.lk Website/admin/migrate_shots.sql",
+      "tables": [],
+      "alterTargets": [
+        "shots"
+      ]
+    },
+    {
+      "path": "Zinema.lk Website/migrations/episode_parts.sql",
+      "tables": [
+        "episode_parts"
+      ],
+      "alterTargets": []
+    },
+    {
+      "path": "Zinema.lk Website/migrations/movie_parts.sql",
+      "tables": [
+        "movie_parts"
+      ],
+      "alterTargets": [
+        "whatsapp_tokens"
+      ]
+    },
+    {
+      "path": "whatsapp-bot-deploy/database/migration_ultimate_system.sql",
+      "tables": [
+        "bot_statistics",
+        "bot_health_status",
+        "cache_warming_log",
+        "system_alerts",
+        "file_cleanup_queue",
+        "backup_log"
+      ],
+      "alterTargets": [
+        "movie_message_ids",
+        "whatsapp_tokens"
+      ]
+    },
+    {
+      "path": "whatsapp-bot-deploy/database/migration_ultimate_system_FIXED.sql",
+      "tables": [
+        "whatsapp_tokens",
+        "bot_health_status",
+        "bot_statistics",
+        "cache_warming_log",
+        "system_alerts",
+        "file_cleanup_queue",
+        "backup_log"
+      ],
+      "alterTargets": [
+        "movie_parts",
+        "episode_parts"
+      ]
+    },
+    {
+      "path": "whatsapp-bot-deploy/database/schema.sql",
+      "tables": [
+        "video_tokens",
+        "forward_logs",
+        "media_refresh_log"
+      ],
+      "alterTargets": []
+    }
+  ],
+  "tables": [
+    {
+      "table": "admins",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/login.php",
+          "line": 15
+        },
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 88
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "analytics",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/analytics.php",
+          "line": 8
+        },
+        {
+          "path": "Zinema.lk Website/admin/analytics.php",
+          "line": 12
+        },
+        {
+          "path": "Zinema.lk Website/admin/analytics.php",
+          "line": 16
+        },
+        {
+          "path": "Zinema.lk Website/admin/analytics.php",
+          "line": 21
+        },
+        {
+          "path": "Zinema.lk Website/api/track.php",
+          "line": 22
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "event_type",
+        "value"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "backup_log",
+      "definitionSources": [
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system.sql",
+          "columns": [
+            "id",
+            "backup_type",
+            "backup_path",
+            "file_count",
+            "total_size_mb",
+            "status",
+            "started_at",
+            "completed_at",
+            "error_message"
+          ]
+        },
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system_FIXED.sql",
+          "columns": [
+            "id",
+            "backup_type",
+            "backup_path",
+            "file_count",
+            "total_size_mb",
+            "status",
+            "started_at",
+            "completed_at",
+            "error_message"
+          ]
+        }
+      ],
+      "consumers": [],
+      "coverage": "historical only; not migrated",
+      "requiredEvidence": "Resolve generation/consumer semantics before adopting",
+      "observedColumnNames": [
+        "backup_path",
+        "backup_type",
+        "completed_at",
+        "error_message",
+        "file_count",
+        "id",
+        "started_at",
+        "status",
+        "total_size_mb"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "bot_health_status",
+      "definitionSources": [
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system.sql",
+          "columns": [
+            "bot_id",
+            "bot_phone",
+            "status",
+            "last_heartbeat",
+            "queue_size",
+            "total_requests_today",
+            "successful_forwards_today",
+            "failed_forwards_today",
+            "uptime_seconds",
+            "cache_group_id",
+            "storage_path",
+            "disk_usage_mb",
+            "memory_usage_mb",
+            "error_message",
+            "created_at",
+            "updated_at"
+          ]
+        },
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system_FIXED.sql",
+          "columns": [
+            "bot_id",
+            "bot_phone",
+            "status",
+            "last_heartbeat",
+            "queue_size",
+            "total_requests_today",
+            "successful_forwards_today",
+            "failed_forwards_today",
+            "uptime_seconds",
+            "cache_group_id",
+            "storage_path",
+            "disk_usage_mb",
+            "memory_usage_mb",
+            "error_message",
+            "created_at",
+            "updated_at"
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/cron/reset-daily-stats.php",
+          "line": 26
+        },
+        {
+          "path": "Zinema.lk Website/admin/cron/reset-daily-stats.php",
+          "line": 41
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/bot-error.php",
+          "line": 23
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/bot-heartbeat.php",
+          "line": 28
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/bot-heartbeat.php",
+          "line": 38
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/bot-heartbeat.php",
+          "line": 54
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/update-daily-stats.php",
+          "line": 23
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 57
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 149
+        }
+      ],
+      "coverage": "historical only; not migrated",
+      "requiredEvidence": "Resolve generation/consumer semantics before adopting",
+      "observedColumnNames": [
+        "bot_id",
+        "bot_phone",
+        "cache_group_id",
+        "created_at",
+        "disk_usage_mb",
+        "error_message",
+        "failed_forwards_today",
+        "last_heartbeat",
+        "memory_usage_mb",
+        "queue_size",
+        "status",
+        "storage_path",
+        "successful_forwards_today",
+        "total_requests_today",
+        "updated_at",
+        "uptime_seconds"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "bot_statistics",
+      "definitionSources": [
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system.sql",
+          "columns": [
+            "id",
+            "content_type",
+            "content_id",
+            "part_number",
+            "total_forwards",
+            "cache_hits",
+            "cache_misses",
+            "last_forwarded_at",
+            "total_data_saved_mb",
+            "avg_forward_time_sec",
+            "created_at",
+            "updated_at"
+          ]
+        },
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system_FIXED.sql",
+          "columns": [
+            "id",
+            "content_type",
+            "content_id",
+            "part_number",
+            "total_forwards",
+            "cache_hits",
+            "cache_misses",
+            "last_forwarded_at",
+            "total_data_saved_mb",
+            "avg_forward_time_sec",
+            "created_at",
+            "updated_at"
+          ]
+        }
+      ],
+      "consumers": [],
+      "coverage": "historical only; not migrated",
+      "requiredEvidence": "Resolve generation/consumer semantics before adopting",
+      "observedColumnNames": [
+        "avg_forward_time_sec",
+        "cache_hits",
+        "cache_misses",
+        "content_id",
+        "content_type",
+        "created_at",
+        "id",
+        "last_forwarded_at",
+        "part_number",
+        "total_data_saved_mb",
+        "total_forwards",
+        "updated_at"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "cache_warming_log",
+      "definitionSources": [
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system.sql",
+          "columns": [
+            "id",
+            "bot_id",
+            "content_type",
+            "content_id",
+            "part_number",
+            "warmed_at",
+            "file_size_mb",
+            "success",
+            "error_message"
+          ]
+        },
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system_FIXED.sql",
+          "columns": [
+            "id",
+            "bot_id",
+            "content_type",
+            "content_id",
+            "part_number",
+            "warmed_at",
+            "file_size_mb",
+            "success",
+            "error_message"
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/whatsapp/log-cache-warming.php",
+          "line": 26
+        }
+      ],
+      "coverage": "historical only; not migrated",
+      "requiredEvidence": "Resolve generation/consumer semantics before adopting",
+      "observedColumnNames": [
+        "bot_id",
+        "content_id",
+        "content_type",
+        "error_message",
+        "file_size_mb",
+        "id",
+        "part_number",
+        "success",
+        "warmed_at"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "collections",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/collections.php",
+          "line": 13
+        },
+        {
+          "path": "Zinema.lk Website/admin/collections.php",
+          "line": 24
+        },
+        {
+          "path": "Zinema.lk Website/admin/collections.php",
+          "line": 50
+        },
+        {
+          "path": "Zinema.lk Website/admin/collections.php",
+          "line": 53
+        },
+        {
+          "path": "Zinema.lk Website/admin/collections.php",
+          "line": 64
+        },
+        {
+          "path": "Zinema.lk Website/admin/collections.php",
+          "line": 70
+        },
+        {
+          "path": "Zinema.lk Website/admin/index.php",
+          "line": 31
+        },
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 135
+        },
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 619
+        },
+        {
+          "path": "Zinema.lk Website/admin/movies.php",
+          "line": 133
+        },
+        {
+          "path": "Zinema.lk Website/api/collections.php",
+          "line": 29
+        },
+        {
+          "path": "Zinema.lk Website/api/collections.php",
+          "line": 70
+        },
+        {
+          "path": "Zinema.lk Website/api/search_content.php",
+          "line": 67
+        },
+        {
+          "path": "Zinema.lk Website/collection-details.php",
+          "line": 17
+        },
+        {
+          "path": "Zinema.lk Website/collections.php",
+          "line": 27
+        },
+        {
+          "path": "Zinema.lk Website/sitemap.php",
+          "line": 102
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "cover_image",
+        "description",
+        "genre",
+        "id",
+        "title"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "comments",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/comments.php",
+          "line": 56
+        },
+        {
+          "path": "Zinema.lk Website/api/comments.php",
+          "line": 112
+        },
+        {
+          "path": "Zinema.lk Website/api/comments.php",
+          "line": 121
+        },
+        {
+          "path": "Zinema.lk Website/api/comments.php",
+          "line": 133
+        },
+        {
+          "path": "Zinema.lk Website/api/comments.php",
+          "line": 177
+        },
+        {
+          "path": "Zinema.lk Website/api/comments.php",
+          "line": 181
+        },
+        {
+          "path": "Zinema.lk Website/api/includes/comment_helpers.php",
+          "line": 44
+        },
+        {
+          "path": "Zinema.lk Website/api/includes/comment_helpers.php",
+          "line": 69
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "content",
+        "created_at",
+        "id",
+        "movie_id",
+        "parent_id",
+        "user_id"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "distribution_groups",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 289
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 318
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 372
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "episode_parts",
+      "definitionSources": [
+        {
+          "path": "Zinema.lk Website/migrations/episode_parts.sql",
+          "columns": [
+            "id",
+            "episode_id",
+            "part_number",
+            "message_id",
+            "file_name",
+            "file_size",
+            "created_at",
+            "updated_at"
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-aging-messages.php",
+          "line": 48
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-all-message-ids.php",
+          "line": 56
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-message-ids.php",
+          "line": 58
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/validate-token.php",
+          "line": 32
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/validate-token.php",
+          "line": 131
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 92
+        }
+      ],
+      "coverage": "verified partial migration",
+      "requiredEvidence": "Full application relationships still unresolved",
+      "observedColumnNames": [
+        "created_at",
+        "episode_id",
+        "file_name",
+        "file_size",
+        "id",
+        "message_id",
+        "part_number",
+        "updated_at"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "episodes",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/episodes.php",
+          "line": 12
+        },
+        {
+          "path": "Zinema.lk Website/admin/episodes.php",
+          "line": 25
+        },
+        {
+          "path": "Zinema.lk Website/admin/episodes.php",
+          "line": 65
+        },
+        {
+          "path": "Zinema.lk Website/admin/episodes.php",
+          "line": 90
+        },
+        {
+          "path": "Zinema.lk Website/admin/episodes.php",
+          "line": 117
+        },
+        {
+          "path": "Zinema.lk Website/admin/episodes.php",
+          "line": 133
+        },
+        {
+          "path": "Zinema.lk Website/admin/episodes.php",
+          "line": 144
+        },
+        {
+          "path": "Zinema.lk Website/api/series.php",
+          "line": 26
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-aging-messages.php",
+          "line": 82
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-popular-content.php",
+          "line": 25
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/validate-token.php",
+          "line": 166
+        },
+        {
+          "path": "Zinema.lk Website/download.php",
+          "line": 23
+        },
+        {
+          "path": "Zinema.lk Website/series-details.php",
+          "line": 34
+        },
+        {
+          "path": "Zinema.lk Website/whatsapp-watch.php",
+          "line": 23
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 163
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "air_date",
+        "description",
+        "duration",
+        "episode_number",
+        "id",
+        "season_number",
+        "series_id",
+        "thumb_image",
+        "title",
+        "video_url"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "file_cleanup_queue",
+      "definitionSources": [
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system.sql",
+          "columns": [
+            "id",
+            "content_type",
+            "content_id",
+            "part_number",
+            "local_file_path",
+            "marked_for_deletion_at",
+            "reason",
+            "deleted_at"
+          ]
+        },
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system_FIXED.sql",
+          "columns": [
+            "id",
+            "content_type",
+            "content_id",
+            "part_number",
+            "local_file_path",
+            "marked_for_deletion_at",
+            "reason",
+            "deleted_at"
+          ]
+        }
+      ],
+      "consumers": [],
+      "coverage": "historical only; not migrated",
+      "requiredEvidence": "Resolve generation/consumer semantics before adopting",
+      "observedColumnNames": [
+        "content_id",
+        "content_type",
+        "deleted_at",
+        "id",
+        "local_file_path",
+        "marked_for_deletion_at",
+        "part_number",
+        "reason"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "forward_logs",
+      "definitionSources": [
+        {
+          "path": "whatsapp-bot-deploy/database/schema.sql",
+          "columns": [
+            "id",
+            "token_id",
+            "user_phone",
+            "user_chat_id",
+            "status",
+            "error_message",
+            "forwarded_at"
+          ]
+        }
+      ],
+      "consumers": [],
+      "coverage": "historical only; not migrated",
+      "requiredEvidence": "Resolve generation/consumer semantics before adopting",
+      "observedColumnNames": [
+        "error_message",
+        "forwarded_at",
+        "id",
+        "status",
+        "token_id",
+        "user_chat_id",
+        "user_phone"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "media_refresh_log",
+      "definitionSources": [
+        {
+          "path": "whatsapp-bot-deploy/database/schema.sql",
+          "columns": [
+            "id",
+            "message_id",
+            "file_name",
+            "file_type",
+            "file_size",
+            "last_refreshed",
+            "refresh_count",
+            "created_at"
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/whatsapp/log-refresh.php",
+          "line": 34
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/needs-refresh.php",
+          "line": 32
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/refresh-stats.php",
+          "line": 24
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 251
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 279
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 302
+        }
+      ],
+      "coverage": "historical only; not migrated",
+      "requiredEvidence": "Resolve generation/consumer semantics before adopting",
+      "observedColumnNames": [
+        "created_at",
+        "file_name",
+        "file_size",
+        "file_type",
+        "id",
+        "last_refreshed",
+        "message_id",
+        "refresh_count"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "movie_message_ids",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/whatsapp/update-cache-message-id.php",
+          "line": 27
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/update-cache-message-id.php",
+          "line": 34
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/update-forward-stats.php",
+          "line": 23
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/update-forward-stats.php",
+          "line": 41
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/update-forward-stats.php",
+          "line": 47
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "movie_parts",
+      "definitionSources": [
+        {
+          "path": "Zinema.lk Website/migrations/movie_parts.sql",
+          "columns": [
+            "id",
+            "movie_id",
+            "part_number",
+            "message_id",
+            "file_name",
+            "file_size",
+            "created_at",
+            "updated_at"
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-aging-messages.php",
+          "line": 31
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-all-message-ids.php",
+          "line": 41
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-message-ids.php",
+          "line": 55
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-movie-parts.php",
+          "line": 30
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/validate-token.php",
+          "line": 32
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 81
+        }
+      ],
+      "coverage": "verified partial migration",
+      "requiredEvidence": "Full application relationships still unresolved",
+      "observedColumnNames": [
+        "created_at",
+        "file_name",
+        "file_size",
+        "id",
+        "message_id",
+        "movie_id",
+        "part_number",
+        "updated_at"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "movies",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/collections.php",
+          "line": 9
+        },
+        {
+          "path": "Zinema.lk Website/admin/index.php",
+          "line": 23
+        },
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 135
+        },
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 615
+        },
+        {
+          "path": "Zinema.lk Website/admin/movies.php",
+          "line": 12
+        },
+        {
+          "path": "Zinema.lk Website/admin/movies.php",
+          "line": 25
+        },
+        {
+          "path": "Zinema.lk Website/admin/movies.php",
+          "line": 65
+        },
+        {
+          "path": "Zinema.lk Website/admin/movies.php",
+          "line": 90
+        },
+        {
+          "path": "Zinema.lk Website/admin/movies.php",
+          "line": 117
+        },
+        {
+          "path": "Zinema.lk Website/admin/movies.php",
+          "line": 130
+        },
+        {
+          "path": "Zinema.lk Website/admin/movies.php",
+          "line": 140
+        },
+        {
+          "path": "Zinema.lk Website/admin/trailers.php",
+          "line": 104
+        },
+        {
+          "path": "Zinema.lk Website/admin/trailers.php",
+          "line": 111
+        },
+        {
+          "path": "Zinema.lk Website/api/collections.php",
+          "line": 11
+        },
+        {
+          "path": "Zinema.lk Website/api/collections.php",
+          "line": 38
+        },
+        {
+          "path": "Zinema.lk Website/api/includes/comment_helpers.php",
+          "line": 63
+        },
+        {
+          "path": "Zinema.lk Website/api/live_search.php",
+          "line": 22
+        },
+        {
+          "path": "Zinema.lk Website/api/movies.php",
+          "line": 10
+        },
+        {
+          "path": "Zinema.lk Website/api/search_content.php",
+          "line": 47
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-aging-messages.php",
+          "line": 65
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-popular-content.php",
+          "line": 25
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/validate-token.php",
+          "line": 157
+        },
+        {
+          "path": "Zinema.lk Website/collection-details.php",
+          "line": 34
+        },
+        {
+          "path": "Zinema.lk Website/download.php",
+          "line": 38
+        },
+        {
+          "path": "Zinema.lk Website/find_movies.php",
+          "line": 18
+        },
+        {
+          "path": "Zinema.lk Website/find_movies.php",
+          "line": 56
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 17
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 61
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 243
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 284
+        },
+        {
+          "path": "Zinema.lk Website/includes/database.php",
+          "line": 14
+        },
+        {
+          "path": "Zinema.lk Website/movie-details.php",
+          "line": 17
+        },
+        {
+          "path": "Zinema.lk Website/movie-details.php",
+          "line": 34
+        },
+        {
+          "path": "Zinema.lk Website/movies.php",
+          "line": 25
+        },
+        {
+          "path": "Zinema.lk Website/movies.php",
+          "line": 45
+        },
+        {
+          "path": "Zinema.lk Website/sitemap.php",
+          "line": 58
+        },
+        {
+          "path": "Zinema.lk Website/whatsapp-watch.php",
+          "line": 40
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 161
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "collection_id",
+        "cover_image",
+        "description",
+        "duration",
+        "genre",
+        "id",
+        "language_type",
+        "poster_url",
+        "rating",
+        "release_date",
+        "title",
+        "video_url"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "password_resets",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/ajax_forgot_password.php",
+          "line": 57
+        },
+        {
+          "path": "Zinema.lk Website/ajax_forgot_password.php",
+          "line": 63
+        },
+        {
+          "path": "Zinema.lk Website/ajax_reset_password.php",
+          "line": 45
+        },
+        {
+          "path": "Zinema.lk Website/ajax_reset_password.php",
+          "line": 91
+        },
+        {
+          "path": "Zinema.lk Website/reset-password.php",
+          "line": 18
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "expires_at",
+        "id",
+        "token",
+        "used",
+        "user_id"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "rate_limits",
+      "definitionSources": [
+        {
+          "path": "Zinema.lk Website/includes/rate_limiter.php",
+          "line": 25,
+          "columns": [
+            "id",
+            "ip_address",
+            "action_type",
+            "request_count",
+            "first_request_at",
+            "last_request_at",
+            "blocked_until"
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/cron/reset-daily-stats.php",
+          "line": 55
+        },
+        {
+          "path": "Zinema.lk Website/includes/rate_limiter.php",
+          "line": 25
+        },
+        {
+          "path": "Zinema.lk Website/includes/rate_limiter.php",
+          "line": 119
+        },
+        {
+          "path": "Zinema.lk Website/includes/rate_limiter.php",
+          "line": 141
+        },
+        {
+          "path": "Zinema.lk Website/includes/rate_limiter.php",
+          "line": 152
+        },
+        {
+          "path": "Zinema.lk Website/includes/rate_limiter.php",
+          "line": 169
+        },
+        {
+          "path": "Zinema.lk Website/includes/rate_limiter.php",
+          "line": 181
+        },
+        {
+          "path": "Zinema.lk Website/includes/rate_limiter.php",
+          "line": 195
+        },
+        {
+          "path": "Zinema.lk Website/includes/rate_limiter.php",
+          "line": 199
+        }
+      ],
+      "coverage": "verified partial migration",
+      "requiredEvidence": "Full application relationships still unresolved",
+      "observedColumnNames": [
+        "action_type",
+        "blocked_until",
+        "first_request_at",
+        "id",
+        "ip_address",
+        "last_request_at",
+        "request_count"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "series",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/episodes.php",
+          "line": 130
+        },
+        {
+          "path": "Zinema.lk Website/admin/episodes.php",
+          "line": 133
+        },
+        {
+          "path": "Zinema.lk Website/admin/index.php",
+          "line": 27
+        },
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 135
+        },
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 617
+        },
+        {
+          "path": "Zinema.lk Website/admin/series.php",
+          "line": 12
+        },
+        {
+          "path": "Zinema.lk Website/admin/series.php",
+          "line": 25
+        },
+        {
+          "path": "Zinema.lk Website/admin/series.php",
+          "line": 62
+        },
+        {
+          "path": "Zinema.lk Website/admin/series.php",
+          "line": 90
+        },
+        {
+          "path": "Zinema.lk Website/admin/series.php",
+          "line": 117
+        },
+        {
+          "path": "Zinema.lk Website/admin/series.php",
+          "line": 130
+        },
+        {
+          "path": "Zinema.lk Website/admin/series.php",
+          "line": 136
+        },
+        {
+          "path": "Zinema.lk Website/api/live_search.php",
+          "line": 20
+        },
+        {
+          "path": "Zinema.lk Website/api/search_content.php",
+          "line": 57
+        },
+        {
+          "path": "Zinema.lk Website/api/series.php",
+          "line": 18
+        },
+        {
+          "path": "Zinema.lk Website/api/series.php",
+          "line": 66
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/validate-token.php",
+          "line": 166
+        },
+        {
+          "path": "Zinema.lk Website/download.php",
+          "line": 23
+        },
+        {
+          "path": "Zinema.lk Website/series-details.php",
+          "line": 17
+        },
+        {
+          "path": "Zinema.lk Website/sitemap.php",
+          "line": 80
+        },
+        {
+          "path": "Zinema.lk Website/tv-series.php",
+          "line": 27
+        },
+        {
+          "path": "Zinema.lk Website/whatsapp-watch.php",
+          "line": 23
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 163
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "cover_image",
+        "description",
+        "genre",
+        "id",
+        "language_type",
+        "release_date",
+        "title"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "shot_comments",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/add_comment.php",
+          "line": 36
+        },
+        {
+          "path": "Zinema.lk Website/api/get_comments.php",
+          "line": 15
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 33
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 61
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 86
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "comment_text",
+        "created_at",
+        "id",
+        "shot_id",
+        "user_id"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "shot_likes",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/like_shot.php",
+          "line": 34
+        },
+        {
+          "path": "Zinema.lk Website/api/like_shot.php",
+          "line": 42
+        },
+        {
+          "path": "Zinema.lk Website/api/like_shot.php",
+          "line": 48
+        },
+        {
+          "path": "Zinema.lk Website/api/like_shot.php",
+          "line": 67
+        },
+        {
+          "path": "Zinema.lk Website/api/like_shot.php",
+          "line": 73
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 33
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 61
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 86
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "shot_id",
+        "user_id"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "shots",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 18
+        },
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 70
+        },
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 100
+        },
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 121
+        },
+        {
+          "path": "Zinema.lk Website/admin/manage_shots.php",
+          "line": 135
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 33
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 61
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 86
+        },
+        {
+          "path": "Zinema.lk Website/profile.php",
+          "line": 57
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "admin_id",
+        "created_at",
+        "description",
+        "fb_share_url",
+        "id",
+        "linked_content_id",
+        "linked_content_type",
+        "shot_video_file",
+        "title"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "site_settings",
+      "definitionSources": [
+        {
+          "path": "Zinema.lk Website/includes/settings.php",
+          "line": 104,
+          "columns": [
+            "id",
+            "setting_key",
+            "setting_value",
+            "description",
+            "created_at",
+            "updated_at"
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/includes/settings.php",
+          "line": 27
+        },
+        {
+          "path": "Zinema.lk Website/includes/settings.php",
+          "line": 57
+        },
+        {
+          "path": "Zinema.lk Website/includes/settings.php",
+          "line": 82
+        },
+        {
+          "path": "Zinema.lk Website/includes/settings.php",
+          "line": 104
+        },
+        {
+          "path": "Zinema.lk Website/includes/settings.php",
+          "line": 117
+        },
+        {
+          "path": "Zinema.lk Website/includes/settings.php",
+          "line": 133
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 357
+        }
+      ],
+      "coverage": "verified partial migration",
+      "requiredEvidence": "Full application relationships still unresolved",
+      "observedColumnNames": [
+        "created_at",
+        "description",
+        "id",
+        "setting_key",
+        "setting_value",
+        "updated_at"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "system_alerts",
+      "definitionSources": [
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system.sql",
+          "columns": [
+            "id",
+            "alert_type",
+            "severity",
+            "message",
+            "bot_id",
+            "is_resolved",
+            "created_at",
+            "resolved_at"
+          ]
+        },
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system_FIXED.sql",
+          "columns": [
+            "id",
+            "alert_type",
+            "severity",
+            "message",
+            "bot_id",
+            "is_resolved",
+            "created_at",
+            "resolved_at"
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/whatsapp/bot-error.php",
+          "line": 35
+        }
+      ],
+      "coverage": "historical only; not migrated",
+      "requiredEvidence": "Resolve generation/consumer semantics before adopting",
+      "observedColumnNames": [
+        "alert_type",
+        "bot_id",
+        "created_at",
+        "id",
+        "is_resolved",
+        "message",
+        "resolved_at",
+        "severity"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "trailer_favorites",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 17
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 61
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 184
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 191
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 197
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 204
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "created_at",
+        "id",
+        "trailer_id",
+        "user_id"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "trailer_likes",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 17
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 61
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 145
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 152
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 158
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 165
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 284
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "created_at",
+        "id",
+        "trailer_id",
+        "user_id"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "trailer_shares",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 17
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 61
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 223
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 284
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "id",
+        "platform",
+        "shared_at",
+        "trailer_id",
+        "user_id"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "trailer_views",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 17
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 61
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 106
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 124
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 243
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 284
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "id",
+        "ip_address",
+        "trailer_id",
+        "user_id",
+        "viewed_at"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "trailers",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/trailers.php",
+          "line": 36
+        },
+        {
+          "path": "Zinema.lk Website/admin/trailers.php",
+          "line": 57
+        },
+        {
+          "path": "Zinema.lk Website/admin/trailers.php",
+          "line": 72
+        },
+        {
+          "path": "Zinema.lk Website/admin/trailers.php",
+          "line": 87
+        },
+        {
+          "path": "Zinema.lk Website/admin/trailers.php",
+          "line": 104
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 17
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 61
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 243
+        },
+        {
+          "path": "Zinema.lk Website/includes/TrailerManager.php",
+          "line": 284
+        },
+        {
+          "path": "Zinema.lk Website/includes/database.php",
+          "line": 22
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "created_at",
+        "description",
+        "id",
+        "movie_id",
+        "thumbnail_url",
+        "title",
+        "video_url"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "tv_series",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-popular-content.php",
+          "line": 25
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "id",
+        "title"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "user_favorites",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/favorite_shot.php",
+          "line": 24
+        },
+        {
+          "path": "Zinema.lk Website/api/favorite_shot.php",
+          "line": 31
+        },
+        {
+          "path": "Zinema.lk Website/api/favorite_shot.php",
+          "line": 49
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 33
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 61
+        },
+        {
+          "path": "Zinema.lk Website/profile.php",
+          "line": 40
+        },
+        {
+          "path": "Zinema.lk Website/profile.php",
+          "line": 57
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "id",
+        "shot_id",
+        "user_id"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "user_views",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/record_view.php",
+          "line": 39
+        },
+        {
+          "path": "Zinema.lk Website/index.php",
+          "line": 33
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "id",
+        "shot_id",
+        "user_id"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "users",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/config.php",
+          "line": 34
+        },
+        {
+          "path": "Zinema.lk Website/ajax_forgot_password.php",
+          "line": 38
+        },
+        {
+          "path": "Zinema.lk Website/ajax_login.php",
+          "line": 42
+        },
+        {
+          "path": "Zinema.lk Website/ajax_login.php",
+          "line": 82
+        },
+        {
+          "path": "Zinema.lk Website/ajax_resend_verification.php",
+          "line": 32
+        },
+        {
+          "path": "Zinema.lk Website/ajax_resend_verification.php",
+          "line": 57
+        },
+        {
+          "path": "Zinema.lk Website/ajax_reset_password.php",
+          "line": 82
+        },
+        {
+          "path": "Zinema.lk Website/ajax_signup.php",
+          "line": 54
+        },
+        {
+          "path": "Zinema.lk Website/ajax_signup.php",
+          "line": 72
+        },
+        {
+          "path": "Zinema.lk Website/ajax_signup.php",
+          "line": 92
+        },
+        {
+          "path": "Zinema.lk Website/ajax_signup.php",
+          "line": 112
+        },
+        {
+          "path": "Zinema.lk Website/api/auth-handler.php",
+          "line": 21
+        },
+        {
+          "path": "Zinema.lk Website/api/auth-handler.php",
+          "line": 65
+        },
+        {
+          "path": "Zinema.lk Website/api/auth-handler.php",
+          "line": 77
+        },
+        {
+          "path": "Zinema.lk Website/api/check-session.php",
+          "line": 23
+        },
+        {
+          "path": "Zinema.lk Website/api/comments.php",
+          "line": 56
+        },
+        {
+          "path": "Zinema.lk Website/api/comments.php",
+          "line": 133
+        },
+        {
+          "path": "Zinema.lk Website/api/get_comments.php",
+          "line": 15
+        },
+        {
+          "path": "Zinema.lk Website/api/includes/comment_helpers.php",
+          "line": 12
+        },
+        {
+          "path": "Zinema.lk Website/api/includes/comment_helpers.php",
+          "line": 69
+        },
+        {
+          "path": "Zinema.lk Website/api/payment-notify.php",
+          "line": 33
+        },
+        {
+          "path": "Zinema.lk Website/api/payment-notify.php",
+          "line": 40
+        },
+        {
+          "path": "Zinema.lk Website/api/subscribe.php",
+          "line": 79
+        },
+        {
+          "path": "Zinema.lk Website/google-callback.php",
+          "line": 80
+        },
+        {
+          "path": "Zinema.lk Website/google-callback.php",
+          "line": 97
+        },
+        {
+          "path": "Zinema.lk Website/google-callback.php",
+          "line": 108
+        },
+        {
+          "path": "Zinema.lk Website/google-callback.php",
+          "line": 130
+        },
+        {
+          "path": "Zinema.lk Website/google-callback.php",
+          "line": 144
+        },
+        {
+          "path": "Zinema.lk Website/login.php",
+          "line": 24
+        },
+        {
+          "path": "Zinema.lk Website/reset-password.php",
+          "line": 18
+        },
+        {
+          "path": "Zinema.lk Website/signup.php",
+          "line": 29
+        },
+        {
+          "path": "Zinema.lk Website/signup.php",
+          "line": 41
+        },
+        {
+          "path": "Zinema.lk Website/signup.php",
+          "line": 56
+        },
+        {
+          "path": "Zinema.lk Website/verify-email.php",
+          "line": 15
+        },
+        {
+          "path": "Zinema.lk Website/verify-email.php",
+          "line": 34
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "avatar_url",
+        "created_at",
+        "email",
+        "google_id",
+        "id",
+        "is_verified",
+        "password_hash",
+        "username",
+        "verification_expires",
+        "verification_token"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "v_popular_content",
+      "definitionSources": [
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system.sql",
+          "kind": "CREATE OR REPLACE VIEW"
+        },
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system_FIXED.sql",
+          "kind": "CREATE OR REPLACE VIEW"
+        }
+      ],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-popular-files.php",
+          "line": 18
+        }
+      ],
+      "coverage": "historical only; not migrated",
+      "requiredEvidence": "Resolve referenced base tables, view columns and aggregation semantics before adopting",
+      "observedColumnNames": [],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "video_tokens",
+      "definitionSources": [
+        {
+          "path": "whatsapp-bot-deploy/database/schema.sql",
+          "columns": [
+            "id",
+            "token",
+            "message_id",
+            "file_name",
+            "file_size",
+            "description",
+            "created_at",
+            "updated_at",
+            "download_count",
+            "is_active"
+          ]
+        }
+      ],
+      "consumers": [],
+      "coverage": "historical only; not migrated",
+      "requiredEvidence": "Resolve generation/consumer semantics before adopting",
+      "observedColumnNames": [
+        "created_at",
+        "description",
+        "download_count",
+        "file_name",
+        "file_size",
+        "id",
+        "is_active",
+        "message_id",
+        "token",
+        "updated_at"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "whatsapp_forward_logs",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/whatsapp/log-forward.php",
+          "line": 44
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/log-forward.php",
+          "line": 48
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 141
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "error_message",
+        "status",
+        "token_id",
+        "user_chat_id",
+        "user_phone"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "whatsapp_message_ids",
+      "definitionSources": [],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/api/whatsapp/add-message-id.php",
+          "line": 85
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-all-message-ids.php",
+          "line": 26
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-message-id.php",
+          "line": 38
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-message-ids.php",
+          "line": 39
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/validate-token.php",
+          "line": 32
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 105
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 43
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 219
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 234
+        }
+      ],
+      "coverage": "missing complete permitted definition",
+      "requiredEvidence": "Sanitized complete DDL, indexes, constraints, defaults, charset/collation, migration history and relevant query/API expectations",
+      "observedColumnNames": [
+        "content_id",
+        "content_type",
+        "file_name",
+        "message_id"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    },
+    {
+      "table": "whatsapp_tokens",
+      "definitionSources": [
+        {
+          "path": "whatsapp-bot-deploy/database/migration_ultimate_system_FIXED.sql",
+          "columns": [
+            "id",
+            "token",
+            "content_type",
+            "content_id",
+            "part_number",
+            "assigned_bot_id",
+            "status",
+            "created_at",
+            "used_at",
+            "expires_at"
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "path": "Zinema.lk Website/admin/cron/cleanup-tokens.php",
+          "line": 29
+        },
+        {
+          "path": "Zinema.lk Website/admin/cron/cleanup-tokens.php",
+          "line": 35
+        },
+        {
+          "path": "Zinema.lk Website/admin/cron/cleanup-tokens.php",
+          "line": 41
+        },
+        {
+          "path": "Zinema.lk Website/admin/cron/cleanup-tokens.php",
+          "line": 47
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/get-popular-content.php",
+          "line": 25
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/mark-used.php",
+          "line": 32
+        },
+        {
+          "path": "Zinema.lk Website/api/whatsapp/validate-token.php",
+          "line": 32
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 125
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 166
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 172
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 221
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 243
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 247
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 251
+        },
+        {
+          "path": "Zinema.lk Website/includes/whatsapp_token.php",
+          "line": 255
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 43
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 114
+        },
+        {
+          "path": "whatsapp-bot-deploy/config/database.js",
+          "line": 187
+        }
+      ],
+      "coverage": "historical only; not migrated",
+      "requiredEvidence": "Resolve generation/consumer semantics before adopting",
+      "observedColumnNames": [
+        "assigned_bot_id",
+        "content_id",
+        "content_type",
+        "created_at",
+        "expires_at",
+        "id",
+        "is_active",
+        "is_used",
+        "message_id",
+        "part_number",
+        "status",
+        "token",
+        "used_at"
+      ],
+      "columnEvidenceCaveat": "Observed names only; SELECT *, dynamic SQL, types/defaults/constraints are not inferred."
+    }
+  ],
+  "routines": [
+    {
+      "path": "whatsapp-bot-deploy/database/migration_ultimate_system.sql",
+      "names": [
+        "sp_bot_heartbeat",
+        "sp_record_forward",
+        "fn_get_available_bot"
+      ]
+    },
+    {
+      "path": "whatsapp-bot-deploy/database/migration_ultimate_system_FIXED.sql",
+      "names": [
+        "sp_bot_heartbeat",
+        "fn_get_available_bot"
+      ]
+    }
+  ]
+}

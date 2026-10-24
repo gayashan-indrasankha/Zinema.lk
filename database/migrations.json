@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "scope": "source-backed-subset",
+  "fullApplicationReady": false,
+  "migrations": [
+    {
+      "version": "0001",
+      "file": "database/migrations/0001_site_settings.sql",
+      "sha256": "cae42f576522716be02752459f18184890fef96b02edf9720ad9490a532d4c00",
+      "table": "site_settings",
+      "source": "Zinema.lk Website/includes/settings.php:104"
+    },
+    {
+      "version": "0002",
+      "file": "database/migrations/0002_rate_limits.sql",
+      "sha256": "177b919098c4ae2db94a998cace79064a125d0e0adc9d505b253cb28a9bc1be4",
+      "table": "rate_limits",
+      "source": "Zinema.lk Website/includes/rate_limiter.php:25"
+    },
+    {
+      "version": "0003",
+      "file": "database/migrations/0003_movie_parts.sql",
+      "sha256": "8c44dddcecb3901738837cec327537dfd589e65f88885ea2fba0873dcbf2ce9c",
+      "table": "movie_parts",
+      "source": "Zinema.lk Website/migrations/movie_parts.sql"
+    },
+    {
+      "version": "0004",
+      "file": "database/migrations/0004_episode_parts.sql",
+      "sha256": "7693471f3367f36c16effb3ccc81b4fc830faec36445d9c470421e2cd853ca7a",
+      "table": "episode_parts",
+      "source": "Zinema.lk Website/migrations/episode_parts.sql"
+    }
+  ]
+}
