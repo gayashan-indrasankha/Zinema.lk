@@ -1,0 +1,9 @@
+{
+  "name": "zinema-playback-verification",
+  "private": true,
+  "version": "0.0.0",
+  "devDependencies": {
+    "hls.js": "1.7.3",
+    "playwright-core": "1.64.1"
+  }
+}

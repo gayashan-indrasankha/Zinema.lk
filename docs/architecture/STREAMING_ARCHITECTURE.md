@@ -201,3 +201,14 @@ oversize rejection, no shell injection, least-privilege origin denial, no public
 segment access, expired/wrong-territory denial, concurrent renewal, callback forgery,
 partial encoding, rollback, takedown, low-bandwidth/mobile/a11y playback, cost and
 restore drills. All are **FUTURE ACCEPTANCE GATES / NOT EXECUTED** in ZL-11.
+
+## 2026-10-24 - Implemented ZL-17 local boundary
+
+The ZL-11 proposals above are historical design, not a claim that their production
+gates have passed. ZL-17 now implements an additive authorized local HLS/session/
+player path, without cloud infrastructure, real media or a production signing
+adapter. Default public composition stays unavailable. Native desktop Chrome and
+MSE mobile-viewport fixture playback were exercised; Safari/physical devices and
+CDN/private-origin restrictions remain NOT VERIFIED. See
+[current playback architecture](../streaming/PLAYBACK_ARCHITECTURE.md) and
+[actual test evidence](../streaming/PLAYBACK_TEST_RESULTS.md).

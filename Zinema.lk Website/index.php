@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__DIR__).'/apps/web/src/Playback/Navigation.php';
 // Include database connection
 require_once 'admin/config.php';
 require_once 'includes/csrf_helper.php';
@@ -197,15 +198,16 @@ if ($result && $result->num_rows > 0) {
                                     </p>
                                     
                                     <!-- Dynamic Watch Button (Movie or Series) -->
-                                    <?php if ($shot['linked_content_type'] === 'movie'): ?>
-                                        <a href="movie/<?php echo $shot['linked_content_id']; ?>/watch" class="watch-movie-btn">
+                                    <?php $verifiedShotHref = \Zinema\Playback\Navigation::shotHref($shot); ?>
+                                    <?php if ($shot['linked_content_type'] === 'movie' && $verifiedShotHref !== null): ?>
+                                        <a href="<?php echo htmlspecialchars($verifiedShotHref, ENT_QUOTES, 'UTF-8'); ?>" class="watch-movie-btn">
                                             <span>▶</span>
-                                            Watch Full Movie
+                                            View movie availability
                                         </a>
-                                    <?php elseif ($shot['linked_content_type'] === 'series'): ?>
-                                        <a href="series/<?php echo $shot['linked_content_id']; ?>/watch" class="watch-movie-btn">
+                                    <?php elseif ($shot['linked_content_type'] === 'series' && $verifiedShotHref !== null): ?>
+                                        <a href="<?php echo htmlspecialchars($verifiedShotHref, ENT_QUOTES, 'UTF-8'); ?>" class="watch-movie-btn">
                                             <span>▶</span>
-                                            Watch Full TV Series
+                                            View series availability
                                         </a>
                                     <?php elseif ($shot['linked_content_type'] === 'collection'): ?>
                                         <a href="collection-details.php?id=<?php echo $shot['linked_content_id']; ?>" class="watch-movie-btn">

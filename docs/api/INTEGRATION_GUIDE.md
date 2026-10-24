@@ -77,3 +77,13 @@ future deployment. Revert only this task's reviewed Catalogue module/API/tests/
 context/CI/documentation delta after preserving the current working tree. Do not
 reset/clean Git or discard pre-existing ZL-15 changes. No deployment or Git commit
 was made during this task.
+
+## 2026-10-24 - Subsequent ZL-17 local playback boundary
+
+ZL-17 now adds separate Playback link/details/session/media services and an
+authorized original local-HLS test path. Catalogue v1.php remains unconfigured
+and its availability contract still promises no actual delivery. Legacy movie
+Watch and Shot navigation changes are documented in
+[the current flow](../streaming/SHOTS_TO_MOVIE_FLOW.md); no production identity,
+rights/CDN adapter or catalogue enable flag was added. See
+[actual playback tests](../streaming/PLAYBACK_TEST_RESULTS.md).

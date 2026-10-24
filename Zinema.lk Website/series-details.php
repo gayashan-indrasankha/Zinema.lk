@@ -1,4 +1,10 @@
 <?php
+// ZL-17: additive verified-catalogue view; never falls through to legacy media.
+if (isset($_GET['catalogue'])) {
+    $playbackType = 'series';
+    require dirname(__DIR__).'/apps/web/src/Playback/view.php';
+    exit;
+}
 // Include database connection
 require_once 'admin/config.php';
 require_once 'includes/ads.php';
