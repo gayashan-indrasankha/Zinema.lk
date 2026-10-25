@@ -69,10 +69,26 @@ def initialize():
         denial=directory/'.htaccess'
         if not denial.exists(): denial.write_text('Require all denied\n',encoding='ascii')
     (STATE/'results').mkdir(exist_ok=True)
-    for name in ['db_password','db_root','oauth_secret','adapter_key','control_key','demo_password']:
+    for name in ['db_password','db_root','oauth_secret','adapter_key','control_key','demo_password','extractor_key']:
         target=STATE/name
         if not target.exists(): target.write_text(secrets.token_hex(32),encoding='ascii')
     (STATE/'ownership.json').write_text(json.dumps({'purpose':'isolated-local-development','project':PROJECT,'root':str(ROOT)},indent=2))
+
+
+def require_owned_extractor():
+    require_owned_gateway()
+    command=BASE+['--file',str(ROOT/'dev/extractor.compose.yaml')]
+    identities={}
+    for service in ['web','extractor']:
+        result=subprocess.run(command+['ps','-q',service],env=ENV,capture_output=True,text=True)
+        if result.returncode or not result.stdout.strip():raise RuntimeError('Owned fake extractor is not running')
+        result=subprocess.run(['docker','inspect',result.stdout.strip()],env=ENV,capture_output=True,text=True)
+        if result.returncode:raise RuntimeError('Owned fake extractor unavailable')
+        info=json.loads(result.stdout)[0];labels=info['Config']['Labels']
+        values=dict(item.split('=',1) for item in info['Config']['Env'] if '=' in item)
+        if not info['State']['Running'] or labels.get('com.docker.compose.project')!=PROJECT or labels.get('com.docker.compose.service')!=service or values.get('APP_ENV')!='development' or values.get('EXTRACTOR_MODE')!='local' or values.get('ALLOW_LIVE_INTEGRATIONS')!='false':raise RuntimeError('Fake extractor ownership/mode mismatch')
+        identities[service]=info
+    if identities['extractor']['HostConfig']['NetworkMode']!='container:'+identities['web']['Id'] or identities['extractor']['HostConfig'].get('PortBindings'):raise RuntimeError('Private extractor network mismatch')
 
 
 def operator_request(payload, service='web'):
@@ -159,6 +175,17 @@ if __name__=='__main__':
         except ValueError:raise SystemExit('Local security checks unavailable; diagnostics not printed') from None
         (STATE/'results/product-security.json').write_text(json.dumps(report,indent=2)+'\n')
         print(json.dumps(report.get('summary',{'error':'local_checks_unavailable'})));raise SystemExit(result.returncode)
+    elif command=='extractor-up':
+        initialize();require_local_docker();require_owned_gateway()
+        fixture=subprocess.run(BASE+['exec','-T','web','php','/opt/zinema/dev/product_fixture.php'],cwd=ROOT,env=ENV,input=json.dumps({'run':secrets.token_hex(6)}),capture_output=True,text=True)
+        seed=json.loads(fixture.stdout)
+        if fixture.returncode or seed.get('success') is not True:raise SystemExit('Fictional extractor catalogue unavailable')
+        (STATE/'results/extractor-fixture.json').write_text(json.dumps(seed,indent=2)+'\n')
+        result=subprocess.run(BASE+['--file',str(ROOT/'dev/extractor.compose.yaml'),'up','--build','--wait','--wait-timeout','180','web','db','fakes','gateway','extractor'],cwd=ROOT,env=ENV)
+        raise SystemExit(result.returncode)
+    elif command=='test-extractor':
+        require_local_docker();require_owned_extractor()
+        raise SystemExit(subprocess.run(BASE+['--file',str(ROOT/'dev/extractor.compose.yaml'),'run','--build','--rm','--no-deps','tests','python','-B','dev/extractor_test.py'],cwd=ROOT,env=ENV).returncode)
     elif command=='status': compose('ps')
     elif command=='config': compose('config','--quiet')
-    else: print('Usage: python dev/local.py init|up|test|test-operations|test-quarantine|test-product|test-security|operator|down|status|config')
+    else: print('Usage: python dev/local.py init|up|test|test-operations|test-quarantine|test-product|test-security|extractor-up|test-extractor|operator|down|status|config')

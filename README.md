@@ -11,6 +11,7 @@ WhatsApp, mail, OAuth, payments, downloads and extraction remain restricted.
 
 ## Start here
 
+- [Private extractor connection and local tests](docs/recovery/EXTRACTOR_CONNECTION.md)
 - [Fresh-launch audit and blockers](docs/recovery/PRODUCTION_AUDIT.md), [feature checklist](docs/recovery/PRODUCTION_FEATURES.md) and [manual evidence](docs/recovery/PRODUCTION_MANUAL.md)
 - [Staging requirements](docs/recovery/PRODUCTION_STAGING.md) and [controlled live-test plan](docs/recovery/PRODUCTION_LIVE_TEST_PLAN.md)
 - [Project description](docs/recovery/PROJECT_DESCRIPTION.md)

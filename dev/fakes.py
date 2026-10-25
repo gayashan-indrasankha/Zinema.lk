@@ -132,6 +132,26 @@ def smtp_thread():
     asyncio.run(serve())
 
 
+class ExtractorFaults(BaseHTTPRequestHandler):
+    """Private, deterministic transport faults; never logs headers or request bodies."""
+    followed=0
+    def log_message(self,*_): pass
+    def do_POST(self):
+        self.rfile.read(min(int(self.headers.get('Content-Length','0')),2048))
+        payload=b'{"success":true}'
+        if self.path=='/timeout':time.sleep(5)
+        if self.path=='/followed':ExtractorFaults.followed+=1
+        if self.path=='/counts':payload=json.dumps({'followed':ExtractorFaults.followed}).encode()
+        if self.path=='/oversize':payload=b'x'*9000
+        self.send_response(302 if self.path=='/redirect' else 200)
+        self.send_header('Content-Type','text/html' if self.path=='/html' else 'application/json')
+        if self.path=='/redirect':self.send_header('Location','http://127.0.0.1:3335/followed')
+        self.send_header('Content-Length',str(len(payload)));self.end_headers()
+        try:self.wfile.write(payload)
+        except (BrokenPipeError,ConnectionResetError):pass
+
+
 if __name__=='__main__':
     threading.Thread(target=smtp_thread,daemon=True).start()
+    threading.Thread(target=lambda:ThreadingHTTPServer(('127.0.0.1',3335),ExtractorFaults).serve_forever(),daemon=True).start()
     ThreadingHTTPServer(('0.0.0.0',9081),Handler).serve_forever()
