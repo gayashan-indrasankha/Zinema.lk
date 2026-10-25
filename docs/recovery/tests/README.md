@@ -114,3 +114,21 @@ directory, run `npm.cmd ci --ignore-scripts --no-audit --no-fund`, then
 `node docs/recovery/tests/extractor-dependencies.cjs <that-directory>` under Node
 24+. This does not download/launch Chrome or enable extraction. Browser fallback
 remains blocked; real provider tests require the prepared approval plan.
+
+## Bot lifecycle follow-up
+
+See ../BOT_LIFECYCLE.md for the executed fake SDK graph, ingestion/checkpoint,
+uncertain-delivery, explicit-time-zone, lease, shutdown and log-redaction cases.
+Use Node 24+; no real SDK/account or saved device session is loaded by these tests:
+
+```powershell
+node --test --test-isolation=none docs/recovery/tests/bot-lifecycle.test.cjs docs/recovery/tests/bot-recovery.test.cjs docs/recovery/tests/bot-entrypoint.test.cjs docs/recovery/tests/bot-api-boundary.test.cjs
+```
+
+The filesystem cases create atomic hard links only within owned .runtime fixtures;
+restricted host execution may need permission for those operations. Tests verify
+the resolved cleanup root before removing their own disposable fixture directories.
+Set ZINEMA_TEST_PHASE=LIFECYCLE for fresh native HTTP/schema output, preserving
+earlier records. The bot's actual CLI startup guard remains unchanged. Pairing,
+stale-lease review and uncertain maintenance resolution need separate controlled
+procedures; no cleanup of real session data or live test is authorized here.
