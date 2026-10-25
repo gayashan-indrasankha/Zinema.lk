@@ -137,3 +137,23 @@ Rationale: Clear the exercised advisory checks without enabling live services or
 Consequences: The previous installed bot node_modules tree is preserved and must not be confused with the repaired lockfile. Live compatibility, browser-extraction dependencies and comprehensive security remain outside the result.
 
 Verification: Both scoped npm audits exit 0 with zero findings; clean npm ci --ignore-scripts and offline dependency smoke pass. No socket or auth store started.
+
+## 2026-10-25 — Retain and disclose import whitespace findings
+
+Context: The complete source import passes syntax, JSON, fake-client regressions
+and dedicated secret scans, while Git's whitespace check exits 2 with 1,709
+findings across 111 legacy files. Broad formatting changes would enlarge the
+publication diff without addressing a confirmed functional defect.
+
+Decision: Preserve the imported formatting and explicitly retain the phase's
+PARTIAL state for the unresolved check. Complete the authorized branch/PR workflow
+and leave merging to the owner. Do not describe all checks as passed.
+
+Consequences: Five ready-for-review PRs are available in a documented order;
+whitespace cleanup remains a separate reviewable follow-up. No production or
+full-product readiness claim follows from local test/scan results.
+
+Verification: Staged scans 35/35 and complete root-history scan report zero
+findings; 10 configuration and 12 fake-client tests pass; Git whitespace exit 2
+retained. GitHub confirms all five PRs open/non-draft/mergeable with base `main`.
+Final documentation is checked again before its handoff commit and push.

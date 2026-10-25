@@ -4,15 +4,51 @@ Updated: 2026-10-25.
 
 ## Current phase
 
-Owner-authorized initial Git publication: **IN PROGRESS**. The owner requested
-staging, logical commits, branch pushes to the existing repository and PRs into
-`main`. See `PUBLISHING.md` for scope, security review and the ordered import plan.
-No merge, deployment or production-service access is authorized by this phase.
+Owner-authorized initial Git publication: **PARTIAL — five review PRs prepared;
+legacy whitespace check unresolved**. The ordered import contains 36 conventional
+commits including this handoff. Branches are pushed and all five PRs were verified
+open, non-draft and mergeable into `main`. Nothing was merged or deployed.
+See `PUBLISHING.md` and `PUBLISHING_RESULTS.json` for scope, inventory and limits.
 
 The prior local authentication/CSRF, bot delivery and schema repair is **COMPLETE
 within its requested local scope**. See `REPAIR_PHASE.md` and the repair-prefixed
 results. Overall product recovery and production readiness remain incomplete.
 Earlier assessment failures remain historical evidence.
+
+
+## 2026-10-25 publication handoff
+
+- Published the supplied source as 35 logical import commits plus this handoff,
+  across `codex/import-foundation`, `codex/import-website`, `codex/import-admin`,
+  `codex/import-adapters` and `codex/import-evidence`. PRs #1–#5 target `main`;
+  merge in that order with normal merge commits to retain the series.
+- Changed publication exclusions, optional empty-by-default support contacts,
+  sanitized examples, README, third-party attribution and recovery records.
+  Preserved all originals privately; no production data, sessions, user uploads,
+  installed dependencies or credentials were published. The extractor is tracked
+  as ordinary source and its local embedded repository remains intact.
+- Executed PHP lint 167/167, JavaScript/CJS syntax 38/38, JSON parsing, configuration
+  regressions 10/10 and fake-client bot regressions 12/12. Staged checks repeated
+  before every source import commit. These are static and test-execution claims;
+  prior HTTP/browser/schema results are retained, not newly rerun here.
+- Gitleaks 8.30.1: upstream archive checksum matched; 35 staged scans and full
+  history scan exit 0, zero findings. One initial illustrative-token false
+  positive was removed from its comment without an allowlist. Private exclusion
+  checks 12/12 and public environment-template checks 3/3 passed. Scanner limits
+  and supplemental contact/SQL/media review are documented in `PUBLISHING.md`.
+- Unresolved whitespace check: exit 2, 1,709 findings in 111 files. Retained legacy
+  formatting makes this phase PARTIAL; no passing whitespace scan or comprehensive
+  security, licensing, live-service or production certification is claimed.
+- Git: original `main`/remote head `f89da9b61fe92f4023e773b7965a02d4bdd72721`
+  remains unchanged. Imported head before this handoff is
+  `944116cc5a7734d0afc16bc0ec91019423c22da1`; all 35 hashes are in the results
+  inventory. This handoff's final hash and post-push clean status are reported in
+  the execution handoff. No commits were amended or rewritten.
+- Owner attention: review and merge the five linked PRs in `PUBLISHING.md`.
+  No external recipients or live integrations were contacted. Next recommended
+  Codex task: prepare a reproducible isolated development environment and fake
+  mail/OAuth end-to-end tests using the canonical schema; review uploads and
+  distributed token reservation; preserve history and keep live/deployment off.
 
 ## Historical starting state (2026-10-23 discovery)
 
@@ -46,7 +82,7 @@ Earlier assessment failures remain historical evidence.
 - Existing application changes lack corresponding recovery records. Root version history is absent.
 - No isolated runtime/database fixture has been established or tested in this phase.
 
-## Next recommended phase
+## Next recommended phase after the earlier local repair (historical)
 
 Reproducible local development setup, fake mail/OAuth flows, upload/distributed-token review and a sanitized Git baseline after a dedicated secret/data review. Exact next task is in `REPAIR_PHASE.md`. Production integrations, publishing and deployment remain disabled; do not expand scope automatically.
 

@@ -1,6 +1,6 @@
 # Initial source publication
 
-Date: 2026-10-25. State: **IN PROGRESS**.
+Date: 2026-10-25. State: **PARTIAL — publication workflow prepared; legacy whitespace check unresolved**.
 
 The owner explicitly requested staging, logical commits, branches, pushes to the
 existing GitHub repository and pull requests for review into `main`. This is the
@@ -82,8 +82,55 @@ claimed as a new publication-phase runtime test.
 
 ## Handoff
 
-Pending: staged-content checks, logical import commits, history scan, branch
-pushes and PR creation. `main` must remain at its original head until owner merge.
+Prepared **36 conventional commits**, including this final handoff, on five
+ordered branches. All PRs are open, ready for review and were externally verified
+as mergeable into `main` before this handoff update. Merge in this order:
+
+| Order | PR | Added commits in this checkpoint |
+| --- | --- | --- |
+| 1 | [Foundation](https://github.com/gayashan-indrasankha/Zinema.lk/pull/1) | 7 |
+| 2 | [Website](https://github.com/gayashan-indrasankha/Zinema.lk/pull/2) | 11 |
+| 3 | [Administration](https://github.com/gayashan-indrasankha/Zinema.lk/pull/3) | 4 |
+| 4 | [Adapters](https://github.com/gayashan-indrasankha/Zinema.lk/pull/4) | 7 |
+| 5 | [Tests, evidence and documentation](https://github.com/gayashan-indrasankha/Zinema.lk/pull/5) | 7 |
+
+The first 35 import commit hashes and file boundaries are in
+`PUBLISHING_RESULTS.json`, through `944116cc5a7734d0afc16bc0ec91019423c22da1`.
+This final handoff commit is discoverable in the file's Git history and the
+execution handoff. `main` remains at
+`f89da9b61fe92f4023e773b7965a02d4bdd72721`; nothing was merged.
+
+- **Statically inspected / syntax validated:** selected publication files,
+  staged paths/diff statistics and source/index hash matches; PHP **167/167**,
+  JavaScript/CJS **38/38**, JSON parsing successful. Counts cover selected source,
+  excluding ignored historical programs/dependencies; they differ from earlier
+  broader repair syntax inventories. No exhaustive new code audit is implied.
+- **Test-covered and executed:** configuration **10/10**, fake-client bot
+  **12/12**, exit 0. Both suites repeated before each of the 35 source import
+  commits against the complete local candidate. Intermediate checkpoint branches
+  do not yet contain every test/application file.
+- **Secret/data checks executed:** 35 staged scans and the complete new history
+  scan exit 0, zero findings; 12 private-path ignore assertions and three public
+  template assertions passed. No embedded gitlink is present. Private source
+  originals, SQL rows, media, credentials and runtime artifacts are preserved
+  locally. The final documentation update is scanned again before commit/push.
+- **Unresolved check:** the full import whitespace check exits **2**, with
+  **1,709 findings across 111 files**, affecting 28 import groups. These are
+  retained legacy formatting findings. The phase remains **PARTIAL** for this
+  unresolved check; functional checks and secret scans passed. A broad formatting
+  rewrite was kept outside the import, and no failed check is described as passed.
+- **Externally verified:** pushed heads matched local branch checkpoints; all
+  five PRs were open, non-draft, mergeable and targeted `main`. No automated CI or
+  production check is claimed. Final post-handoff head verification is reported
+  in the execution handoff.
+- **Runtime limits:** HTTP/database/browser checks were not repeated in this
+  publication phase. Their earlier repaired-source evidence remains in the
+  repair reports. Optional support-contact configuration is syntax inspected;
+  live support contact was never exercised.
+
+Working tree was clean after the 35 import commits and before adding this
+handoff. The final commit/push must leave it clean on `codex/import-evidence`.
+Ignored private/runtime files intentionally remain local.
 
 Next recommended Codex task after owner review:
 
