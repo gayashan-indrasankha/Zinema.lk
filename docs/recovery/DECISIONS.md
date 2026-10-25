@@ -391,3 +391,12 @@ The initial executed suite exposed loss of publication recognition after the
 restore link was removed but before completion. A persistent publication identity
 fix passed all 49 checks on rerun. Final expanded CLI/regression evidence and
 handoff are recorded in QUARANTINE_PHASE.md and STATUS.md.
+
+
+Quarantine completion: final direct CLI/failure-hook suite passed 51/51, retained
+operations 57/57, Docker HTTP 88/88, native HTTP 94/94 and schema/bridge 22/22.
+Other static/security checks and limitations are recorded in QUARANTINE_PHASE.md.
+Source commit `637327e55d772dcb6acce4383b226bbaee606bd5` left a clean tree; Gitleaks staged,
+384-file candidate and all-local-history scans returned zero findings. Owned
+services stopped and private rescue/audit volumes remained preserved. A separate
+local documentation commit records completion; nothing was published or pushed.

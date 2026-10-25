@@ -5,8 +5,9 @@ Updated: 2026-10-25.
 ## Current phase
 
 Owner-requested recoverable quarantine and explicitly reviewed cleanup for owned
-development uploads: **COMPLETE within the authorized local scope**. Starting tree was clean at `a31d47e` on
-`zinema/local-dev-safety`. Production integrations and publishing remain disabled.
+development uploads: **COMPLETE within the authorized local scope**. Source commit
+`637327e55d772dcb6acce4383b226bbaee606bd5` on `zinema/local-dev-safety`; starting
+tree was clean at `a31d47e`. Production integrations and publishing remain disabled.
 
 - Added guarded CLI review/history/quarantine/restore/recover, revision/case review,
   private verified rescue copies, separate quarantine quota, journal/audit and
@@ -22,7 +23,9 @@ development uploads: **COMPLETE within the authorized local scope**. Starting tr
   and restricted socket execution are documented, corrected and preserved privately.
 - Static checks passed for 185 PHP/41 JavaScript and 11 Python files; sanitized
   JSON parsed. Gitleaks staged/full-candidate/all-local-history scans returned zero
-  findings; eight ignore checks passed. Scanner limits remain explicit.
+  findings across all 384 candidate files; eight ignore checks passed. Scanner
+  limits remain explicit. The source commit left a clean tree; this documentation-only
+  handoff follows in a separate local commit.
 - Owned containers/native services stopped; 8088/9081/3307/8089/3334 closed. Private
   credentials, database/upload/rescue volumes and audit remain preserved/ignored.
   No remote Git, production connection, deployment or publishing was performed.
