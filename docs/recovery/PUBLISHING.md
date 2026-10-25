@@ -19,15 +19,15 @@ ownership or improve review.
 
 Five branch checkpoints organize one ordered import series:
 
-1. `codex/import-foundation`: exclusions, recovery rules, environment template,
+1. `zinema/import-foundation`: exclusions, recovery rules, environment template,
    canonical and historical SQL, PHPMailer, shared PHP helpers.
-2. `codex/import-website`: shared presentation, accounts, catalogue, Shots,
+2. `zinema/import-website`: shared presentation, accounts, catalogue, Shots,
    comments, trailers, profile, starter pages and protected downloads.
-3. `codex/import-admin`: administration layout/authentication, catalogue/content
+3. `zinema/import-admin`: administration layout/authentication, catalogue/content
    management, analytics/settings and disabled maintenance entry points.
-4. `codex/import-adapters`: bot API, fake/live guards, bot modules/dependencies
+4. `zinema/import-adapters`: bot API, fake/live guards, bot modules/dependencies
    and extractor source.
-5. `codex/import-evidence`: reproducible checks, historical and repair evidence,
+5. `zinema/import-evidence`: reproducible checks, historical and repair evidence,
    project documentation, provenance and this publication handoff.
 
 All PRs target `main`. Branches form an ordered series: merge in the order above.
@@ -82,17 +82,17 @@ claimed as a new publication-phase runtime test.
 
 ## Handoff
 
-Prepared **36 conventional commits**, including this final handoff, on five
+Prepared **37 conventional commits**, including publication and branch-name handoffs, on five
 ordered branches. All PRs are open, ready for review and were externally verified
 as mergeable into `main` before this handoff update. Merge in this order:
 
 | Order | PR | Added commits in this checkpoint |
 | --- | --- | --- |
-| 1 | [Foundation](https://github.com/gayashan-indrasankha/Zinema.lk/pull/1) | 7 |
-| 2 | [Website](https://github.com/gayashan-indrasankha/Zinema.lk/pull/2) | 11 |
-| 3 | [Administration](https://github.com/gayashan-indrasankha/Zinema.lk/pull/3) | 4 |
-| 4 | [Adapters](https://github.com/gayashan-indrasankha/Zinema.lk/pull/4) | 7 |
-| 5 | [Tests, evidence and documentation](https://github.com/gayashan-indrasankha/Zinema.lk/pull/5) | 7 |
+| 1 | [Foundation](https://github.com/gayashan-indrasankha/Zinema.lk/pull/6) | 7 |
+| 2 | [Website](https://github.com/gayashan-indrasankha/Zinema.lk/pull/7) | 11 |
+| 3 | [Administration](https://github.com/gayashan-indrasankha/Zinema.lk/pull/8) | 4 |
+| 4 | [Adapters](https://github.com/gayashan-indrasankha/Zinema.lk/pull/9) | 7 |
+| 5 | [Tests, evidence and documentation](https://github.com/gayashan-indrasankha/Zinema.lk/pull/10) | 8 |
 
 The first 35 import commit hashes and file boundaries are in
 `PUBLISHING_RESULTS.json`, through `944116cc5a7734d0afc16bc0ec91019423c22da1`.
@@ -129,7 +129,7 @@ execution handoff. `main` remains at
   live support contact was never exercised.
 
 Working tree was clean after the 35 import commits and before adding this
-handoff. The final commit/push must leave it clean on `codex/import-evidence`.
+handoff. The final commit/push must leave it clean on `zinema/import-evidence`.
 Ignored private/runtime files intentionally remain local.
 
 Next recommended Codex task after owner review:
@@ -138,3 +138,18 @@ Next recommended Codex task after owner review:
 > end-to-end tests using the canonical schema. Review upload handling and
 > distributed token reservation. Preserve the publication history and recovery
 > records; keep live integrations and deployment disabled.
+
+## Owner-requested branch naming update
+
+The five review branches now use the project prefix `zinema/import-*` locally
+and remotely. Replacement PRs #6–#10 carry the same source commits and review
+order. Superseded PRs #1–#5 are closed with links to their replacements. The old
+remote references were removed only after the replacement references and PR
+heads were verified to preserve every existing commit. No application files,
+existing authors, commit dates or commit hashes were rewritten. `main` remains
+unchanged. This documentation update is the 37th commit in the series.
+
+Branch/ref and PR metadata checks passed. JSON, staged whitespace and dedicated
+secret checks apply to this documentation update; application runtime tests were
+not repeated because no application behavior changed. Earlier whitespace findings
+and all prior verification limits remain recorded above.

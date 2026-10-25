@@ -157,3 +157,23 @@ Verification: Staged scans 35/35 and complete root-history scan report zero
 findings; 10 configuration and 12 fake-client tests pass; Git whitespace exit 2
 retained. GitHub confirms all five PRs open/non-draft/mergeable with base `main`.
 Final documentation is checked again before its handoff commit and push.
+
+## 2026-10-25 — Use the owner's project branch prefix
+
+Context: The owner explicitly requested all five review branch names use
+`zinema/import-*`. GitHub PR source branches cannot be edited through the PR
+update API; changing those branch names requires replacement PRs.
+
+Decision: Preserve all original source commit hashes and author information,
+create verified project-prefixed references and replacement PRs, close and link
+the superseded PRs, then remove the old references and update local upstreams.
+Update current recovery branch labels and PR links without rewriting history.
+
+Consequences: PRs #6–#10 replace #1–#5 and retain the same merge order into `main`.
+One documentation commit records the rename. Existing source authorship,
+third-party attribution, application behavior and prior verification limits remain.
+
+Verification: New refs matched original heads and replacement PRs were verified
+open, non-draft and mergeable before cleanup. Local branches use the requested
+prefix and upstreams. Final documentation checks and remote/PR verification are
+recorded in the execution handoff; no runtime retest is required for branch names.

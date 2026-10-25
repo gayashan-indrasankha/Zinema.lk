@@ -4,9 +4,15 @@ Updated: 2026-10-25.
 
 ## Current phase
 
+Owner-requested branch naming update: **COMPLETE within scope**. The five
+review branches use `zinema/import-*` locally and remotely. Replacement PRs
+#6–#10 are open against `main`; superseded PRs #1–#5 are closed and linked to
+their replacements. Existing source commits and author information are intact.
+`main` is unchanged. Relevant documentation/metadata checks are recorded below.
+
 Owner-authorized initial Git publication: **PARTIAL — five review PRs prepared;
-legacy whitespace check unresolved**. The ordered import contains 36 conventional
-commits including this handoff. Branches are pushed and all five PRs were verified
+legacy whitespace check unresolved**. The ordered import contains 37 conventional
+commits including publication and branch-name handoffs. Branches are pushed and all five PRs were verified
 open, non-draft and mergeable into `main`. Nothing was merged or deployed.
 See `PUBLISHING.md` and `PUBLISHING_RESULTS.json` for scope, inventory and limits.
 
@@ -18,9 +24,9 @@ Earlier assessment failures remain historical evidence.
 
 ## 2026-10-25 publication handoff
 
-- Published the supplied source as 35 logical import commits plus this handoff,
-  across `codex/import-foundation`, `codex/import-website`, `codex/import-admin`,
-  `codex/import-adapters` and `codex/import-evidence`. PRs #1–#5 target `main`;
+- Published the supplied source as 35 logical import commits plus two documentation handoffs,
+  across `zinema/import-foundation`, `zinema/import-website`, `zinema/import-admin`,
+  `zinema/import-adapters` and `zinema/import-evidence`. PRs #6–#10 target `main`;
   merge in that order with normal merge commits to retain the series.
 - Changed publication exclusions, optional empty-by-default support contacts,
   sanitized examples, README, third-party attribution and recovery records.
@@ -132,3 +138,25 @@ Reproducible local development setup, fake mail/OAuth flows, upload/distributed-
 - Signup reports success despite disabled/failed verification mail; real verification/password recovery remain untested.
 - Dependency advisories and auxiliary JS syntax failures remain unresolved. Existing sessions/logs/private media and absent version history still prevent safe publishing claims.
 - Downloads, payments, WhatsApp and live extraction remain deliberately unavailable. No complete end-to-end product, load, comprehensive security or production-readiness certification is established.
+
+## 2026-10-25 branch naming handoff
+
+- Renamed all five review branches to `zinema/import-*`, verified replacement
+  refs at the original heads, set local upstreams, and removed superseded remote
+  names. Current branch: `zinema/import-evidence`.
+- Created PRs #6–#10 against `main`, carried over descriptions/comparison links,
+  attached replacements to the chat and closed PRs #1–#5 with replacement links.
+- Updated this status, `DECISIONS.md`, `PUBLISHING.md` and publication JSON branch
+  labels/PR links. This adds a documentation commit; existing commits are intact.
+- Verification: five local/new-remote heads matched before cleanup; new PRs
+  verified open/non-draft/mergeable. Documentation JSON parsing, staged whitespace
+  and Gitleaks checks run before commit. No application/runtime test was rerun for
+  this metadata/documentation-only change. Prior publication whitespace findings
+  remain unresolved; they do not represent a new rename failure.
+- Git baseline before this update: `9ff34b61ffb868555cf4a45d17a77f3c83b49b59`;
+  final documentation hash and clean/remote status appear in the execution
+  handoff. No merge, deployment, history rewrite or author change was performed.
+- Owner attention: review/merge PRs #6, #7, #8, #9, #10 in that order. Next
+  recommended Codex task remains the reproducible isolated development environment
+  and fake mail/OAuth tests, with uploads/distributed token review; preserve
+  history and keep live integrations/deployment disabled.
