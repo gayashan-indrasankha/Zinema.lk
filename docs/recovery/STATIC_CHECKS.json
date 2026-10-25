@@ -1,0 +1,563 @@
+{
+  "files_scanned": 203,
+  "method": "First-party source pattern inventory; paths and line numbers only, not a vulnerability scanner or proof of safety",
+  "dedicated_secret_scanners": {
+    "gitleaks": false,
+    "trufflehog": false
+  },
+  "patterns": {
+    "session_regeneration": [],
+    "password_hashing": [
+      {
+        "file": "ajax_reset_password.php",
+        "lines": [
+          75
+        ]
+      },
+      {
+        "file": "ajax_signup.php",
+        "lines": [
+          105
+        ]
+      },
+      {
+        "file": "signup.php",
+        "lines": [
+          53
+        ]
+      },
+      {
+        "file": "api/auth-handler.php",
+        "lines": [
+          76
+        ]
+      }
+    ],
+    "password_verification": [
+      {
+        "file": "ajax_login.php",
+        "lines": [
+          56
+        ]
+      },
+      {
+        "file": "login.php",
+        "lines": [
+          33
+        ]
+      },
+      {
+        "file": "admin/login.php",
+        "lines": [
+          27,
+          28
+        ]
+      },
+      {
+        "file": "api/auth-handler.php",
+        "lines": [
+          28
+        ]
+      }
+    ],
+    "csrf_validation": [
+      {
+        "file": "ajax_forgot_password.php",
+        "lines": [
+          19
+        ]
+      },
+      {
+        "file": "ajax_login.php",
+        "lines": [
+          20
+        ]
+      },
+      {
+        "file": "ajax_resend_verification.php",
+        "lines": [
+          19
+        ]
+      },
+      {
+        "file": "ajax_reset_password.php",
+        "lines": [
+          18
+        ]
+      },
+      {
+        "file": "ajax_signup.php",
+        "lines": [
+          21
+        ]
+      },
+      {
+        "file": "login.php",
+        "lines": [
+          13
+        ]
+      },
+      {
+        "file": "signup.php",
+        "lines": [
+          13
+        ]
+      },
+      {
+        "file": "includes/csrf_helper.php",
+        "lines": [
+          31
+        ]
+      }
+    ],
+    "external_io": [
+      {
+        "file": "collections.php",
+        "lines": [
+          784,
+          838,
+          1043
+        ]
+      },
+      {
+        "file": "google-callback.php",
+        "lines": [
+          40,
+          64
+        ]
+      },
+      {
+        "file": "index.php",
+        "lines": [
+          494,
+          766,
+          823,
+          978,
+          1021,
+          1093,
+          1159,
+          1430,
+          1701
+        ]
+      },
+      {
+        "file": "movies.php",
+        "lines": [
+          959,
+          1102,
+          1156,
+          1230,
+          1457
+        ]
+      },
+      {
+        "file": "profile.php",
+        "lines": [
+          543,
+          619,
+          673,
+          787,
+          1106
+        ]
+      },
+      {
+        "file": "reset-password.php",
+        "lines": [
+          315
+        ]
+      },
+      {
+        "file": "tv-series.php",
+        "lines": [
+          980,
+          1034,
+          1108,
+          1303
+        ]
+      },
+      {
+        "file": "_top_nav.php",
+        "lines": [
+          214
+        ]
+      },
+      {
+        "file": "admin/manage_shots.php",
+        "lines": [
+          56,
+          523,
+          583,
+          647
+        ]
+      },
+      {
+        "file": "admin/trailers.php",
+        "lines": [
+          297
+        ]
+      },
+      {
+        "file": "admin/assets/admin.js",
+        "lines": [
+          77
+        ]
+      },
+      {
+        "file": "api/comments.php",
+        "lines": [
+          114,
+          143
+        ]
+      },
+      {
+        "file": "api/subscribe.php",
+        "lines": [
+          60
+        ]
+      },
+      {
+        "file": "api/includes/comment_helpers.php",
+        "lines": [
+          14,
+          46,
+          65
+        ]
+      },
+      {
+        "file": "fb-video-api/index.js",
+        "lines": [
+          107
+        ]
+      },
+      {
+        "file": "includes/database.php",
+        "lines": [
+          16
+        ]
+      },
+      {
+        "file": "includes/TrailerManager.php",
+        "lines": [
+          94,
+          119,
+          148,
+          168,
+          187,
+          207
+        ]
+      },
+      {
+        "file": "js/collection.js",
+        "lines": [
+          113
+        ]
+      },
+      {
+        "file": "js/collections.js",
+        "lines": [
+          50
+        ]
+      },
+      {
+        "file": "js/comments.js",
+        "lines": [
+          49,
+          170,
+          207,
+          236
+        ]
+      },
+      {
+        "file": "js/main.js",
+        "lines": [
+          93
+        ]
+      },
+      {
+        "file": "js/main.min.js",
+        "lines": [
+          1
+        ]
+      },
+      {
+        "file": "js/series.js",
+        "lines": [
+          95
+        ]
+      },
+      {
+        "file": "js/subscribe.js",
+        "lines": [
+          29,
+          51
+        ]
+      },
+      {
+        "file": "js/trailer-feed.js",
+        "lines": [
+          26,
+          270,
+          311,
+          360,
+          372
+        ]
+      },
+      {
+        "file": "js/tv-series.js",
+        "lines": [
+          43
+        ]
+      },
+      {
+        "file": "whatsapp-bot-deploy/index-whatsappwebjs-OLD.js",
+        "lines": [
+          541
+        ]
+      },
+      {
+        "file": "whatsapp-bot-deploy/index-whatsappwebjs-original.js",
+        "lines": [
+          541
+        ]
+      }
+    ],
+    "dynamic_sql": [
+      {
+        "file": "collections.php",
+        "lines": [
+          62,
+          82
+        ]
+      },
+      {
+        "file": "find_movies.php",
+        "lines": [
+          19,
+          56
+        ]
+      },
+      {
+        "file": "index.php",
+        "lines": [
+          56,
+          82,
+          105
+        ]
+      },
+      {
+        "file": "movies.php",
+        "lines": [
+          26,
+          94,
+          113
+        ]
+      },
+      {
+        "file": "sitemap.php",
+        "lines": [
+          59,
+          81,
+          103
+        ]
+      },
+      {
+        "file": "tv-series.php",
+        "lines": [
+          76,
+          95
+        ]
+      },
+      {
+        "file": "admin/analytics.php",
+        "lines": [
+          8,
+          12,
+          16,
+          21
+        ]
+      },
+      {
+        "file": "admin/collections.php",
+        "lines": [
+          70
+        ]
+      },
+      {
+        "file": "admin/episodes.php",
+        "lines": [
+          130,
+          133
+        ]
+      },
+      {
+        "file": "admin/index.php",
+        "lines": [
+          23,
+          27,
+          31
+        ]
+      },
+      {
+        "file": "admin/manage_shots.php",
+        "lines": [
+          146
+        ]
+      },
+      {
+        "file": "admin/movies.php",
+        "lines": [
+          130,
+          133
+        ]
+      },
+      {
+        "file": "admin/run_migration.php",
+        "lines": [
+          15,
+          24,
+          27,
+          35
+        ]
+      },
+      {
+        "file": "admin/series.php",
+        "lines": [
+          130
+        ]
+      },
+      {
+        "file": "admin/trailers.php",
+        "lines": [
+          108,
+          111
+        ]
+      },
+      {
+        "file": "api/collections.php",
+        "lines": [
+          11,
+          71
+        ]
+      },
+      {
+        "file": "api/movies.php",
+        "lines": [
+          11
+        ]
+      },
+      {
+        "file": "api/series.php",
+        "lines": [
+          68
+        ]
+      },
+      {
+        "file": "api/whatsapp/refresh-stats.php",
+        "lines": [
+          24
+        ]
+      },
+      {
+        "file": "includes/whatsapp_token.php",
+        "lines": [
+          152,
+          243,
+          247,
+          251,
+          255
+        ]
+      }
+    ],
+    "filesystem_deletion": [
+      {
+        "file": "admin/collections.php",
+        "lines": [
+          20
+        ]
+      },
+      {
+        "file": "admin/episodes.php",
+        "lines": [
+          21,
+          104
+        ]
+      },
+      {
+        "file": "admin/movies.php",
+        "lines": [
+          21,
+          104
+        ]
+      },
+      {
+        "file": "admin/series.php",
+        "lines": [
+          21,
+          104
+        ]
+      },
+      {
+        "file": "admin/trailers.php",
+        "lines": [
+          79,
+          82
+        ]
+      },
+      {
+        "file": "includes/PHPMailer/src/PHPMailer.php",
+        "lines": [
+          3115,
+          3118,
+          3124
+        ]
+      },
+      {
+        "file": "whatsapp-bot-deploy/config/file-manager.js",
+        "lines": [
+          293
+        ]
+      }
+    ],
+    "shell_execution": [
+      {
+        "file": "admin/trailers.php",
+        "lines": [
+          29
+        ]
+      },
+      {
+        "file": "whatsapp-bot-deploy/index-before-fix.js",
+        "lines": [
+          6
+        ]
+      },
+      {
+        "file": "whatsapp-bot-deploy/index-temp.js",
+        "lines": [
+          6
+        ]
+      },
+      {
+        "file": "whatsapp-bot-deploy/index.js",
+        "lines": [
+          10
+        ]
+      },
+      {
+        "file": "whatsapp-bot-deploy/config/database.js",
+        "lines": [
+          211
+        ]
+      }
+    ]
+  },
+  "sensitive_legacy_material_present": {
+    "bot_session_directory": true,
+    "bot_auth_directory": true,
+    "legacy_log": true
+  },
+  "limitations": [
+    "No private sessions, environment values, logs or SQL rows scanned or displayed.",
+    "No comprehensive secret scan, penetration test or exploitability audit performed."
+  ]
+}
