@@ -10,6 +10,9 @@ partials and disabled diagnostics. `PRODUCTION_ROUTE_INVENTORY.json` identifies 
 The GET sweep verifies boundaries/error responses, not complete feature behavior.
 This checklist maps functional groups to executed tests and explicit remaining gaps.
 Final executed counts and limitations are recorded in PRODUCTION_AUDIT.md.
+Follow-up evidence on 2026-10-26: EXTRACTOR_CONNECTION.md, BOT_LIFECYCLE.md and
+STAGING_REHEARSAL.md. The corresponding rows below reflect those local results;
+all real provider and selected-host acceptance remains pending.
 
 | Feature | Automatic local evidence | Manual browser evidence | Launch gap / acceptance |
 | --- | --- | --- | --- |
@@ -42,13 +45,13 @@ Final executed counts and limitations are recorded in PRODUCTION_AUDIT.md.
 | Trailer list/detail/player feed | Product APIs; 10 Node UI fixtures; native HTTP | Shared link selected original motion clip; playback progressed and spinner cleared | Safari/iOS/real-source codec matrix pending |
 | Trailer like/favourite/view/share | Product actions; inactive interaction denial; failed-action/guest fixtures | Member Save changed to Saved; no external share performed | Native share and sustained write load not certified |
 | WhatsApp token issuance and assignment | Actual PHP-issued fictional token -> Node/SQL fake-delivery integration | No wa.me link followed | No real phone/account/group contacted |
-| Claims/one owner/expiry/replay/completion | Retained 32-worker claim races; 7 Node/SQL pipeline cases and protocol tests | Backend protocol has no independent UI | External acknowledgement ambiguity remains; no exactly-once claim |
+| Claims/one owner/expiry/replay/completion | Retained 32-worker claim races; 10 Node/SQL/fake delivery cases and protocol tests; lost ACK stops after one attempt | Backend protocol has no independent UI | External acknowledgement ambiguity stays held; no exactly-once claim |
 | Bot cached/group/local-disk forwarding tiers | Retained fake-client component tests | No live client/UI launched | Live group lookup/media transfer still requires approval |
 | Bot commands/administrator identity | Exact identity tests, guarded entry point, static command review | No WhatsApp commands sent | Full Baileys event/command surface not yet live verified |
-| Bot incoming/upload queues | Bounded command queue, failure/overflow tests; retained upload queue concurrency | Backend component | Persistence/restart and overload rehearsal remain staging requirements |
-| Bot reconnect/health/session handling | Fake timers/backoff/identity tests; session preservation repairs | No QR/session access | Actual disconnect/reconnect/browser/session compatibility remains unverified |
-| Bot cache warming/auto-refresh/night jobs | Static inspection, retained forwarder tests; future state moved private | No scheduler or group upload started | Full scheduler, time-zone and restart/continuation fault matrix remains a blocker |
-| fb-video-api health/disabled/local modes | Retained local service tests | Administrator unavailable-state only | Disabled/fake responses are not successful Facebook extraction |
+| Bot incoming/upload queues | Bounded queue/dedup/drain and persisted maintenance/held recovery tests | Backend component | Real SDK and sustained ingestion/overload remain staging requirements |
+| Bot reconnect/health/session handling | Serialized reconnect, worker lease, stale-event/heartbeat, fake entrypoint/shutdown tests | No real QR/session access | Actual SDK/account/pairing/supervisor compatibility remains unverified |
+| Bot cache warming/auto-refresh/night jobs | Explicit-time-zone/idempotent schedule, shared gate, restart/checkpoint/held tests in 102-case suite | Fake SDK only; no group upload | Actual schedules/groups/large media and reviewed held-maintenance handling pending |
+| fb-video-api health/disabled/local modes | Private actual PHP/Node 33-case contract, 14 client/4 cURL faults, 6 service checks | Administrator fake health/preview and stopped/disabled states verified | Live promotion/provider extraction remains blocked |
 | Facebook URL parsing/HTML extraction | Original HTML fixtures; deceptive hosts/unsafe media rejection | Shot form validation reviewed | Real provider HTML/login/deleted/expired cases need approval |
 | Extractor HTTPS transport | Mock DNS/HTTPS, pinned-address/redirect/body/deadline tests | Backend component | No real DNS/provider extraction executed; outbound staging controls required |
 | Extractor browser fallback/dependencies | Full declared npm audits; pinned upgrade/import test | No browser launched for extraction | Explicit compatible Chrome binary, sandbox/network isolation and full fallback tests remain blocked |
@@ -57,7 +60,7 @@ Final executed counts and limitations are recorded in PRODUCTION_AUDIT.md.
 | Payments/subscriptions | Disabled endpoint boundary checks | Owner selected free access | Excluded; handlers stay disabled and must not be advertised |
 | Unsafe downloader/cron/migration/diagnostics | Disabled/denied boundary checks | Legacy download link replaced in public CTA | No old fetcher/cron enabled |
 | Security headers/CSRF/secrets/error boundaries | Retained HTTP, URL/input/throttle tests, source review, Gitleaks | Browser auth/role states and search review | Deployment-specific TLS/proxy/CSP/secret rotation/pen test still required |
-| Capacity/recovery/operations | Bounded local read smoke, not a capacity benchmark | None | Staging load, coordinated restore, monitoring and rollback remain launch gates |
+| Capacity/recovery/operations | Local TLS 5/25-client 400-request load, stopped-writer encrypted restore, all-row/file comparisons and unavailable alert passed | No selected-host browser run | Sustained/large-media/host capacity, off-host keys/backups/alerts and rollout rollback remain gates |
 
 Evidence classifications: source indexing is **statically inspected** only. A
 written test is **test-covered**, with execution/results recorded separately.

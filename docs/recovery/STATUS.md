@@ -4,6 +4,49 @@ Updated: 2026-10-26.
 
 ## Current phase
 
+Isolated staging preparation/recovery rehearsal: **COMPLETE within executed local
+synthetic scope; overall launch NO GO**. Started clean at bot checkpoint
+`0fb8566ea2056518100bd727086e3a6b3efc2dc8` after extractor checkpoint `2bd6305`.
+
+- Added committed-source allowlist exporter, public-only PHP artifact, private TLS
+  proxy/configuration and an exact local-only source/restore harness. No published
+  ports or default network route; all provider modes disabled. Different fresh DB
+  credentials, owned volumes and CRUD-only runtime identity; no old data imported.
+- Expanded fictional catalogue (251 movies, 41 series, 201 episodes, 21 collections,
+  11 trailers). Source TLS/security 25/25, restore TLS/security 23/23 and coordinated
+  orchestration 23/23 passed. 400 read requests at 5/25 concurrency had zero errors;
+  final p95 45.96/220.28 ms, not a production capacity promise. Post-load resource
+  samples and outage-to-local-alert detection are retained. PHP diagnostics: zero.
+- Stopped source writers; AES-256-GCM backup rejects tampering and restores to a
+  new target. Every row fingerprint/count in 38 tables (538 rows), 2 views and all
+  408 media/private-state/session files matched before new writes. Most files are
+  fictional PHP sessions. Restored quota admitted another original image. The
+  64 MiB buffered helper is fixture-only; no real Baileys/session/large-media DR claim.
+- Artifact/archive/Windows checkout boundaries 5/5, retained fake/pure Node plus backup 103/103,
+  local target guards 9/9 and PHP 197/JS 51/CJS 17/Python 19 syntax checks passed.
+  JSON parsing passed; final candidate/security counts are in STAGING_*_RESULTS.json.
+  Earlier application HTTP/schema/product/OAuth results remain at their immediately
+  preceding checkpoints; no application code changed in this staging phase.
+- OpenSSL path, read-only proxy temp paths and test-selection setup failures were
+  investigated and corrected; failures/limits are documented in STAGING_REHEARSAL.md.
+  Secret scan scope/results: STAGING_SECURITY_RESULTS.json. Default-rule limits
+  remain; no container vulnerability scan or penetration test is claimed.
+- Only labelled rehearsal containers stopped/removed; private fixture volumes,
+  credentials, TLS material, backups and failed-run evidence preserved/ignored.
+  No real provider/recipient, production, public host/DNS, remote Git or publishing.
+  Phase changes are committed locally; exact final hash is reported at handoff.
+
+Next recommended Codex task: **Prepare the reviewed staging promotion contract:
+owner-controlled dedicated-account pairing, held-maintenance review, live extractor
+transport policy and production storage/streaming-backup/alert configuration, with
+local tests.** Select a concrete isolated staging host/budget before provisioning.
+Actual host TLS/CSP/asset review, off-host recovery/alerts, real SDK/large media and
+capped provider acceptance remain launch gates. PRODUCTION_LIVE_TEST_PLAN.md is
+prepared; exact accounts/recipients/window/caps need owner approval before contact.
+Do not deploy or publish.
+
+## Previous bot lifecycle checkpoint
+
 Bot lifecycle/ingestion/recovery hardening: **COMPLETE within executed local fake
 scope; overall launch NO GO**. Started clean at extractor checkpoint `2bd6305`.
 
