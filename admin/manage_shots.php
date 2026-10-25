@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 check_login();
-require_once __DIR__.'/../includes/media_url.php';
+require_once __DIR__.'/../includes/extractor_client.php';
 $admin_id = $_SESSION['admin_id'];
 $message = '';
 $error = '';
@@ -9,8 +9,7 @@ $error = '';
 // ============================================
 // API CONFIGURATION
 // ============================================
-// Set your Render.com API URL here after deployment
-$api_url = FB_VIDEO_API_URL;
+// Browser traffic stays on the authenticated same-origin administrator endpoint.
 
 // Get shot for editing if requested
 $edit_shot = null;
@@ -52,26 +51,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_shot'])) {
         if (!$linked->get_result()->fetch_row()) { http_response_code(422);exit('Linked content not found.'); }
         // Try to extract CDN URL for initial cache (optional, non-blocking)
         $cached_cdn_url = '';
-        $extract_url = $api_url . '/api/extract?url=' . urlencode($fb_share_url);
-        
-        $response = false;
-        if (EXTRACTOR_MODE !== 'disabled') {
-        $ch = curl_init($extract_url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        }
-        
-        if ($response) {
-            $data = json_decode($response, true);
-            if (isset($data['success']) && $data['success'] && !empty($data['url'])) {
-                $cached_cdn_url = $data['url'];
-            }
-        }
-        
+        try {$cached_cdn_url=extractor_request('extract',$fb_share_url)['url'];}
+        catch (ExtractorFailure $ignored) { /* Optional cache: source reference can be saved while disabled/unavailable. */ }
+
         // Proceed with database operations
         if ($is_edit_mode) {
             // Update existing shot
@@ -332,7 +314,7 @@ if ($shots_result && $shots_result->num_rows > 0) {
             </div>
             
             <div class="api-url-display">
-                <strong>API URL:</strong> <?php echo htmlspecialchars($api_url); ?>
+                <strong>API URL:</strong> Private administrator connection
             </div>
             
             <div class="api-status-details" id="api-details" style="margin-top: 15px; display: none;">
@@ -513,7 +495,13 @@ if ($shots_result && $shots_result->num_rows > 0) {
         // ============================================
         // API HEALTH CHECK
         // ============================================
-        const API_URL = '<?php echo $api_url; ?>';
+        const API_URL = 'extractor.php';
+        async function extractorCall(action,url) {
+            const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(url ? {action,url} : {action})});
+            const data=await response.json();
+            if (!response.ok || data.success!==true) throw new Error(data.error || 'extractor_unavailable');
+            return data;
+        }
         
         async function checkApiHealth() {
             const btn = document.getElementById('btn-check-api');
@@ -527,17 +515,12 @@ if ($shots_result && $shots_result->num_rows > 0) {
             const startTime = Date.now();
             
             try {
-                const response = await fetch(API_URL + '/health', {
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' }
-                });
-                
+                const data = await extractorCall('health');
                 const responseTime = Date.now() - startTime;
-                const data = await response.json();
-                
+
                 // Update UI
                 indicator.classList.add('online');
-                document.getElementById('api-status-text').textContent = '✅ Online';
+                document.getElementById('api-status-text').textContent = '✅ Local fake online';
                 document.getElementById('api-uptime').textContent = formatUptime(data.uptime);
                 document.getElementById('api-response-time').textContent = responseTime + 'ms';
                 document.getElementById('api-version').textContent = data.version || 'Unknown';
@@ -587,16 +570,15 @@ if ($shots_result && $shots_result->num_rows > 0) {
             resultSpan.innerHTML = '<span style="color: #2196f3;">⏳ Testing...</span>';
             
             try {
-                const response = await fetch(API_URL + '/api/extract?url=' + encodeURIComponent(fbUrl));
-                const data = await response.json();
+                const data = await extractorCall('extract',fbUrl);
                 
                 if (data.success) {
-                    resultSpan.innerHTML = `<span style="color: #4caf50;">✅ Success! (${data.method}, ${data.duration_ms}ms)</span>`;
+                    resultSpan.textContent = '✅ Local fake connection verified';
                 } else {
-                    resultSpan.innerHTML = `<span style="color: #f44336;">❌ ${data.error || 'Extraction failed'}</span>`;
+                    resultSpan.textContent = '❌ Extraction unavailable';
                 }
             } catch (error) {
-                resultSpan.innerHTML = `<span style="color: #f44336;">❌ API Error: ${error.message}</span>`;
+                resultSpan.textContent = '❌ Connection unavailable ('+error.message+')';
             }
         }
 

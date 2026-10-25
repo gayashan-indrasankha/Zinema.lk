@@ -449,3 +449,20 @@ history scans returned zero findings and nine ignore checks passed. All owned
 services stopped; private data/volumes retained. A separate documentation handoff
 records this evidence. The launch decision remains PARTIAL/NO GO, with no provider
 transactions, deployment, push or publishing.
+
+
+## 2026-10-25 — Private local extractor contract
+
+Route browser requests through administrator-only POST/CSRF on the website. Send
+an independent server-only 64-hex credential to the fixed private Node destination;
+no browser-direct service URL/key, wildcard CORS or raw upstream text. Share the
+bounded client with optional shot caching. Requests are POST JSON with explicit
+size/rate/concurrency/deadline/media policy. Production/live access remains blocked.
+
+Keep the normal development mode disabled. A separate opt-in override uses actual
+PHP/Node, internal namespace, no published service port and original local media.
+Verify service ownership/modes before test keys are sent. Retain strict operator
+mode checks. Never promote these development images/aliases/fixtures to production.
+Remove unreachable historical live/browser entry code; Git retains that evidence,
+and pure parser/transport tests remain. Real deployment/provider/browser acceptance
+is separate. Executed local results and limitations are in EXTRACTOR_CONNECTION.md.

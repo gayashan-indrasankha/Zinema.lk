@@ -117,3 +117,22 @@ The product fixture additionally uses `fixtures/motion-demo.mp4.b64`, an origina
 with libx264/yuv420p/faststart and no audio. The older red-frame fixture is retained.
 Generated fixture rows/media accumulate within the owned volume and quota. Use
 the reviewed inventory/quarantine runbook; do not erase volumes to conceal failures.
+
+
+## Private extractor fixture
+
+The default stack still has EXTRACTOR_MODE=disabled. To rehearse the private
+administrator connection with the actual local Node fake:
+
+```powershell
+python dev/local.py up
+python dev/local.py extractor-up
+python dev/local.py test-extractor
+python dev/local.py down
+python dev/local.py up
+```
+
+The separate override mounts a generated independent secret and exposes no Node
+port. No provider request/browser starts. Do not run operator mutation tests in
+the opt-in mode; their strict disabled-adapter checks remain. Test seed JSON has
+private bearer material and stays ignored. See ../docs/recovery/EXTRACTOR_CONNECTION.md.

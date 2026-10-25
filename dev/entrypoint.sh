@@ -4,10 +4,17 @@ test "$APP_ENV" = development
 test "$ALLOW_LIVE_INTEGRATIONS" = false
 test "$UPLOAD_QUOTA_MODE" = local
 test "$UPLOAD_STORAGE_STATE" = /var/lib/zinema/storage
-for adapter in WHATSAPP_MODE MEDIA_MODE EXTRACTOR_MODE PAYMENT_MODE; do
+for adapter in WHATSAPP_MODE MEDIA_MODE PAYMENT_MODE; do
     eval 'value=${'"$adapter"'}'
     test "$value" = disabled
 done
+if test "$EXTRACTOR_MODE" = local; then
+    test "${ZINEMA_EXTRACTOR_FIXTURES:-}" = 1
+    test "$FB_VIDEO_API_URL" = http://127.0.0.1:3334
+    export EXTRACTOR_API_KEY="$(cat /run/secrets/extractor_key)"
+else
+    test "$EXTRACTOR_MODE" = disabled
+fi
 export DB_PASS="$(cat /run/secrets/db_password)"
 export GOOGLE_CLIENT_SECRET="$(cat /run/secrets/oauth_secret)"
 export WHATSAPP_API_KEY="$(cat /run/secrets/adapter_key)"

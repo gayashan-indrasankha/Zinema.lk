@@ -4,6 +4,37 @@ Updated: 2026-10-25.
 
 ## Current phase
 
+Private authenticated administrator-to-extractor connection: **COMPLETE within
+local fake scope**; overall launch remains **NO GO**. Started clean at `70af8a5`.
+
+- Added same-origin administrator POST/CSRF proxy, independent server-only key,
+  bounded shared PHP client and private POST-only Node service contract. Preview,
+  health and optional shot caching use the same client. Browser has no service
+  credential/destination, no upstream HTML or diagnostics. Live/production paths
+  remain blocked; the default development stack still disables extraction.
+- Added explicit internal-only fake override, pinned Node/cURL dependencies and
+  transport fault fixtures. Current-admin/member/guest boundaries, CSRF, validation,
+  no CORS, request/body/time/redirect/media limits and service admission exercised.
+- Private contract 33/33, client validation 14/14, real cURL faults 4/4, Node service
+  6/6 and retained Node 63/63 passed. Docker integration 88/88 + OAuth 7/7,
+  product 112/112 and disabled environment 21/21 passed. Fresh native schema 22/22,
+  HTTP 94/94 and authenticated disabled/local services 4/4 passed; scoped audits zero.
+- Manual administrator health/preview, stopped-service and restored-disabled UI
+  verified with fictional input only. Screenshot and exact evidence/earlier failed
+  harness/build attempts: EXTRACTOR_CONNECTION.md and EXTRACTOR_CONNECTION_*.
+- PHP 195/JS 48 syntax and additional CJS/Python/JSON parse passed; target guards
+  9/9 and extractor isolation 12/12 passed. Gitleaks staged/full 468-file candidate/history scans returned zero findings;
+  10 private ignore checks passed (default-rule/private-data limits remain). All owned
+  services stopped; private configuration/volumes preserved. No real provider,
+  recipient, production connection, deployment, remote push or publication.
+
+Next authorized local work: **Bot ingestion/scheduler/disconnect/restart/queue and
+log-redaction regressions, then isolated staging recovery/load/monitoring rehearsal.**
+Real hosting/TLS and limited live tests still need concrete targets and approval;
+no live or publishing authorization follows from the repeated release plan.
+
+## Previous production audit
+
 Fresh-launch production-readiness audit: **PARTIAL — NO GO for publishing**.
 Owner target is a real free-access relaunch with fresh data, full movies/episodes
 via WhatsApp only, and website catalogue/shorts/trailers. Hosting is undecided;
