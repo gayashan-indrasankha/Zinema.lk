@@ -1,0 +1,1375 @@
+{
+  "date": "2026-10-25",
+  "phase_state": "PARTIAL: publication workflow prepared; legacy whitespace check unresolved",
+  "repository": "gayashan-indrasankha/Zinema.lk",
+  "authorization": "Owner explicitly requested commits, branch pushes and pull requests; merge and deployment remain manual.",
+  "main_sha": "f89da9b61fe92f4023e773b7965a02d4bdd72721",
+  "import_head_before_handoff_commit": "944116cc5a7734d0afc16bc0ec91019423c22da1",
+  "source_import_commits": 35,
+  "handoff_commit": {
+    "subject": "docs(recovery): record published PR handoff and verification limits",
+    "hash_location": "This file is part of the handoff commit; inspect its Git history or the final execution handoff for the immutable hash."
+  },
+  "total_commits_including_this_handoff": 36,
+  "source_files_before_handoff": 293,
+  "source_files_including_results": 294,
+  "branches": [
+    {
+      "number": 6,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/6",
+      "branch": "zinema/import-foundation",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable_at_verification": true,
+      "merged": false
+    },
+    {
+      "number": 7,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/7",
+      "branch": "zinema/import-website",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable_at_verification": true,
+      "merged": false
+    },
+    {
+      "number": 8,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/8",
+      "branch": "zinema/import-admin",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable_at_verification": true,
+      "merged": false
+    },
+    {
+      "number": 9,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/9",
+      "branch": "zinema/import-adapters",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable_at_verification": true,
+      "merged": false
+    },
+    {
+      "number": 10,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/10",
+      "branch": "zinema/import-evidence",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable_at_verification": true,
+      "merged": false
+    }
+  ],
+  "executed_checks": {
+    "php_lint": {
+      "total": 167,
+      "passed": 167,
+      "failures": []
+    },
+    "javascript_syntax": {
+      "total": 38,
+      "passed": 38,
+      "failures": []
+    },
+    "config_tests": {
+      "exit_code": 0,
+      "summary": [
+        "# tests 10",
+        "# pass 10",
+        "# fail 0",
+        "# skipped 0"
+      ]
+    },
+    "bot_tests": {
+      "exit_code": 0,
+      "summary": [
+        "# tests 12",
+        "# pass 12",
+        "# fail 0",
+        "# skipped 0"
+      ]
+    },
+    "json_parse": {
+      "failures": []
+    }
+  },
+  "security": {
+    "scanner": "Gitleaks 8.30.1",
+    "download_checksum_verified": true,
+    "staged_scan_runs": 35,
+    "staged_findings": 0,
+    "history_scan_scope": "All root-repository refs through the recorded pre-handoff import head",
+    "history_scan_exit": 0,
+    "history_findings": 0,
+    "ignore_checks_passed": 12,
+    "public_environment_templates_not_ignored": 3,
+    "embedded_gitlinks": 0,
+    "initial_finding": "One illustrative API-comment token, replaced with DEMO_TOKEN; no suppression added",
+    "supplemental_review": [
+      "contact identifiers",
+      "credential assignments",
+      "SQL data statement shapes",
+      "remote media references",
+      "third-party notices",
+      "generated diagnostic export"
+    ],
+    "limitations": [
+      "No scanner can prove complete absence of secrets or private data.",
+      "Ignored private artifacts were not publication candidates or public scan targets.",
+      "SHA-256 matched upstream release checksums; independent binary authenticity was not established.",
+      "No comprehensive license, privacy, penetration or production audit."
+    ]
+  },
+  "whitespace_check": {
+    "exit_code": 2,
+    "findings": 1709,
+    "files": 111,
+    "commits_with_findings": 28,
+    "resolution": "Retained legacy formatting; unresolved and explicitly reported. No passed whitespace check is claimed."
+  },
+  "inspection_limits": "Staged paths and diff statistics were inspected and index hashes matched the scanned source; this was not a new exhaustive line-by-line application audit.",
+  "evidence_classifications": {
+    "statically_inspected": "Selected source, staged metadata, index hashes, exclusions, syntax and JSON parsing.",
+    "test_covered_and_executed": "10 configuration and 12 fake-client bot regressions; repeated against complete local candidate before each source import commit.",
+    "runtime_verified_this_phase": "No new HTTP/database/browser verification; earlier repair results retained separately.",
+    "externally_verified": "GitHub branch heads and five open ready-for-review mergeable PRs, all targeting main.",
+    "not_yet_verified": "Production readiness, live services, complete licensing/privacy, full extractor runtime and portable setup."
+  },
+  "commits": [
+    {
+      "sha": "23df93cc17c2444359ab4415af3af0754f301830",
+      "branch": "zinema/import-foundation",
+      "message": "chore(recovery): import safety rules and publication exclusions",
+      "paths": [
+        ".gitignore",
+        "AGENTS.md"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 0
+    },
+    {
+      "sha": "064ed4bdddf004d5158d8ec99c4ae39870e20099",
+      "branch": "zinema/import-foundation",
+      "message": "build(config): import isolated environment settings",
+      "paths": [
+        ".env.example",
+        "includes/environment.php"
+      ],
+      "syntax": {
+        "php": 1,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 0
+    },
+    {
+      "sha": "e0370a9b500775f59e70d7d5b83fdd10e4d0630e",
+      "branch": "zinema/import-foundation",
+      "message": "chore(deps): vendor PHPMailer with upstream license notices",
+      "paths": [
+        "includes/PHPMailer/.editorconfig",
+        "includes/PHPMailer/COMMITMENT",
+        "includes/PHPMailer/LICENSE",
+        "includes/PHPMailer/README.md",
+        "includes/PHPMailer/SECURITY.md",
+        "includes/PHPMailer/VERSION",
+        "includes/PHPMailer/composer.json",
+        "includes/PHPMailer/get_oauth_token.php",
+        "includes/PHPMailer/language/phpmailer.lang-af.php",
+        "includes/PHPMailer/language/phpmailer.lang-ar.php",
+        "includes/PHPMailer/language/phpmailer.lang-as.php",
+        "includes/PHPMailer/language/phpmailer.lang-az.php",
+        "includes/PHPMailer/language/phpmailer.lang-ba.php",
+        "includes/PHPMailer/language/phpmailer.lang-be.php",
+        "includes/PHPMailer/language/phpmailer.lang-bg.php",
+        "includes/PHPMailer/language/phpmailer.lang-bn.php",
+        "includes/PHPMailer/language/phpmailer.lang-ca.php",
+        "includes/PHPMailer/language/phpmailer.lang-cs.php",
+        "includes/PHPMailer/language/phpmailer.lang-da.php",
+        "includes/PHPMailer/language/phpmailer.lang-de.php",
+        "includes/PHPMailer/language/phpmailer.lang-el.php",
+        "includes/PHPMailer/language/phpmailer.lang-eo.php",
+        "includes/PHPMailer/language/phpmailer.lang-es.php",
+        "includes/PHPMailer/language/phpmailer.lang-et.php",
+        "includes/PHPMailer/language/phpmailer.lang-fa.php",
+        "includes/PHPMailer/language/phpmailer.lang-fi.php",
+        "includes/PHPMailer/language/phpmailer.lang-fo.php",
+        "includes/PHPMailer/language/phpmailer.lang-fr.php",
+        "includes/PHPMailer/language/phpmailer.lang-gl.php",
+        "includes/PHPMailer/language/phpmailer.lang-he.php",
+        "includes/PHPMailer/language/phpmailer.lang-hi.php",
+        "includes/PHPMailer/language/phpmailer.lang-hr.php",
+        "includes/PHPMailer/language/phpmailer.lang-hu.php",
+        "includes/PHPMailer/language/phpmailer.lang-hy.php",
+        "includes/PHPMailer/language/phpmailer.lang-id.php",
+        "includes/PHPMailer/language/phpmailer.lang-it.php",
+        "includes/PHPMailer/language/phpmailer.lang-ja.php",
+        "includes/PHPMailer/language/phpmailer.lang-ka.php",
+        "includes/PHPMailer/language/phpmailer.lang-ko.php",
+        "includes/PHPMailer/language/phpmailer.lang-lt.php",
+        "includes/PHPMailer/language/phpmailer.lang-lv.php",
+        "includes/PHPMailer/language/phpmailer.lang-mg.php",
+        "includes/PHPMailer/language/phpmailer.lang-mn.php",
+        "includes/PHPMailer/language/phpmailer.lang-ms.php",
+        "includes/PHPMailer/language/phpmailer.lang-nb.php",
+        "includes/PHPMailer/language/phpmailer.lang-nl.php",
+        "includes/PHPMailer/language/phpmailer.lang-pl.php",
+        "includes/PHPMailer/language/phpmailer.lang-pt.php",
+        "includes/PHPMailer/language/phpmailer.lang-pt_br.php",
+        "includes/PHPMailer/language/phpmailer.lang-ro.php",
+        "includes/PHPMailer/language/phpmailer.lang-ru.php",
+        "includes/PHPMailer/language/phpmailer.lang-si.php",
+        "includes/PHPMailer/language/phpmailer.lang-sk.php",
+        "includes/PHPMailer/language/phpmailer.lang-sl.php",
+        "includes/PHPMailer/language/phpmailer.lang-sr.php",
+        "includes/PHPMailer/language/phpmailer.lang-sr_latn.php",
+        "includes/PHPMailer/language/phpmailer.lang-sv.php",
+        "includes/PHPMailer/language/phpmailer.lang-tl.php",
+        "includes/PHPMailer/language/phpmailer.lang-tr.php",
+        "includes/PHPMailer/language/phpmailer.lang-uk.php",
+        "includes/PHPMailer/language/phpmailer.lang-vi.php",
+        "includes/PHPMailer/language/phpmailer.lang-zh.php",
+        "includes/PHPMailer/language/phpmailer.lang-zh_cn.php",
+        "includes/PHPMailer/src/DSNConfigurator.php",
+        "includes/PHPMailer/src/Exception.php",
+        "includes/PHPMailer/src/OAuth.php",
+        "includes/PHPMailer/src/OAuthTokenProvider.php",
+        "includes/PHPMailer/src/PHPMailer.php",
+        "includes/PHPMailer/src/POP3.php",
+        "includes/PHPMailer/src/SMTP.php"
+      ],
+      "syntax": {
+        "php": 63,
+        "javascript": 0,
+        "json": 1
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "014c0b9ac0db51c599098602e45bdb8c56d69e40",
+      "branch": "zinema/import-foundation",
+      "message": "feat(database): import canonical development schema",
+      "paths": [
+        "database/schema.sql"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 0
+    },
+    {
+      "sha": "d66d42ec5aca0af89b85694ff18ba2e31c6cd71d",
+      "branch": "zinema/import-foundation",
+      "message": "chore(database): preserve historical multipart migrations",
+      "paths": [
+        "admin/migrate_shots.sql",
+        "migrations/episode_parts.sql",
+        "migrations/movie_parts.sql"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "092639fcf7e0817653f88ea391f194089d108177",
+      "branch": "zinema/import-foundation",
+      "message": "feat(core): import database and application settings helpers",
+      "paths": [
+        "includes/database.php",
+        "includes/functions.php",
+        "includes/settings.php",
+        "includes/whatsapp_token.php"
+      ],
+      "syntax": {
+        "php": 4,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "5ce8df8ae40faab320bd2ef90871e753a20db47c",
+      "branch": "zinema/import-foundation",
+      "message": "feat(auth): import verified session and registration helpers",
+      "paths": [
+        "includes/auth.php",
+        "includes/csrf_helper.php",
+        "includes/mailer.php",
+        "includes/rate_limiter.php",
+        "includes/registration.php",
+        "includes/session.php"
+      ],
+      "syntax": {
+        "php": 6,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "5b948b21987c6b0894d3de716b46288aa48f20ef",
+      "branch": "zinema/import-website",
+      "message": "feat(ui): import shared navigation and responsive presentation",
+      "paths": [
+        "_bottom_nav.php",
+        "_pagination.php",
+        "_top_nav.php",
+        "assets/js/security.js",
+        "css/desktop-scroll-fix.css",
+        "css/desktop-tablet.css",
+        "css/nav_spacing.css",
+        "css/pages.css",
+        "css/pagination_styles.css",
+        "css/responsive.css",
+        "css/search_popup_styles.css",
+        "css/style.css",
+        "includes/ads.php",
+        "includes/footer.php",
+        "includes/header.php",
+        "js/activeNav.js",
+        "js/main.js",
+        "js/main.min.js",
+        "js/nav.js",
+        "js/navbar.js"
+      ],
+      "syntax": {
+        "php": 6,
+        "javascript": 6,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "20c8257c76ad08439b3592fa66a2892b411d73a2",
+      "branch": "zinema/import-website",
+      "message": "feat(auth): import account pages and protected authentication routes",
+      "paths": [
+        "ajax_forgot_password.php",
+        "ajax_login.php",
+        "ajax_resend_verification.php",
+        "ajax_reset_password.php",
+        "ajax_signup.php",
+        "api/auth-handler.php",
+        "api/check-session.php",
+        "google-callback.php",
+        "login.php",
+        "logout.php",
+        "reset-password.php",
+        "signup.php",
+        "verify-email.php"
+      ],
+      "syntax": {
+        "php": 13,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "8d126d934fa6cd56771453d4f7c62b40179ebad2",
+      "branch": "zinema/import-website",
+      "message": "feat(catalogue): import movie and series browsing",
+      "paths": [
+        "api/live_search.php",
+        "api/movies.php",
+        "api/search_content.php",
+        "api/series.php",
+        "css/video-player.css",
+        "find_movies.php",
+        "js/series.js",
+        "js/tv-series.js",
+        "js/video-player.js",
+        "movie-details.php",
+        "movies.php",
+        "series-details.php",
+        "tv-series.php"
+      ],
+      "syntax": {
+        "php": 9,
+        "javascript": 3,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "636d85f45315713d430c5f3b94b397ce05850095",
+      "branch": "zinema/import-website",
+      "message": "feat(collections): import collection browsing and detail views",
+      "paths": [
+        "api/collections.php",
+        "collection-details.php",
+        "collections.php",
+        "js/collection.js",
+        "js/collections.js"
+      ],
+      "syntax": {
+        "php": 3,
+        "javascript": 2,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "9e6f1393cf0dfebda302e964ff0b70cf157778e9",
+      "branch": "zinema/import-website",
+      "message": "feat(shots): import vertical feed and engagement endpoints",
+      "paths": [
+        "api/add_comment.php",
+        "api/favorite_shot.php",
+        "api/get_comments.php",
+        "api/like_shot.php",
+        "api/record_view.php",
+        "api/track.php",
+        "css/shots-style.css",
+        "index.php",
+        "js/tracker.js"
+      ],
+      "syntax": {
+        "php": 7,
+        "javascript": 1,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "9a098ee47d2e9bfec5446effe2e953ce12ee6c52",
+      "branch": "zinema/import-website",
+      "message": "feat(comments): import movie discussions and reply handling",
+      "paths": [
+        "api/comments.php",
+        "api/includes/comment_helpers.php",
+        "css/comments.css",
+        "js/comments.js",
+        "movie-comments.php"
+      ],
+      "syntax": {
+        "php": 3,
+        "javascript": 1,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "439d2e15c69777e8b37d716138e9f2359494be3f",
+      "branch": "zinema/import-website",
+      "message": "feat(trailers): import trailer feed and shared query manager",
+      "paths": [
+        "api/trailers.php",
+        "css/trailer-feed.css",
+        "includes/TrailerManager.php",
+        "js/trailer-feed.js",
+        "trailers.php"
+      ],
+      "syntax": {
+        "php": 3,
+        "javascript": 1,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "85bdfb788032fe2d644c00664c00271cb8f68ecf",
+      "branch": "zinema/import-website",
+      "message": "feat(profile): import account profile and saved content view",
+      "paths": [
+        "css/profile-style.css",
+        "profile.php"
+      ],
+      "syntax": {
+        "php": 1,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "329d04c5d2f5c82cf46d41564173cd7caf547c6d",
+      "branch": "zinema/import-website",
+      "message": "chore(starter): preserve legacy demonstration pages and assets",
+      "paths": [
+        "assets/css/style.css",
+        "assets/images/README.txt",
+        "assets/js/download.js",
+        "assets/js/main.js",
+        "assets/js/trailers.js",
+        "pages/download.php",
+        "pages/movie-detail.php",
+        "pages/trailers.php"
+      ],
+      "syntax": {
+        "php": 3,
+        "javascript": 3,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "214eca499277bc9e274a3472b947fb65cf7d2d70",
+      "branch": "zinema/import-website",
+      "message": "feat(download): import guarded download and subscription routes",
+      "paths": [
+        "api/payment-notify.php",
+        "api/server-check.php",
+        "api/subscribe.php",
+        "download.php",
+        "js/countdown-timer.js",
+        "js/download-handler.js",
+        "js/subscribe.js"
+      ],
+      "syntax": {
+        "php": 4,
+        "javascript": 3,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "a5432286f1206201d4e7640adccfb7eebd06234c",
+      "branch": "zinema/import-website",
+      "message": "build(web): import Apache routes and browser metadata",
+      "paths": [
+        ".htaccess",
+        "assets/images/logo.png",
+        "assets/images/tab-logo.png",
+        "favicon.ico",
+        "manifest.json",
+        "robots.txt",
+        "sitemap.php"
+      ],
+      "syntax": {
+        "php": 1,
+        "javascript": 0,
+        "json": 1
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "059c445e54de904318abaa85c3b9cc463116d057",
+      "branch": "zinema/import-admin",
+      "message": "feat(admin): import protected layout and administrator sessions",
+      "paths": [
+        "admin/_layout.php",
+        "admin/assets/admin.css",
+        "admin/assets/admin.js",
+        "admin/config.php",
+        "admin/functions.php",
+        "admin/login.php",
+        "admin/logout.php"
+      ],
+      "syntax": {
+        "php": 5,
+        "javascript": 1,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "e1045866ddf09c109781b56dc4572169f4a4e2b4",
+      "branch": "zinema/import-admin",
+      "message": "feat(admin): import catalogue and collection management",
+      "paths": [
+        "admin/collections.php",
+        "admin/episodes.php",
+        "admin/movies.php",
+        "admin/series.php"
+      ],
+      "syntax": {
+        "php": 4,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "32d75398dd3bfc7c95ded68e60fa30a791484298",
+      "branch": "zinema/import-admin",
+      "message": "feat(admin): import feed management and operational dashboards",
+      "paths": [
+        "admin/analytics.php",
+        "admin/index.php",
+        "admin/manage_shots.php",
+        "admin/settings.php",
+        "admin/trailers.php",
+        "admin/whatsapp-bot-tracking.php"
+      ],
+      "syntax": {
+        "php": 6,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "c1cdf31176409167de64a479b58775dc2b0574d8",
+      "branch": "zinema/import-admin",
+      "message": "chore(admin): preserve disabled maintenance entry points",
+      "paths": [
+        "admin/cron/cleanup-tokens.php",
+        "admin/cron/reset-daily-stats.php",
+        "admin/run_migration.php"
+      ],
+      "syntax": {
+        "php": 3,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "03103a01e659164872de66432f7e2982e43787eb",
+      "branch": "zinema/import-adapters",
+      "message": "feat(bridge): import gated WhatsApp API and content mappings",
+      "paths": [
+        "api/whatsapp/add-message-id.php",
+        "api/whatsapp/config.php",
+        "api/whatsapp/get-all-message-ids.php",
+        "api/whatsapp/get-message-id.php",
+        "api/whatsapp/get-message-ids.php",
+        "api/whatsapp/get-movie-parts.php",
+        "api/whatsapp/mark-used.php",
+        "api/whatsapp/update-cache-message-id.php",
+        "api/whatsapp/validate-token.php",
+        "whatsapp-watch.php"
+      ],
+      "syntax": {
+        "php": 10,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "86d5b693d3e53100c92040ec886c8db237e0a482",
+      "branch": "zinema/import-adapters",
+      "message": "feat(bridge): import health cache and forwarding telemetry",
+      "paths": [
+        "api/whatsapp/bot-error.php",
+        "api/whatsapp/bot-heartbeat.php",
+        "api/whatsapp/get-aging-messages.php",
+        "api/whatsapp/get-popular-content.php",
+        "api/whatsapp/get-popular-files.php",
+        "api/whatsapp/log-cache-warming.php",
+        "api/whatsapp/log-forward.php",
+        "api/whatsapp/log-refresh.php",
+        "api/whatsapp/needs-refresh.php",
+        "api/whatsapp/refresh-stats.php",
+        "api/whatsapp/update-daily-stats.php",
+        "api/whatsapp/update-forward-stats.php"
+      ],
+      "syntax": {
+        "php": 12,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "561d96f338f5fd492c1424652a0ad46b89a76aef",
+      "branch": "zinema/import-adapters",
+      "message": "build(bot): import guarded configuration and locked dependencies",
+      "paths": [
+        "whatsapp-bot-deploy/.env.example",
+        "whatsapp-bot-deploy/.gitignore",
+        "whatsapp-bot-deploy/config/api-client.js",
+        "whatsapp-bot-deploy/config/database.js",
+        "whatsapp-bot-deploy/config/environment.js",
+        "whatsapp-bot-deploy/package-lock.json",
+        "whatsapp-bot-deploy/package.json"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 3,
+        "json": 2
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "7e20e55e70e3f3f03e8c79dcc0f4c55b600ccdef",
+      "branch": "zinema/import-adapters",
+      "message": "feat(bot): import acknowledged delivery and upload coordination",
+      "paths": [
+        "whatsapp-bot-deploy/config/file-manager.js",
+        "whatsapp-bot-deploy/config/multi-tier-forwarder.js",
+        "whatsapp-bot-deploy/config/upload-queue.js"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 3,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "e294ac6eeca8edc160ad56c6c3f1426c2113f0db",
+      "branch": "zinema/import-adapters",
+      "message": "feat(bot): import startup and cache maintenance modules",
+      "paths": [
+        "whatsapp-bot-deploy/config/auto-refresher.js",
+        "whatsapp-bot-deploy/config/cache-warmer.js",
+        "whatsapp-bot-deploy/config/health-monitor.js",
+        "whatsapp-bot-deploy/index.js",
+        "whatsapp-bot-deploy/refresh-method-new.js",
+        "whatsapp-bot-deploy/test-scheduler.js"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 6,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "98d40c00b3c14dce061f52fbd37b21d457bdf2b2",
+      "branch": "zinema/import-adapters",
+      "message": "docs(bot): preserve setup notes and historical SQL",
+      "paths": [
+        "whatsapp-bot-deploy/README.md",
+        "whatsapp-bot-deploy/database/migration_ultimate_system.sql",
+        "whatsapp-bot-deploy/database/migration_ultimate_system_FIXED.sql",
+        "whatsapp-bot-deploy/database/schema.sql"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "bec5dd0df98a4488e1c7c215059a412daaabc8f6",
+      "branch": "zinema/import-adapters",
+      "message": "feat(extractor): import local and disabled extraction adapter",
+      "paths": [
+        "fb-video-api/.env.example",
+        "fb-video-api/.gitignore",
+        "fb-video-api/README.md",
+        "fb-video-api/environment.js",
+        "fb-video-api/index.js",
+        "fb-video-api/package.json"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 2,
+        "json": 1
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "85be2ad264b9e1d6d820e1398dadfd4df3446aff",
+      "branch": "zinema/import-evidence",
+      "message": "test(recovery): import fake-client and configuration regressions",
+      "paths": [
+        "docs/recovery/tests/bot.test.cjs",
+        "docs/recovery/tests/config.test.cjs",
+        "docs/recovery/tests/dependency-smoke.cjs"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 3,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 0
+    },
+    {
+      "sha": "431fbbcfffbd06593b5e6923c95d0a8611fbbe46",
+      "branch": "zinema/import-evidence",
+      "message": "test(recovery): import isolated HTTP and schema harnesses",
+      "paths": [
+        "docs/recovery/tests/README.md",
+        "docs/recovery/tests/audit.py",
+        "docs/recovery/tests/extractor-http/package-lock.json",
+        "docs/recovery/tests/extractor-http/package.json",
+        "docs/recovery/tests/schema_bridge.py",
+        "docs/recovery/tests/services.py"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "json": 2
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 0
+    },
+    {
+      "sha": "b157eba01d64d2b23b81a172ce253c609515cb4d",
+      "branch": "zinema/import-evidence",
+      "message": "docs(recovery): preserve original assessment and execution evidence",
+      "paths": [
+        "docs/recovery/AUTOMATED_RESULTS.json",
+        "docs/recovery/SERVICE_RESULTS.json",
+        "docs/recovery/STATIC_CHECKS.json",
+        "docs/recovery/WORKING_STATE_ASSESSMENT.md",
+        "docs/recovery/evidence/bot.test.cjs.tap",
+        "docs/recovery/evidence/catalogue-desktop-search.png",
+        "docs/recovery/evidence/config.test.cjs.tap",
+        "docs/recovery/evidence/download-disabled.png",
+        "docs/recovery/evidence/episode-playback.png",
+        "docs/recovery/evidence/movie-playback.png",
+        "docs/recovery/evidence/repair-admin-post-controls.png",
+        "docs/recovery/evidence/repair-bot.test.cjs.tap",
+        "docs/recovery/evidence/repair-config.test.cjs.tap",
+        "docs/recovery/evidence/repair-csrf-save-profile.png",
+        "docs/recovery/evidence/repair-trailer-playback.png",
+        "docs/recovery/evidence/repair-unverified-login-rejected.png",
+        "docs/recovery/evidence/saved-shot-profile.png",
+        "docs/recovery/evidence/shots-mobile.png",
+        "docs/recovery/evidence/unverified-account-logged-in.png"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "json": 3
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "b97685bd091bd4fe811aca759d544a0deeb440ad",
+      "branch": "zinema/import-evidence",
+      "message": "docs(recovery): import repair and schema verification reports",
+      "paths": [
+        "docs/recovery/REPAIR_CLEANUP.json",
+        "docs/recovery/REPAIR_PHASE.md",
+        "docs/recovery/REPAIR_RESULTS.json",
+        "docs/recovery/REPAIR_SCHEMA_RESULTS.json",
+        "docs/recovery/REPAIR_SERVICE_RESULTS.json",
+        "docs/recovery/REPAIR_STATIC_CHECKS.json",
+        "docs/recovery/SCHEMA_RECONCILIATION.md"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "json": 5
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 0
+    },
+    {
+      "sha": "ada8a7298ca729598117af71ae6ffd20ca0c40a9",
+      "branch": "zinema/import-evidence",
+      "message": "docs(project): document product scope setup and upstream attribution",
+      "paths": [
+        "JW_PLAYER_SETUP.md",
+        "README.md",
+        "THIRD_PARTY.md",
+        "docs/recovery/PROJECT_DESCRIPTION.md",
+        "linkedin_project_roadmap.md"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 2
+    },
+    {
+      "sha": "944116cc5a7734d0afc16bc0ec91019423c22da1",
+      "branch": "zinema/import-evidence",
+      "message": "docs(recovery): record publication scope and review sequence",
+      "paths": [
+        "docs/recovery/DECISIONS.md",
+        "docs/recovery/PUBLISHING.md",
+        "docs/recovery/STATUS.md"
+      ],
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "json": 0
+      },
+      "gitleaks_findings": 0,
+      "regressions": {
+        "config": {
+          "tests": 10,
+          "pass": 10,
+          "fail": 0
+        },
+        "bot": {
+          "tests": 12,
+          "pass": 12,
+          "fail": 0
+        }
+      },
+      "whitespace_check_exit": 0
+    }
+  ],
+  "next_task": "Prepare a reproducible isolated development environment and fake mail/OAuth end-to-end tests using the canonical schema. Review upload handling and distributed token reservation. Preserve publication history and recovery records; keep live integrations and deployment disabled.",
+  "total_commits_current": 37,
+  "branch_name_update": {
+    "date": "2026-10-25",
+    "state": "COMPLETE within branch-naming scope",
+    "prefix": "zinema/import-",
+    "replacement_prs": [
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "superseded_prs_closed": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "existing_source_commit_hashes_preserved": true,
+    "authors_unchanged": true,
+    "application_source_changed": false,
+    "documentation_commit_subject": "docs(recovery): update project branch names and review links",
+    "previous_head": "9ff34b61ffb868555cf4a45d17a77f3c83b49b59",
+    "verification": "Replacement branch refs and PR heads match original source heads; new PRs open/non-draft/mergeable. Final documentation checks, push and final refs are verified in the execution handoff."
+  }
+}
