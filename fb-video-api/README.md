@@ -1,3 +1,13 @@
+> Current audit status (2026-10-25): **live extraction remains disabled**.
+> The historical deployment/performance notes below are not launch evidence.
+> Use Node >=24 and the committed lockfile with `npm ci --ignore-scripts`.
+> The full dependency candidate is audited separately from HTTP-only fixtures.
+> Pure parser and DNS-pinned HTTPS transport are tested with original/mock data;
+> no Facebook request has been made. Browser fallback remains blocked until an
+> explicitly supplied, compatible Chrome executable and outbound isolation are
+> verified. Do not deploy this folder or enable live access from these old notes.
+> See `../docs/recovery/PRODUCTION_STAGING.md` and `PRODUCTION_LIVE_TEST_PLAN.md`.
+
 # FB Video CDN Extractor API
 
 Facebook video CDN URL extractor for Zinema.lk shots page.

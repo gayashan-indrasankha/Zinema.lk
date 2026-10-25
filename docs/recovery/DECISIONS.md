@@ -400,3 +400,45 @@ Source commit `637327e55d772dcb6acce4383b226bbaee606bd5` left a clean tree; Gitl
 384-file candidate and all-local-history scans returned zero findings. Owned
 services stopped and private rescue/audit volumes remained preserved. A separate
 local documentation commit records completion; nothing was published or pushed.
+
+Owner clarification during this audit: full movies/episodes are WhatsApp-only.
+Website streaming is outside the first launch. Remove the full-video player entry
+points, route movie/episode CTAs to whatsapp-watch.php, and make legacy streaming
+references optional in administrator forms. Retain schema fields for compatibility;
+no historical data reconstruction or destructive column removal is needed. The old
+unsafe download endpoint remains disabled; shorts/trailers still play on the site.
+Verify the links locally; real delivery remains subject to the controlled live plan.
+
+
+## 2026-10-25 — Fresh free relaunch audit and evidence gates
+
+The owner authorized a complete local audit/repair/test pass for a real relaunch,
+not CV preparation or historical data recovery. Scope is free access; full movies
+and episodes use WhatsApp only. Preserve optional legacy schema fields while
+removing website streaming entry points. Payments remain disabled. Hosting is
+undecided; a modest beta and separate staging are planning assumptions.
+
+Canonical v4 aligns collection-linked shots and indexes the shared password
+admission ledger; additive owned-development migration preserves existing data.
+Settings/default bootstrap belongs to verified setup, not request-time DDL.
+Serialize password/token admission in MariaDB; trust forwarded client identity
+only from explicitly configured edge peers with an overwritten single X-Real-IP.
+Production proxy configuration still requires staging verification.
+
+Preserve bot session evidence on reconnect failures; keep bounded retry/queue
+state and one monitor/store timer. Fake components/SQL bridge are evidence for
+local behavior, not full Baileys/scheduler/restart certification. WhatsApp caches
+are optional adapters; durable original media and recovery remain required.
+
+Lock the full extractor dependency declaration separately from HTTP-only fixtures.
+Puppeteer 25.16.0/Node 24+ imports and npm audit passed; no compatible Chrome was
+launched. Keep live/browser extraction blocked pending authenticated proxy,
+sandbox/egress/resource tests and approved original provider fixtures.
+
+Production-readiness remains PARTIAL/NO GO. Manual/action evidence, test execution,
+external verification and unverified conditions are separate in PRODUCTION_*.
+No live test, production connection, remote publishing, deployment, credential
+rotation or hosting purchase is authorized. The prepared plan requires exact
+private accounts/recipients/caps and explicit approval after local/staging gates.
+Owned test services stop without erasing volumes; commit only reviewed sanitized
+local work after syntax, regressions, ignore and secret scans. No release follows.

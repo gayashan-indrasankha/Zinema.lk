@@ -81,7 +81,7 @@ if (!empty($overall_stats) && ($overall_stats['total_cache_hits'] + $overall_sta
     <title>WhatsApp Bot Tracking - Zinema.lk Admin</title>
     
     <!-- Standard Admin CSS -->
-    <link rel="stylesheet" href="assets/admin.css">
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>

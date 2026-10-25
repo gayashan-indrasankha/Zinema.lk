@@ -1,0 +1,112 @@
+TAP version 13
+# Subtest: Public address filter excludes loopback, private, mapped and metadata ranges
+ok 1 - Public address filter excludes loopback, private, mapped and metadata ranges
+  ---
+  duration_ms: 8.1756
+  type: 'test'
+  ...
+# Subtest: HTTPS request pins validated DNS results and preserves TLS verification
+ok 2 - HTTPS request pins validated DNS results and preserves TLS verification
+  ---
+  duration_ms: 2.028
+  type: 'test'
+  ...
+# Subtest: Mixed private/public DNS answers fail before any HTTP request
+ok 3 - Mixed private/public DNS answers fail before any HTTP request
+  ---
+  duration_ms: 0.6373
+  type: 'test'
+  ...
+# Subtest: Redirect hosts are validated before resolution or a second request
+ok 4 - Redirect hosts are validated before resolution or a second request
+  ---
+  duration_ms: 2.0115
+  type: 'test'
+  ...
+# Subtest: Allowed redirects recheck DNS and redirect chains are bounded
+ok 5 - Allowed redirects recheck DNS and redirect chains are bounded
+  ---
+  duration_ms: 1.6476
+  type: 'test'
+  ...
+# Subtest: Oversized, non-HTML and failed responses are rejected
+ok 6 - Oversized, non-HTML and failed responses are rejected
+  ---
+  duration_ms: 5.4853
+  type: 'test'
+  ...
+# Subtest: A stalled DNS resolver is bounded without any network call
+ok 7 - A stalled DNS resolver is bounded without any network call
+  ---
+  duration_ms: 1.3868
+  type: 'test'
+  ...
+# Subtest: A stalled HTTP response has an absolute deadline
+ok 8 - A stalled HTTP response has an absolute deadline
+  ---
+  duration_ms: 4.8188
+  type: 'test'
+  ...
+# Subtest: Facebook host normalization preserves the original shared path
+ok 9 - Facebook host normalization preserves the original shared path
+  ---
+  duration_ms: 1.556
+  type: 'test'
+  ...
+# Subtest: Deceptive, credential-bearing and non-HTTPS Facebook URLs are rejected
+ok 10 - Deceptive, credential-bearing and non-HTTPS Facebook URLs are rejected
+  ---
+  duration_ms: 0.9497
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction playable_url_quality_hd
+ok 11 - Original HTML fixture extraction playable_url_quality_hd
+  ---
+  duration_ms: 0.5112
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction browser_native_hd_url
+ok 12 - Original HTML fixture extraction browser_native_hd_url
+  ---
+  duration_ms: 0.3365
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction hd_src
+ok 13 - Original HTML fixture extraction hd_src
+  ---
+  duration_ms: 0.2958
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction playable_url
+ok 14 - Original HTML fixture extraction playable_url
+  ---
+  duration_ms: 1.3025
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction browser_native_sd_url
+ok 15 - Original HTML fixture extraction browser_native_sd_url
+  ---
+  duration_ms: 0.4245
+  type: 'test'
+  ...
+# Subtest: HD is preferred over SD; unsafe candidates do not become media URLs
+ok 16 - HD is preferred over SD; unsafe candidates do not become media URLs
+  ---
+  duration_ms: 0.5954
+  type: 'test'
+  ...
+# Subtest: Empty, private/login and oversized HTML produce no result
+ok 17 - Empty, private/login and oversized HTML produce no result
+  ---
+  duration_ms: 0.2374
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 174.3545

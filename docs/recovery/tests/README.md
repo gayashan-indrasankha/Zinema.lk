@@ -94,3 +94,23 @@ uses separate fictional upload/state volumes and leaves rescue copies/audit inta
 Use `$env:ZINEMA_TEST_PHASE='QUARANTINE'` for native checks in this phase so earlier
 evidence remains historical. All operator work remains local. Production integrations and publishing remain
 disabled; no last-copy purge is implemented.
+
+## Fresh-launch audit
+
+Use `$env:ZINEMA_TEST_PHASE='PRODUCTION'` for the native commands above. Canonical
+schema is v4 (38 tables/2 views); earlier phase evidence is historical. See
+`../PRODUCTION_AUDIT.md` for execution results and their limits.
+
+Additional pure/fake Node regressions, without a live provider or browser:
+
+```powershell
+node --test --test-isolation=none --test-reporter=tap docs/recovery/tests/config.test.cjs docs/recovery/tests/bot.test.cjs docs/recovery/tests/bot-lifecycle.test.cjs docs/recovery/tests/search-popup.test.cjs docs/recovery/tests/trailer-feed.test.cjs docs/recovery/tests/extractor.test.cjs docs/recovery/tests/extractor-fetch.test.cjs
+node --test docs/recovery/tests/token-delivery.test.cjs
+```
+
+Audit the complete `fb-video-api/package-lock.json` separately from the locked
+HTTP-only test subset. To check imports, copy its package/lock into a new ignored
+directory, run `npm.cmd ci --ignore-scripts --no-audit --no-fund`, then
+`node docs/recovery/tests/extractor-dependencies.cjs <that-directory>` under Node
+24+. This does not download/launch Chrome or enable extraction. Browser fallback
+remains blocked; real provider tests require the prepared approval plan.

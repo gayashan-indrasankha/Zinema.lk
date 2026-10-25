@@ -8,6 +8,9 @@ header('Content-Type: application/json');
 // Get search query parameter and type
 $q = $_GET['q'] ?? '';
 $type = $_GET['type'] ?? 'movies'; // Default to movies
+if (!is_string($q) || strlen($q)>200 || !is_string($type) || !in_array($type,['movies','series','collections'],true)) {
+    http_response_code(400);echo json_encode(['error'=>'Invalid search']);exit;
+}
 
 // If search term is empty, return empty array
 if (empty(trim($q))) {
@@ -16,7 +19,9 @@ if (empty(trim($q))) {
 }
 
 // Prepare search query based on type
-if ($type === 'series') {
+if ($type === 'collections') {
+    $sql = "SELECT id, title, NULL AS release_date, cover_image FROM collections WHERE title LIKE ? ORDER BY created_at DESC LIMIT 10";
+} elseif ($type === 'series') {
     $sql = "SELECT id, title, release_date, cover_image FROM series WHERE title LIKE ? ORDER BY created_at DESC LIMIT 10";
 } else {
     $sql = "SELECT id, title, release_date, cover_image FROM movies WHERE title LIKE ? ORDER BY created_at DESC LIMIT 10";

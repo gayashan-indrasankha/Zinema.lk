@@ -7,46 +7,67 @@ class TrailerFeed {
         this.loading = false;
         this.trailers = [];
         this.currentTrailer = null;
+        this.hasMore = true;
+        this.viewTimers = new Map();
         
         this.init();
     }
     
     async init() {
         await this.loadTrailers();
+        const selected = Number(new URLSearchParams(window.location.search).get('id'));
+        if (Number.isSafeInteger(selected) && selected > 0) {
+            let item = this.container.querySelector(`[data-trailer-id="${selected}"]`);
+            if (!item) {
+                try {
+                    const response = await fetch(`${this.apiEndpoint}?id=${selected}`);
+                    const data = await response.json();
+                    if (!response.ok || !data.trailer) throw new Error('Unavailable');
+                    this.trailers.unshift(data.trailer);this.renderTrailers();
+                    item = this.container.querySelector(`[data-trailer-id="${selected}"]`);
+                } catch {
+                    this.container.querySelector('.trailer-container').textContent = 'Requested trailer is unavailable.';
+                    this.hasMore = false;
+                }
+            }
+            item?.scrollIntoView({block:'start'});
+        }
         this.setupIntersectionObserver();
         this.attachEventListeners();
         this.showSwipeInstruction();
     }
     
     async loadTrailers(append = false) {
-        if (this.loading) return;
+        if (this.loading || (append && !this.hasMore)) return;
         this.loading = true;
-        
         try {
             const response = await fetch(`${this.apiEndpoint}?page=${this.page}`);
             const data = await response.json();
-            
-            if (data.trailers && data.trailers.length > 0) {
-                this.trailers = append ? [...this.trailers, ...data.trailers] : data.trailers;
-                this.renderTrailers(append);
-                this.page++;
-            }
-        } catch (error) {
-            console.error('Failed to load trailers:', error);
-        } finally {
-            this.loading = false;
-        }
+            if (!response.ok || !Array.isArray(data.trailers)) throw new Error('Unavailable');
+            const known = new Set(append ? this.trailers.map(item => Number(item.id)) : []);
+            const batch = data.trailers.filter(item => {
+                const id=Number(item.id);
+                if (!Number.isSafeInteger(id) || id<1 || known.has(id)) return false;
+                known.add(id);return true;
+            });
+            this.trailers = append ? [...this.trailers, ...batch] : batch;
+            this.hasMore = data.trailers.length > 0;
+            if (!append || batch.length) this.renderTrailers(append,batch);
+            if (data.trailers.length) this.page++;
+        } catch {
+            if (!this.trailers.length) {this.hasMore=false;this.renderTrailers(false,[],'Trailers are temporarily unavailable.');}
+        } finally {this.loading=false;}
     }
-    
-    renderTrailers(append = false) {
-        const html = this.trailers.map(trailer => this.createTrailerHTML(trailer)).join('');
+
+    renderTrailers(append = false, batch = this.trailers, emptyMessage = 'No trailers available yet.') {
+        const html = batch.map(trailer => this.createTrailerHTML(trailer)).join('');
         
         if (append) {
             this.container.querySelector('.trailer-container').insertAdjacentHTML('beforeend', html);
         } else {
             this.container.innerHTML = `
                 <div class="trailer-container">
-                    ${html}
+                    ${html || `<p class="trailer-empty">${this.escapeHtml(emptyMessage)}</p>`}
                     <div class="landscape-warning" style="display: none;">
                         <div>
                             <svg width="48" height="48" viewBox="0 0 24 24" fill="white">
@@ -59,23 +80,24 @@ class TrailerFeed {
             `;
         }
         
-        // Initialize new videos
-        this.container.querySelectorAll('.trailer-video').forEach(video => {
-            video.load();
-            this.setupVideoEvents(video);
+        // Appending must not reload/reset previously playing videos.
+        this.container.querySelectorAll('.trailer-item').forEach(item => {
+            const video=item.querySelector('.trailer-video');
+            if (!video.dataset.initialized) {this.setupVideoEvents(video);video.dataset.initialized='1';video.load();}
+            if (this.observer && !item.dataset.observed) {this.observer.observe(item);item.dataset.observed='1';}
         });
     }
-    
+
     createTrailerHTML(trailer) {
         return `
             <div class="trailer-item" data-trailer-id="${trailer.id}">
                 <video class="trailer-video" 
-                       src="${trailer.trailer_url}"
-                       poster="${trailer.thumbnail_url}"
+                       src="${this.escapeAttribute(trailer.trailer_url)}"
+                       poster="${this.escapeAttribute(trailer.thumbnail_url)}"
                        playsinline
                        webkit-playsinline
                        preload="metadata"
-                       loop>
+                       muted controls loop>
                 </video>
                 
                 <div class="trailer-overlay">
@@ -104,7 +126,7 @@ class TrailerFeed {
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                             </svg>
-                            <span>Save</span>
+                            <span>${trailer.user_favorited ? 'Saved' : 'Save'}</span>
                         </button>
                         
                         <button class="action-button" data-action="share">
@@ -149,21 +171,28 @@ class TrailerFeed {
         
         this.container.querySelectorAll('.trailer-item').forEach(trailer => {
             this.observer.observe(trailer);
+            trailer.dataset.observed = '1';
         });
     }
     
     setupVideoEvents(video) {
         const loadingOverlay = video.parentElement.querySelector('.loading-overlay');
         const progressBar = video.parentElement.querySelector('.progress');
+        const fullyBuffered = () => Number.isFinite(video.duration) && video.buffered.length > 0 &&
+            video.buffered.end(video.buffered.length-1) >= video.duration-0.05;
         
         video.addEventListener('waiting', () => {
-            loadingOverlay.style.display = 'flex';
+            loadingOverlay.style.display = fullyBuffered() ? 'none' : 'flex';
         });
+        // Loop transitions may emit waiting even when the complete local clip is buffered.
+        video.addEventListener('loadeddata', () => {loadingOverlay.style.display='none';});
+        video.addEventListener('progress', () => {if (fullyBuffered()) loadingOverlay.style.display='none';});
         
         video.addEventListener('playing', () => {
             loadingOverlay.style.display = 'none';
         });
         
+        video.addEventListener('error', () => { loadingOverlay.textContent='Video unavailable.';video.controls=true; });
         video.addEventListener('timeupdate', () => {
             const progress = (video.currentTime / video.duration) * 100;
             progressBar.style.width = `${progress}%`;
@@ -171,29 +200,30 @@ class TrailerFeed {
     }
     
     async playVideo(video) {
+        clearTimeout(this.viewTimers.get(video));
         try {
             await video.play();
-            
-            // Record view after 3 seconds of playback
-            setTimeout(() => {
-                if (!video.paused && this.currentTrailer === video.parentElement) {
-                    this.recordView(video.parentElement.dataset.trailerId);
-                }
-            }, 3000);
-        } catch (error) {
-            console.error('Failed to play video:', error);
+            this.viewTimers.set(video,setTimeout(() => {
+                this.viewTimers.delete(video);
+                if (!video.paused && this.currentTrailer===video.parentElement) this.recordView(video.parentElement.dataset.trailerId);
+            },3000));
+        } catch {
+            video.parentElement.querySelector('.loading-overlay').style.display='none';
+            video.controls=true;
         }
     }
-    
+
     pauseVideo(video) {
-        video.pause();
+        video.pause();clearTimeout(this.viewTimers.get(video));this.viewTimers.delete(video);
     }
-    
+
     attachEventListeners() {
         // Infinite scroll
         const container = this.container.querySelector('.trailer-container');
         container.addEventListener('scroll', () => {
-            const lastTrailer = container.lastElementChild;
+            const items=container.querySelectorAll('.trailer-item');
+            const lastTrailer=items[items.length-1];
+            if (!lastTrailer || !this.hasMore) return;
             const lastTrailerOffset = lastTrailer.offsetTop + lastTrailer.clientHeight;
             const pageOffset = container.scrollTop + container.clientHeight;
             
@@ -254,15 +284,16 @@ class TrailerFeed {
     }
     
     async handleLike(trailerId, button) {
+        if (!this.currentUserId) {window.location.href='/profile.php';return;}
         // Prevent duplicate clicks while request is in flight
         if (button.dataset.loading === '1') return;
+        const wasActive = button.classList.contains('active');
+        const countEl = button.querySelector('span');
+        const prevCount = parseInt(countEl.textContent || '0', 10);
         button.dataset.loading = '1';
         button.disabled = true;
         try {
             // Optimistic toggle UI
-            const wasActive = button.classList.contains('active');
-            const countEl = button.querySelector('span');
-            const prevCount = parseInt(countEl.textContent || '0', 10);
             const optimisticCount = wasActive ? Math.max(0, prevCount - 1) : prevCount + 1;
             button.classList.toggle('active', !wasActive);
             countEl.textContent = optimisticCount;
@@ -274,7 +305,7 @@ class TrailerFeed {
             });
 
             const data = await response.json();
-            if (data.error) throw new Error(data.error);
+            if (!response.ok || data.error) throw new Error('Like unavailable');
 
             // Update with authoritative server values
             button.classList.toggle('active', !!data.liked);
@@ -289,10 +320,8 @@ class TrailerFeed {
         } catch (error) {
             console.error('Failed to like trailer:', error);
             // Revert optimistic UI on failure
-            button.classList.toggle('active');
-            // Try to restore previous count (best-effort)
-            const countEl = button.querySelector('span');
-            countEl.textContent = parseInt(countEl.textContent || '0', 10);
+            button.classList.toggle('active', wasActive);
+            countEl.textContent = prevCount;
         } finally {
             delete button.dataset.loading;
             button.disabled = false;
@@ -300,11 +329,14 @@ class TrailerFeed {
     }
     
     async handleFavorite(trailerId, button) {
+        if (!this.currentUserId) {window.location.href='/profile.php';return;}
         if (button.dataset.loading === '1') return;
+        const wasActive = button.classList.contains('active');
+        const span = button.querySelector('span');
+        const previousText = span?.textContent;
         button.dataset.loading = '1';
         button.disabled = true;
         try {
-            const wasActive = button.classList.contains('active');
             // Optimistic toggle
             button.classList.toggle('active', !wasActive);
 
@@ -314,10 +346,9 @@ class TrailerFeed {
                 body: JSON.stringify({ trailer_id: trailerId })
             });
             const data = await response.json();
-            if (data.error) throw new Error(data.error);
+            if (!response.ok || data.error) throw new Error('Favorite unavailable');
 
             button.classList.toggle('active', !!data.favorited);
-            const span = button.querySelector('span');
             if (span) span.textContent = data.favorited ? 'Saved' : 'Save';
 
             // Visual pulse when favorited
@@ -329,7 +360,8 @@ class TrailerFeed {
         } catch (error) {
             console.error('Failed to favorite trailer:', error);
             // Revert optimistic state
-            button.classList.toggle('active');
+            button.classList.toggle('active', wasActive);
+            if (span) span.textContent = previousText;
         } finally {
             delete button.dataset.loading;
             button.disabled = false;
@@ -337,7 +369,7 @@ class TrailerFeed {
     }
     
     handleShare(trailerId) {
-        const url = `${window.location.origin}/trailer.php?id=${trailerId}`;
+        const url = this.shareUrl(trailerId);
         if (navigator.share) {
             navigator.share({ title: 'Check out this movie trailer!', url })
                 .then(() => this.recordShare(trailerId, 'native'))
@@ -400,7 +432,7 @@ class TrailerFeed {
     }
     
     showShareDialog(trailerId) {
-        const url = `${window.location.origin}/trailer.php?id=${trailerId}`;
+        const url = this.shareUrl(trailerId);
         // Fallback copying method
         const input = document.createElement('input');
         input.value = url;
@@ -416,6 +448,10 @@ class TrailerFeed {
         input.remove();
     }
     
+    shareUrl(trailerId) {return `${window.location.origin}/trailers.php?id=${Number(trailerId)}`;}
+
+    escapeAttribute(value) {return this.escapeHtml(String(value || '')).replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
     escapeHtml(str) {
         const div = document.createElement('div');
         div.textContent = str;

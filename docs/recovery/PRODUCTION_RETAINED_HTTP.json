@@ -1,0 +1,793 @@
+{
+  "date": "2026-10-25",
+  "base": "http://127.0.0.1:8088",
+  "schema": "database/schema.sql canonical local schema; zero legacy data rows",
+  "tests": [
+    {
+      "name": "Page renders: /",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 98139
+      }
+    },
+    {
+      "name": "Page renders: /movies",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 74437
+      }
+    },
+    {
+      "name": "Page renders: /tv-series",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 67481
+      }
+    },
+    {
+      "name": "Page renders: /collections",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 58495
+      }
+    },
+    {
+      "name": "Page renders: /movie/1/fictional-audit-movie",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 33985
+      }
+    },
+    {
+      "name": "Page renders: /series/1/fictional-audit-series",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 50044
+      }
+    },
+    {
+      "name": "Page renders: /collection/1/fictional-audit-collection",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 36321
+      }
+    },
+    {
+      "name": "Page renders: /login.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 5762
+      }
+    },
+    {
+      "name": "Page renders: /signup.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 6404
+      }
+    },
+    {
+      "name": "Page renders: /reset-password.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 10576
+      }
+    },
+    {
+      "name": "Page renders: /trailers.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 2907
+      }
+    },
+    {
+      "name": "Page renders: /pages/movie-detail.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 4683
+      }
+    },
+    {
+      "name": "Page renders: /pages/trailers.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 5968
+      }
+    },
+    {
+      "name": "Page renders: /pages/download.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 4535
+      }
+    },
+    {
+      "name": "Page renders: /sitemap.xml",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "bytes": 1642
+      }
+    },
+    {
+      "name": "Movie search matches fixture",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Catalogue filter: /movies?genre=Comedy",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "grid_movie_ids": [
+          2
+        ]
+      }
+    },
+    {
+      "name": "Catalogue filter: /movies?filter=dubbed",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "grid_movie_ids": [
+          1
+        ]
+      }
+    },
+    {
+      "name": "Catalogue filter: /movies?page=999",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "grid_movie_ids": []
+      }
+    },
+    {
+      "name": "JSON endpoint: /api/movies.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "name": "JSON endpoint: /api/series.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "name": "JSON endpoint: /api/collections.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "name": "JSON endpoint: /api/collections.php?id=1",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "name": "JSON endpoint: /api/live_search.php?q=Fictional",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "name": "JSON endpoint: /api/search_content.php?q=Fictional",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "name": "Trailer/comment subsystem: /api/trailers.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "name": "Trailer/comment subsystem: /api/comments.php?movie_id=1",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200
+      }
+    },
+    {
+      "name": "Recovery gate: /download.php?id=1",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 403,
+        "feature_available": false
+      }
+    },
+    {
+      "name": "Recovery gate: /api/subscribe.php",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 403,
+        "feature_available": false
+      }
+    },
+    {
+      "name": "Recovery gate: /api/payment-notify.php",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 403,
+        "feature_available": false
+      }
+    },
+    {
+      "name": "Recovery gate: /api/server-check.php",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 403,
+        "feature_available": false
+      }
+    },
+    {
+      "name": "Recovery gate: /admin/run_migration.php",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 403,
+        "feature_available": false
+      }
+    },
+    {
+      "name": "Recovery gate: /admin/cron/cleanup-tokens.php",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 403,
+        "feature_available": false
+      }
+    },
+    {
+      "name": "Recovery gate: /admin/cron/reset-daily-stats.php",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 403,
+        "feature_available": false
+      }
+    },
+    {
+      "name": "Recovery gate: /whatsapp-watch.php?id=1",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 503,
+        "feature_available": false
+      }
+    },
+    {
+      "name": "Recovery gate: /api/whatsapp/validate-token.php",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 503,
+        "feature_available": false
+      }
+    },
+    {
+      "name": "Recovery gate: /google-callback.php",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 503,
+        "feature_available": false
+      }
+    },
+    {
+      "name": "Apache blocks synthetic private path: /.env.audit",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Apache blocks synthetic private path: /Database.sql",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Apache blocks synthetic private path: /error_log",
+      "passed": true,
+      "category": "containment",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "AJAX login rejects missing CSRF",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Verified AJAX login",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Successful login regenerates the session ID",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Authenticated session endpoint",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Profile renders after login",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Authenticated interaction: /api/like_shot.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Authenticated interaction: /api/favorite_shot.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Authenticated interaction: /api/add_comment.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Authenticated interaction: /api/record_view.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Stored Shot comment can be retrieved",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Duplicate view is idempotent",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "matching_rows": "1"
+      }
+    },
+    {
+      "name": "GET logout cannot change session state",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Logout clears authenticated session",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Unverified account denied: /ajax_login.php",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified",
+      "detail": {
+        "logged_in": false
+      }
+    },
+    {
+      "name": "Unverified account denied: /login.php",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified",
+      "detail": {
+        "logged_in": false
+      }
+    },
+    {
+      "name": "Unverified account denied: /api/auth-handler.php",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified",
+      "detail": {
+        "logged_in": false
+      }
+    },
+    {
+      "name": "Login injection string does not authenticate",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Alternate JSON login rejects missing CSRF",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Alternate JSON login accepts verified account with CSRF",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Shot comment mutation rejects missing CSRF",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Wrong CSRF token is rejected",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Array CSRF token returns 403 rather than crashing",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "A token from another session is rejected",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Header CSRF works for form writes",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Trailer query returns the populated canonical fixture",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Authenticated trailer like writes through PDO",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Movie comment writes through the canonical movie_comments table",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Movie comment reply uses canonical parent linkage",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Another user cannot delete a movie comment",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Owner can delete its movie comment and reply",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Remember-me stores a digest rather than the cookie credential",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Verified remember-me cookie restores a session",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Logout revokes captured remember-me cookies",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "AJAX signup reports disabled delivery honestly",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "success": false,
+        "account_rows": "0"
+      }
+    },
+    {
+      "name": "Disabled-mail signup grants neither account nor session",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Admin requires authentication",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Admin page renders: /admin/index.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "visible_php_diagnostic": false
+      }
+    },
+    {
+      "name": "Admin page renders: /admin/movies.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "visible_php_diagnostic": false
+      }
+    },
+    {
+      "name": "Admin page renders: /admin/series.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "visible_php_diagnostic": false
+      }
+    },
+    {
+      "name": "Admin page renders: /admin/episodes.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "visible_php_diagnostic": false
+      }
+    },
+    {
+      "name": "Admin page renders: /admin/collections.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "visible_php_diagnostic": false
+      }
+    },
+    {
+      "name": "Admin page renders: /admin/manage_shots.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "visible_php_diagnostic": false
+      }
+    },
+    {
+      "name": "Admin page renders: /admin/analytics.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "visible_php_diagnostic": false
+      }
+    },
+    {
+      "name": "Admin page renders: /admin/settings.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "visible_php_diagnostic": false
+      }
+    },
+    {
+      "name": "Admin page renders: /admin/trailers.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "visible_php_diagnostic": false
+      }
+    },
+    {
+      "name": "Admin page renders: /admin/whatsapp-bot-tracking.php",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified",
+      "detail": {
+        "http": 200,
+        "visible_php_diagnostic": false
+      }
+    },
+    {
+      "name": "Admin movie creation rejects missing CSRF",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Admin can create fictional movie with CSRF",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Admin can edit fictional movie",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Admin refuses state-changing GET deletion",
+      "passed": true,
+      "category": "security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Admin can delete its fictional test movie",
+      "passed": true,
+      "category": "feature",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Tested mirror matches current repaired source",
+      "passed": true,
+      "category": "integrity",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Email templates contain no browser CSRF markup",
+      "passed": true,
+      "category": "static security",
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "No new PHP diagnostics during the final request suite",
+      "passed": true,
+      "category": "runtime diagnostics",
+      "evidence": "runtime verified",
+      "detail": {
+        "Warning": 0,
+        "Notice": 0,
+        "Fatal error": 0,
+        "Deprecated": 0
+      }
+    }
+  ],
+  "summary": {
+    "total": 94,
+    "passed": 94,
+    "failed": 0
+  },
+  "syntax": {
+    ".php": {
+      "total": 190,
+      "passed": 190,
+      "failures": []
+    },
+    ".js": {
+      "total": 47,
+      "passed": 47,
+      "failures": []
+    }
+  },
+  "new_php_diagnostics": {
+    "Warning": 0,
+    "Notice": 0,
+    "Fatal error": 0,
+    "Deprecated": 0
+  }
+}

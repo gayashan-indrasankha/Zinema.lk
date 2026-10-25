@@ -11,6 +11,7 @@
         <li><a href="episodes.php">Manage Episodes</a></li>
         <li><a href="collections.php">Manage Collections</a></li>
         <li><a href="manage_shots.php">Manage Shots</a></li>
+        <li><a href="trailers.php">Manage Trailers</a></li>
         <li><a href="settings.php"><i class="fas fa-cog"></i> Settings</a></li>
         <li><form action="logout.php" method="POST"><?php csrf_token_field(); ?><button type="submit">Logout</button></form></li>
     </ul>

@@ -13,7 +13,8 @@ class TrailerManager {
      * @param int $offset Offset for pagination
      * @return array Trailers with movie details and user interactions
      */
-    public function getAllTrailers($userId = null, $limit = 20, $offset = 0) {
+    public function getAllTrailers($userId = null, $limit = 20, $offset = 0, $includeInactive = false) {
+        $visibility=$includeInactive ? '' : "WHERE t.status='active'";
         $sql = "
             SELECT 
                 t.*, t.video_url AS trailer_url,
@@ -37,6 +38,7 @@ class TrailerManager {
             LEFT JOIN trailer_shares ts ON t.id = ts.trailer_id
             LEFT JOIN trailer_likes utl ON t.id = utl.trailer_id AND utl.user_id = :like_user_id
             LEFT JOIN trailer_favorites utf ON t.id = utf.trailer_id AND utf.user_id = :favorite_user_id
+            $visibility
             GROUP BY t.id
             ORDER BY t.created_at DESC
             LIMIT :limit OFFSET :offset
@@ -58,7 +60,8 @@ class TrailerManager {
      * @param int|null $userId Current user ID
      * @return array|false Trailer data or false if not found
      */
-    public function getTrailer($trailerId, $userId = null) {
+    public function getTrailer($trailerId, $userId = null, $includeInactive = false) {
+        $visibility=$includeInactive ? '' : "AND t.status='active'";
         $sql = "
             SELECT 
                 t.*, t.video_url AS trailer_url,
@@ -84,6 +87,7 @@ class TrailerManager {
             LEFT JOIN trailer_likes utl ON t.id = utl.trailer_id AND utl.user_id = :like_user_id
             LEFT JOIN trailer_favorites utf ON t.id = utf.trailer_id AND utf.user_id = :favorite_user_id
             WHERE t.id = :trailer_id
+            $visibility
             GROUP BY t.id
         ";
 

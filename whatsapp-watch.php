@@ -75,7 +75,9 @@ $service_unavailable = false;
 $service_message = '';
 
 // Single token for full movie/episode
-$token_data = createWhatsAppToken($conn, $id, $content_type, 10);
+$expiry = filter_var(getSetting($conn,'token_expiry_minutes','10'), FILTER_VALIDATE_INT);
+$expiry = $expiry && $expiry >= 1 && $expiry <= 180 ? $expiry : 10;
+$token_data = createWhatsAppToken($conn, $id, $content_type, $expiry);
 
 // Check for rate limit error
 if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {

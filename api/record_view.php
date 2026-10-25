@@ -36,6 +36,13 @@ if ($shot_id <= 0) {
 
 $user_id = $_SESSION['user_id'];
 
+$exists = $conn->prepare('SELECT id FROM shots WHERE id=?');
+$exists->bind_param('i',$shot_id);$exists->execute();
+if (!$exists->get_result()->fetch_row()) {
+    http_response_code(404);echo json_encode(['status'=>'error','message'=>'Shot not found']);exit;
+}
+$exists->close();
+
 // Insert view record (INSERT IGNORE prevents errors if record already exists)
 $sql = "INSERT IGNORE INTO user_views (user_id, shot_id) VALUES (?, ?)";
 $stmt = $conn->prepare($sql);
