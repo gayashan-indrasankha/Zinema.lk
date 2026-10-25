@@ -1,0 +1,11 @@
+{
+  "owned_services_stopped": true,
+  "closed_test_ports": {
+    "8088": true,
+    "3307": true,
+    "3334": true,
+    "8089": true
+  },
+  "browser_test_tab_closed": true,
+  "production_or_publishing_actions": false
+}
