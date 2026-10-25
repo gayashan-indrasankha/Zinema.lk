@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: bot accepts explicit local configuration
+ok 1 - bot accepts explicit local configuration
+  ---
+  duration_ms: 1.273
+  type: 'test'
+  ...
+# Subtest: bot rejects missing configuration
+ok 2 - bot rejects missing configuration
+  ---
+  duration_ms: 0.4283
+  type: 'test'
+  ...
+# Subtest: bot rejects non-loopback development API
+ok 3 - bot rejects non-loopback development API
+  ---
+  duration_ms: 0.1761
+  type: 'test'
+  ...
+# Subtest: bot rejects preserved WhatsApp session path
+ok 4 - bot rejects preserved WhatsApp session path
+  ---
+  duration_ms: 0.2004
+  type: 'test'
+  ...
+# Subtest: bot cannot enable live access merely through local flag
+ok 5 - bot cannot enable live access merely through local flag
+  ---
+  duration_ms: 0.2658
+  type: 'test'
+  ...
+# Subtest: bot entry point exits at the live startup guard
+ok 6 - bot entry point exits at the live startup guard
+  ---
+  duration_ms: 58.5444
+  type: 'test'
+  ...
+# Subtest: extractor disabled mode binds only loopback
+ok 7 - extractor disabled mode binds only loopback
+  ---
+  duration_ms: 0.9044
+  type: 'test'
+  ...
+# Subtest: extractor rejects live mode
+ok 8 - extractor rejects live mode
+  ---
+  duration_ms: 0.1857
+  type: 'test'
+  ...
+# Subtest: extractor rejects non-local fixture URL
+ok 9 - extractor rejects non-local fixture URL
+  ---
+  duration_ms: 0.207
+  type: 'test'
+  ...
+# Subtest: extractor accepts local fixture
+ok 10 - extractor accepts local fixture
+  ---
+  duration_ms: 0.2204
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 92.6837
