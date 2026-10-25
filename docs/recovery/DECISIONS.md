@@ -257,3 +257,24 @@ receipt, assigned bot, pre-send completion, replay, inactive/expired tokens and 
 begin are denied. Stale sending and failed claims remain held; completion after a
 valid begin can consume even if expiry passes during delivery. Six fake bot/client
 checks and 22 schema/bridge checks pass. No real recipient was contacted.
+
+## 2026-10-25 — Preserve history and establish a local sanitized baseline
+
+Context: This task began from a clean existing imported repository. Earlier
+publication and remote review history were already present; the current owner
+explicitly kept publishing and production disabled.
+
+Decision: Preserve all existing history and user information. Create local-only
+`zinema/local-dev-safety`, stage only reviewed source/tests/sanitized evidence,
+run dedicated staged/candidate/history scans and commit locally without contacting
+remotes. Keep generated configuration, sample runtime media, sessions, databases,
+dependencies, debug logs and preserved legacy evidence out of Git.
+
+Verification: Eight ignore sentinels and forbidden-index-path review passed;
+Gitleaks 8.30.1 found zero findings in staged changes, the full 337-file candidate
+and all local history. Runtime regressions, fresh-source reproduction and new
+staged whitespace checks passed. Baseline commit `9c48b7ca8a2b6535b6da0b408d49bbdfe7280f1a`
+was created and left a clean tree. A documentation-only completion commit records
+this result; final staged/history checks and Git status are checked at handoff.
+Historical publication whitespace and comprehensive production/security readiness
+remain unresolved and were not relabeled as passing.
