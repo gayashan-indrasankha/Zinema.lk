@@ -442,3 +442,10 @@ rotation or hosting purchase is authorized. The prepared plan requires exact
 private accounts/recipients/caps and explicit approval after local/staging gates.
 Owned test services stop without erasing volumes; commit only reviewed sanitized
 local work after syntax, regressions, ignore and secret scans. No release follows.
+
+Audit source checkpoint: `013bd480889c5adad1e0d2d9b290b842018e8910` on `zinema/local-dev-safety`,
+with a clean tree after commit. Gitleaks staged/full 444-file candidate/all-local-
+history scans returned zero findings and nine ignore checks passed. All owned
+services stopped; private data/volumes retained. A separate documentation handoff
+records this evidence. The launch decision remains PARTIAL/NO GO, with no provider
+transactions, deployment, push or publishing.
