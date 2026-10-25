@@ -1,0 +1,325 @@
+/* General Styling */
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    margin-left: 250px;
+    /* Same as sidebar width */
+}
+
+header {
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    color: #2a6cff;
+    /* Brand Blue */
+}
+
+a {
+    color: #2a6cff;
+    /* Brand Blue */
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #ff3366;
+    /* Brand Pink */
+    text-decoration: none;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: #14161e;
+    /* Brand Surface Dark */
+    color: #ecf0f1;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-header {
+    padding: 1.5rem;
+    text-align: center;
+    background: #0f1019;
+    /* Brand BG Dark */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li a {
+    display: block;
+    color: #b4bcc9;
+    /* Muted Text */
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+}
+
+.sidebar ul li a:hover {
+    background: rgba(42, 108, 255, 0.1);
+    /* Subtle Blue Tint */
+    color: #2a6cff;
+    /* Brand Blue */
+    padding-left: 1.8rem;
+    /* Slight nudge effect */
+}
+
+/* Forms */
+.form-container,
+.table-container {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    border: 1px solid #e0e0e0;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="password"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #2a6cff;
+    box-shadow: 0 0 0 3px rgba(42, 108, 255, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+button,
+.cancel-btn {
+    background-color: #2a6cff;
+    /* Brand Blue */
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #1a5cff;
+    /* Darker Blue */
+    transform: translateY(-1px);
+}
+
+.cancel-btn {
+    background-color: #95a5a6;
+    margin-left: 10px;
+}
+
+.cancel-btn:hover {
+    background-color: #7f8c8d;
+    text-decoration: none;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+table th,
+table td {
+    border: 1px solid #eee;
+    padding: 1rem;
+    text-align: left;
+    vertical-align: middle;
+}
+
+table th {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 700;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+table tr:nth-child(even) {
+    background-color: #fcfcfc;
+}
+
+table tr:hover {
+    background-color: #f1f5ff;
+    /* Very light blue tint on hover */
+}
+
+table td a {
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+/* Login Page */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    background-color: #0f1019;
+    /* Brand BG Dark */
+    background-image:
+        radial-gradient(circle at 10% -10%, rgba(42, 108, 255, 0.15), transparent 40%),
+        radial-gradient(circle at 90% 110%, rgba(255, 51, 102, 0.1), transparent 40%);
+}
+
+.login-form {
+    background: #14161e;
+    /* Dark Surface for Login Card */
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    width: 100%;
+    max-width: 400px;
+    color: #e9ecf1;
+    /* Light text for dark login card */
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #fff;
+}
+
+.login-form label {
+    color: #b4bcc9;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.login-form input:focus {
+    border-color: #2a6cff;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.login-form .error {
+    color: #ff3366;
+    /* Brand Pink for Error */
+    background: rgba(255, 51, 102, 0.1);
+    border: 1px solid rgba(255, 51, 102, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.login-form .info {
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+/* Dashboard Widgets */
+.dashboard-widgets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.widget {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.widget:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(42, 108, 255, 0.1);
+    border-color: #2a6cff;
+}
+
+.widget h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.widget p {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 10px 0 0;
+    background: linear-gradient(135deg, #2a6cff, #ff3366);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+.back-link {
+    font-size: 0.9rem;
+    color: #2a6cff;
+}
