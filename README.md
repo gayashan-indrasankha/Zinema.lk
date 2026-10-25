@@ -16,6 +16,7 @@ WhatsApp, mail, OAuth, payments, downloads and extraction remain restricted.
 - [Repair scope and executed evidence](docs/recovery/REPAIR_PHASE.md)
 - [Canonical schema](database/schema.sql) and [schema reconciliation](docs/recovery/SCHEMA_RECONCILIATION.md)
 - [Portable local development](dev/README.md) and [executed local phase](docs/recovery/LOCAL_DEV_PHASE.md)
+- [Local operator runbook](dev/OPERATIONS.md) and [operations phase](docs/recovery/OPERATIONS_PHASE.md)
 - [Retained test instructions](docs/recovery/tests/README.md)
 - [Publication and PR review order](docs/recovery/PUBLISHING.md)
 - [Third-party attribution](THIRD_PARTY.md)

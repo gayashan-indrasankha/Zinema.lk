@@ -17,7 +17,7 @@ if ($action === 'claim') {
     if (($data['valid'] ?? false) !== true) sendResponse(['success'=>false,'error'=>$data['error'] ?? 'invalid_token']);
     $receipt = bin2hex(random_bytes(32));
     $hash = hash('sha256', $receipt);
-    $stmt = $conn->prepare("UPDATE whatsapp_tokens SET claim_hash=?, claim_owner=?, claim_state='claimed', claimed_at=NOW(), expires_at=expires_at WHERE token=? AND assigned_bot_id=? AND claim_hash IS NULL AND is_used=0 AND is_active=1 AND expires_at>NOW()");
+    $stmt = $conn->prepare("UPDATE whatsapp_tokens SET claim_revision=claim_revision+1, claim_hash=?, claim_owner=?, claim_state='claimed', claimed_at=NOW(), expires_at=expires_at WHERE token=? AND assigned_bot_id=? AND claim_hash IS NULL AND reconciled_at IS NULL AND is_used=0 AND is_active=1 AND expires_at>NOW()");
     $stmt->bind_param('sssi', $hash, $owner, $token, $bot);
     $stmt->execute();
     if ($stmt->affected_rows !== 1) sendResponse(['success'=>false,'error'=>'unavailable']);
@@ -36,7 +36,7 @@ $transition = match ($action) {
     default => null,
 };
 if ($transition === null) sendResponse(['success'=>false,'error'=>'invalid_action'], 400);
-$stmt = $conn->prepare("UPDATE whatsapp_tokens SET expires_at=expires_at, $transition AND id=? AND claim_hash=? AND claim_owner=? AND assigned_bot_id=? AND is_used=0");
+$stmt = $conn->prepare("UPDATE whatsapp_tokens SET claim_revision=claim_revision+1, expires_at=expires_at, $transition AND id=? AND claim_hash=? AND claim_owner=? AND assigned_bot_id=? AND reconciled_at IS NULL AND is_used=0");
 $stmt->bind_param('issi', $id, $hash, $owner, $bot);
 $stmt->execute();
 sendResponse(['success'=>$stmt->affected_rows === 1]);

@@ -26,19 +26,19 @@ $log = [];
 
 try {
     // 1. Delete expired unused tokens (older than expiry time)
-    $sql1 = "DELETE FROM whatsapp_tokens WHERE expires_at < NOW() AND is_used = 0";
+    $sql1 = "DELETE FROM whatsapp_tokens WHERE expires_at < NOW() AND is_used = 0 AND claim_hash IS NULL AND reconciled_at IS NULL";
     $result1 = mysqli_query($conn, $sql1);
     $deletedExpired = mysqli_affected_rows($conn);
     $log[] = "Deleted $deletedExpired expired unused tokens";
 
     // 2. Delete very old used tokens (older than 7 days) to prevent table bloat
-    $sql2 = "DELETE FROM whatsapp_tokens WHERE is_used = 1 AND used_at < DATE_SUB(NOW(), INTERVAL 7 DAY)";
+    $sql2 = "DELETE FROM whatsapp_tokens WHERE is_used = 1 AND used_at < DATE_SUB(NOW(), INTERVAL 7 DAY) AND claim_hash IS NULL AND reconciled_at IS NULL";
     $result2 = mysqli_query($conn, $sql2);
     $deletedOld = mysqli_affected_rows($conn);
     $log[] = "Deleted $deletedOld old used tokens (>7 days)";
 
     // 3. Delete orphaned tokens (no message_id and older than 1 hour)
-    $sql3 = "DELETE FROM whatsapp_tokens WHERE message_id IS NULL AND created_at < DATE_SUB(NOW(), INTERVAL 1 HOUR) AND is_used = 0";
+    $sql3 = "DELETE FROM whatsapp_tokens WHERE message_id IS NULL AND created_at < DATE_SUB(NOW(), INTERVAL 1 HOUR) AND is_used = 0 AND claim_hash IS NULL AND reconciled_at IS NULL";
     $result3 = mysqli_query($conn, $sql3);
     $deletedOrphaned = mysqli_affected_rows($conn);
     $log[] = "Deleted $deletedOrphaned orphaned tokens";

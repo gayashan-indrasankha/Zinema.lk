@@ -21,7 +21,7 @@ probe = 'zinema_recovery_probe_' + str(time.time_ns())
 sql(folder, 'CREATE DATABASE '+probe+' CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; USE '+probe+';\n'+ddl)
 tables = sql(folder,"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='"+probe+"' AND table_type='BASE TABLE';")
 views = sql(folder,"SELECT COUNT(*) FROM information_schema.views WHERE table_schema='"+probe+"';")
-assert tables == '37' and views == '2'
+assert tables == '38' and views == '2'
 rows = [{'name':'Canonical schema rebuilds in a new empty database','passed':True}]
 password = secrets.token_hex(24)
 username = 'zinema_recovery_bridge_' + secrets.token_hex(4)
@@ -81,7 +81,7 @@ try:
 
 finally:
     child.terminate(); child.wait(timeout=5); log.close()
-result={'schema_sha256':hashlib.sha256((ROOT/'database/schema.sql').read_bytes()).hexdigest(),'tables':37,'views':2,'legacy_rows_imported':0,'bridge_environment':'test; local SQL adapter only; fake API key','bridge_stopped':not port_open(8089),'tests':rows,'summary':{'total':len(rows),'passed':sum(row['passed'] for row in rows),'failed':sum(not row['passed'] for row in rows)}}
+result={'schema_sha256':hashlib.sha256((ROOT/'database/schema.sql').read_bytes()).hexdigest(),'tables':38,'views':2,'legacy_rows_imported':0,'bridge_environment':'test; local SQL adapter only; fake API key','bridge_stopped':not port_open(8089),'tests':rows,'summary':{'total':len(rows),'passed':sum(row['passed'] for row in rows),'failed':sum(not row['passed'] for row in rows)}}
 (ROOT/f'docs/recovery/{RESULT_PREFIX}_SCHEMA_RESULTS.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2))
 raise SystemExit(1 if result['summary']['failed'] else 0)

@@ -1,4 +1,4 @@
--- Canonical local schema v2, MariaDB 10.4+. Structure only, no data.
+-- Canonical local schema v3, MariaDB 10.4+. Structure only, no data.
 
 -- Validated in the isolated recovery fixture. Not an in-place migration.
 
@@ -565,11 +565,28 @@ CREATE TABLE `whatsapp_tokens` (
   `claim_owner` char(64) DEFAULT NULL,
   `claim_state` enum('claimed','sending','uncertain','completed') DEFAULT NULL,
   `claimed_at` timestamp NULL DEFAULT NULL,
+  `claim_revision` bigint unsigned NOT NULL DEFAULT 0,
+  `reconciled_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `token` (`token`),
   KEY `idx_content` (`content_type`,`content_id`),
   KEY `idx_expires` (`expires_at`),
   KEY `idx_is_used` (`is_used`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `delivery_reconciliations` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `token_id` int(11) NOT NULL,
+  `observed_revision` bigint unsigned NOT NULL,
+  `previous_state` enum('claimed','sending','uncertain') NOT NULL,
+  `outcome` enum('delivered','not_delivered') NOT NULL,
+  `actor` varchar(48) NOT NULL,
+  `evidence_ref` varchar(80) NOT NULL,
+  `workers_stopped` tinyint(1) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `one_reconciliation_per_token` (`token_id`),
+  CONSTRAINT `reconciliation_token_fk` FOREIGN KEY (`token_id`) REFERENCES `whatsapp_tokens` (`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 SET FOREIGN_KEY_CHECKS=1;

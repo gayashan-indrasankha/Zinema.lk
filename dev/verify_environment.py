@@ -3,7 +3,9 @@ import json
 from pathlib import Path
 import subprocess
 import sys
-from local import BASE, ENV, PROJECT, ROOT, STATE
+from local import BASE, ENV, PROJECT, ROOT, STATE, require_local_docker
+
+require_local_docker()
 
 
 def run(args):
@@ -42,6 +44,10 @@ for service,info in services.items():
 env=dict(item.split('=',1) for item in services['web']['Config']['Env'] if '=' in item)
 check('All production-capable adapters remain disabled',env.get('APP_ENV')=='development' and env.get('ALLOW_LIVE_INTEGRATIONS')=='false' and all(env.get(name+'_MODE')=='disabled' for name in ['WHATSAPP','MEDIA','EXTRACTOR','PAYMENT']))
 check('Mail and OAuth target only local fakes',env.get('MAIL_HOST')=='127.0.0.1' and env.get('MAIL_PORT')=='1025' and env.get('OAUTH_TOKEN_URL')=='http://127.0.0.1:9081/token')
+check('Upload quota is enabled only for this development owner',env.get('UPLOAD_QUOTA_MODE')=='local' and env.get('UPLOAD_STORAGE_OWNER')==PROJECT and env.get('UPLOAD_STORAGE_STATE')=='/var/lib/zinema/storage')
+check('Private storage state is a separate non-public named volume',any(m['Type']=='volume' and m['Destination']=='/var/lib/zinema/storage' for m in services['web']['Mounts']))
+owner_php="['owner'=>$owner,'database'=>$database]=json_decode(file_get_contents('/var/lib/zinema/storage/owner.json'),true); echo $owner===getenv('UPLOAD_STORAGE_OWNER') && $database===getenv('DB_NAME') ? 'owned' : 'denied';"
+check('Storage marker matches the owned development target',run(BASE+['exec','-T','web','php','-r',owner_php]).strip()=='owned')
 php="foreach (['.env','Database.sql','.git','.runtime','.recovery-private'] as $name) { if (file_exists('/var/www/html/'.$name)) exit(1); } echo 'contained';"
 check('App image contains no legacy/private root inputs',run(BASE+['exec','-T','web','php','-r',php]).strip()=='contained')
 result={'scope':'Owned Compose metadata and allowlisted image paths; no secret values retained','tests':rows,'summary':{'total':len(rows),'passed':sum(row['passed'] for row in rows),'failed':sum(not row['passed'] for row in rows)}}
