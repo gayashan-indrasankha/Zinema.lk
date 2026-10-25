@@ -117,7 +117,7 @@ if (isset($_GET['edit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css">
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
     <style>
         .message {
             padding: 12px 20px;
@@ -212,12 +212,12 @@ if (isset($_GET['edit'])) {
                 </div>
                 
                 <div class="form-group">
-                    <label for="video_url">Streaming Video URL *</label>
+                    <label for="video_url">Legacy media reference (optional)</label>
                     <textarea name="video_url" id="video_url" rows="4" 
-                        placeholder="Paste the streaming URL here (e.g., https://my-drive-streamer.indrasankag.workers.dev/FILE_ID)"
-                        style="font-family: monospace; font-size: 0.85em;" required><?php echo $edit_episode ? htmlspecialchars($edit_episode['video_url']) : ''; ?></textarea>
+                        placeholder="Optional legacy reference; not used for full-content website playback"
+                        style="font-family: monospace; font-size: 0.85em;"><?php echo $edit_episode ? htmlspecialchars($edit_episode['video_url']) : ''; ?></textarea>
                     <small style="color: #888; display: block; margin-top: 5px;">
-                        ℹ️ Paste the complete streaming URL for the episode.
+                        Full content uses WhatsApp delivery. Configure the bot media separately.
                     </small>
                 </div>
                 

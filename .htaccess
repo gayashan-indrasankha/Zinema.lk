@@ -5,6 +5,11 @@
 RewriteEngine On
 RewriteRule (^|/)\.(git|recovery-private)(/|$) - [F,L]
 RewriteRule ^includes/PHPMailer/ - [F,L]
+RewriteRule ^includes/ - [F,L]
+RewriteRule ^api/includes/ - [F,L]
+RewriteRule ^api/whatsapp/token-data\.php$ - [F,L]
+RewriteRule ^admin/(_layout|functions)\.php$ - [F,L]
+RewriteRule ^_(top_nav|bottom_nav|pagination)\.php$ - [F,L]
 RewriteRule ^fb-video-api/ - [F,L]
 RewriteRule ^dev/ - [F,L]
 RewriteRule ^uploads/.*\.(php[0-9]?|phtml|phar|cgi|pl|py|sh)(/|$) - [F,L,NC]

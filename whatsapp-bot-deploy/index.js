@@ -71,50 +71,12 @@ const BAD_MAC_COOLDOWN = 5 * 60 * 1000; // 5 minute cooldown before retry
 const SESSION_PATH = recoveryConfig.sessionPath;
 
 /**
- * Clear corrupted session files for a specific sender
- * Only deletes session-SENDER.*.json and sender-key-*--SENDER--*.json files
+ * Preserve corrupted-session evidence for explicit operator review.
+ * Automatic reconnect/error handling must not delete authentication state.
  */
-function clearCorruptedSenderSession(senderNumber) {
-    console.log(`\n🔧 AUTO-RECOVERY: Clearing corrupted session for sender ${senderNumber}`);
-
-    try {
-        if (!fs.existsSync(SESSION_PATH)) {
-            console.log(`   ⚠️ Session path not found: ${SESSION_PATH}`);
-            return false;
-        }
-
-        const files = fs.readdirSync(SESSION_PATH);
-        let cleared = 0;
-
-        for (const file of files) {
-            // Match session-SENDER.*.json files (e.g., session-37495366524979.0.json)
-            const sessionMatch = file.match(/^session-(\d+)\.\d+\.json$/);
-            // Match sender-key-*--SENDER--*.json files
-            const senderKeyMatch = file.includes(`--${senderNumber}--`);
-
-            if ((sessionMatch && sessionMatch[1] === senderNumber) || senderKeyMatch) {
-                try {
-                    fs.unlinkSync(path.join(SESSION_PATH, file));
-                    cleared++;
-                    console.log(`   🗑️ Deleted: ${file}`);
-                } catch (err) {
-                    console.error(`   ❌ Failed to delete ${file}: ${err.message}`);
-                }
-            }
-        }
-
-        if (cleared > 0) {
-            console.log(`✅ AUTO-RECOVERY: Cleared ${cleared} session files for ${senderNumber}`);
-            console.log(`   ℹ️ The sender's session will be re-established on next message\n`);
-        } else {
-            console.log(`   ⚠️ No session files found for ${senderNumber}\n`);
-        }
-
-        return cleared > 0;
-    } catch (err) {
-        console.error(`❌ AUTO-RECOVERY ERROR: ${err.message}`);
-        return false;
-    }
+function clearCorruptedSenderSession(_senderNumber) {
+    console.error('Session repair requires operator review; all session evidence retained.');
+    return false;
 }
 
 /**
@@ -260,6 +222,12 @@ let fileManager = null;
 let multiTierForwarder = null;
 let cacheWarmer = null;
 let autoRefresher = null;
+let storeSaveTimer = null;
+const ReconnectController = require('./config/reconnect-controller');
+const reconnectController = new ReconnectController(connectToWhatsApp, {
+    onExhausted: () => console.error('Reconnect budget exhausted; session retained for operator review.'),
+    onError: () => console.error('Reconnect failed; retry budget retained.')
+});
 
 // Message deduplication cache
 const processedMessages = new Set();
@@ -267,7 +235,7 @@ const MAX_PROCESSED_MESSAGES = 1000;
 
 // Helper functions
 function isAdmin(phoneNumber) {
-    return ADMIN_NUMBERS.some(admin => phoneNumber.includes(admin));
+    return require('./config/admin-identity').isAdminIdentity(phoneNumber, ADMIN_NUMBERS);
 }
 
 function extractGroupFromMessageId(messageId) {
@@ -277,59 +245,10 @@ function extractGroupFromMessageId(messageId) {
 }
 
 // Message Queue for rate limiting
-class MessageQueue {
-    constructor() {
-        this.queue = [];
-        this.isProcessing = false;
-        this.minDelay = 2000;  // 2 seconds
-        this.maxDelay = 4000;  // 4 seconds
-    }
-
-    add(task, metadata = {}) {
-        this.queue.push({ task, metadata, addedAt: Date.now() });
-        console.log(`📥 Queue: Added task. Queue size: ${this.queue.length}`);
-        this.process();
-    }
-
-    getRandomDelay() {
-        return Math.floor(Math.random() * (this.maxDelay - this.minDelay + 1)) + this.minDelay;
-    }
-
-    async process() {
-        if (this.isProcessing || this.queue.length === 0) return;
-        this.isProcessing = true;
-
-        while (this.queue.length > 0) {
-            const { task, metadata, addedAt } = this.queue.shift();
-            const waitTime = Date.now() - addedAt;
-            console.log(`⚙️ Queue: Processing task. Waited: ${Math.round(waitTime / 1000)}s. Remaining: ${this.queue.length}`);
-
-            try {
-                await task();
-            } catch (error) {
-                console.error(`❌ Queue: Task failed:`, error.message);
-            }
-
-            if (this.queue.length > 0) {
-                const delay = this.getRandomDelay();
-                console.log(`⏳ Queue: Waiting ${delay / 1000}s before next task...`);
-                await new Promise(resolve => setTimeout(resolve, delay));
-            }
-        }
-
-        this.isProcessing = false;
-        console.log(`✅ Queue: All tasks completed`);
-    }
-
-    getStatus() {
-        return {
-            size: this.queue.length,
-            isProcessing: this.isProcessing
-        };
-    }
-}
+const MessageQueue = require('./config/message-queue');
 
 const messageQueue = new MessageQueue();
+global.messageQueue = messageQueue;
 
 /**
  * Main Baileys Connection Function
@@ -356,6 +275,7 @@ async function connectToWhatsApp() {
         auth: state
     });
 
+    const connectionSocket = sock;
     // Bind store to socket
     store.bind(sock.ev);
 
@@ -366,7 +286,8 @@ async function connectToWhatsApp() {
     }
 
     // Save store periodically
-    setInterval(() => {
+    if (storeSaveTimer) clearInterval(storeSaveTimer);
+    storeSaveTimer = setInterval(() => {
         store.writeToFile(storePath);
     }, 10000);
 
@@ -428,10 +349,10 @@ async function connectToWhatsApp() {
     };
 
     // Connection updates (QR, status, errors)
-    let reconnectAttempts = 0;
-    const MAX_RECONNECT_ATTEMPTS = 10;
+
 
     sock.ev.on('connection.update', async (update) => {
+        if (sock !== connectionSocket) return;
         const { connection, lastDisconnect, qr } = update;
 
         if (qr) {
@@ -451,49 +372,20 @@ async function connectToWhatsApp() {
                 multiTierForwarder.socketReady = false;
             }
 
-            // Check if we should reconnect
-            const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
-
-            if (shouldReconnect) {
-                reconnectAttempts++;
-
-                if (reconnectAttempts > MAX_RECONNECT_ATTEMPTS) {
-                    console.log(`🚨 Max reconnect attempts (${MAX_RECONNECT_ATTEMPTS}) reached!`);
-                    console.log(`💡 Clearing session and restarting fresh...`);
-
-                    // Clear corrupted session files (keep creds.json and cache)
-                    const sessionPath = path.join(process.cwd(), 'whatsapp-session', `bot${BOT_INSTANCE_ID}`);
-                    try {
-                        const fs = require('fs');
-                        const files = fs.readdirSync(sessionPath);
-                        for (const file of files) {
-                            if (file.startsWith('app-state-') || file.startsWith('sender-key')) {
-                                fs.unlinkSync(path.join(sessionPath, file));
-                                console.log(`   🗑️ Deleted: ${file}`);
-                            }
-                        }
-                    } catch (e) { /* ignore */ }
-
-                    reconnectAttempts = 0;
-                    setTimeout(() => connectToWhatsApp(), 5000);
-                } else {
-                    // Exponential backoff: 5s, 10s, 20s, 40s, etc. (max 60s)
-                    const delay = Math.min(5000 * Math.pow(2, reconnectAttempts - 1), 60000);
-                    console.log(`🔄 Reconnecting in ${delay / 1000}s... (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})`);
-                    setTimeout(() => connectToWhatsApp(), delay);
-                }
-            } else {
-                console.log('🔐 Logged out. Delete session folder and restart.');
-                console.log('   Run: rm -rf whatsapp-session/bot1 && node index.js');
-            }
+            if (storeSaveTimer) {clearInterval(storeSaveTimer);storeSaveTimer=null;}
+            if (healthMonitor) healthMonitor.stop();
+            if (cacheWarmer) cacheWarmer.socketReady=false;
+            if (autoRefresher) autoRefresher.socketReady=false;
+            reconnectController.disconnected(statusCode !== DisconnectReason.loggedOut);
         } else if (connection === 'open') {
-            reconnectAttempts = 0; // Reset on successful connection
+            reconnectController.connected();
             await onConnectionOpen();
         }
     });
 
     // Message events - WITH DEBUG LOGGING
     sock.ev.on('messages.upsert', async ({ messages, type }) => {
+        if (sock !== connectionSocket) return;
         console.log(`🔔 Message event: type=${type}, count=${messages.length}`);
         if (type !== 'notify') return;
 
@@ -596,8 +488,9 @@ async function onConnectionOpen() {
 
     // Start Health Monitor
     const BOT_ID = parseInt(BOT_INSTANCE_ID) || 1;
+    if (healthMonitor) healthMonitor.stop();
     healthMonitor = new HealthMonitor(BOT_ID, apiClient, sock);
-    healthMonitor.start(120);
+    healthMonitor.start(30);
     console.log(`💓 Health monitoring started for Bot #${BOT_ID}`);
 }
 
@@ -754,7 +647,7 @@ async function handleMessage(msg) {
             const parts = body.trim().split(/\s+/);
             const token = parts[1];
 
-            console.log(`🔍 Command parts:`, parts);
+            console.log('Token command received; values suppressed.');
 
             if (!token) {
                 await sendMessage(chatId, `⚠️ Usage: ${TOKEN_PREFIX} <TOKEN>`);
@@ -762,9 +655,10 @@ async function handleMessage(msg) {
             }
 
             // Add to queue
-            messageQueue.add(async () => {
+            const queued = messageQueue.add(async () => {
                 await handleTokenRequest(chatId, token.toUpperCase(), senderNumber);
             }, { type: 'video_request', token });
+            if (!queued) await sendMessage(chatId, 'Service is busy. Please try again later.');
 
             return;
         }

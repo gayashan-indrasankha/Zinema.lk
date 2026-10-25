@@ -1,6 +1,7 @@
 <?php
 require_once 'config.php';
 check_login();
+require_once __DIR__.'/../includes/media_url.php';
 $admin_id = $_SESSION['admin_id'];
 $message = '';
 $error = '';
@@ -40,9 +41,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_shot'])) {
         $error = 'Please fill in all required fields and select a movie/series.';
     } elseif (empty($fb_share_url)) {
         $error = 'Please provide a Facebook Share URL.';
-    } elseif (!preg_match('/facebook\.com|fb\.com/i', $fb_share_url)) {
+    } elseif (!valid_facebook_url($fb_share_url)) {
         $error = 'Please provide a valid Facebook URL.';
+    } elseif (!in_array($content_type,['movie','series','collection'],true)) {
+        $error = 'Please select a valid content type.';
     } else {
+        $table=['movie'=>'movies','series'=>'series','collection'=>'collections'][$content_type];
+        $linked=$conn->prepare("SELECT id FROM $table WHERE id=?");
+        $linked->bind_param('i',$linked_content_id);$linked->execute();
+        if (!$linked->get_result()->fetch_row()) { http_response_code(422);exit('Linked content not found.'); }
         // Try to extract CDN URL for initial cache (optional, non-blocking)
         $cached_cdn_url = '';
         $extract_url = $api_url . '/api/extract?url=' . urlencode($fb_share_url);
@@ -52,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_shot'])) {
         $ch = curl_init($extract_url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
         $response = curl_exec($ch);
         curl_close($ch);
         }
@@ -158,7 +166,7 @@ if ($shots_result && $shots_result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css">
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
     <style>
         .search-results {
             position: absolute;
@@ -449,7 +457,7 @@ if ($shots_result && $shots_result->num_rows > 0) {
             <div class="card-header">
                 <h2>📋 Existing Shots</h2>
             </div>
-            <div class="card-body">
+            <div class="card-body table-scroll">
                 <?php if (!empty($shots)): ?>
                     <table class="data-table">
                         <thead>
@@ -625,7 +633,7 @@ if ($shots_result && $shots_result->num_rows > 0) {
             }
             $stmt->close();
             ?>
-            selectedTitle.textContent = '<?php echo addslashes($content_title); ?>';
+            selectedTitle.textContent = <?php echo json_encode($content_title, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
             selectedContent.style.display = 'block';
         });
         <?php endif; ?>

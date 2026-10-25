@@ -1,0 +1,378 @@
+{
+  "scope": "Owned isolated local fixtures only; no real provider or recipient; sanitized projection",
+  "tests": [
+    {
+      "name": "/_bottom_nav.php",
+      "passed": true
+    },
+    {
+      "name": "/_pagination.php",
+      "passed": true
+    },
+    {
+      "name": "/_top_nav.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/_layout.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/analytics.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/collections.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/config.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/cron/cleanup-tokens.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/cron/reset-daily-stats.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/episodes.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/functions.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/index.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/login.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/logout.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/manage_shots.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/movies.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/run_migration.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/series.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/settings.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/trailers.php",
+      "passed": true
+    },
+    {
+      "name": "/admin/whatsapp-bot-tracking.php",
+      "passed": true
+    },
+    {
+      "name": "/ajax_forgot_password.php",
+      "passed": true
+    },
+    {
+      "name": "/ajax_login.php",
+      "passed": true
+    },
+    {
+      "name": "/ajax_resend_verification.php",
+      "passed": true
+    },
+    {
+      "name": "/ajax_reset_password.php",
+      "passed": true
+    },
+    {
+      "name": "/ajax_signup.php",
+      "passed": true
+    },
+    {
+      "name": "/api/add_comment.php",
+      "passed": true
+    },
+    {
+      "name": "/api/auth-handler.php",
+      "passed": true
+    },
+    {
+      "name": "/api/check-session.php",
+      "passed": true
+    },
+    {
+      "name": "/api/collections.php",
+      "passed": true
+    },
+    {
+      "name": "/api/comments.php",
+      "passed": true
+    },
+    {
+      "name": "/api/favorite_shot.php",
+      "passed": true
+    },
+    {
+      "name": "/api/get_comments.php",
+      "passed": true
+    },
+    {
+      "name": "/api/includes/comment_helpers.php",
+      "passed": true
+    },
+    {
+      "name": "/api/like_shot.php",
+      "passed": true
+    },
+    {
+      "name": "/api/live_search.php",
+      "passed": true
+    },
+    {
+      "name": "/api/movies.php",
+      "passed": true
+    },
+    {
+      "name": "/api/payment-notify.php",
+      "passed": true
+    },
+    {
+      "name": "/api/record_view.php",
+      "passed": true
+    },
+    {
+      "name": "/api/search_content.php",
+      "passed": true
+    },
+    {
+      "name": "/api/series.php",
+      "passed": true
+    },
+    {
+      "name": "/api/server-check.php",
+      "passed": true
+    },
+    {
+      "name": "/api/subscribe.php",
+      "passed": true
+    },
+    {
+      "name": "/api/track.php",
+      "passed": true
+    },
+    {
+      "name": "/api/trailers.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/add-message-id.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/bot-error.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/bot-heartbeat.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/claim-token.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/config.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/get-aging-messages.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/get-all-message-ids.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/get-message-id.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/get-message-ids.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/get-movie-parts.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/get-popular-content.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/get-popular-files.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/log-cache-warming.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/log-forward.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/log-refresh.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/mark-used.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/needs-refresh.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/refresh-stats.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/token-data.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/update-cache-message-id.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/update-daily-stats.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/update-forward-stats.php",
+      "passed": true
+    },
+    {
+      "name": "/api/whatsapp/validate-token.php",
+      "passed": true
+    },
+    {
+      "name": "/collection-details.php",
+      "passed": true
+    },
+    {
+      "name": "/collections.php",
+      "passed": true
+    },
+    {
+      "name": "/download.php",
+      "passed": true
+    },
+    {
+      "name": "/find_movies.php",
+      "passed": true
+    },
+    {
+      "name": "/google-callback.php",
+      "passed": true
+    },
+    {
+      "name": "/index.php",
+      "passed": true
+    },
+    {
+      "name": "/login.php",
+      "passed": true
+    },
+    {
+      "name": "/logout.php",
+      "passed": true
+    },
+    {
+      "name": "/movie-comments.php",
+      "passed": true
+    },
+    {
+      "name": "/movie-details.php",
+      "passed": true
+    },
+    {
+      "name": "/movies.php",
+      "passed": true
+    },
+    {
+      "name": "/oauth-start.php",
+      "passed": true
+    },
+    {
+      "name": "/pages/download.php",
+      "passed": true
+    },
+    {
+      "name": "/pages/movie-detail.php",
+      "passed": true
+    },
+    {
+      "name": "/pages/trailers.php",
+      "passed": true
+    },
+    {
+      "name": "/profile.php",
+      "passed": true
+    },
+    {
+      "name": "/reset-password.php",
+      "passed": true
+    },
+    {
+      "name": "/series-details.php",
+      "passed": true
+    },
+    {
+      "name": "/signup.php",
+      "passed": true
+    },
+    {
+      "name": "/sitemap.php",
+      "passed": true
+    },
+    {
+      "name": "/trailers.php",
+      "passed": true
+    },
+    {
+      "name": "/tv-series.php",
+      "passed": true
+    },
+    {
+      "name": "/verify-email.php",
+      "passed": true
+    },
+    {
+      "name": "/whatsapp-watch.php",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 92,
+    "passed": 92,
+    "failed": 0
+  }
+}

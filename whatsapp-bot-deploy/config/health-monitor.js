@@ -18,6 +18,7 @@ class HealthMonitor {
      * Start sending heartbeats
      */
     start(intervalSeconds = 30) {
+        this.stop();
         console.log(`💓 Health monitor started (reporting every ${intervalSeconds}s)`);
 
         // Send initial heartbeat immediately
@@ -74,7 +75,7 @@ class HealthMonitor {
             memory_usage_mb: (memoryUsage.heapUsed / (1024 * 1024)).toFixed(2),
             uptime_seconds: uptime,
             status: 'online',
-            bot_phone: this.client && this.client.info ? this.client.info.wid.user : null
+            bot_phone: this.client?.user?.id ? this.client.user.id.split('@')[0].split(':')[0] : (this.client?.info?.wid?.user || null)
         };
     }
 

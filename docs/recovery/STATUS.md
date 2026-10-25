@@ -4,6 +4,62 @@ Updated: 2026-10-25.
 
 ## Current phase
 
+Fresh-launch production-readiness audit: **PARTIAL — NO GO for publishing**.
+Owner target is a real free-access relaunch with fresh data, full movies/episodes
+via WhatsApp only, and website catalogue/shorts/trailers. Hosting is undecided;
+small beta plus separate staging is an assumption. CV work/old-data reconstruction
+are outside this task. Started clean at `28e0ddf` on `zinema/local-dev-safety`.
+
+- Created a 92-entry source inventory, functional evidence/gap matrix, precise
+  manual browser record, defect log, staging requirements and capped controlled
+  live-test plan. See PRODUCTION_AUDIT.md and PRODUCTION_FEATURES.md.
+- Repaired search/JSON-LD, input/target/visibility/security boundaries, collection
+  shot schema v4 (38 tables/2 views), URL/TLS validation, serialized password/token
+  admission/proxy trust, administrator session checks, settings initialization,
+  WhatsApp-only CTAs, mobile administrator navigation/assets and trailer player/
+  pagination/share/reaction recovery. Added bot lifecycle/identity/queue/health
+  repairs and fixture-tested bounded extractor transport with upgraded full lock.
+- Executed product 112/112, security 17/17, process admission races 2/2, route
+  boundaries 92/92, Node/SQL fake delivery 7/7, Node 62/62 and protocol 6/6.
+  Retained integration 88/88 + OAuth 7/7, operations 57/57, quarantine 51/51,
+  environment 21/21 and local-target guards 7/7 passed. Fresh native schema 22/22,
+  HTTP 94/94, extractor disabled/local 4/4 and retained Node subset 22/22 passed.
+  No new PHP diagnostics. Full extractor imports 3/3; three scoped npm audits
+  zero advisories. Earlier failures and fixture/tool limits remain documented.
+- Manual evidence: fake OAuth/member saved shot, catalogue/search, actual admin
+  movie create/edit/logout, mobile navigation and original-motion trailer playback/
+  save. Every action was not manually tested. No integration is externally verified.
+  PHP 190/JS 47/CJS 11/Python 14 syntax passed; sanitized JSON parsed. Secret scan,
+  local commit and stopped-service evidence are recorded at completion below.
+- Launch blockers: authenticated private extractor path/browser isolation; complete
+  bot scheduler/restart/ingest and log minimization; real staging TLS/proxy/secrets/
+  artifact; coordinated restore/load/alerts/rollback; approved live delivery/mail/
+  OAuth/extraction and owner content/privacy/support/moderation operations. These
+  gaps prevent a production-readiness claim despite local passing suites.
+- Production adapters/payments/publishing remain disabled. No real recipients,
+  application-provider transactions, production access, deployment, purchase,
+  remote push or credential rotation. Public package/docs research only.
+  Owned Docker/native services stopped; private volumes/state preserved.
+
+Exact next recommended task: **Implement/test the private authenticated
+administrator-to-extractor proxy with local fakes, then complete bot scheduler,
+restart/ingest and log-redaction regressions. Keep live integrations, production
+access and publishing disabled.** Follow with staging restore/load/monitoring
+rehearsals, then the controlled live approval plan; do not publish yet.
+
+### Audit verification and local checkpoint
+
+Gitleaks 8.30.1 archive/binary matched the saved upstream checksum/archive.
+Staged, full 444-file candidate and all-local-history scans returned zero findings;
+nine private-path ignore checks passed, and no forbidden paths were indexed.
+Default rules and registry audits have limits; private ignored data was not scanned.
+PRODUCTION_SECURITY_RESULTS.json records the exact scope. PRODUCTION_SHUTDOWN_RESULTS.json
+records zero owned running containers and closed 8088/9081/3307/8089/3334 listeners.
+No volumes were deleted. Source/handoff commit hashes are appended below after
+local verification; no remote Git or publication is involved.
+
+## Previous recoverable upload phase
+
 Owner-requested recoverable quarantine and explicitly reviewed cleanup for owned
 development uploads: **COMPLETE within the authorized local scope**. Source commit
 `637327e55d772dcb6acce4383b226bbaee606bd5` on `zinema/local-dev-safety`; starting

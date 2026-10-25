@@ -20,6 +20,8 @@ header('Content-Type: application/json');
 ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
+if (!is_string($_GET['q'] ?? '') || !is_string($_GET['type'] ?? 'movie') || strlen($_GET['q'] ?? '')>200) { http_response_code(400);echo json_encode(['status'=>'error','message'=>'Invalid search','results'=>[]]);exit; }
+
 // Get search parameters from URL
 $term = isset($_GET['q']) ? trim($_GET['q']) : '';
 $type = isset($_GET['type']) ? trim($_GET['type']) : 'movie';
@@ -98,7 +100,7 @@ try {
 } catch (Exception $e) {
     echo json_encode([
         'status' => 'error',
-        'message' => $e->getMessage(),
+        'message' => 'Search temporarily unavailable.',
         'results' => []
     ]);
 }

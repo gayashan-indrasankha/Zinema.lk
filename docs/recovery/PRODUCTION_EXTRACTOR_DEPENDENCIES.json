@@ -1,0 +1,22 @@
+{
+  "scope": "Full declared fb-video-api lockfile, isolated ignore-scripts installation; no Chrome or provider request",
+  "vulnerabilities": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "imports": {
+    "imports_passed": 3,
+    "puppeteer": "25.16.0",
+    "node": "24.13.1",
+    "browser_launched": false,
+    "live_provider_tested": false
+  },
+  "limitations": [
+    "Registry audit is time-bound and is not a browser runtime or exploitability test.",
+    "Old ignored installed dependency trees were preserved; they are not the verified deployment artifact."
+  ]
+}

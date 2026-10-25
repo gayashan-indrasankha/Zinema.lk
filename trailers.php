@@ -37,14 +37,14 @@ $initial_trailers = $trailerManager->getAllTrailers(
     <meta name="mobile-web-app-capable" content="yes">
     
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/trailer-feed.css">
+    <link rel="stylesheet" href="css/trailer-feed.css?v=<?php echo substr(hash_file('sha256',__DIR__.'/css/trailer-feed.css'),0,12); ?>">
 <?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body class="trailer-view">
     <!-- Main feed container -->
     <div id="trailer-feed" class="trailer-feed"></div>
     
-    <script src="js/trailer-feed.js"></script>
+    <script src="js/trailer-feed.js?v=<?php echo substr(hash_file('sha256', __DIR__ . '/js/trailer-feed.js'),0,12); ?>"></script>
     <script defer src="js/nav.js"></script>
     <script>
         // Initialize the trailer feed when DOM is loaded

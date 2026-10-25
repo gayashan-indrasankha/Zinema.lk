@@ -21,7 +21,7 @@ class CacheWarmer {
         this.isRunning = false;
         this.job = null;
         this.apiClient = null;
-        this.stateFile = path.join(__dirname, '..', 'warming-state.json');
+        this.stateFile = path.join(require('./environment').readConfig().sessionPath, 'warming-state.json');
 
         // Progress tracking
         this.progressChatId = null;  // Where to send progress updates
