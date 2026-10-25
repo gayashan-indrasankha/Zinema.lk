@@ -78,6 +78,8 @@ permission in restricted execution environments.
 
 For held-claim reconciliation and the read-only quota/cleanup inventory, follow
 the [local operator runbook](OPERATIONS.md).
+For explicitly reviewed public withdrawal, private recovery archives, restore and
+interruption handling, follow the [quarantine runbook](QUARANTINE.md).
 
 The launcher requires a local Docker context (Unix socket or local named pipe);
 remote contexts and DOCKER_HOST overrides are refused. Compose interpolation uses

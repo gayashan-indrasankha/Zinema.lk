@@ -1,0 +1,22 @@
+{
+  "syntax": {
+    ".php": {
+      "total": 185,
+      "passed": 185,
+      "failures": []
+    },
+    ".js": {
+      "total": 41,
+      "passed": 41,
+      "failures": []
+    }
+  },
+  ".py": {
+    "total": 11,
+    "failures": []
+  },
+  ".json": {
+    "total": 49,
+    "failures": []
+  }
+}

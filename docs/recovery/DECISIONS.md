@@ -354,3 +354,40 @@ Local handoff: source commit `cae7ab7f05680a8a4894c732aa3529c518d95e33` was crea
 suites passed. Final staged/candidate/history scans reported zero findings; all
 owned test services stopped and data remained preserved. A documentation-only
 completion commit records the result without publishing or rewriting history.
+
+## 2026-10-25 — Reviewed recoverable development-upload cleanup
+
+Context: The owner explicitly authorized the next phase after the read-only
+inventory. A candidate snapshot is insufficient authority to delete media, and
+SQL references and two storage volumes cannot share a database transaction.
+
+Decision: Add CLI review/history/quarantine/restore/recover only for registered,
+owned development assets. Require current revision, explicit review, fictional
+actor/evidence and unique case. Take the DB advisory reference gate before the
+volume lock; recheck known reference columns, source identity/hash/age and quota.
+Participating browser POST and WhatsApp metadata writers take the same gate and
+reject pending/quarantined paths. Unknown/legacy/shared/young/changed/unsafe files
+stay held. Production adapters, remote Git operations and publishing stay disabled.
+
+Copy and verify into private quarantine before withdrawing the public source.
+Journal intent and checkpoints in the atomic private manifest with bounded cases
+and append-only-through-tool audit. Identical cases replay; conflicting/stale
+cases fail. Interrupted operations pause admissions and require reviewed finish or
+rollback. Restore publishes exclusively without overwriting, enforces public
+quota, records publication identity and retains the private rescue archive.
+Quarantine has separate physical byte/file limits. There is no permanent purge.
+
+Consequences: Public quota can be reclaimed, but total disk space is not freed.
+Restored archives and journals accumulate; capacity exhaustion fails closed and
+requires a separately reviewed maintenance design. Direct trusted DB/filesystem
+writers bypass the cooperative protocol. Reference coverage remains bounded and
+syntax-specific. Audit is not immutable against administrators, and journaling
+is not a distributed transaction or a power-loss durability guarantee. Unsafe or
+ambiguous data is retained. No production readiness claim follows from local tests.
+
+Verification: Separate fictional volumes exercise review, hash drift, collisions,
+quota, audit/replay, reference/operator races, interruptions and reviewed recovery.
+The initial executed suite exposed loss of publication recognition after the
+restore link was removed but before completion. A persistent publication identity
+fix passed all 49 checks on rerun. Final expanded CLI/regression evidence and
+handoff are recorded in QUARANTINE_PHASE.md and STATUS.md.

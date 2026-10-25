@@ -35,6 +35,8 @@ services:
       UPLOAD_STORAGE_STATE: /var/lib/zinema/storage
       UPLOAD_MAX_BYTES: "67108864"
       UPLOAD_MAX_FILES: "500"
+      UPLOAD_QUARANTINE_MAX_BYTES: "67108864"
+      UPLOAD_QUARANTINE_MAX_FILES: "500"
     secrets: [db_password, oauth_secret, adapter_key, demo_password, control_key]
     volumes:
       - sessions:/var/lib/zinema/sessions
@@ -102,6 +104,24 @@ services:
       - operator_storage:/var/lib/zinema/storage
     command: [php, -S, "127.0.0.1:9082", /opt/zinema/dev/fixture-router.php]
     security_opt: [no-new-privileges:true]
+  quarantine-fixtures:
+    build:
+      context: ..
+      dockerfile: dev/web.Dockerfile
+    network_mode: service:web
+    profiles: [tools]
+    environment:
+      <<: *development_environment
+      UPLOAD_STORAGE_OWNER: ${ZINEMA_DEV_PROJECT}-quarantine-fixtures
+      ZINEMA_OPERATOR_FIXTURES: "1"
+      ZINEMA_QUARANTINE_FIXTURES: "1"
+      ZINEMA_FIXTURE_HTTP_PORT: "9083"
+    secrets: [db_password, oauth_secret, adapter_key, control_key, demo_password]
+    volumes:
+      - quarantine_uploads:/var/www/html/uploads
+      - quarantine_storage:/var/lib/zinema/storage
+    command: [php, -S, "127.0.0.1:9083", /opt/zinema/dev/fixture-router.php]
+    security_opt: [no-new-privileges:true]
   tests:
     build:
       context: ..
@@ -124,6 +144,8 @@ volumes:
   storage:
   operator_uploads:
   operator_storage:
+  quarantine_uploads:
+  quarantine_storage:
 secrets:
   db_password:
     file: ${ZINEMA_DEV_STATE}/db_password

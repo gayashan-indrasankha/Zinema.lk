@@ -1,0 +1,103 @@
+{
+  "schema_sha256": "c8831f0b355b9f3a1dbf5956d77652fbf539a0a23ee85bdab2c2de2721f8f1c5",
+  "tables": 38,
+  "views": 2,
+  "legacy_rows_imported": 0,
+  "bridge_environment": "test; local SQL adapter only; fake API key",
+  "bridge_stopped": true,
+  "tests": [
+    {
+      "name": "Canonical schema rebuilds in a new empty database",
+      "passed": true
+    },
+    {
+      "name": "Bridge rejects an incorrect fake API key",
+      "passed": true
+    },
+    {
+      "name": "Fictional heartbeat uses canonical health columns",
+      "passed": true
+    },
+    {
+      "name": "movie part 0 mapping is writable",
+      "passed": true
+    },
+    {
+      "name": "movie part 0 cache metadata uses the same mapping",
+      "passed": true
+    },
+    {
+      "name": "movie part 1 mapping is writable",
+      "passed": true
+    },
+    {
+      "name": "movie part 1 cache metadata uses the same mapping",
+      "passed": true
+    },
+    {
+      "name": "episode part 1 mapping is writable",
+      "passed": true
+    },
+    {
+      "name": "episode part 1 cache metadata uses the same mapping",
+      "passed": true
+    },
+    {
+      "name": "Full mapping can be read back",
+      "passed": true
+    },
+    {
+      "name": "Multipart mapping can be read back",
+      "passed": true
+    },
+    {
+      "name": "Statistics token fixture 101 resolves canonical content",
+      "passed": true
+    },
+    {
+      "name": "Statistics token fixture 102 resolves canonical content",
+      "passed": true
+    },
+    {
+      "name": "Popular-content view executes against populated mappings",
+      "passed": true
+    },
+    {
+      "name": "Recent content uses series and canonical token fields",
+      "passed": true
+    },
+    {
+      "name": "Aging read model finds the full-file mapping",
+      "passed": true
+    },
+    {
+      "name": "Legacy mark-used cannot bypass ownership",
+      "passed": true
+    },
+    {
+      "name": "Unused active token grants a delivery claim",
+      "passed": true
+    },
+    {
+      "name": "Claim owner may begin delivery",
+      "passed": true
+    },
+    {
+      "name": "Acknowledged owner consumes token",
+      "passed": true
+    },
+    {
+      "name": "Repeated token consumption is rejected",
+      "passed": true
+    },
+    {
+      "name": "Expired token cannot be claimed",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 22,
+    "passed": 22,
+    "failed": 0
+  }
+}

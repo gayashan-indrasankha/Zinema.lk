@@ -1,0 +1,82 @@
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+❌ TIER 1: No store available, not in persistent cache
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+❌ TIER 1: No store available, not in persistent cache
+🔍 TIER 2: Attempting forward for movie_1
+🔍 TIER 2: Trying direct forward with messageId=fictional-cache-id
+🔍 TIER 2: Fetched 1 messages from fictional-group
+✅ TIER 2: Found message by ID, forwarding...
+💾 Saved 1 messages to cache
+   ⏱️ Upload timeout: 5.0 min (file: 0 MB)
+📄 Sending as DOCUMENT: sample.mp4 to fictional-recipient
+❌ TIER 3: performTier3Upload error: Delivery acknowledgement missing
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-38812\media
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-38812\media\movies
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-38812\media\episodes
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-38812\media\temp
+📥 Queued: movie_1_0 (position 1, priority 0)
+🔄 Upload queue processing started (1 items)
+📤 Processing: movie_1_0 (1/1 active)
+✅ Upload queue empty. Stats: 0 processed, 0 failed, 0 skipped
+📥 Queued: movie_2_0 (position 1, priority 0)
+🔄 Upload queue processing started (1 items)
+📥 Queued: movie_3_0 (position 2, priority 0)
+✔ cached-message forwarding reaches only the fake client (8.4009ms)
+✔ cache miss and missing local file return a failure (1.323ms)
+✔ storage-group lookup forwards using the fake client (5.9079ms)
+✔ coalesced requests deliver and resolve waiting recipients (0.9236ms)
+✔ local upload must reject a missing delivery acknowledgement (4.4609ms)
+✔ file manager resolves fixture media and absent files (5.0835ms)
+✅ Completed: movie_1_0
+📤 Processing: movie_2_0 (1/1 active)
+✅ Completed: movie_2_0
+📤 Processing: movie_3_0 (1/1 active)
+✅ Upload queue empty. Stats: 2 processed, 0 failed, 0 skipped
+✅ Completed: movie_3_0
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+❌ TIER 1: Error - Rejected
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+❌ TIER 1: Error - Delivery acknowledgement missing
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+   ⏱️ Upload timeout: 5.0 min (file: 0 MB)
+📄 Sending as DOCUMENT: acknowledged.mp4 to fictional-recipient
+📬 TIER 3: sendMessage returned: key=fictional-sent-id, remoteJid=undefined
+💾 Saved 1 messages to cache
+✅ TIER 3: Upload complete! New messageId=fictional-sent-id saved to DB
+✔ upload queue respects configured concurrency with fake uploads (1056.3189ms)
+✔ concurrent recipients and duplicate requests await acknowledgement (3.2887ms)
+✔ failed primary delivery settles all coalesced recipients as failures (1.3805ms)
+✔ one recipient rejection is not reported as a successful delivery (2.655ms)
+✔ cached forwarding also rejects an absent acknowledgement (1.0445ms)
+✔ successful disk upload releases its timeout and retains acknowledgement (3.7436ms)
+✔ bot accepts explicit local configuration (0.2163ms)
+✔ bot rejects missing configuration (0.6111ms)
+✔ bot rejects non-loopback development API (0.586ms)
+✔ bot rejects preserved WhatsApp session path (0.246ms)
+✔ bot cannot enable live access merely through local flag (0.2607ms)
+✔ bot entry point exits at the live startup guard (111.2133ms)
+✔ extractor disabled mode binds only loopback (0.4391ms)
+✔ extractor rejects live mode (0.4031ms)
+✔ extractor rejects non-local fixture URL (0.3607ms)
+✔ extractor accepts local fixture (0.1669ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1297.2151

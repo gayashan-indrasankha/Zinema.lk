@@ -9,7 +9,7 @@ function fixture_png($path) {
 }
 try {
     if (PHP_SAPI !== 'cli' || getenv('ZINEMA_OPERATOR_FIXTURES') !== '1' ||
-        !str_ends_with(getenv('UPLOAD_STORAGE_OWNER') ?: '', '-operator-fixtures')) throw new LocalOperationError('fixture_denied');
+        !preg_match('/-(?:operator|quarantine)-fixtures$/D',getenv('UPLOAD_STORAGE_OWNER') ?: '')) throw new LocalOperationError('fixture_denied');
     $input = json_decode(stream_get_contents(STDIN,8193),true,32,JSON_THROW_ON_ERROR);
     $action = $input['action'] ?? '';
     $run = $input['run'] ?? '';
@@ -44,6 +44,7 @@ try {
             if (is_link($path) || realpath($path) !== $path) throw new LocalOperationError('fixture_denied');
             if ($action === 'age') {
                 $manifest['assets'][$relative]['created_at']=time()-172800;
+                $manifest['assets'][$relative]['revision']=storage_revision($manifest['assets'][$relative])+1;
                 touch($path,time()-172800);
                 storage_write_json($settings['state'].'/manifest.json',$manifest);
                 chown($settings['state'].'/manifest.json','www-data'); chgrp($settings['state'].'/manifest.json','www-data');
@@ -53,6 +54,8 @@ try {
     } elseif ($action === 'reference') {
         $path = $input['path'] ?? '';
         if (!is_string($path) || !str_starts_with($path,'uploads/') || !storage_managed_path(substr($path,8))) throw new LocalOperationError('fixture_denied');
+        $referenceGate=storage_reference_acquire($db);
+        if (empty($input['bypass_gate_check'])) storage_validate_reference_values($settings,[$path]);
         $reference = !empty($input['encoded']) ? '/'.str_replace('/','%2F',$path) : $path;
         $title = 'Local Test Operations '.$run.' '.bin2hex(random_bytes(4));
         if (($input['source'] ?? 'collections') === 'delivery') {
@@ -63,6 +66,7 @@ try {
             $stmt = $db->prepare("INSERT INTO collections(title,description,genre,cover_image) VALUES(?,'Fictional fixture','Demo',?)");
             $stmt->bind_param('ss',$title,$reference); $stmt->execute();
         }
+        storage_reference_release($db,$referenceGate);
     } elseif ($action === 'unregistered') {
         $path=$settings['root'].'/fixture-'.$run.'-unknown.txt';
         $handle=fopen($path,'x'); fwrite($handle,'fictional unregistered media'); fclose($handle);
@@ -126,20 +130,20 @@ try {
             foreach (['max_bytes'=>'X-Fixture-Max-Bytes','max_files'=>'X-Fixture-Max-Files'] as $key=>$header)
                 if (isset($input[$key])) $headers[]=$header.': '.$input[$key];
             curl_setopt_array($curl,[CURLOPT_RETURNTRANSFER=>true,CURLOPT_FOLLOWLOCATION=>false,CURLOPT_COOKIEFILE=>'',CURLOPT_TIMEOUT=>10,CURLOPT_HTTPHEADER=>$headers]);
-            curl_setopt($curl,CURLOPT_URL,'http://127.0.0.1:9082/admin/login.php');
+            curl_setopt($curl,CURLOPT_URL,'http://127.0.0.1:'.(getenv('ZINEMA_FIXTURE_HTTP_PORT') ?: '9082').'/admin/login.php');
             $form=curl_exec($curl);
             if (!is_string($form) || !preg_match('/name="csrf_token" value="([a-f0-9]{64})"/',$form,$match)) throw new LocalOperationError('fixture_http_failed');
             curl_setopt_array($curl,[CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>http_build_query(['username'=>'demo_admin','password'=>trim(file_get_contents('/run/secrets/demo_password')),'csrf_token'=>$match[1]])]);
             curl_exec($curl);
             if (curl_getinfo($curl,CURLINFO_HTTP_CODE)!==302) throw new LocalOperationError('fixture_http_failed');
-            curl_setopt_array($curl,[CURLOPT_POST=>false,CURLOPT_URL=>'http://127.0.0.1:9082/admin/login.php']);
+            curl_setopt_array($curl,[CURLOPT_POST=>false,CURLOPT_URL=>'http://127.0.0.1:'.(getenv('ZINEMA_FIXTURE_HTTP_PORT') ?: '9082').'/admin/login.php']);
             $form=curl_exec($curl);preg_match('/name="csrf_token" value="([a-f0-9]{64})"/',$form,$match);
             $title='Local Test Operations HTTP '.$run;
-            $fields=['title'=>$title,'release_date'=>'2026-01-01','genre'=>'Demo','rating'=>'5','video_url'=>'','csrf_token'=>$match[1],
+            $fields=['title'=>$title,'release_date'=>'2026-01-01','genre'=>'Demo','rating'=>'5','video_url'=>$input['video_url'] ?? '','csrf_token'=>$match[1],
                 'cover_image'=>new CURLFile($source,'image/png','fictional.png')];
             if (isset($input['movie_id'])) { $fields['edit_movie']='1';$fields['movie_id']=$input['movie_id']; }
             else $fields['add_movie']='1';
-            curl_setopt_array($curl,[CURLOPT_URL=>'http://127.0.0.1:9082/admin/movies.php',CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>$fields]);
+            curl_setopt_array($curl,[CURLOPT_URL=>'http://127.0.0.1:'.(getenv('ZINEMA_FIXTURE_HTTP_PORT') ?: '9082').'/admin/movies.php',CURLOPT_POST=>true,CURLOPT_POSTFIELDS=>$fields]);
             curl_exec($curl);$response['http']=curl_getinfo($curl,CURLINFO_HTTP_CODE);
             $stmt=$db->prepare('SELECT id,cover_image FROM movies WHERE title=? ORDER BY id DESC LIMIT 1');
             $stmt->bind_param('s',$title);$stmt->execute();$response['record']=$stmt->get_result()->fetch_assoc();

@@ -46,6 +46,7 @@ check('All production-capable adapters remain disabled',env.get('APP_ENV')=='dev
 check('Mail and OAuth target only local fakes',env.get('MAIL_HOST')=='127.0.0.1' and env.get('MAIL_PORT')=='1025' and env.get('OAUTH_TOKEN_URL')=='http://127.0.0.1:9081/token')
 check('Upload quota is enabled only for this development owner',env.get('UPLOAD_QUOTA_MODE')=='local' and env.get('UPLOAD_STORAGE_OWNER')==PROJECT and env.get('UPLOAD_STORAGE_STATE')=='/var/lib/zinema/storage')
 check('Private storage state is a separate non-public named volume',any(m['Type']=='volume' and m['Destination']=='/var/lib/zinema/storage' for m in services['web']['Mounts']))
+check('Quarantine is bounded separately from active uploads',env.get('UPLOAD_QUARANTINE_MAX_BYTES')=='67108864' and env.get('UPLOAD_QUARANTINE_MAX_FILES')=='500')
 owner_php="['owner'=>$owner,'database'=>$database]=json_decode(file_get_contents('/var/lib/zinema/storage/owner.json'),true); echo $owner===getenv('UPLOAD_STORAGE_OWNER') && $database===getenv('DB_NAME') ? 'owned' : 'denied';"
 check('Storage marker matches the owned development target',run(BASE+['exec','-T','web','php','-r',owner_php]).strip()=='owned')
 php="foreach (['.env','Database.sql','.git','.runtime','.recovery-private'] as $name) { if (file_exists('/var/www/html/'.$name)) exit(1); } echo 'contained';"

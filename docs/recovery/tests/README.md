@@ -87,3 +87,10 @@ Set `$env:ZINEMA_TEST_PHASE='OPERATIONS'` for the native commands to retain earl
 repair/development evidence under new result names. The old negative assertions
 remain; held/reconciled token preservation is checked in a connection-local
 fictional temporary table, never by deleting existing development records.
+
+Recoverable quarantine verification is documented in `../../../dev/QUARANTINE.md`.
+Run `python dev/local.py test-quarantine` against the owned local Docker stack; it
+uses separate fictional upload/state volumes and leaves rescue copies/audit intact.
+Use `$env:ZINEMA_TEST_PHASE='QUARANTINE'` for native checks in this phase so earlier
+evidence remains historical. All operator work remains local. Production integrations and publishing remain
+disabled; no last-copy purge is implemented.

@@ -1,0 +1,265 @@
+{
+  "scope": "Owned development DB and separate fictional quarantine media/state volumes; no permanent purge or live integration",
+  "tests": [
+    {
+      "name": "Explicit review acknowledgement is mandatory",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Stale reviewed revision cannot mutate media",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Invalid fictional actor/evidence is rejected",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Traversal cannot address storage outside the owned root",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Generated-looking unregistered files are never adopted",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Reviewed orphan is copied, verified and withdrawn into quarantine",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Private archive retains exact registered content",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Public quota is released while private quarantine usage remains counted",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "An identical reordered case is an idempotent replay",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Conflicting reuse of a case is rejected",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Cooperative reference writers reject quarantined assets",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Browser reference writes are rejected before catalogue/upload mutation",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Private quarantine object names are not served by the public app",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Restore cannot overwrite a colliding public file",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Changed quarantine content is held rather than restored",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Restore republishes verified bytes without losing the rescue archive",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Restored files receive a fresh cleanup grace period",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Audit contains reviewed actors, cases and strictly increasing sequences",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Permanent purge is not an exposed action",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Young assets remain in place",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "A reference added after review is rechecked at execution",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Content drift after review cannot be quarantined",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Quarantine file quota is enforced without removing the source",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Quarantine byte quota is enforced independently",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Concurrent identical cleanup creates one move and one replay",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Different reviewed cases cannot both withdraw the same asset",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "A reference writer already holding the gate wins before cleanup",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Reference creation waits for cleanup then rejects the withdrawn asset",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Interruption at prepared retains at least one verified copy",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Pending prepared pauses new upload admission",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Reviewed recovery finishes prepared idempotently and safely",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Completed recovery replays without adding audit or moving data",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Interruption at copied retains at least one verified copy",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Pending copied pauses new upload admission",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Reviewed recovery finishes copied idempotently and safely",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Interruption at source_removed retains at least one verified copy",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Pending source_removed pauses new upload admission",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Reviewed recovery finishes source_removed idempotently and safely",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Recovery rechecks references added through a trusted bypass",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Reviewed rollback preserves newly referenced public data",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Rollback can restore a source already removed after verified copy",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Interrupted restore at prepared preserves the archive",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Restore recovery finishes prepared without overwriting data",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Interrupted restore at published preserves the archive",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Restore recovery finishes published without overwriting data",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Interrupted restore at restore_published preserves the archive",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Restore recovery finishes restore_published without overwriting data",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Reviewed rollback of an unpublished restore keeps the private copy",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Restore respects active quota and keeps its private rescue copy",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Restore and upload cannot oversubscribe the last public slot",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Owned quarantine fixture stopped; media and audit volumes retained",
+      "passed": true,
+      "evidence": "runtime verified"
+    }
+  ],
+  "summary": {
+    "total": 51,
+    "passed": 51,
+    "failed": 0
+  }
+}

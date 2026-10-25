@@ -16,6 +16,16 @@ try {
     recovery_config_error('database connection');
 }
 
+// Cooperative media-reference writers use DB gate -> filesystem lock order.
+if (!defined('WHATSAPP_API') && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && getenv('UPLOAD_QUOTA_MODE') === 'local') {
+    require_once __DIR__ . '/../includes/upload_storage.php';
+    try {
+        $mediaGate=storage_reference_acquire($conn);
+        register_shutdown_function(static function() use ($conn,$mediaGate) { try { storage_reference_release($conn,$mediaGate); } catch (Throwable $ignored) {} });
+        storage_validate_reference_values(local_storage_settings(),$_POST);
+    } catch (Throwable $error) { http_response_code($error instanceof LocalStorageError && $error->getMessage()==='storage_reference_unavailable' ? 409 : 503);exit('Upload reference unavailable or storage busy.'); }
+}
+
 // Older sessions must not retain access after verification is revoked.
 if (isset($_SESSION['user_id'])) {
     $stmt = $conn->prepare('SELECT is_verified FROM users WHERE id = ?');
