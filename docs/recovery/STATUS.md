@@ -55,8 +55,9 @@ nine private-path ignore checks passed, and no forbidden paths were indexed.
 Default rules and registry audits have limits; private ignored data was not scanned.
 PRODUCTION_SECURITY_RESULTS.json records the exact scope. PRODUCTION_SHUTDOWN_RESULTS.json
 records zero owned running containers and closed 8088/9081/3307/8089/3334 listeners.
-No volumes were deleted. Source/handoff commit hashes are appended below after
-local verification; no remote Git or publication is involved.
+No volumes were deleted. Source checkpoint `013bd480889c5adad1e0d2d9b290b842018e8910` left a clean tree.
+This documentation-only handoff follows in a separate local commit; no remote Git
+or publication is involved. Final JSON parse covered 67 candidate files.
 
 ## Previous recoverable upload phase
 
