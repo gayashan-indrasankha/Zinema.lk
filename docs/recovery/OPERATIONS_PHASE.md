@@ -1,6 +1,6 @@
 # Local operator and upload-storage phase
 
-Date: 2026-10-25. State: IN PROGRESS. Starting tree clean on
+Date: 2026-10-25. State: COMPLETE within the authorized local scope. Starting tree clean on
 `zinema/local-dev-safety`, head `b9dead6`. This is the owner's explicitly requested
 follow-up to the completed local development phase, not a production/publishing phase.
 
@@ -80,7 +80,7 @@ without deleting anything from the existing development token table.
 | --- | --- | --- |
 | Operator/quota/inventory regression suite | 57/57 passed | runtime verified, fictional fixtures |
 | Direct CLI list/review/acknowledge/resolve/audit/replay/inventory | 7/7 passed | manual runtime verified |
-| Docker context/env-file boundary unit cases | 7/7 passed | test-covered and executed; remote metadata simulated |
+| Docker context/env-file/gateway boundary unit cases | 7/7 passed | test-covered and executed; remote metadata simulated |
 | Retained fake mail/OAuth/upload/claim HTTP suite | 88/88 passed | runtime verified in guarded Docker |
 | OAuth state/PKCE helper suite | 7/7 passed | test-covered and executed |
 | Owned development exposure/isolation/storage-marker checks | 20/20 passed | runtime verified |
@@ -175,7 +175,7 @@ no new media binary or personal identity is included in this phase.
 Gitleaks 8.30.1 was available; its archive checksum matches the saved upstream
 record. Redacted staged, full-candidate and all-local-history scans returned exit 0
 with zero findings, with default rules, empty suppressions and inline allows ignored.
-Final updated candidates are scanned again before commit. The scanner cannot prove
+The final updated candidate scans also returned zero findings. The scanner cannot prove
 absence of every secret; ignored private/legacy evidence is preserved and not
 certified safe. Two scoped npm audits returned zero advisories; the full extractor,
 old dependency trees, containers and malware/codec safety remain outside those scopes.
@@ -184,3 +184,17 @@ New staged whitespace checks pass; historical publication whitespace remains par
 Only local commits are prepared. No remote Git operation, publishing, deployment,
 production infrastructure connection or credential rotation was performed. Final
 commit hash, clean status and closed-service verification are recorded at handoff.
+
+## Completed local handoff
+
+Source commit: `cae7ab7f05680a8a4894c732aa3529c518d95e33` (`feat(operations): add local
+reconciliation and upload inventory`). Working and staged changes were reviewed,
+relevant checks executed, final staged/candidate/history scans passed with zero
+findings, and the source commit left a clean worktree. This completion record
+follows in a documentation-only local commit; its hash is available from Git history.
+No earlier commit was rewritten, no remote was contacted and nothing was published.
+
+Owned service shutdown was verified against the pinned local Docker context and
+actual loopback sockets: no owned containers running, ports 8088/9081/3307/8089/3334
+closed, configuration/data/volumes retained. Subsequent work starts by reading this
+report/status and the operator runbook, then running `python dev/local.py up`.
