@@ -4,6 +4,41 @@ Updated: 2026-10-25.
 
 ## Current phase
 
+Owner-requested recoverable quarantine and explicitly reviewed cleanup for owned
+development uploads: **COMPLETE within the authorized local scope**. Starting tree was clean at `a31d47e` on
+`zinema/local-dev-safety`. Production integrations and publishing remain disabled.
+
+- Added guarded CLI review/history/quarantine/restore/recover, revision/case review,
+  private verified rescue copies, separate quarantine quota, journal/audit and
+  reviewed interruption handling. No last-copy purge is exposed. Restore retains
+  its archive and never overwrites an existing path.
+- Coordinated cooperating media-reference writers with DB gate -> volume lock;
+  pending/quarantined references fail closed. Unknown/legacy/shared/young/changed
+  and unsafe files stay held. Direct trusted writers remain outside the protocol.
+- Final quarantine 51/51, retained operations 57/57, integration 88/88, OAuth helper
+  7/7, local boundary 7/7 and environment 21/21 passed. Fresh native schema/bridge
+  22/22 (38 tables/2 views), HTTP 94/94, Node 22/22 + 6/6 and extractor 4/4 passed.
+  Two scoped npm audits reported zero advisories. Earlier failed restore recovery
+  and restricted socket execution are documented, corrected and preserved privately.
+- Static checks passed for 185 PHP/41 JavaScript and 11 Python files; sanitized
+  JSON parsed. Gitleaks staged/full-candidate/all-local-history scans returned zero
+  findings; eight ignore checks passed. Scanner limits remain explicit.
+- Owned containers/native services stopped; 8088/9081/3307/8089/3334 closed. Private
+  credentials, database/upload/rescue volumes and audit remain preserved/ignored.
+  No remote Git, production connection, deployment or publishing was performed.
+
+Runbook: `dev/QUARANTINE.md`. Evidence/limits: `QUARANTINE_PHASE.md`,
+`QUARANTINE_*_RESULTS.json` and `DECISIONS.md`. The product remains in local recovery.
+Audit/journals are bounded and trusted-admin mutable; recovery is not a distributed
+transaction or a power-loss guarantee. Total disk space is not freed. Production
+readiness, arbitrary reference detection and malware/codec safety remain unverified.
+
+Exact next recommended task: **Verify coordinated backup and restore of the owned
+development database, upload volume and private lifecycle manifest using fictional
+interruption fixtures; keep production integrations and publishing disabled.**
+
+### Previous operator reconciliation and inventory phase
+
 Owner-requested local operator reconciliation and upload quota/cleanup inventory:
 **COMPLETE within the authorized local scope**. Source commit
 `cae7ab7f05680a8a4894c732aa3529c518d95e33` on `zinema/local-dev-safety`; starting tree

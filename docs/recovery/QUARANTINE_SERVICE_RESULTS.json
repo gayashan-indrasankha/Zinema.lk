@@ -1,0 +1,83 @@
+{
+  "extractor": [
+    {
+      "mode": "disabled",
+      "route": "/health",
+      "http": 200,
+      "passed": true
+    },
+    {
+      "mode": "disabled",
+      "route": "/api/extract",
+      "http": 503,
+      "passed": true
+    },
+    {
+      "mode": "local",
+      "route": "/health",
+      "http": 200,
+      "passed": true
+    },
+    {
+      "mode": "local",
+      "route": "/api/extract",
+      "http": 200,
+      "passed": true
+    }
+  ],
+  "extractor_test_versions": {
+    "express": "4.22.3",
+    "cors": "2.8.6",
+    "got": "11.8.6"
+  },
+  "extractor_processes_stopped": true,
+  "node_suites": [
+    {
+      "suite": "config.test.cjs",
+      "exit": 0,
+      "passed": 10,
+      "failed": 0
+    },
+    {
+      "suite": "bot.test.cjs",
+      "exit": 0,
+      "passed": 12,
+      "failed": 0
+    }
+  ],
+  "npm_audits": [
+    {
+      "scope": "bot-existing-lockfile",
+      "exit": 0,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "packages": [],
+      "error": false
+    },
+    {
+      "scope": "extractor-temporary-http-dependencies",
+      "exit": 0,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "packages": [],
+      "error": false
+    }
+  ],
+  "limitations": [
+    "Extractor test HTTP dependencies are locked in tests/extractor-http; Chromium/Puppeteer are not exercised or audited by this subset.",
+    "Bot audit covers the repaired lockfile, not the previous installed node_modules tree or exploitability. A clean isolated install is tested separately.",
+    "Fake-client bot tests do not establish live WhatsApp delivery."
+  ]
+}

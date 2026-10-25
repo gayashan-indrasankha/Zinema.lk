@@ -8,6 +8,7 @@
  */
 
 define('WHATSAPP_API', true);
+define('LOCAL_MEDIA_REFERENCE_WRITE', true);
 require_once 'config.php';
 
 // Only allow POST requests
