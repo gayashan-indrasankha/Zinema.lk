@@ -1,0 +1,1196 @@
+/* ==============================
+   🎬 CineDrive — SHOTS PAGE STYLE (TikTok-style)
+   ============================== */
+
+/* Reset body */
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    overflow: hidden;
+}
+
+/* ===== App Container (Grid Layout - Fixes Bottom Nav Overlap) ===== */
+.app-container {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    width: 100%;
+    height: 100dvh;
+    /* Dynamic Viewport Height - fixes mobile address bar */
+    overflow: hidden;
+}
+
+/* ===== Shots Container (Scrollable Content Area) ===== */
+.shots-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    background: #000;
+    padding-bottom: 72px;
+    /* Space for fixed bottom nav */
+    box-sizing: border-box;
+}
+
+/* Hide scrollbar but keep functionality */
+.shots-container::-webkit-scrollbar {
+    display: none;
+}
+
+.shots-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* ===== Individual Shot Item (Full Container Height) ===== */
+.shot-item {
+    position: relative;
+    width: 100%;
+    height: 100dvh;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    overflow: hidden;
+}
+
+/* ===== Video Player Container ===== */
+.shot-video-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+}
+
+/* ===== Video Tag (TikTok Style - full screen cover) ===== */
+.shot-video-player video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    background: #000;
+    border: none;
+    /* Smooth fade-in transition (eliminates black screen flash) */
+    transition: opacity 0.3s ease;
+}
+
+/* ===== Volume Control (TikTok-style Top-Left Vertical) ===== */
+.volume-control-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: auto;
+    z-index: 20;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 5px;
+}
+
+.unmute-label {
+    background: #fff;
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+    margin: 0;
+}
+
+.unmute-label.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.volume-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== Shot Details Overlay (Bottom) ===== */
+.shot-details {
+    position: absolute;
+    bottom: 90px;
+    left: 0;
+    right: 70px;
+    /* Prevent overlap with action buttons */
+    padding: 50px 20px 20px;
+    color: #fff;
+    z-index: 50;
+    pointer-events: none;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    /* Safe area for iPhones */
+}
+
+/* Make buttons clickable */
+.shot-details * {
+    pointer-events: auto;
+}
+
+
+/* ===== Title Styling ===== */
+.shot-details h1 {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: clamp(1.05rem, 3.5vw, 1.4rem);
+    font-weight: 700;
+    margin: 0 0 8px 0;
+    color: #fff;
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 1), 0 1px 3px rgba(0, 0, 0, 1);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+}
+
+/* ===== Description Styling ===== */
+.shot-details p {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: clamp(0.82rem, 2.8vw, 0.92rem);
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 14px 0;
+    line-height: 1.5;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 1), 0 1px 3px rgba(0, 0, 0, 1);
+    letter-spacing: 0.01em;
+}
+
+/* Description text - will be manually truncated */
+.shot-description .description-text {
+    display: inline;
+}
+
+/* More/Less Button - Inline with truncated text */
+.description-more-btn {
+    display: inline;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    text-shadow: inherit;
+    transition: color 0.2s ease;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+
+.description-more-btn:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.description-more-btn:active {
+    transform: scale(0.98);
+}
+
+/* ===== Watch Full Movie/Series Button ===== */
+.watch-movie-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    background: linear-gradient(90deg, #3B82F6, #EC4899);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: clamp(0.85rem, 3vw, 0.95rem);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+}
+
+.watch-movie-btn span {
+    font-size: 1em;
+}
+
+.watch-movie-btn:hover {
+    background: linear-gradient(90deg, #2563EB, #DB2777);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+}
+
+/* ===== TikTok-Style Sidebar Actions (Right Side) ===== */
+.shot-sidebar-actions {
+    position: absolute;
+    right: 12px;
+    bottom: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    /* Increased spacing for better visual balance */
+    z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom);
+    /* Safe area for notched devices */
+}
+
+.action-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #fff;
+    filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+.action-btn:hover {
+    transform: scale(1.15);
+    filter: drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.9));
+}
+
+.action-btn:active {
+    transform: scale(0.9);
+}
+
+/* ===== Action Button Icons ===== */
+.action-icon {
+    font-size: 22px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.action-icon svg {
+    width: 32px;
+    height: 32px;
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+/* ===== Action Count/Label ===== */
+.action-count,
+.action-label {
+    font-size: 11px;
+    font-weight: 600;
+    margin-top: 2px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* ===== Like Button Active State ===== */
+.like-btn.liked .action-icon {
+    color: #ff2e63 !important;
+}
+
+.like-btn.liked .action-icon svg {
+    fill: #ff2e63 !important;
+    stroke: #ff2e63 !important;
+    animation: heartBeat 0.3s ease;
+}
+
+@keyframes heartBeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* ===== Favorite Button Active State ===== */
+.favorite-btn.favorited .action-icon {
+    color: #ffd700 !important;
+}
+
+.favorite-btn.favorited .action-icon svg {
+    fill: #ffd700 !important;
+    stroke: #ffd700 !important;
+    animation: starPulse 0.3s ease;
+}
+
+@keyframes starPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* ===== No Shots Message ===== */
+.no-shots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2rem;
+    padding: 40px;
+}
+
+.no-shots p {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 30px 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===== Desktop/Tablet TikTok-Style Phone Frame Layout (768px+) ===== */
+@media (min-width: 768px) {
+
+    /* Page Background - Solid Black */
+    body {
+        background: #000 !important;
+    }
+
+    /* App Container - Full Screen */
+    .app-container {
+        background: #000 !important;
+        height: 100vh !important;
+        overflow: hidden !important;
+        position: relative !important;
+    }
+
+    /* Shots Container - Scrollable */
+    .shots-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: #000 !important;
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll;
+        height: 100vh !important;
+        width: 100% !important;
+    }
+
+    /* Individual Shot - Full Screen with Centered Content */
+    .shot-item {
+        width: 100% !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        display: block !important;
+        background: #000 !important;
+        position: relative !important;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Video Player Container - Absolutely Centered Phone Frame */
+    .shot-video-player {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 350px !important;
+        height: calc(100vh - 120px) !important;
+        max-height: 720px !important;
+        aspect-ratio: 9/16 !important;
+        border-radius: 16px !important;
+        overflow: hidden !important;
+        box-shadow: 0 0 60px rgba(0, 0, 0, 0.8) !important;
+        background: #111 !important;
+        margin: 0 !important;
+        z-index: 10 !important;
+    }
+
+    /* Video fills the phone frame */
+    .shot-video-player video,
+    .shot-video-player iframe {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        border-radius: 16px !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+    }
+
+    /* Volume Control - Top Left of Video Frame */
+    .shot-item .volume-control-container {
+        position: absolute !important;
+        top: calc(50% - min(360px, calc(50vh - 60px)) + 15px) !important;
+        left: calc(50% - 175px + 15px) !important;
+        z-index: 100 !important;
+    }
+
+    /* Shot Details - Bottom Left of Video Frame */
+    .shot-item .shot-details {
+        position: absolute !important;
+        bottom: calc(50% - min(360px, calc(50vh - 60px)) + 15px) !important;
+        left: calc(50% - 175px + 15px) !important;
+        right: auto !important;
+        width: 250px !important;
+        max-width: 250px !important;
+        padding: 0 !important;
+        z-index: 100 !important;
+    }
+
+    .shot-details h1 {
+        font-size: 0.9rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .shot-details p {
+        font-size: 0.75rem !important;
+        -webkit-line-clamp: 2 !important;
+        line-clamp: 2 !important;
+        margin-bottom: 6px !important;
+    }
+
+    .watch-movie-btn {
+        padding: 6px 12px !important;
+        font-size: 0.75rem !important;
+    }
+
+    /* Sidebar Actions - Right Side of Video Frame */
+    .shot-item .shot-sidebar-actions {
+        position: absolute !important;
+        right: calc(50% - 175px + 10px) !important;
+        bottom: calc(50% - min(360px, calc(50vh - 60px)) + 15px) !important;
+        left: auto !important;
+        z-index: 100 !important;
+        gap: 14px !important;
+    }
+
+    .action-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .action-count,
+    .action-label {
+        font-size: 10px;
+    }
+
+    /* Play Overlay */
+    .play-overlay {
+        border-radius: 20px;
+    }
+
+    /* Comment Drawer - Centered on Desktop */
+    .comment-drawer {
+        max-width: 450px;
+        height: 600px;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 20px;
+    }
+}
+
+/* ===== Large Desktop (1200px+) - Bigger Frame ===== */
+@media (min-width: 1200px) {
+    .shot-video-player {
+        height: 88vh;
+        max-height: 950px;
+    }
+}
+
+/* ===== Mobile Optimizations (max 768px) ===== */
+@media (max-width: 768px) {
+    .shots-container {
+        padding-bottom: 68px;
+    }
+
+    .shot-details {
+        bottom: 85px;
+        right: 60px;
+        padding: 35px 16px 18px;
+    }
+
+    .shot-details h1 {
+        font-size: 1.35rem;
+        text-shadow: 0 3px 12px rgba(0, 0, 0, 1);
+    }
+
+    .shot-details p {
+        font-size: 0.88rem;
+        -webkit-line-clamp: 2;
+        /* Show less text on mobile */
+        line-clamp: 2;
+    }
+
+    .watch-movie-btn {
+        padding: 10px 20px;
+        font-size: 0.88rem;
+    }
+
+    .shot-sidebar-actions {
+        right: 10px;
+        bottom: 85px;
+        gap: 22px;
+    }
+}
+
+/* ===== Small Mobile Optimizations (max 480px) ===== */
+@media (max-width: 480px) {
+    .shots-container {
+        padding-bottom: 64px;
+    }
+
+    .shot-details {
+        bottom: 80px;
+        right: 55px;
+        padding: 30px 14px 16px;
+    }
+
+    .shot-sidebar-actions {
+        right: 8px;
+        bottom: 80px;
+        gap: 20px;
+    }
+
+    .action-btn {
+        gap: 10px;
+    }
+
+    .action-icon {
+        font-size: 18px;
+    }
+
+    .action-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .action-count,
+    .action-label {
+        font-size: 10px;
+    }
+}
+
+/* ===== Extra Small Mobile (max 360px) ===== */
+@media (max-width: 360px) {
+    .shots-container {
+        padding-bottom: 60px;
+    }
+}
+
+/* ===== Landscape Orientation (Mobile) ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+    .shots-container {
+        padding-bottom: 60px;
+    }
+
+    .shot-details {
+        bottom: 70px;
+        padding: 20px 14px 12px;
+    }
+
+    .shot-details h1 {
+        font-size: 1.1rem;
+        margin-bottom: 6px;
+    }
+
+    .shot-details p {
+        font-size: 0.8rem;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        margin-bottom: 10px;
+    }
+
+    .watch-movie-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+
+    .shot-sidebar-actions {
+        bottom: 70px;
+        gap: 16px;
+    }
+
+    .action-icon svg {
+        width: 26px;
+        height: 26px;
+    }
+
+    .volume-control-container {
+        top: 10px;
+        left: 10px;
+    }
+}
+
+/* ===== Ultimate Comment Modal Design ===== */
+
+/* 1. The Overlay (Dark Background) */
+.comment-overlay {
+    position: fixed;
+    /* Sticks to screen, not page */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    /* Dimmed background */
+    backdrop-filter: blur(5px);
+    /* Blur effect for 'Supiri' look */
+    z-index: 9999;
+    /* Higher than everything */
+    display: flex;
+    align-items: flex-end;
+    /* Align drawer to bottom */
+    opacity: 0;
+    animation: fadeIn 0.2s forwards;
+}
+
+/* 2. The Drawer (The Box itself) */
+.comment-drawer {
+    width: 100%;
+    height: 75vh;
+    /* Occupy 75% of screen height */
+    background: #000000;
+    /* Pure Black Theme */
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    /* Stack elements vertically */
+    position: relative;
+    box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* 3. Header (Title & Close) - Fixed at Top */
+.comment-drawer h3 {
+    flex: 0 0 auto;
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+    font-size: 16px;
+    border-bottom: 1px solid #3a3a3a;
+    color: #fff;
+    font-weight: 600;
+}
+
+.close-comments-btn {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    background: #333333;
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 4. Comment List - Scrollable Area */
+.comment-list {
+    flex: 1;
+    /* Fills all available space */
+    overflow-y: auto;
+    /* Scroll inside this area only */
+    padding: 15px;
+    padding-bottom: 20px;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scroll on iOS */
+}
+
+.comment-list .comment-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #2a2a2a;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+/* Avatar Circle */
+.comment-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3B82F6, #EC4899);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.comment-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.comment-user {
+    font-weight: 700;
+    color: #fff;
+    font-size: 0.9rem;
+    text-transform: capitalize;
+}
+
+.comment-time {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.comment-list .comment-text {
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Empty State */
+.empty-comments {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: #666;
+}
+
+.empty-comments svg {
+    color: #444;
+    margin-bottom: 16px;
+}
+
+.empty-comments h4 {
+    color: #aaa;
+    font-size: 1.1rem;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.empty-comments p {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* 5. Input Area - Fixed at Bottom */
+.comment-form {
+    flex: 0 0 auto;
+    /* Don't shrink */
+    width: 100%;
+    padding: 12px 15px;
+    background: #0a0a0a;
+    border-top: 1px solid #2a2a2a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Critical for iPhone X/11/12/13/14/15 */
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+}
+
+.comment-form input {
+    flex: 1;
+    background: #333333;
+    border: 1px solid #444;
+    color: white;
+    padding: 12px 15px;
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.comment-form input:focus {
+    border-color: #666;
+}
+
+.comment-form button {
+    background: linear-gradient(90deg, #3B82F6, #EC4899);
+    /* Matching project gradient */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* Desktop Optimization */
+@media (min-width: 768px) {
+    .comment-drawer {
+        max-width: 450px;
+        height: 600px;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 20px;
+    }
+}
+
+/* ===== Profile Shots Grid (Responsive) ===== */
+.profile-shots-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Mobile: 3 columns */
+    gap: 10px;
+    padding: 10px;
+}
+
+@media (min-width: 768px) {
+    .profile-shots-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        /* Desktop: Responsive columns */
+        gap: 15px;
+        padding: 20px;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* ===== Login Modal Styles ===== */
+/* Login Modal Overlay */
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+/* Login Card Design */
+.login-card {
+    background: #1f2029;
+    padding: 40px 30px;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    position: relative;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.login-header h2 {
+    margin: 0 0 10px;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+.login-header p {
+    margin: 0 0 30px;
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.login-modal-form .form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.login-modal-form .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ddd;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.login-modal-form input {
+    width: 100%;
+    padding: 12px 15px;
+    background: #2b2e38;
+    border: 1px solid #444;
+    border-radius: 8px;
+    color: #fff;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+}
+
+.login-modal-form input:focus {
+    outline: none;
+    border-color: #E50914;
+}
+
+.btn-login-submit {
+    width: 100%;
+    padding: 14px;
+    background: #E50914;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-login-submit:hover {
+    background: #c0070f;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6);
+}
+
+.login-footer {
+    margin-top: 20px;
+}
+
+.login-footer p {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.login-footer a {
+    color: #E50914;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+.close-login-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-login-btn:hover {
+    color: #fff;
+}
+
+/* ===== Double Tap Heart Animation ===== */
+.like-heart-pop {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    font-size: 80px;
+    color: #ff2e63;
+    /* TikTok/Instagram Red/Pink */
+    filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+    pointer-events: none;
+    z-index: 9999;
+    animation: heartPop 0.8s ease-out forwards;
+}
+
+@keyframes heartPop {
+    0% {
+        transform: translate(-50%, -50%) scale(0) rotate(-15deg);
+        opacity: 0;
+    }
+
+    15% {
+        transform: translate(-50%, -50%) scale(1.2) rotate(0deg);
+        opacity: 1;
+    }
+
+    30% {
+        transform: translate(-50%, -50%) scale(0.9) rotate(0deg);
+        opacity: 1;
+    }
+
+    45% {
+        transform: translate(-50%, -50%) scale(1.0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(0) translateY(-100px);
+        opacity: 0;
+    }
+}
+
+
+/* ============================================
+   14. COMMENT MODAL DESKTOP FIX
+   ============================================ */
+@media (min-width: 768px) {
+    #comment-modal.comment-overlay {
+        align-items: center !important;
+        justify-content: center !important;
+        background: rgba(0, 0, 0, 0.8) !important;
+        padding: 0 !important;
+    }
+
+    #comment-modal .comment-drawer {
+        width: 400px !important;
+        height: 600px !important;
+        max-height: 80vh !important;
+        background: #111 !important;
+        border-radius: 24px !important;
+        overflow: hidden !important;
+        /* Ensure content respects rounded corners */
+        position: relative !important;
+        margin: 0 !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        top: auto !important;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8) !important;
+        animation: fadeInScale 0.2s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+    }
+
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .comment-drawer h3 {
+        font-size: 1.1rem !important;
+        padding: 18px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .comment-list {
+        padding: 0 20px 20px 20px !important;
+    }
+
+    /* Custom Scrollbar for Comments */
+    .comment-list::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .comment-list::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .comment-list::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 3px;
+    }
+
+    .comment-list::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+}
+
+/* ============================================
+   15. DESKTOP NAVIGATION BUTTONS (TikTok Style)
+   ============================================ */
+
+/* HIDDEN by default on Mobile */
+.desktop-nav-controls {
+    display: none;
+}
+
+/* VISIBLE on Desktop (>= 1024px) */
+@media (min-width: 1024px) {
+    .desktop-nav-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        position: fixed;
+        right: 30px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 9999;
+    }
+
+    .nav-control-btn {
+        width: 48px;
+        height: 48px;
+        background: rgba(30, 30, 30, 0.85);
+        /* Dark grey circular background */
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #fff;
+        padding: 0;
+    }
+
+    .nav-control-btn svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .nav-control-btn:hover {
+        background: rgba(60, 60, 60, 0.95);
+        /* Lighten on hover */
+        transform: scale(1.1);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .nav-control-btn:active {
+        transform: scale(0.95);
+    }
+}

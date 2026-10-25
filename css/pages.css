@@ -1,0 +1,126 @@
+/* Movie Detail Page */
+.movie-detail {
+    padding: 2rem 0;
+}
+
+.movie-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+    .movie-header {
+        grid-template-columns: 300px 1fr;
+    }
+}
+
+.movie-header .poster {
+    aspect-ratio: 2/3;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.movie-header .poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.movie-header .info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.movie-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.movie-header .meta {
+    display: flex;
+    gap: 1rem;
+    color: var(--text-secondary);
+}
+
+.movie-header .description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.movie-header .actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.video-player {
+    margin-top: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+    aspect-ratio: 16/9;
+    position: relative;
+}
+
+.player-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Download Page */
+.download-page {
+    min-height: calc(100vh - 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.download-box {
+    background: var(--background-secondary);
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+.download-box h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.movie-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.movie-thumb {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.countdown {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+.download-link {
+    display: none;
+    margin-top: 1rem;
+}

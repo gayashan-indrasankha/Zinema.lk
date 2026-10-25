@@ -1,0 +1,11 @@
+/* ===== ADD SPACING BETWEEN NAV AND CONTENT (Desktop & Tablet Only) ===== */
+@media (min-width: 768px) {
+    .container {
+        margin-top: 30px !important;
+    }
+
+    .simple-movie-grid,
+    .series-grid-2col {
+        margin-top: 20px !important;
+    }
+}
