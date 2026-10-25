@@ -156,24 +156,10 @@ class MultiTierForwarder {
         }
     }
 
-    saveQueue() {
-        try {
-            const dir = path.dirname(this.queueFile);
-            if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-            const data = {};
-            for (const [key, value] of this.pendingColdRequests.entries()) {
-                data[key] = value;
-            }
-            fs.writeFileSync(this.queueFile, JSON.stringify(data, null, 2));
-        } catch (err) {
-            console.error(`❌ Failed to save queue: ${err.message}`);
-        }
-    }
+    saveQueue() {throw Error('legacy_queue_disabled');}
 
-    isNightTime() {
-        const now = new Date();
-        const hour = now.getHours();
-        const minute = now.getMinutes();
+    isNightTime(now=new Date()) {
+        const {hour,minute}=require('./worker-clock').parts(now);
         if (hour === 0 && minute >= 30) return true;
         if (hour >= 1 && hour < 6) return true;
         return false;
@@ -213,6 +199,7 @@ class MultiTierForwarder {
         const {content_type, content_id, message_id, part_number} = tokenData;
         if (message_id) {
             const result = await this.tryTier1Forward(chatId, message_id);
+            if(result.uncertain)return {success:false,uncertain:true,message:'Delivery acknowledgement unavailable; claim held.'};
             if (result.success) {
                 this.stats.tier1Hits++;
                 await this.broadcastToWaiters(operationKey, result.sentMessage);
@@ -220,6 +207,7 @@ class MultiTierForwarder {
             }
         }
         const cached = await this.tryTier2Forward(chatId, content_type, content_id, part_number, message_id);
+        if(cached.uncertain)return {success:false,uncertain:true,message:'Delivery acknowledgement unavailable; claim held.'};
         if (cached.success) {
             this.stats.tier2Hits++;
             if (cached.messageId) await this.updateMessageId(content_type, content_id, part_number, cached.messageId);
@@ -239,11 +227,11 @@ class MultiTierForwarder {
     }
 
     async sendAcknowledged(chatId, payload) {
-        const sent = await this.client.sendMessage(chatId, payload);
-        if (!sent || typeof sent.key?.id !== 'string' || !sent.key.id.trim()) {
-            throw new Error('Delivery acknowledgement missing');
-        }
-        return sent;
+        try {
+            const sent = await this.client.sendMessage(chatId, payload);
+            if (!sent || typeof sent.key?.id !== 'string' || !sent.key.id.trim())throw Error();
+            return sent;
+        }catch{const error=Error('Delivery acknowledgement unavailable');error.deliveryUncertain=true;throw error;}
     }
 
     async tryTier1Forward(chatId, messageId) {
@@ -262,6 +250,7 @@ class MultiTierForwarder {
                     });
                     return { success: true, messageId: sent.key.id, sentMessage: sent };
                 } catch (forwardError) {
+                    if(forwardError.deliveryUncertain)throw forwardError;
                     // Check if this is a stale/expired message error
                     const errorMsg = forwardError.message?.toLowerCase() || '';
                     const isConnectionError = errorMsg.includes('connection') || errorMsg.includes('closed') ||
@@ -338,7 +327,7 @@ class MultiTierForwarder {
             return { success: true, messageId: sent.key.id, sentMessage: sent };
         } catch (e) {
             console.log(`❌ TIER 1: Error - ${e.message}`);
-            return { success: false, error: e.message };
+            return { success: false, uncertain:!!e.deliveryUncertain,error:'Cached delivery unavailable' };
         }
     }
 
@@ -377,6 +366,7 @@ class MultiTierForwarder {
                             const sent = await this.sendAcknowledged(chatId, { forward: targetMsg });
                             return { success: true, messageId: targetMsg.key.id, sentMessage: targetMsg };
                         } catch (fwdErr) {
+                            if(fwdErr.deliveryUncertain)throw fwdErr;
                             const fwdErrMsg = fwdErr.message?.toLowerCase() || '';
                             if (fwdErrMsg.includes('connection') || fwdErrMsg.includes('closed') ||
                                 fwdErrMsg.includes('stream') || fwdErrMsg.includes('timeout')) {
@@ -396,6 +386,7 @@ class MultiTierForwarder {
                         }
                     }
                 } catch (e) {
+                    if(e.deliveryUncertain)throw e;
                     console.log(`⚠️ TIER 2: Direct forward failed: ${e.message}`);
                 }
             }
@@ -433,7 +424,7 @@ class MultiTierForwarder {
             return { success: true, messageId: targetMsg.key.id, sentMessage: targetMsg };
         } catch (e) {
             console.log(`❌ TIER 2: Error - ${e.message}`);
-            return { success: false, error: e.message };
+            return { success: false, uncertain:!!e.deliveryUncertain,error:'Group delivery unavailable' };
         }
     }
 
@@ -544,63 +535,11 @@ class MultiTierForwarder {
     }
 
     async processPendingRequests() {
-        if (this.pendingColdRequests.size === 0) return { processed: 0 };
-        let processed = 0, failed = 0;
-
-        for (const [key, data] of this.pendingColdRequests.entries()) {
-            const { tokenData, users } = data;
-
-            // Handle legacy format (array of strings) or new format (array of objects)
-            const primaryUser = typeof users[0] === 'string' ? users[0] : users[0].chatId;
-            const primaryToken = typeof users[0] === 'string' ? tokenData.token : users[0].token;
-
-            const res = await this.tryTier3Upload(primaryUser, tokenData.content_type, tokenData.content_id, tokenData.part_number);
-
-            if (res.success) {
-                await this.updateMessageId(tokenData.content_type, tokenData.content_id, tokenData.part_number, res.messageId);
-
-                // Send token ID to primary user
-                if (primaryToken) {
-                    await this.sendAcknowledged(primaryUser, { text: `🎬 *${primaryToken}* : ${tokenData.content_type}_${tokenData.content_id}` }).catch(() => { });
-                }
-
-                // Process remaining users (waiters)
-                for (let i = 1; i < users.length; i++) {
-                    const user = users[i];
-                    const userChatId = typeof user === 'string' ? user : user.chatId;
-                    const userToken = typeof user === 'string' ? null : user.token;
-
-                    await this.sendAcknowledged(userChatId, { forward: res.sentMessage }).catch(() => { });
-
-                    if (userToken) {
-                        await this.sendAcknowledged(userChatId, { text: `🎬 *${userToken}* : ${tokenData.content_type}_${tokenData.content_id}` }).catch(() => { });
-                    }
-                }
-                processed++;
-            } else {
-                failed++;
-            }
-            await new Promise(r => setTimeout(r, 5000));
-        }
-        this.pendingColdRequests.clear();
-        this.saveQueue();
-        return { processed, failed };
+        // Legacy files lack current claim ownership. Preserve bytes; never replay recipients.
+        return {processed:0,failed:0,held:this.pendingColdRequests.size,reason:'legacy_queue_review_required'};
     }
 
-    queueForNight(operationKey, chatId, tokenData) {
-        if (!this.pendingColdRequests.has(operationKey)) {
-            // Store users as objects with chatId AND token
-            this.pendingColdRequests.set(operationKey, { tokenData, users: [] });
-        }
-        const pending = this.pendingColdRequests.get(operationKey);
-
-        // Check if user is already queued for this operation
-        const userExists = pending.users.some(u => u.chatId === chatId);
-        if (!userExists) {
-            pending.users.push({ chatId, token: tokenData.token });
-        }
-        this.saveQueue();
-    }
+    queueForNight() {throw Error('legacy_queue_disabled');}
 
     async broadcastToWaiters(operationKey, sentMessage) {
         const op = this.activeOperations.get(operationKey);

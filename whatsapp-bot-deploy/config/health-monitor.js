@@ -12,6 +12,7 @@ class HealthMonitor {
         this.client = client;
         this.startTime = Date.now();
         this.interval = null;
+        this.running=false;this.generation=0;
     }
 
     /**
@@ -19,6 +20,7 @@ class HealthMonitor {
      */
     start(intervalSeconds = 30) {
         this.stop();
+        this.running=true;
         console.log(`💓 Health monitor started (reporting every ${intervalSeconds}s)`);
 
         // Send initial heartbeat immediately
@@ -34,6 +36,7 @@ class HealthMonitor {
      * Stop sending heartbeats
      */
     stop() {
+        this.running=false;this.generation++;
         if (this.interval) {
             clearInterval(this.interval);
             this.interval = null;
@@ -45,8 +48,10 @@ class HealthMonitor {
      * Send heartbeat to server
      */
     async sendHeartbeat() {
+        const generation=this.generation;
         try {
             const healthData = await this.collectHealthData();
+            if(!this.running || generation!==this.generation)return;
 
             const response = await this.apiClient.request('bot-heartbeat.php', {
                 bot_id: this.botInstanceId,

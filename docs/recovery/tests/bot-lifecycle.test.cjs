@@ -51,3 +51,25 @@ test('A rejected reconnect retries within the same budget without unhandled erro
  const f=fixture(async()=>{throw Error('fictional failure');});f.controller.disconnected();await f.fire();await f.fire();await f.fire();
  assert.equal(f.tasks.size,0);assert.equal(f.exhausted(),1);
 });
+test('A close while connect is unresolved cannot start an overlapping connection',async()=>{
+ let release;const gate=new Promise(resolve=>release=resolve);const f=fixture(async()=>gate);
+ f.controller.disconnected();const pending=f.fire();await Promise.resolve();f.controller.disconnected();assert.equal(f.tasks.size,0);
+ release();await pending;assert.equal(f.tasks.size,1);f.controller.stop();assert.equal(f.tasks.size,0);
+});
+test('Stopping during reconnect prevents a rejected in-flight attempt from rescheduling',async()=>{
+ let reject;const f=fixture(()=>new Promise((_,no)=>reject=no));f.controller.disconnected();const pending=f.fire();await Promise.resolve();f.controller.stop();reject(Error('fixture'));await pending;assert.equal(f.tasks.size,0);
+});
+test('Stopped health collection cannot publish a late online heartbeat',async()=>{
+ let release;const gate=new Promise(resolve=>release=resolve);let sent=0;const monitor=new Health(1,{request:async()=>{sent++;}},{});
+ monitor.collectHealthData=async()=>{await gate;return {status:'online'};};monitor.running=true;const pending=monitor.sendHeartbeat();monitor.stop();release();await pending;assert.equal(sent,0);
+});
+test('Shutdown rejects new commands and drops only work that has not begun',async()=>{
+ let release;const gate=new Promise(resolve=>release=resolve);const queue=new MessageQueue({sleep:async()=>{}});let ran=0;
+ queue.add(async()=>{await gate;ran++;});queue.add(async()=>{ran++;});assert.equal(queue.stop(),1);assert.equal(queue.add(async()=>{}),false);release();await queue.whenIdle();assert.equal(ran,1);
+});
+test('Structured worker logger drops raw values and accepts only bounded safe counts',()=>{
+ const lines=[];const target={log:(v)=>lines.push(v),info(){},warn(){},error:(v)=>lines.push(v),debug(){}};
+ const logger=require(path.join(root,'whatsapp-bot-deploy/config/safe-logger')).install(target);
+ const canary='fictional-secret-phone-url-token';target.log(canary,{key:canary});target.error(Error(canary));logger.event('connection_open',{pending:2,token:canary,active:NaN});logger.event(canary,{count:3});logger.restore();
+ assert.equal(lines.some(line=>line.includes(canary)),false);assert.equal(JSON.parse(lines[2]).pending,2);assert.equal(JSON.parse(lines[2]).active,undefined);assert.equal(JSON.parse(lines[3]).event,'worker_error');
+});

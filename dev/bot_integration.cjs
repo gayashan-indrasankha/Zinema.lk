@@ -22,6 +22,7 @@ async function main(){
   let body='';for await(const part of req){body+=part;if(body.length>8192){res.writeHead(413);return res.end('{}');}}
   try{
    if(req.url==='/claim-token.php') {const value=await bridge(JSON.parse(body));res.writeHead(value.status,{'Content-Type':'application/json'});res.end(JSON.stringify(value.data));}
+   else if(req.url==='/health.php') {const value=await request('http://127.0.0.1:8088/__dev/bridge.php?endpoint=health',{}, {'X-Test-Key':control,'X-Api-Key':key});res.writeHead(value.status,{'Content-Type':'application/json'});res.end(JSON.stringify(value.data));}
    else if(req.url==='/update-forward-stats.php'){res.writeHead(200,{'Content-Type':'application/json'});res.end('{"success":true}');}
    else {res.writeHead(404);res.end('{}');}
   }catch{res.writeHead(503);res.end('{}');}
@@ -30,6 +31,8 @@ async function main(){
  try{
   Object.assign(process.env,{APP_ENV:'test',API_URL:'http://127.0.0.1:'+relay.address().port,API_KEY:key,SESSION_PATH:path.join(state,'fictional-bot-session'),LOCAL_MEDIA_PATH:path.join(state,'fictional-bot-media'),BOT_INSTANCE_ID:'1',ALLOW_LIVE_WHATSAPP:'false'});
   const api=require('../whatsapp-bot-deploy/config/api-client');const Forwarder=require('../whatsapp-bot-deploy/config/multi-tier-forwarder');
+  check('Node readiness checks the authenticated SQL bridge without probing a token',await api.testConnection()===true);
+  check('SQL health refuses an incorrect key', (await request('http://127.0.0.1:8088/__dev/bridge.php?endpoint=health',{}, {'X-Test-Key':control,'X-Api-Key':'fictional-wrong'})).status===401);
   const {deliverClaimedToken}=require('../whatsapp-bot-deploy/config/token-delivery');
   async function token(){const token='T'+crypto.randomBytes(6).toString('hex').toUpperCase().slice(0,11);const r=await request('http://127.0.0.1:8088/__dev/control.php',{action:'token',token,active:true},{'X-Test-Key':control});if(!r.data.id)throw Error('Fictional token unavailable');return token;}
   async function status(token){return (await request('http://127.0.0.1:8088/__dev/control.php',{action:'token_status',token},{'X-Test-Key':control})).data;}
@@ -44,6 +47,10 @@ async function main(){
   check('Concurrent Node recipients obtain only one SQL claim and one send',results.filter(r=>r.success).length===1&&sends===2);
   value=await token();result=await deliverClaimedToken({...deps,forward:async()=>{throw Error('fictional send failure');}},value,'fictional-failure');
   check('Failed fake send remains uncertain in the actual database',result.status==='uncertain'&&(await status(value)).claim_state==='uncertain'&&(await status(value)).is_used===0);
+  const broken=new Forwarder({sendMessage:async()=>{attempts++;throw Error('Connection closed after fictional send');},fetchMessagesFromChat:async()=>[{key:{id:'fictional-message'}}]}, {hasLocalFile:()=>true,getFilePath:()=>path.join(state,'unread-by-fake.mp4')},api,'fictional-cache');
+  let attempts=0;broken.messageCache.set('fictional-message',{key:{id:'fictional-message'}});broken.waitForReconnection=async()=>true;
+  value=await token();result=await deliverClaimedToken({...deps,forward:(who,data)=>broken.forwardVideo(who,data)},value,'fictional-uncertain-recipient');
+  check('Lost recipient acknowledgement makes one attempt and holds the SQL claim without tier retries',result.status==='uncertain'&&attempts===1&&(await status(value)).claim_state==='uncertain');
   value=await token();result=await deliverClaimedToken({...deps,forward:async()=>({success:true}),transition:(action,proof,who)=>action==='complete'?Promise.reject(Error('fictional acknowledgement loss')):api.transitionToken(action,proof,who)},value,'fictional-lost-ack');
   check('Lost completion acknowledgement keeps the actual claim held',result.status==='uncertain'&&(await status(value)).claim_state==='sending');
   const fixture=JSON.parse(fs.readFileSync(path.join(state,'results/product-fixture.json'),'utf8'));

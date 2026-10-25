@@ -14,7 +14,7 @@ const path = require('path');
 class FileManager {
     constructor(basePath) {
         if (!basePath || !path.isAbsolute(basePath)) throw new Error('Explicit absolute local media path required.');
-        this.basePath = basePath;
+        this.basePath = path.resolve(basePath);
         this.ensureDirectories();
     }
 
@@ -30,11 +30,27 @@ class FileManager {
         ];
 
         dirs.forEach(dir => {
+            this.assertContained(dir);
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });
                 console.log(`📁 Created directory: ${dir}`);
             }
         });
+    }
+
+    validateIdentity(type,id,part=null,extension='.mp4') {
+        const integer=value=>(typeof value==='number'||typeof value==='string') && /^[1-9][0-9]*$/.test(String(value)) && Number.isSafeInteger(Number(value)) && Number(value)<=2147483647;
+        if(!['movie','episode'].includes(type)||!integer(id)||!(part===null||part===undefined||part===0||part==='0'||integer(part))||!['.mp4','.mkv','.avi','.mov','.webm'].includes(extension))throw Error('Invalid media identity');
+    }
+
+    assertContained(candidate) {
+        const relative=path.relative(this.basePath,path.resolve(candidate));
+        if(relative==='..'||relative.startsWith('..'+path.sep)||path.isAbsolute(relative))throw Error('Invalid media path');
+        let current=this.basePath;
+        for(const component of ['',...relative.split(path.sep).filter(Boolean)]) {
+            if(component)current=path.join(current,component);
+            if(fs.existsSync(current) && fs.lstatSync(current).isSymbolicLink())throw Error('Invalid media link');
+        }
     }
 
     /**
@@ -45,8 +61,10 @@ class FileManager {
      * @returns {string|null} File path or null if not found
      */
     getFilePath(contentType, contentId, partNumber = null) {
+        this.validateIdentity(contentType,contentId,partNumber);
         const typeFolder = contentType === 'movie' ? 'movies' : 'episodes';
         const contentFolder = path.join(this.basePath, typeFolder, String(contentId));
+        this.assertContained(contentFolder);
 
         // Check if content folder exists
         if (!fs.existsSync(contentFolder)) {
@@ -65,6 +83,7 @@ class FileManager {
 
         // Check if file exists
         if (fs.existsSync(filePath)) {
+            this.assertContained(filePath);if(!fs.statSync(filePath).isFile())throw Error('Invalid media file');
             return filePath;
         }
 
@@ -73,6 +92,7 @@ class FileManager {
         for (const ext of extensions) {
             const altPath = filePath.replace('.mp4', ext);
             if (fs.existsSync(altPath)) {
+                this.assertContained(altPath);if(!fs.statSync(altPath).isFile())throw Error('Invalid media file');
                 return altPath;
             }
         }
@@ -123,8 +143,10 @@ class FileManager {
      * @returns {string} Folder path
      */
     ensureContentFolder(contentType, contentId) {
+        this.validateIdentity(contentType,contentId);
         const typeFolder = contentType === 'movie' ? 'movies' : 'episodes';
         const contentFolder = path.join(this.basePath, typeFolder, String(contentId));
+        this.assertContained(contentFolder);
 
         if (!fs.existsSync(contentFolder)) {
             fs.mkdirSync(contentFolder, { recursive: true });
@@ -143,8 +165,9 @@ class FileManager {
      * @returns {string}
      */
     getSavePath(contentType, contentId, partNumber = null, extension = '.mp4') {
+        this.validateIdentity(contentType,contentId,partNumber,extension);
         const folder = this.ensureContentFolder(contentType, contentId);
-        const fileName = partNumber ? `part_${partNumber}${extension}` : `full${extension}`;
+        const fileName = Number(partNumber)>0 ? `part_${partNumber}${extension}` : `full${extension}`;
         return path.join(folder, fileName);
     }
 
@@ -159,11 +182,20 @@ class FileManager {
      */
     async saveFile(contentType, contentId, partNumber, buffer, extension = '.mp4') {
         const savePath = this.getSavePath(contentType, contentId, partNumber, extension);
-
-        await fs.promises.writeFile(savePath, buffer);
-        console.log(`💾 Saved file: ${savePath} (${this.formatBytes(buffer.length)})`);
-
-        return savePath;
+        if(!Buffer.isBuffer(buffer)||buffer.length===0)throw Error('Invalid media buffer');
+        const crypto=require('crypto');const expected=crypto.createHash('sha256').update(buffer).digest('hex');
+        const matches=async()=>{
+            this.assertContained(savePath);if(!fs.existsSync(savePath)||!fs.lstatSync(savePath).isFile()||fs.statSync(savePath).size!==buffer.length)return false;
+            const hash=crypto.createHash('sha256');for await(const chunk of fs.createReadStream(savePath))hash.update(chunk);return hash.digest('hex')===expected;
+        };
+        if(fs.existsSync(savePath)){if(await matches())return savePath;throw Error('media_conflict');}
+        const temporary=path.join(path.dirname(savePath),'.ingest-'+crypto.randomBytes(16).toString('hex'));
+        try {
+            const fd=await fs.promises.open(temporary,'wx',0o600);
+            try{await fd.writeFile(buffer);await fd.sync();}finally{await fd.close();}
+            try {await fs.promises.link(temporary,savePath);}catch(error){if(error.code!=='EEXIST')throw Error('media_publish_unavailable');if(!(await matches()))throw Error('media_conflict');}
+            return savePath;
+        }finally{if(fs.existsSync(temporary))await fs.promises.unlink(temporary);}
     }
 
     /**
@@ -238,15 +270,18 @@ class FileManager {
             const contentFolders = await fs.promises.readdir(typeFolder);
 
             for (const idFolder of contentFolders) {
+                if(!/^[1-9][0-9]*$/.test(idFolder)||Number(idFolder)>2147483647)continue;
                 const contentPath = path.join(typeFolder, idFolder);
-                const stat = await fs.promises.stat(contentPath);
+                const stat = await fs.promises.lstat(contentPath);
 
                 if (stat.isDirectory()) {
                     const contentFiles = await fs.promises.readdir(contentPath);
 
                     for (const file of contentFiles) {
+                        if(!/^(?:full|part_[1-9][0-9]*)\.(?:mp4|mkv|avi|mov|webm)$/.test(file))continue;
                         const filePath = path.join(contentPath, file);
-                        const fileStat = await fs.promises.stat(filePath);
+                        const fileStat = await fs.promises.lstat(filePath);
+                        if(!fileStat.isFile() || fileStat.isSymbolicLink())continue;
 
                         files.push({
                             type: type === 'movies' ? 'movie' : 'episode',

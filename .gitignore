@@ -17,6 +17,7 @@ store.json
 message-cache.json
 pending-requests.json
 warming-state.json
+worker.lock
 hot-cache*/
 cache/
 logs/

@@ -163,10 +163,10 @@ class UploadQueue extends EventEmitter {
     clear() {
         const cleared = this.queue.length;
         this.queue.forEach(task => {
+            this.inQueue.delete(task.key);
             task.reject(new Error('Queue cleared'));
         });
         this.queue = [];
-        this.inQueue.clear();
         console.log(`🧹 Cleared ${cleared} items from upload queue`);
         return cleared;
     }
