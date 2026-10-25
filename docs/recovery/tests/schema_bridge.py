@@ -12,7 +12,7 @@ import time
 import urllib.error
 import urllib.request
 sys.dont_write_bytecode = True
-from audit import ROOT, PHP, DB_PORT, checked_runtime, port_open, sql, wait_port, NO_WINDOW
+from audit import ROOT, PHP, DB_PORT, checked_runtime, port_open, sql, wait_port, NO_WINDOW, RESULT_PREFIX
 
 folder = checked_runtime(sys.argv[1])
 assert not port_open(8089)
@@ -30,13 +30,13 @@ sql(folder,"""INSERT INTO whatsapp_tokens(id,token,content_type,content_id,part_
  (101,'AUDITFULL001','movie',1,NULL,DATE_ADD(NOW(),INTERVAL 1 HOUR)),
  (102,'AUDITPART001','movie',1,1,DATE_ADD(NOW(),INTERVAL 1 HOUR)),
  (103,'AUDITOLD0001','movie',1,NULL,DATE_SUB(NOW(),INTERVAL 1 HOUR))
- ON DUPLICATE KEY UPDATE is_used=0,is_active=1,expires_at=VALUES(expires_at);""",True)
+ ON DUPLICATE KEY UPDATE is_used=0,is_active=1,claim_hash=NULL,claim_owner=NULL,claim_state=NULL,claimed_at=NULL,expires_at=VALUES(expires_at);""",True)
 key = secrets.token_hex(24)
 sessions = folder/('bridge-sessions-'+secrets.token_hex(4)); sessions.mkdir()
 env = dict(os.environ, APP_ENV='test', BASE_URL='http://127.0.0.1:8089', DB_HOST='127.0.0.1', DB_PORT=str(DB_PORT), DB_NAME='zinema_recovery_test', DB_USER=username, DB_PASS=password, SESSION_SAVE_PATH=str(sessions), ALLOW_LIVE_INTEGRATIONS='false', WHATSAPP_API_KEY=key)
 for name in ['MAIL','OAUTH','MEDIA','EXTRACTOR','PAYMENT']: env[name+'_MODE']='disabled'
 env['WHATSAPP_MODE']='local'
-allowed = ['bot-heartbeat','add-message-id','get-message-id','get-message-ids','update-cache-message-id','update-forward-stats','get-aging-messages','get-popular-files','get-popular-content','mark-used','validate-token']
+allowed = ['bot-heartbeat','add-message-id','get-message-id','get-message-ids','update-cache-message-id','update-forward-stats','get-aging-messages','get-popular-files','get-popular-content','mark-used','validate-token','claim-token']
 router = folder/'bridge-router.php'
 router.write_text("<?php\n$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);\n$allowed = "+repr(['/api/whatsapp/'+name+'.php' for name in allowed]).replace('[','[').replace(']',']')+";\nif (!in_array($path, $allowed, true)) { http_response_code(403); exit; }\nrequire __DIR__ . '/web' . $path;\n",encoding='utf-8')
 log = open(folder/'bridge-console.log','w')
@@ -69,12 +69,19 @@ try:
     record('Popular-content view executes against populated mappings',request('get-popular-files',{})[1].get('count',0)>0)
     record('Recent content uses series and canonical token fields',request('get-popular-content',{})[1].get('success') is True)
     record('Aging read model finds the full-file mapping',request('get-aging-messages',{'days_old':10})[1].get('count',0)>0)
-    record('Unused active token is consumed after delivery',request('mark-used',{'token_id':101})[1].get('success') is True)
-    record('Repeated token consumption is rejected',request('mark-used',{'token_id':101})[1].get('success') is False)
-    record('Expired token cannot be consumed',request('mark-used',{'token_id':103})[1].get('success') is False)
+    record('Legacy mark-used cannot bypass ownership',request('mark-used',{'token_id':101})[1].get('success') is False)
+    owner = hashlib.sha256(b'fictional-bridge-recipient').hexdigest()
+    claim = request('claim-token',{'token':'AUDITFULL001','recipient_hash':owner,'bot_id':1})[1]
+    record('Unused active token grants a delivery claim',claim.get('success') is True)
+    proof = {'token_id':101,'recipient_hash':owner,'bot_id':1,'receipt':claim.get('receipt','')}
+    record('Claim owner may begin delivery',request('claim-token',dict(proof,action='begin'))[1].get('success') is True)
+    record('Acknowledged owner consumes token',request('claim-token',dict(proof,action='complete'))[1].get('success') is True)
+    record('Repeated token consumption is rejected',request('claim-token',dict(proof,action='complete'))[1].get('success') is False)
+    record('Expired token cannot be claimed',request('claim-token',{'token':'AUDITOLD0001','recipient_hash':owner,'bot_id':1})[1].get('success') is False)
+
 finally:
     child.terminate(); child.wait(timeout=5); log.close()
 result={'schema_sha256':hashlib.sha256((ROOT/'database/schema.sql').read_bytes()).hexdigest(),'tables':37,'views':2,'legacy_rows_imported':0,'bridge_environment':'test; local SQL adapter only; fake API key','bridge_stopped':not port_open(8089),'tests':rows,'summary':{'total':len(rows),'passed':sum(row['passed'] for row in rows),'failed':sum(not row['passed'] for row in rows)}}
-(ROOT/'docs/recovery/REPAIR_SCHEMA_RESULTS.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+(ROOT/f'docs/recovery/{RESULT_PREFIX}_SCHEMA_RESULTS.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2))
 raise SystemExit(1 if result['summary']['failed'] else 0)

@@ -6,6 +6,7 @@ RewriteEngine On
 RewriteRule (^|/)\.(git|recovery-private)(/|$) - [F,L]
 RewriteRule ^includes/PHPMailer/ - [F,L]
 RewriteRule ^fb-video-api/ - [F,L]
+RewriteRule ^dev/ - [F,L]
 RewriteRule ^uploads/.*\.(php[0-9]?|phtml|phar|cgi|pl|py|sh)(/|$) - [F,L,NC]
 
 # Enable GZIP compression

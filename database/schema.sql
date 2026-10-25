@@ -1,4 +1,4 @@
--- Canonical local schema v1, MariaDB 10.4+. Structure only, no data.
+-- Canonical local schema v2, MariaDB 10.4+. Structure only, no data.
 
 -- Validated in the isolated recovery fixture. Not an in-place migration.
 
@@ -556,11 +556,15 @@ CREATE TABLE `whatsapp_tokens` (
   `message_id` varchar(255) DEFAULT NULL COMMENT 'WhatsApp Message ID from storage group (set by admin)',
   `is_used` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Whether token has been used',
   `is_active` tinyint(1) NOT NULL DEFAULT 1 COMMENT 'Soft delete flag',
-  `expires_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Token expiration time (10 minutes from creation)',
+  `expires_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'Token expiration time (10 minutes from creation)',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `used_at` timestamp NULL DEFAULT NULL COMMENT 'When the token was used',
   `part_number` int(11) DEFAULT NULL,
   `assigned_bot_id` int(11) NOT NULL DEFAULT 1,
+  `claim_hash` char(64) DEFAULT NULL,
+  `claim_owner` char(64) DEFAULT NULL,
+  `claim_state` enum('claimed','sending','uncertain','completed') DEFAULT NULL,
+  `claimed_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `token` (`token`),
   KEY `idx_content` (`content_type`,`content_id`),

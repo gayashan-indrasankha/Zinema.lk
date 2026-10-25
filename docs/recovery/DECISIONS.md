@@ -177,3 +177,83 @@ Verification: New refs matched original heads and replacement PRs were verified
 open, non-draft and mergeable before cleanup. Local branches use the requested
 prefix and upstreams. Final documentation checks and remote/PR verification are
 recorded in the execution handoff; no runtime retest is required for branch names.
+
+## 2026-10-25 — Isolated portable development and fictional identity services
+
+Context: The native Windows fixture was reproducible only on the installed XAMPP
+paths. Disabled mail/OAuth prevented positive verification/reset/provider tests.
+
+Decision: Pin official PHP/Apache, MariaDB and Python image digests and image
+library package versions. Build an allowlisted code image, initialize only the
+canonical schema in a named development volume, and generate private configuration
+under ignored `.runtime/local-dev`. Share a loopback namespace on an internal
+network so the existing local-target guards remain effective; a credential-free
+fixed TCP gateway exposes only two host-loopback ports. Implement stdlib SMTP and
+OAuth fakes with fictional identities, no relay, protected test controls and no
+request/token logging. Keep production-capable adapters disabled and all remote
+Git actions outside this phase.
+
+Consequences: A clean checkout needs Docker/Python instead of native XAMPP. Builds
+require registry and Debian package availability; architecture and bit-for-bit
+reproducibility are limited as recorded in `dev/runtime-lock.json`. Development
+aliases/accounts must never become a production deployment. Generated secrets,
+logs, database files and user media are excluded from images and Git.
+
+Verification: Pinned builds and repeated starts passed. Seventeen owned-container
+checks passed; HTTP tests confirm no default route in the application namespace.
+Fake mail covers signup/verify/resend/reset, expiry/replay and SMTP failure. OAuth
+uses single-use session state, S256 PKCE, verified-email checks, explicit owner
+linking and session rotation; local HTTP, seven helper checks and a manual browser
+sign-in/sign-out passed. Real providers and delivery remain not yet verified.
+
+## 2026-10-25 — Validate new uploads and preserve existing media
+
+Context: Admin upload handlers accepted raw extensions/names, removed old media
+before replacement succeeded, trusted a posted collection path, and invoked a
+shell for trailer thumbnails. Episodes stored a legacy remote thumbnail URL.
+
+Decision: Centralize size/type/filename validation, randomize stored names, bound
+image pixels and decode/re-encode accepted PNG/JPEG/WebP images. Store MP4/WebM as
+inert files after MIME/signature/size checks; remove shell-based thumbnail work.
+Use local upload paths. Retain old/shared media on replacement and record deletion;
+filesystem cleanup needs a separate inventory and ownership decision.
+
+Consequences: Invalid replacement cannot destroy the previous record or file.
+Local Apache serves only generated media names with script execution disabled.
+Video checks establish container/type containment, not comprehensive decoding or
+malware safety. There is no antivirus, storage quota, orphan cleanup or production
+server certification in this phase. PHP's full_path field is checked because it
+normalizes the ordinary name field before the application sees traversal input.
+
+Verification: All image handlers and the generated original MP4 succeed over HTTP;
+PHP disguise, SVG, mismatched/malformed images, traversal and oversize are rejected.
+Images lose appended payloads and failed replacements preserve old files. Posted
+existing collection paths cannot replace database-owned values. Tests passed in
+`LOCAL_DEV_RESULTS.json`; no legacy media was imported or deleted.
+
+## 2026-10-25 — Database claim before bot delivery
+
+Context: Validate-then-send-then-mark-used allowed two independent processes to
+send the same active token. A failed mark-used response was ignored. Token expiry
+also changed automatically on UPDATE, making a claim unsafe without schema repair.
+
+Decision: Atomically reserve an active, unused, unexpired token for its assigned
+bot and recipient hash. Store a hash of a random claim receipt. Require the proof
+for claimed → sending → completed/uncertain transitions, consume only acknowledged
+sends, and deny the old mark-used bypass. Remove automatic expiry updates. Never
+release sending/uncertain claims on a timer or retry after an ambiguous completion.
+The migration is additive and applied only after the launcher verifies its owned
+local database identity. Fresh creation remains data-free.
+
+Consequences: Honest adapter workers get one cross-process claim; a shared API key
+still makes those workers a trust boundary. The claim receipt is bearer material
+and must not be logged. This is not distributed exactly-once delivery: external
+acknowledgement can be lost and delivery-tier transport ambiguity is still possible.
+Held claims need an operator reconciliation workflow, deliberately not implemented
+as automatic reset. Real WhatsApp and production schema upgrades remain disabled.
+
+Verification: Thirty-two independent HTTP workers produce one winner. Wrong owner,
+receipt, assigned bot, pre-send completion, replay, inactive/expired tokens and late
+begin are denied. Stale sending and failed claims remain held; completion after a
+valid begin can consume even if expiry passes during delivery. Six fake bot/client
+checks and 22 schema/bridge checks pass. No real recipient was contacted.
