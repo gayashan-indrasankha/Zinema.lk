@@ -6,6 +6,16 @@ scope after the local/staging prerequisites in PRODUCTION_STAGING.md are satisfi
 No real account, mailbox, Facebook resource, WhatsApp recipient/group, production
 server, DNS entry or hosting resource was used by the test suites.
 
+Revision 2026-10-26: private PHP/Node fake connection, 102-case bot fake lifecycle,
+SQL/fake delivery and isolated synthetic TLS/backup/restore/load/outage rehearsals
+now have executed evidence (EXTRACTOR_CONNECTION.md, BOT_LIFECYCLE.md,
+STAGING_REHEARSAL.md). These do not satisfy real hosting/provider acceptance.
+Before approval, supply a selected isolated staging origin and reviewed live
+extractor configuration, dedicated-account pairing flow, supervisor/lease review,
+held-maintenance handling, off-host backup/key/alert arrangements and the exact
+private account/recipient allowlist. The worker currently stops on pairing rather
+than displaying QR data; do not enable it and assume a pairing path is ready.
+
 ## Approval record (keep actual identifiers privately)
 
 Record a plan revision/source commit, approved staging origin, selected cases,

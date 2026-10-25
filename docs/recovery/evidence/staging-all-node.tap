@@ -1,0 +1,681 @@
+TAP version 13
+# Subtest: Local encrypted backup boundaries and authenticated recovery
+ok 1 - Local encrypted backup boundaries and authenticated recovery
+  ---
+  duration_ms: 38.7809
+  type: 'test'
+  ...
+# Subtest: API readiness requires exact authenticated bridge/protocol response
+ok 2 - API readiness requires exact authenticated bridge/protocol response
+  ---
+  duration_ms: 30.3338
+  type: 'test'
+  ...
+# Subtest: API rejects upstream diagnostics without reflecting their content
+ok 3 - API rejects upstream diagnostics without reflecting their content
+  ---
+  duration_ms: 8.6275
+  type: 'test'
+  ...
+# Subtest: API bounds its complete response body
+ok 4 - API bounds its complete response body
+  ---
+  duration_ms: 12.4975
+  type: 'test'
+  ...
+# Subtest: API absolute deadline closes a stalled response even without an idle timeout event
+ok 5 - API absolute deadline closes a stalled response even without an idle timeout event
+  ---
+  duration_ms: 54.8601
+  type: 'test'
+  ...
+# Subtest: Interrupted and malformed API bodies fail without leaving an unresolved request
+ok 6 - Interrupted and malformed API bodies fail without leaving an unresolved request
+  ---
+  duration_ms: 6.2188
+  type: 'test'
+  ...
+# Subtest: Unavailable metadata cannot authorize a cache refresh or successful audit completion
+ok 7 - Unavailable metadata cannot authorize a cache refresh or successful audit completion
+  ---
+  duration_ms: 4.6469
+  type: 'test'
+  ...
+# Subtest: Fake SDK worker has one set of jobs/timers across open, duplicate open and reconnect
+ok 8 - Fake SDK worker has one set of jobs/timers across open, duplicate open and reconnect
+  ---
+  duration_ms: 52.4644
+  type: 'test'
+  ...
+# Subtest: Close during API readiness cannot resurrect jobs or online timers from the stale open
+ok 9 - Close during API readiness cannot resurrect jobs or online timers from the stale open
+  ---
+  duration_ms: 15.4895
+  type: 'test'
+  ...
+# Subtest: QR payload is never logged and stops the worker for a separately reviewed pairing flow
+ok 10 - QR payload is never logged and stops the worker for a separately reviewed pairing flow
+  ---
+  duration_ms: 15.9087
+  type: 'test'
+  ...
+# Subtest: Signal shutdown has a hard drain deadline and refuses late socket events
+ok 11 - Signal shutdown has a hard drain deadline and refuses late socket events
+  ---
+  duration_ms: 22.7469
+  type: 'test'
+  ...
+# Subtest: Unavailable API readiness fails closed with session evidence retained
+ok 12 - Unavailable API readiness fails closed with session evidence retained
+  ---
+  duration_ms: 16.9996
+  type: 'test'
+  ...
+# Subtest: Fake incoming commands are gated by readiness and legacy processing reports held status
+ok 13 - Fake incoming commands are gated by readiness and legacy processing reports held status
+  ---
+  duration_ms: 24.6453
+  type: 'test'
+  ...
+Queued task failed; sensitive details suppressed.
+# Subtest: Incoming command queue rejects overflow and runs accepted tasks sequentially
+ok 14 - Incoming command queue rejects overflow and runs accepted tasks sequentially
+  ---
+  duration_ms: 0.8688
+  type: 'test'
+  ...
+💓 Health monitor started (reporting every 1s)
+💓 Health monitor stopped
+💓 Health monitor started (reporting every 1s)
+💓 Health monitor stopped
+# Subtest: Incoming task failure does not prevent the next accepted command
+ok 15 - Incoming task failure does not prevent the next accepted command
+  ---
+  duration_ms: 0.6938
+  type: 'test'
+  ...
+# Subtest: Administrator identity comparison rejects substring, malformed and empty identities
+ok 16 - Administrator identity comparison rejects substring, malformed and empty identities
+  ---
+  duration_ms: 0.2105
+  type: 'test'
+  ...
+# Subtest: Health accepts a fictional Baileys user identity
+ok 17 - Health accepts a fictional Baileys user identity
+  ---
+  duration_ms: 0.2789
+  type: 'test'
+  ...
+# Subtest: Repeated monitor starts retain one timer and stop clears it
+ok 18 - Repeated monitor starts retain one timer and stop clears it
+  ---
+  duration_ms: 0.8987
+  type: 'test'
+  ...
+# Subtest: Reconnect backoff survives connection attempts and has a hard bound
+ok 19 - Reconnect backoff survives connection attempts and has a hard bound
+  ---
+  duration_ms: 0.3936
+  type: 'test'
+  ...
+# Subtest: Duplicate close events schedule one retry; login resets budget
+ok 20 - Duplicate close events schedule one retry; login resets budget
+  ---
+  duration_ms: 0.1406
+  type: 'test'
+  ...
+# Subtest: A rejected reconnect retries within the same budget without unhandled errors
+ok 21 - A rejected reconnect retries within the same budget without unhandled errors
+  ---
+  duration_ms: 0.1686
+  type: 'test'
+  ...
+# Subtest: A close while connect is unresolved cannot start an overlapping connection
+ok 22 - A close while connect is unresolved cannot start an overlapping connection
+  ---
+  duration_ms: 0.1191
+  type: 'test'
+  ...
+# Subtest: Stopping during reconnect prevents a rejected in-flight attempt from rescheduling
+ok 23 - Stopping during reconnect prevents a rejected in-flight attempt from rescheduling
+  ---
+  duration_ms: 0.1016
+  type: 'test'
+  ...
+# Subtest: Stopped health collection cannot publish a late online heartbeat
+ok 24 - Stopped health collection cannot publish a late online heartbeat
+  ---
+  duration_ms: 0.1571
+  type: 'test'
+  ...
+# Subtest: Shutdown rejects new commands and drops only work that has not begun
+ok 25 - Shutdown rejects new commands and drops only work that has not begun
+  ---
+  duration_ms: 0.1383
+  type: 'test'
+  ...
+# Subtest: Structured worker logger drops raw values and accepts only bounded safe counts
+ok 26 - Structured worker logger drops raw values and accepts only bounded safe counts
+  ---
+  duration_ms: 1.1542
+  type: 'test'
+  ...
+# Subtest: Interrupted warming retains its checkpoint and resumes original work after restart
+ok 27 - Interrupted warming retains its checkpoint and resumes original work after restart
+  ---
+  duration_ms: 15.2753
+  type: 'test'
+  ...
+# Subtest: Corrupt warming evidence fails closed and remains available for review
+ok 28 - Corrupt warming evidence fails closed and remains available for review
+  ---
+  duration_ms: 4.0867
+  type: 'test'
+  ...
+# Subtest: Scheduler start is idempotent and every warming job has an explicit time zone
+ok 29 - Scheduler start is idempotent and every warming job has an explicit time zone
+  ---
+  duration_ms: 4.7816
+  type: 'test'
+  ...
+# Subtest: Auto refresh has one explicit-time-zone job across repeated starts
+ok 30 - Auto refresh has one explicit-time-zone job across repeated starts
+  ---
+  duration_ms: 3.346
+  type: 'test'
+  ...
+# Subtest: Clearing pending uploads preserves deduplication for an active owner
+ok 31 - Clearing pending uploads preserves deduplication for an active owner
+  ---
+  duration_ms: 2.1626
+  type: 'test'
+  ...
+# Subtest: Media ingestion preserves an existing master and supports idempotent replay
+ok 32 - Media ingestion preserves an existing master and supports idempotent replay
+  ---
+  duration_ms: 23.3757
+  type: 'test'
+  ...
+# Subtest: Media paths reject malformed identifiers/types/extensions before creating paths
+ok 33 - Media paths reject malformed identifiers/types/extensions before creating paths
+  ---
+  duration_ms: 5.0259
+  type: 'test'
+  ...
+# Subtest: Media discovery ignores unowned names and links instead of advertising them
+ok 34 - Media discovery ignores unowned names and links instead of advertising them
+  ---
+  duration_ms: 11.468
+  type: 'test'
+  ...
+# Subtest: Original movie and episode-part hashes survive a new file manager instance
+ok 35 - Original movie and episode-part hashes survive a new file manager instance
+  ---
+  duration_ms: 25.5079
+  type: 'test'
+  ...
+# Subtest: Stopping an active warming loop checkpoints the next file without another send
+ok 36 - Stopping an active warming loop checkpoints the next file without another send
+  ---
+  duration_ms: 15.304
+  type: 'test'
+  ...
+# Subtest: Lost maintenance acknowledgement is held across restart and force refresh cannot replay it
+ok 37 - Lost maintenance acknowledgement is held across restart and force refresh cannot replay it
+  ---
+  duration_ms: 7.2721
+  type: 'test'
+  ...
+# Subtest: Range refresh uses the checkpointed warmer and preserves part identity
+ok 38 - Range refresh uses the checkpointed warmer and preserves part identity
+  ---
+  duration_ms: 10.4098
+  type: 'test'
+  ...
+# Subtest: Legacy cold-delivery queues remain held and byte-identical without sending
+ok 39 - Legacy cold-delivery queues remain held and byte-identical without sending
+  ---
+  duration_ms: 7.4597
+  type: 'test'
+  ...
+# Subtest: Acknowledged maintenance sends clear deadlines and mapping failure holds the work
+ok 40 - Acknowledged maintenance sends clear deadlines and mapping failure holds the work
+  ---
+  duration_ms: 23.0863
+  type: 'test'
+  ...
+# Subtest: Explicit local clock is independent of host timezone at both delivery window boundaries
+ok 41 - Explicit local clock is independent of host timezone at both delivery window boundaries
+  ---
+  duration_ms: 7.0667
+  type: 'test'
+  ...
+# Subtest: A lost recipient acknowledgement cannot retry after reconnect or fall through delivery tiers
+ok 42 - A lost recipient acknowledgement cannot retry after reconnect or fall through delivery tiers
+  ---
+  duration_ms: 3.9693
+  type: 'test'
+  ...
+# Subtest: A worker lease excludes a second owner and releases only its own lock
+ok 43 - A worker lease excludes a second owner and releases only its own lock
+  ---
+  duration_ms: 12.3225
+  type: 'test'
+  ...
+# Subtest: Stale or changed worker leases stay held rather than deleting session state
+ok 44 - Stale or changed worker leases stay held rather than deleting session state
+  ---
+  duration_ms: 10.2984
+  type: 'test'
+  ...
+# Subtest: Cooperating concurrent ingestion never overwrites a published original
+ok 45 - Cooperating concurrent ingestion never overwrites a published original
+  ---
+  duration_ms: 19.3789
+  type: 'test'
+  ...
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+❌ TIER 1: No store available, not in persistent cache
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+❌ TIER 1: No store available, not in persistent cache
+🔍 TIER 2: Attempting forward for movie_1
+🔍 TIER 2: Trying direct forward with messageId=fictional-cache-id
+🔍 TIER 2: Fetched 1 messages from fictional-group
+✅ TIER 2: Found message by ID, forwarding...
+💾 Saved 1 messages to cache
+   ⏱️ Upload timeout: 5.0 min (file: 0 MB)
+📄 Sending as DOCUMENT: sample.mp4 to fictional-recipient
+❌ TIER 3: performTier3Upload error: Delivery acknowledgement unavailable
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-23764\media
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-23764\media\movies
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-23764\media\episodes
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-23764\media\temp
+📥 Queued: movie_1_0 (position 1, priority 0)
+🔄 Upload queue processing started (1 items)
+📤 Processing: movie_1_0 (1/1 active)
+✅ Upload queue empty. Stats: 0 processed, 0 failed, 0 skipped
+📥 Queued: movie_2_0 (position 1, priority 0)
+🔄 Upload queue processing started (1 items)
+📥 Queued: movie_3_0 (position 2, priority 0)
+# Subtest: Scheduled group refresh requires an acknowledgement and verified log completion
+ok 46 - Scheduled group refresh requires an acknowledgement and verified log completion
+  ---
+  duration_ms: 12.0937
+  type: 'test'
+  ...
+# Subtest: Unconfirmed group refresh is held and not replayed by the next scheduled cycle
+ok 47 - Unconfirmed group refresh is held and not replayed by the next scheduled cycle
+  ---
+  duration_ms: 8.8205
+  type: 'test'
+  ...
+# Subtest: Refresh metadata outage does not trigger an upload or leave the maintenance gate busy
+ok 48 - Refresh metadata outage does not trigger an upload or leave the maintenance gate busy
+  ---
+  duration_ms: 2.8294
+  type: 'test'
+  ...
+# Subtest: cached-message forwarding reaches only the fake client
+ok 49 - cached-message forwarding reaches only the fake client
+  ---
+  duration_ms: 2.2083
+  type: 'test'
+  ...
+# Subtest: cache miss and missing local file return a failure
+ok 50 - cache miss and missing local file return a failure
+  ---
+  duration_ms: 1.1072
+  type: 'test'
+  ...
+# Subtest: storage-group lookup forwards using the fake client
+ok 51 - storage-group lookup forwards using the fake client
+  ---
+  duration_ms: 2.3656
+  type: 'test'
+  ...
+# Subtest: coalesced requests deliver and resolve waiting recipients
+ok 52 - coalesced requests deliver and resolve waiting recipients
+  ---
+  duration_ms: 0.6369
+  type: 'test'
+  ...
+# Subtest: local upload must reject a missing delivery acknowledgement
+ok 53 - local upload must reject a missing delivery acknowledgement
+  ---
+  duration_ms: 1.8833
+  type: 'test'
+  ...
+# Subtest: file manager resolves fixture media and absent files
+ok 54 - file manager resolves fixture media and absent files
+  ---
+  duration_ms: 4.619
+  type: 'test'
+  ...
+✅ Completed: movie_1_0
+📤 Processing: movie_2_0 (1/1 active)
+✅ Completed: movie_2_0
+📤 Processing: movie_3_0 (1/1 active)
+✅ Upload queue empty. Stats: 2 processed, 0 failed, 0 skipped
+✅ Completed: movie_3_0
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+❌ TIER 1: Error - Delivery acknowledgement unavailable
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+❌ TIER 1: Error - Delivery acknowledgement unavailable
+   ⏱️ Upload timeout: 5.0 min (file: 0 MB)
+📄 Sending as DOCUMENT: acknowledged.mp4 to fictional-recipient
+📬 TIER 3: sendMessage returned: key=fictional-sent-id, remoteJid=undefined
+💾 Saved 1 messages to cache
+✅ TIER 3: Upload complete! New messageId=fictional-sent-id saved to DB
+# Subtest: upload queue respects configured concurrency with fake uploads
+ok 55 - upload queue respects configured concurrency with fake uploads
+  ---
+  duration_ms: 1050.4057
+  type: 'test'
+  ...
+# Subtest: concurrent recipients and duplicate requests await acknowledgement
+ok 56 - concurrent recipients and duplicate requests await acknowledgement
+  ---
+  duration_ms: 1.1332
+  type: 'test'
+  ...
+# Subtest: failed primary delivery settles all coalesced recipients as failures
+ok 57 - failed primary delivery settles all coalesced recipients as failures
+  ---
+  duration_ms: 0.5034
+  type: 'test'
+  ...
+# Subtest: one recipient rejection is not reported as a successful delivery
+ok 58 - one recipient rejection is not reported as a successful delivery
+  ---
+  duration_ms: 0.5863
+  type: 'test'
+  ...
+# Subtest: cached forwarding also rejects an absent acknowledgement
+ok 59 - cached forwarding also rejects an absent acknowledgement
+  ---
+  duration_ms: 0.4472
+  type: 'test'
+  ...
+# Subtest: successful disk upload releases its timeout and retains acknowledgement
+ok 60 - successful disk upload releases its timeout and retains acknowledgement
+  ---
+  duration_ms: 4.8234
+  type: 'test'
+  ...
+# Subtest: bot accepts explicit local configuration
+ok 61 - bot accepts explicit local configuration
+  ---
+  duration_ms: 0.0969
+  type: 'test'
+  ...
+# Subtest: bot rejects missing configuration
+ok 62 - bot rejects missing configuration
+  ---
+  duration_ms: 0.0928
+  type: 'test'
+  ...
+# Subtest: bot rejects non-loopback development API
+ok 63 - bot rejects non-loopback development API
+  ---
+  duration_ms: 0.0726
+  type: 'test'
+  ...
+# Subtest: bot rejects preserved WhatsApp session path
+ok 64 - bot rejects preserved WhatsApp session path
+  ---
+  duration_ms: 0.0766
+  type: 'test'
+  ...
+# Subtest: bot cannot enable live access merely through local flag
+ok 65 - bot cannot enable live access merely through local flag
+  ---
+  duration_ms: 0.0736
+  type: 'test'
+  ...
+# Subtest: bot entry point exits at the live startup guard
+ok 66 - bot entry point exits at the live startup guard
+  ---
+  duration_ms: 55.0399
+  type: 'test'
+  ...
+# Subtest: extractor disabled mode binds only loopback
+ok 67 - extractor disabled mode binds only loopback
+  ---
+  duration_ms: 0.2987
+  type: 'test'
+  ...
+# Subtest: extractor rejects live mode
+ok 68 - extractor rejects live mode
+  ---
+  duration_ms: 0.1379
+  type: 'test'
+  ...
+# Subtest: extractor rejects non-local fixture URL
+ok 69 - extractor rejects non-local fixture URL
+  ---
+  duration_ms: 0.1654
+  type: 'test'
+  ...
+# Subtest: extractor accepts local fixture
+ok 70 - extractor accepts local fixture
+  ---
+  duration_ms: 0.1255
+  type: 'test'
+  ...
+# Subtest: local extractor refuses absent service credential
+ok 71 - local extractor refuses absent service credential
+  ---
+  duration_ms: 0.0821
+  type: 'test'
+  ...
+# Subtest: Public address filter excludes loopback, private, mapped and metadata ranges
+ok 72 - Public address filter excludes loopback, private, mapped and metadata ranges
+  ---
+  duration_ms: 0.3414
+  type: 'test'
+  ...
+# Subtest: HTTPS request pins validated DNS results and preserves TLS verification
+ok 73 - HTTPS request pins validated DNS results and preserves TLS verification
+  ---
+  duration_ms: 1.21
+  type: 'test'
+  ...
+# Subtest: Mixed private/public DNS answers fail before any HTTP request
+ok 74 - Mixed private/public DNS answers fail before any HTTP request
+  ---
+  duration_ms: 0.2551
+  type: 'test'
+  ...
+# Subtest: Redirect hosts are validated before resolution or a second request
+ok 75 - Redirect hosts are validated before resolution or a second request
+  ---
+  duration_ms: 0.3577
+  type: 'test'
+  ...
+# Subtest: Allowed redirects recheck DNS and redirect chains are bounded
+ok 76 - Allowed redirects recheck DNS and redirect chains are bounded
+  ---
+  duration_ms: 0.8185
+  type: 'test'
+  ...
+# Subtest: Oversized, non-HTML and failed responses are rejected
+ok 77 - Oversized, non-HTML and failed responses are rejected
+  ---
+  duration_ms: 4.8794
+  type: 'test'
+  ...
+# Subtest: A stalled DNS resolver is bounded without any network call
+ok 78 - A stalled DNS resolver is bounded without any network call
+  ---
+  duration_ms: 0.3925
+  type: 'test'
+  ...
+# Subtest: A stalled HTTP response has an absolute deadline
+ok 79 - A stalled HTTP response has an absolute deadline
+  ---
+  duration_ms: 3.982
+  type: 'test'
+  ...
+# Subtest: Facebook host normalization preserves the original shared path
+ok 80 - Facebook host normalization preserves the original shared path
+  ---
+  duration_ms: 0.1465
+  type: 'test'
+  ...
+# Subtest: Deceptive, credential-bearing and non-HTTPS Facebook URLs are rejected
+ok 81 - Deceptive, credential-bearing and non-HTTPS Facebook URLs are rejected
+  ---
+  duration_ms: 0.2112
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction playable_url_quality_hd
+ok 82 - Original HTML fixture extraction playable_url_quality_hd
+  ---
+  duration_ms: 0.3635
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction browser_native_hd_url
+ok 83 - Original HTML fixture extraction browser_native_hd_url
+  ---
+  duration_ms: 0.1803
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction hd_src
+ok 84 - Original HTML fixture extraction hd_src
+  ---
+  duration_ms: 0.1325
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction playable_url
+ok 85 - Original HTML fixture extraction playable_url
+  ---
+  duration_ms: 0.1901
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction browser_native_sd_url
+ok 86 - Original HTML fixture extraction browser_native_sd_url
+  ---
+  duration_ms: 0.2852
+  type: 'test'
+  ...
+# Subtest: HD is preferred over SD; unsafe candidates do not become media URLs
+ok 87 - HD is preferred over SD; unsafe candidates do not become media URLs
+  ---
+  duration_ms: 0.2737
+  type: 'test'
+  ...
+# Subtest: Empty, private/login and oversized HTML produce no result
+ok 88 - Empty, private/login and oversized HTML produce no result
+  ---
+  duration_ms: 0.0981
+  type: 'test'
+  ...
+# Subtest: Rewritten movies search resolves root API and detail links
+ok 89 - Rewritten movies search resolves root API and detail links
+  ---
+  duration_ms: 1.7587
+  type: 'test'
+  ...
+# Subtest: Rewritten series search resolves root API and detail links
+ok 90 - Rewritten series search resolves root API and detail links
+  ---
+  duration_ms: 0.8577
+  type: 'test'
+  ...
+# Subtest: Rewritten collections search resolves root API and detail links
+ok 91 - Rewritten collections search resolves root API and detail links
+  ---
+  duration_ms: 0.8173
+  type: 'test'
+  ...
+# Subtest: No-results query and API title stay inert text
+ok 92 - No-results query and API title stay inert text
+  ---
+  duration_ms: 1.4338
+  type: 'test'
+  ...
+# Subtest: Clearing search invalidates an older response
+ok 93 - Clearing search invalidates an older response
+  ---
+  duration_ms: 0.8034
+  type: 'test'
+  ...
+# Subtest: Trailer markup supports muted playback and explicit browser controls
+ok 94 - Trailer markup supports muted playback and explicit browser controls
+  ---
+  duration_ms: 1.3668
+  type: 'test'
+  ...
+# Subtest: Overlapping API pages append each trailer once
+ok 95 - Overlapping API pages append each trailer once
+  ---
+  duration_ms: 1.1587
+  type: 'test'
+  ...
+# Subtest: An empty final page stops repeated infinite-scroll requests
+ok 96 - An empty final page stops repeated infinite-scroll requests
+  ---
+  duration_ms: 0.8061
+  type: 'test'
+  ...
+# Subtest: Autoplay denial exposes controls instead of an endless spinner
+ok 97 - Autoplay denial exposes controls instead of an endless spinner
+  ---
+  duration_ms: 0.8249
+  type: 'test'
+  ...
+# Subtest: Trailer share links target the real feed route
+ok 98 - Trailer share links target the real feed route
+  ---
+  duration_ms: 0.8202
+  type: 'test'
+  ...
+# Subtest: Failed trailer actions restore the exact prior count and saved state
+ok 99 - Failed trailer actions restore the exact prior count and saved state
+  ---
+  duration_ms: 1.0758
+  type: 'test'
+  ...
+# Subtest: Guest reactions open sign-in without a phantom state or POST
+ok 100 - Guest reactions open sign-in without a phantom state or POST
+  ---
+  duration_ms: 0.8409
+  type: 'test'
+  ...
+# Subtest: Appending initializes and observes new videos without resetting existing playback
+ok 101 - Appending initializes and observes new videos without resetting existing playback
+  ---
+  duration_ms: 1.1202
+  type: 'test'
+  ...
+# Subtest: A shared trailer beyond page one is loaded and scrolled into view
+ok 102 - A shared trailer beyond page one is loaded and scrolled into view
+  ---
+  duration_ms: 1.0012
+  type: 'test'
+  ...
+# Subtest: Fully buffered loop transitions do not cover a playable frame with a spinner
+ok 103 - Fully buffered loop transitions do not cover a playable frame with a spinner
+  ---
+  duration_ms: 0.9438
+  type: 'test'
+  ...
+1..103
+# tests 103
+# suites 0
+# pass 103
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1803.5659

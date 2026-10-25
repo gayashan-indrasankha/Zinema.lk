@@ -487,3 +487,27 @@ replace, the real CLI startup guard and future approved provider testing.
 BOT_LIFECYCLE.md records executed tests/failures and limits. Production/live access,
 real recipients, deployment, remote Git and publishing remain disabled. Proceed
 only to an isolated synthetic staging rehearsal; no real host is selected yet.
+
+## 2026-10-26 — Isolated production-configuration rehearsal
+
+Bot checkpoint 0fb8566 was clean. Export committed allowlisted application files,
+keep backend/schema/private material outside the document root, and hash rehearsal
+templates separately. Never promote the development image/aliases/fixtures. Exercise
+APP_ENV=production only behind a temporary explicit local CA and exact loopback
+origin/fixture DB, with all providers disabled. No host or provider approval follows.
+
+Create fresh separately labelled source/restore targets with no published ports or
+default network route. Use separate DB credentials, a migration/bootstrap identity
+then CRUD-only runtime permissions. Preserve volumes/failures. Snapshot only after
+writers stop; authenticate/encrypt fixture backups with an external-to-archive key,
+validate archive entries and compare all restored row/file fingerprints before
+resuming writes. Do not erase/reuse the existing development target or import data.
+
+Executed TLS/security, proxy/CSRF/role/private-path, load, outage-alert, tamper and
+restore checks pass; exact evidence/limits are in STAGING_REHEARSAL.md and JSON.
+The fixture helper is buffered/capped, not a production streaming backup service.
+Synthetic PHP sessions/worker placeholder do not certify real SDK session recovery.
+Post-load resource samples are not peak measurements. Off-host keys/backups/alerts,
+large media, actual hosting and owner-approved live tests remain release gates.
+Private extractor remains local-only and QR pairing stops safely; both need reviewed
+promotion procedures. No production access, remote publication or deployment.
