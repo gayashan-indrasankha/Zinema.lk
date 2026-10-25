@@ -75,3 +75,15 @@ results. The schema bridge now uses claim → begin → complete for positive to
 consumption and explicitly asserts the old mark-used endpoint cannot bypass
 ownership. Negative expiry, duplicate-use, API-key and browser CSRF assertions
 remain. Docker and XAMPP fixtures must run sequentially because both own 8088.
+
+## Local operations follow-up
+
+Use `python dev/local.py test-operations` and `python dev/test_local_guard.py`
+for the CLI reconciliation, storage quota, advisory inventory and local-target
+boundary checks. The operator workflow and safety limits are in
+`../../../dev/OPERATIONS.md`. The test profile has separate fictional upload/state
+volumes and no published port. The creation schema is now v3 (38 tables, 2 views).
+Set `$env:ZINEMA_TEST_PHASE='OPERATIONS'` for the native commands to retain earlier
+repair/development evidence under new result names. The old negative assertions
+remain; held/reconciled token preservation is checked in a connection-local
+fictional temporary table, never by deleting existing development records.

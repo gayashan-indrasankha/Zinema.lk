@@ -4,6 +4,14 @@ Updated: 2026-10-25.
 
 ## Current phase
 
+Owner-requested local operator reconciliation and upload quota/cleanup inventory:
+**IN PROGRESS**. Starting state clean at `b9dead6` on `zinema/local-dev-safety`.
+Scope and intended behavior are recorded before implementation in
+`OPERATIONS_PHASE.md`. No production integration, publication or remote Git action
+is authorized. Existing development volumes/media and prior evidence are preserved.
+
+### Previous local development phase
+
 Owner-requested reproducible local development, fake mail/OAuth tests, uploads
 and distributed claims, and sanitized local Git baseline: **COMPLETE within the
 authorized local scope**. Source baseline commit: `9c48b7ca8a2b6535b6da0b408d49bbdfe7280f1a`

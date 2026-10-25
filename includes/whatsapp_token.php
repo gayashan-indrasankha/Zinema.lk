@@ -218,7 +218,8 @@ function getWhatsAppLink($token, $botNumber) {
  * @return int Number of deleted tokens
  */
 function cleanupExpiredTokens($conn) {
-    $stmt = $conn->prepare("DELETE FROM whatsapp_tokens WHERE expires_at < NOW() AND is_used = 0");
+    // Claim history is reconciliation evidence, even after expiry or manual closure.
+    $stmt = $conn->prepare("DELETE FROM whatsapp_tokens WHERE expires_at < NOW() AND is_used = 0 AND claim_hash IS NULL AND reconciled_at IS NULL");
     $stmt->execute();
     $deletedCount = $stmt->affected_rows;
     $stmt->close();

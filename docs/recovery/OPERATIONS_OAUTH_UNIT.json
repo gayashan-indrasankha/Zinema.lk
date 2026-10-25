@@ -1,0 +1,34 @@
+{
+  "tests": [
+    {
+      "name": "PKCE challenge matches a private session verifier",
+      "passed": true
+    },
+    {
+      "name": "Linking records the initiating account",
+      "passed": true
+    },
+    {
+      "name": "A valid state is consumed once",
+      "passed": true
+    },
+    {
+      "name": "Expired state is rejected and consumed",
+      "passed": true
+    },
+    {
+      "name": "Future-issued state is rejected",
+      "passed": true
+    },
+    {
+      "name": "Malformed state is rejected",
+      "passed": true
+    },
+    {
+      "name": "Outstanding flows are bounded",
+      "passed": true
+    }
+  ],
+  "passed": 7,
+  "total": 7
+}

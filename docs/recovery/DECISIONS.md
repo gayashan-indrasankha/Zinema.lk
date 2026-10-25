@@ -278,3 +278,73 @@ was created and left a clean tree. A documentation-only completion commit record
 this result; final staged/history checks and Git status are checked at handoff.
 Historical publication whitespace and comprehensive production/security readiness
 remain unresolved and were not relabeled as passing.
+
+## 2026-10-25 — Local operator closure with versioned claim evidence
+
+Context: Sending/uncertain claims intentionally remain held after failures, but
+there was no operator workflow. The expiry cleanup utility and disabled cron SQL
+could erase held evidence if invoked. The owner authorized a local fictional
+reconciliation phase and explicitly kept production/publishing disabled.
+
+Decision: Keep operator actions in a guarded CLI outside the public document root.
+Review a numeric ID and integer revision; require a fictional operator/evidence
+reference, explicit stopped-worker acknowledgement and a ten-minute minimum age.
+Under a row lock, compare revision, insert one audit and close the old token.
+Delivered consumes it; confirmed non-delivery deactivates it. Neither releases,
+reissues nor sends. Identical repeats return the existing audit; conflicting or
+stale reviews fail. Claim transitions increment revisions and reject reconciled
+rows. Preserve all claimed/reconciled records in expiry cleanup; keep cron disabled.
+
+Consequences: The operator's attestation is trusted, not externally proved. Age
+alone proves nothing about delivery or quiescence. Local Docker/DB privileges and
+the shared worker key remain trust boundaries. Audit rows are append-only through
+this tool, not cryptographically immutable against database administrators. There
+is no exactly-once or in-flight cancellation guarantee; live adapters stay disabled.
+
+Verification: Executed independent-process operator conflicts/replays, stale worker
+transitions, late begin/complete, age and target guards, secret-free listing and
+manual CLI list/review/acknowledge/resolve/audit/replay passed. Cleanup preservation
+runs against a session-local temporary table; no existing token was deleted.
+Fresh canonical schema and retained bridge checks passed 22/22 with 38 tables/2 views.
+
+## 2026-10-25 — Serialize physical upload quotas and keep cleanup advisory
+
+Context: Valid uploads were type/size checked, but retained/orphan files could grow
+without aggregate accounting. Legacy filename appearance does not prove ownership.
+
+Decision: In the portable development runtime, count every physical regular file
+and byte under one volume lock before exclusive creation, and record new-file
+provenance in a private manifest. Default to 64 MiB/500 files. Unknown/retained media
+counts; links, mismatched ownership and corrupt state fail closed. Keep the manifest
+outside public uploads. Inventory registered hashes and persisted media/path
+reference columns in a read-only DB snapshot, skip derived views, bound traversal/
+reference reads, and hold any incomplete scan. Only old, unchanged, registered,
+unreferenced media becomes a review candidate. Provide no deletion/apply command.
+
+Consequences: This is a local-volume quota, not a distributed quota or temporary
+processing limit. SQL and filesystem writes are separate; crash orphans still count
+and need review. Hashes detect drift, not a malicious trusted filesystem editor.
+Reference coverage is explicit and incomplete for arbitrary embedded/remote syntax.
+A snapshot/candidate does not prove deletion is safe. Legacy/shared/unknown media is
+preserved; recoverable quarantine and restore require a separately scoped phase.
+
+Verification: HTTP 507 preserves the old catalogue path, denied writes leave usage
+unchanged, concurrent file/byte limits do not oversubscribe, and shared/encoded/base
+references are retained. Tampered/missing/young/unknown/linked files and truncated
+references are held. Inventory changes no data. Separate fixture volumes isolate
+quota/tamper simulations; generated missing-file/link fixtures alone are disposable.
+
+## 2026-10-25 — Pin local Docker and exclude implicit environment loading
+
+Context: A tool labelled local must not follow a globally selected remote Docker
+context, and Compose's implicit environment discovery must not read preserved config.
+
+Decision: Inspect client context metadata before daemon access, accept only local
+Unix-socket/named-pipe endpoints, refuse DOCKER_HOST overrides, pin the inspected
+context in the launcher's private environment, and supply an explicit empty Compose
+environment file. Keep generated configuration and volume data private and preserved.
+
+Verification: Seven executed boundary unit cases reject simulated remote/override/
+broken contexts and unrelated/stopped/mismapped gateways before Compose, pin local transports and verify the explicit safe
+env-file. Real guarded startup and the operations suite are checked separately.
+No remote Docker daemon, Git remote, production provider or publishing was used.

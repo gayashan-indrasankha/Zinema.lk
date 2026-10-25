@@ -4,7 +4,7 @@ services:
       context: ..
       dockerfile: dev/web.Dockerfile
     networks: [isolated]
-    environment:
+    environment: &development_environment
       APP_ENV: development
       BASE_URL: http://127.0.0.1:8088
       DB_HOST: 127.0.0.1
@@ -30,10 +30,16 @@ services:
       MEDIA_MODE: disabled
       EXTRACTOR_MODE: disabled
       PAYMENT_MODE: disabled
+      UPLOAD_QUOTA_MODE: local
+      UPLOAD_STORAGE_OWNER: ${ZINEMA_DEV_PROJECT:?Use dev/local.py}
+      UPLOAD_STORAGE_STATE: /var/lib/zinema/storage
+      UPLOAD_MAX_BYTES: "67108864"
+      UPLOAD_MAX_FILES: "500"
     secrets: [db_password, oauth_secret, adapter_key, demo_password, control_key]
     volumes:
       - sessions:/var/lib/zinema/sessions
       - uploads:/var/www/html/uploads
+      - storage:/var/lib/zinema/storage
     healthcheck:
       test: [CMD, php, -r, "exit(@file_get_contents('http://127.0.0.1:8088/__dev/health.php') === 'ok' ? 0 : 1);"]
       interval: 3s
@@ -80,6 +86,22 @@ services:
       - "127.0.0.1:8088:8088"
       - "127.0.0.1:9081:9081"
     security_opt: [no-new-privileges:true]
+  operator-fixtures:
+    build:
+      context: ..
+      dockerfile: dev/web.Dockerfile
+    network_mode: service:web
+    profiles: [tools]
+    environment:
+      <<: *development_environment
+      UPLOAD_STORAGE_OWNER: ${ZINEMA_DEV_PROJECT}-operator-fixtures
+      ZINEMA_OPERATOR_FIXTURES: "1"
+    secrets: [db_password, oauth_secret, adapter_key, control_key, demo_password]
+    volumes:
+      - operator_uploads:/var/www/html/uploads
+      - operator_storage:/var/lib/zinema/storage
+    command: [php, -S, "127.0.0.1:9082", /opt/zinema/dev/fixture-router.php]
+    security_opt: [no-new-privileges:true]
   tests:
     build:
       context: ..
@@ -99,6 +121,9 @@ volumes:
   database:
   sessions:
   uploads:
+  storage:
+  operator_uploads:
+  operator_storage:
 secrets:
   db_password:
     file: ${ZINEMA_DEV_STATE}/db_password
