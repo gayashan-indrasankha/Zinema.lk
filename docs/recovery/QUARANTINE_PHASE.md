@@ -50,7 +50,7 @@ an explicit fixture verification event and reviewed recovery preserved its archi
 A complete rerun passed 49/49 before adding direct CLI coverage, recovery replay and
 unpublished-restore rollback. Private failed results remain preserved.
 
-The restricted Node token protocol run could not bind its loopback fixture socket.
+The restricted Node token protocol run could not connect to its loopback fixture socket (EACCES).
 It was rerun with local socket permission and passed 6/6. This was an execution
 boundary, not a passing test or an automatic-approval rejection. Production access
 was never requested. Final executed results follow after retained checks.
@@ -118,3 +118,19 @@ extractor dependencies, old installed trees, containers and exploitability.
 Only local Conventional Commits are prepared. No prior commit was amended/reset and
 no unrelated user change was staged (the phase began clean). The resulting source
 commit and final clean-tree/shutdown status follow in the local completion record.
+
+
+## Completed local handoff
+
+Source commit: `637327e55d772dcb6acce4383b226bbaee606bd5` (`feat(storage): add reviewed
+recoverable upload quarantine`). The source commit left a clean worktree. Final
+staged, all 384 candidate files and all local history scans returned zero findings;
+Git ignore/private-path and whitespace checks passed. Relevant executed checks and
+limits are recorded above. This documentation-only completion record follows in
+a separate local commit; no previous commit was amended or rewritten.
+
+All owned containers and native test processes stopped; loopback ports
+8088/9081/3307/8089/3334 were verified closed. Database/upload/rescue/audit volumes,
+private credentials and failed-test evidence remain preserved. Nothing was pushed,
+published or deployed, and no production service or real recipient was contacted.
+Start subsequent work by reading STATUS.md/DECISIONS.md and dev/QUARANTINE.md.
