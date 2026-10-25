@@ -13,7 +13,7 @@ import time
 import urllib.error
 import urllib.request
 sys.dont_write_bytecode = True
-from audit import ROOT, checked_runtime, port_open, run, wait_port, NO_WINDOW
+from audit import ROOT, checked_runtime, port_open, run, wait_port, NO_WINDOW, RESULT_PREFIX
 
 folder = checked_runtime(sys.argv[1])
 assert not port_open(3334), 'Do not reuse an unknown extractor'
@@ -45,7 +45,7 @@ for suite in ['config.test.cjs','bot.test.cjs']:
     result=run(['node','--test','--test-isolation=none','--test-reporter=tap',ROOT/'docs/recovery/tests'/suite])
     text=result.stdout+result.stderr
     # All emitted values originate from fictional test fixtures.
-    (ROOT/'docs/recovery/evidence'/f'repair-{suite}.tap').write_text(text,encoding='utf-8')
+    (ROOT/'docs/recovery/evidence'/f'{RESULT_PREFIX.lower()}-{suite}.tap').write_text(text,encoding='utf-8')
     node.append({'suite':suite,'exit':result.returncode,'passed':int(re.search(r'^# pass (\d+)',text,re.M)[1]),'failed':int(re.search(r'^# fail (\d+)',text,re.M)[1])})
 audits=[]
 bot_audit=folder/'bot-audit';bot_audit.mkdir(exist_ok=True)
@@ -63,6 +63,6 @@ for label,target in [('bot-existing-lockfile',bot_audit),('extractor-temporary-h
 http_lock=json.loads((folder/'extractor-deps/package-lock.json').read_text())
 versions={name:http_lock['packages']['node_modules/'+name]['version'] for name in ['express','cors','got']}
 summary={'extractor':rows,'extractor_test_versions':versions,'extractor_processes_stopped':True,'node_suites':node,'npm_audits':audits,'limitations':['Extractor test HTTP dependencies are locked in tests/extractor-http; Chromium/Puppeteer are not exercised or audited by this subset.','Bot audit covers the repaired lockfile, not the previous installed node_modules tree or exploitability. A clean isolated install is tested separately.','Fake-client bot tests do not establish live WhatsApp delivery.']}
-(ROOT/'docs/recovery/REPAIR_SERVICE_RESULTS.json').write_text(json.dumps(summary,indent=2)+'\n')
+(ROOT/f'docs/recovery/{RESULT_PREFIX}_SERVICE_RESULTS.json').write_text(json.dumps(summary,indent=2)+'\n')
 print(json.dumps(summary,indent=2))
 raise SystemExit(1 if any(not row['passed'] for row in rows) or any(suite['failed'] for suite in node) or any(audit['exit'] for audit in audits) else 0)

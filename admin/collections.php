@@ -1,6 +1,7 @@
 <?php
 require_once 'config.php';
 check_login();
+require_once __DIR__ . '/../includes/uploads.php';
 
 // Handle Delete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
@@ -14,13 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result()->fetch_assoc();
-    if ($result && !empty($result['cover_image'])) {
-        $filename = basename($result['cover_image']);
-        if (file_exists('../uploads/' . $filename)) {
-            unlink('../uploads/' . $filename);
-        }
-    }
-    
+    // Retain media; database paths never authorize filesystem deletion.
     $stmt = $conn->prepare("DELETE FROM collections WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -35,16 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete'])) {
     $genre = $_POST['genre'];
     $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
     
-    $cover_image_path = $_POST['existing_cover_image'] ?? '';
-
-    if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] == 0) {
-        $target_dir = "../uploads/";
-        $image_name = uniqid() . '_collection_' . basename($_FILES["cover_image"]["name"]);
-        $target_file = $target_dir . $image_name;
-        if (move_uploaded_file($_FILES["cover_image"]["tmp_name"], $target_file)) {
-            $cover_image_path = BASE_URL . '/uploads/' . $image_name;
-        }
+    $cover_image_path = '';
+    if ($id > 0) {
+        $lookup = $conn->prepare("SELECT cover_image FROM collections WHERE id = ?");
+        $lookup->bind_param("i", $id);
+        $lookup->execute();
+        $cover_image_path = $lookup->get_result()->fetch_assoc()['cover_image'] ?? '';
     }
+    $cover_image_path = store_catalogue_upload('cover_image', 'image', $cover_image_path);
 
     if ($id > 0) { // Update
         $stmt = $conn->prepare("UPDATE collections SET title = ?, description = ?, genre = ?, cover_image = ? WHERE id = ?");

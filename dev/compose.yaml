@@ -1,0 +1,114 @@
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: dev/web.Dockerfile
+    networks: [isolated]
+    environment:
+      APP_ENV: development
+      BASE_URL: http://127.0.0.1:8088
+      DB_HOST: 127.0.0.1
+      DB_PORT: "3306"
+      DB_NAME: zinema_recovery_development
+      DB_USER: zinema_recovery_dev
+      SESSION_SAVE_PATH: /var/lib/zinema/sessions
+      ALLOW_LIVE_INTEGRATIONS: "false"
+      MAIL_MODE: local
+      MAIL_HOST: 127.0.0.1
+      MAIL_PORT: "1025"
+      MAIL_USERNAME: local-sink
+      MAIL_PASSWORD: local-sink-unused
+      MAIL_FROM_EMAIL: demo@example.invalid
+      MAIL_FROM_NAME: Zinema Local Demo
+      OAUTH_MODE: local
+      GOOGLE_CLIENT_ID: zinema-local
+      GOOGLE_REDIRECT_URI: http://127.0.0.1:8088/google-callback.php
+      OAUTH_AUTHORIZE_URL: http://127.0.0.1:9081/authorize
+      OAUTH_TOKEN_URL: http://127.0.0.1:9081/token
+      OAUTH_USERINFO_URL: http://127.0.0.1:9081/userinfo
+      WHATSAPP_MODE: disabled
+      MEDIA_MODE: disabled
+      EXTRACTOR_MODE: disabled
+      PAYMENT_MODE: disabled
+    secrets: [db_password, oauth_secret, adapter_key, demo_password, control_key]
+    volumes:
+      - sessions:/var/lib/zinema/sessions
+      - uploads:/var/www/html/uploads
+    healthcheck:
+      test: [CMD, php, -r, "exit(@file_get_contents('http://127.0.0.1:8088/__dev/health.php') === 'ok' ? 0 : 1);"]
+      interval: 3s
+      timeout: 2s
+      retries: 40
+    security_opt: [no-new-privileges:true]
+  db:
+    image: mariadb@sha256:0d0945c57f75b3a3b9ebe71aedaaad005fa5305054e8fca3d2e42a8c92b43b5e
+    network_mode: service:web
+    command: [--bind-address=127.0.0.1, --skip-name-resolve]
+    environment:
+      MARIADB_DATABASE: zinema_recovery_development
+      MARIADB_USER: zinema_recovery_dev
+      MARIADB_PASSWORD_FILE: /run/secrets/db_password
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root
+    secrets: [db_password, db_root]
+    volumes:
+      - database:/var/lib/mysql
+      - ../database/schema.sql:/docker-entrypoint-initdb.d/001-schema.sql:ro
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 3s
+      timeout: 2s
+      retries: 40
+  fakes:
+    build:
+      context: ..
+      dockerfile: dev/fakes.Dockerfile
+    network_mode: service:web
+    secrets: [control_key, oauth_secret]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; assert urllib.request.urlopen('http://127.0.0.1:9081/health').read() == b'ok'"]
+      interval: 3s
+      timeout: 2s
+      retries: 20
+    security_opt: [no-new-privileges:true]
+  gateway:
+    build:
+      context: ..
+      dockerfile: dev/fakes.Dockerfile
+    command: [python, -B, dev/gateway.py]
+    networks: [isolated, edge]
+    ports:
+      - "127.0.0.1:8088:8088"
+      - "127.0.0.1:9081:9081"
+    security_opt: [no-new-privileges:true]
+  tests:
+    build:
+      context: ..
+      dockerfile: dev/fakes.Dockerfile
+    network_mode: service:web
+    profiles: [tools]
+    secrets: [control_key, demo_password, adapter_key, oauth_secret]
+    command: [python, -B, dev/integration.py]
+    volumes:
+      - ${ZINEMA_DEV_STATE:?Run python dev/local.py init first}/results:/results
+    security_opt: [no-new-privileges:true]
+networks:
+  edge: {}
+  isolated:
+    internal: true
+volumes:
+  database:
+  sessions:
+  uploads:
+secrets:
+  db_password:
+    file: ${ZINEMA_DEV_STATE}/db_password
+  db_root:
+    file: ${ZINEMA_DEV_STATE}/db_root
+  oauth_secret:
+    file: ${ZINEMA_DEV_STATE}/oauth_secret
+  adapter_key:
+    file: ${ZINEMA_DEV_STATE}/adapter_key
+  control_key:
+    file: ${ZINEMA_DEV_STATE}/control_key
+  demo_password:
+    file: ${ZINEMA_DEV_STATE}/demo_password

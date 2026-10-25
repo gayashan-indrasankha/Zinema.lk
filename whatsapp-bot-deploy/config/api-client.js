@@ -52,7 +52,7 @@ async function apiRequest(endpoint, data = {}) {
                         resolve(parsed);
                     }
                 } catch (e) {
-                    reject(new Error(`Invalid JSON response: ${responseData.substring(0, 100)}`));
+                    reject(new Error('Invalid JSON response'));
                 }
             });
         });
@@ -79,7 +79,6 @@ async function apiRequest(endpoint, data = {}) {
 async function getTokenData(token) {
     try {
         const response = await apiRequest('validate-token.php', { token });
-        console.log('🎫 Token Validation Result:', JSON.stringify(response, null, 2));
         return response;
     } catch (error) {
         console.error('API Error (getTokenData):', error.message);
@@ -381,8 +380,17 @@ async function getAgingMessages(daysOld = 10) {
     }
 }
 
+function claimRequest(action, data, recipient) {
+    const recipient_hash = require('crypto').createHash('sha256').update(recipient).digest('hex');
+    return apiRequest('claim-token.php', { ...data, action, recipient_hash, bot_id: recoveryConfig.botInstanceId });
+}
+function claimToken(token, recipient) { return claimRequest('claim', { token }, recipient); }
+function transitionToken(action, proof, recipient) { return claimRequest(action, proof, recipient); }
+
 // Create a client object with request method for HealthMonitor
 const apiClient = {
+    claimToken,
+    transitionToken,
     request: apiRequest,
     getTokenData,
     markTokenAsUsed,

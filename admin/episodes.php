@@ -1,6 +1,7 @@
 <?php
 require_once 'config.php';
 check_login();
+require_once __DIR__ . '/../includes/uploads.php';
 
 $admin_id = $_SESSION['admin_id'];
 $message = '';
@@ -14,14 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_episode'])) {
     $stmt->execute();
     $result = $stmt->get_result()->fetch_assoc();
     
-    // Delete the thumbnail file if it exists
-    if ($result && !empty($result['thumb_image'])) {
-        $filename = basename($result['thumb_image']);
-        if (file_exists('../uploads/' . $filename)) {
-            unlink('../uploads/' . $filename);
-        }
-    }
-    
+    // Media cleanup requires separate review; retain legacy and shared files.
     $stmt = $conn->prepare("DELETE FROM episodes WHERE id = ?");
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
@@ -46,20 +40,7 @@ if (isset($_POST['add_episode'])) {
     
     $thumb_image_path = '';
 
-    // Handle thumbnail upload
-    if (isset($_FILES['thumb_image']) && $_FILES['thumb_image']['error'] == 0) {
-        $target_dir = "../uploads/";
-        if (!is_dir($target_dir)) {
-            mkdir($target_dir, 0755, true);
-        }
-        
-        $image_name = uniqid() . '_thumb_' . basename($_FILES["thumb_image"]["name"]);
-        $target_file = $target_dir . $image_name;
-        
-        if (move_uploaded_file($_FILES["thumb_image"]["tmp_name"], $target_file)) {
-            $thumb_image_path = 'https://sinhalamovies.web.lk/uploads/' . $image_name;
-        }
-    }
+    $thumb_image_path = store_catalogue_upload('thumb_image', 'image', $thumb_image_path);
 
     // Insert episode
     $stmt = $conn->prepare("INSERT INTO episodes (series_id, season_number, episode_number, title, description, video_url, thumb_image, air_date, duration) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -93,25 +74,7 @@ if (isset($_POST['edit_episode'])) {
     $current = $stmt->get_result()->fetch_assoc();
     $thumb_image_path = $current['thumb_image'];
 
-    // Handle new thumbnail upload
-    if (isset($_FILES['thumb_image']) && $_FILES['thumb_image']['error'] == 0) {
-        $target_dir = "../uploads/";
-        
-        // Delete old thumbnail
-        if (!empty($thumb_image_path)) {
-            $old_filename = basename($thumb_image_path);
-            if (file_exists($target_dir . $old_filename)) {
-                unlink($target_dir . $old_filename);
-            }
-        }
-        
-        $image_name = uniqid() . '_thumb_' . basename($_FILES["thumb_image"]["name"]);
-        $target_file = $target_dir . $image_name;
-        
-        if (move_uploaded_file($_FILES["thumb_image"]["tmp_name"], $target_file)) {
-            $thumb_image_path = 'https://sinhalamovies.web.lk/uploads/' . $image_name;
-        }
-    }
+    $thumb_image_path = store_catalogue_upload('thumb_image', 'image', $thumb_image_path);
 
     // Update episode
     $stmt = $conn->prepare("UPDATE episodes SET series_id = ?, season_number = ?, episode_number = ?, title = ?, description = ?, video_url = ?, thumb_image = ?, air_date = ?, duration = ? WHERE id = ?");

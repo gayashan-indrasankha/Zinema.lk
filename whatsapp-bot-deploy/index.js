@@ -34,8 +34,6 @@ try {
 // API Client for database access
 const {
     testConnection,
-    getTokenData,
-    markTokenAsUsed,
     logForward,
     addMessageId,
     needsRefresh,
@@ -672,8 +670,7 @@ async function handleMessage(msg) {
         const senderNumber = senderId.split('@')[0].split(':')[0];
         const senderName = msg.pushName || senderNumber;
 
-        console.log(`📩 [${new Date().toLocaleTimeString()}] From ${senderName}: ${body.substring(0, 50)}...`);
-        console.log(`🔍 DEBUG: bodyLower="${bodyLower}", isAdmin=${isAdmin(senderNumber)}, senderNumber=${senderNumber}`);
+        console.log('Processing text command; content suppressed.');
 
         // Help command
         if (bodyLower === '!help') {
@@ -921,65 +918,23 @@ async function handleMessage(msg) {
  */
 async function handleTokenRequest(chatId, token, senderNumber) {
     try {
-        console.log(`\n🎫 Processing token: ${token} for ${senderNumber}`);
-
-        // Get token data from API
-        const tokenResponse = await getTokenData(token);
-
-        // A token is processable if we have data, even if valid is false (e.g. no_message_id for first upload)
-        if (!tokenResponse.data) {
-            await sendMessage(chatId, `❌ ඔබ එවූ මෙම \`${token}\` Token එක කල් ඉකුත් වී (*Expired*) ඇත.\n\n කරුණාකර වෙබ් අඩවියට ගොස් Refresh කර, අලුත් Token එකක් ලබාගෙන නැවත එවන්න.`);
-            return;
-        }
-
-        // Reject already-used tokens — cannot be reused by another user
-        if (tokenResponse.error === 'already_used') {
-            await sendMessage(chatId, `❌ මෙම Token එක දැනටමත් භාවිත කර ඇත (*Already Used*).\n\n කරුණාකර වෙබ් අඩවියට ගොස් නැවතත් Request කර, අලුත් Token එකක් ලබාගන්න.`);
-            return;
-        }
-
-        const tokenData = tokenResponse.data;
-        console.log(`✅ Token data found: ${tokenData.token} (${tokenData.content_type} ID:${tokenData.content_id})`);
-
-        // Use Multi-Tier Forwarder
-        const result = await multiTierForwarder.forwardVideo(chatId, tokenData);
-
+        const { deliverClaimedToken } = require('./config/token-delivery');
+        const { claimToken, transitionToken } = require('./config/api-client');
+        const result = await deliverClaimedToken({
+            claim: claimToken, transition: transitionToken,
+            forward: (recipient, data) => multiTierForwarder.forwardVideo(recipient, data)
+        }, token, chatId);
         if (result.success) {
-            console.log(`✅ Video delivered via TIER ${result.tier}`);
-
-            // Mark token as used so it cannot be reused by other users
-            await markTokenAsUsed(tokenData.id).catch(e => console.error(`⚠️ markTokenAsUsed failed: ${e.message}`));
-
-            // Log to database
-            await logForward(tokenData.id, senderNumber, chatId, 'success', null);
-            // Send token ID so users can identify their file in group chats
-            await sendMessage(chatId, `🎬 *${tokenData.token}* : ${tokenData.content_type}_${tokenData.content_id}`);
-
-        } else if (result.queued) {
-            // Queued for night
-            await sendMessage(chatId,
-                `🌙 *Video Queued for Night Delivery*\n\n` +
-                `📁 ${tokenData.title || token}\n` +
-                `⏰ Will be sent at 12:30 AM automatically\n\n` +
-                `This prevents WhatsApp rate limits during daytime. Thank you for your patience!`
-            );
-
-            await logForward(tokenData.id, senderNumber, chatId, 'queued', 'Daytime restriction');
-
+            await logForward(result.data.id, senderNumber, chatId, 'success', null);
+            await sendMessage(chatId, 'Video delivered successfully.');
         } else {
-            // Failed
-            await sendMessage(chatId,
-                `❌ *Video Unavailable*\n\n` +
-                `${result.message || 'Please try again later.'}\n\n` +
-                `Contact support if this persists.`
-            );
-
-            await logForward(tokenData.id, senderNumber, chatId, 'failed', result.error);
+            await sendMessage(chatId, result.status === 'unavailable' ?
+                'Token unavailable. Request a new token on the website.' :
+                'Delivery is held for review. Please contact support before retrying.');
         }
-
-    } catch (error) {
-        console.error('Error processing token:', error.message);
-        await sendMessage(chatId, `❌ Error: ${error.message}`);
+    } catch {
+        console.error('Token delivery could not be confirmed; details suppressed.');
+        await sendMessage(chatId, 'Delivery could not be confirmed. Please contact support before retrying.');
     }
 }
 
@@ -988,12 +943,12 @@ async function handleTokenRequest(chatId, token, senderNumber) {
  */
 async function sendMessage(jid, text, options = {}) {
     try {
-        console.log(`📤 Sending message to ${jid}: ${text.substring(0, 50)}...`);
+        console.log('Sending response; content suppressed.');
         await sock.sendMessage(jid, { text }, options);
         console.log(`✅ Message sent successfully`);
     } catch (error) {
         console.error(`❌ Send message error to ${jid}:`, error.message);
-        console.error('Full error:', error);
+        console.error('Send diagnostics suppressed.');
     }
 }
 

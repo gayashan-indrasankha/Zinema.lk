@@ -61,3 +61,17 @@ python -X utf8 docs/recovery/tests/audit.py stop $testRuntime
 - Likes/favorites toggle and fictional rows accumulate across HTTP runs. Use a fresh fixture for a clean run. Diagnostic assertions inspect new PHP log entries generated during the request suite, not historical resolved failures.
 - Commands exit nonzero on failed expectations or advisory errors. Do not weaken negative assertions to obtain green results. Scoped npm audit results do not certify the full extractor, installed old node_modules tree, live integration safety or exploitability.
 - No live WhatsApp, real mail/OAuth/payment, production infrastructure, publication or deployment is authorized by these scripts. Manual browser procedures/results and evidence classifications are in `REPAIR_PHASE.md`.
+
+## Current local development phase
+
+The portable Docker/fake mail/OAuth/upload/concurrency suite is documented in
+`../../../dev/README.md`. Its source is `dev/integration.py`; it does not start a
+real bot. Run `node --test docs/recovery/tests/token-delivery.test.cjs` separately
+for the claim/completion protocol and local fake HTTP API-client checks.
+
+For retained Windows checks, set `$env:ZINEMA_TEST_PHASE='LOCAL_DEV'` before the
+commands above to write new `LOCAL_DEV_*` records and preserve prior repair
+results. The schema bridge now uses claim → begin → complete for positive token
+consumption and explicitly asserts the old mark-used endpoint cannot bypass
+ownership. Negative expiry, duplicate-use, API-key and browser CSRF assertions
+remain. Docker and XAMPP fixtures must run sequentially because both own 8088.

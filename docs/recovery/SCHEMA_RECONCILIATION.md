@@ -25,3 +25,16 @@ Operational health/statistics/log tables from the fixed migration were reconcile
 The creation file was flattened from successfully executed structure, with counters removed, then rebuilt and verified again. This avoids requiring operators to discover an ALTER ordering across historical files. The final file's SHA-256 and successful rebuild results are in `REPAIR_SCHEMA_RESULTS.json`.
 
 There is deliberately **no in-place upgrade script**. An existing database may contain duplicate views, inconsistent identities, data requiring mapping or different media/token conventions. Any migration of such data needs a separate authorized inventory, preserved evidence and validation. Never import the preserved dump or apply this creation file against an unknown database.
+
+## Authorized local development follow-up (2026-10-25)
+
+Canonical schema v2 adds hashed claim receipts, recipient binding, claim state and
+claim timestamp to `whatsapp_tokens`. Expiry is explicit: updating a claim no
+longer changes `expires_at`. The additive `002-token-claims.sql` migration exists
+solely to upgrade a verified, owned development volume from canonical v1; the
+development launcher checks its exact database identity before applying it.
+It does not reconcile preserved legacy data or authorize any production upgrade.
+Fresh schema rebuild and 22 bridge checks passed; the concurrent claim and expiry
+checks are in `LOCAL_DEV_RESULTS.json`. Full-file fallback now joins part zero
+explicitly. Token completion requires the claim protocol; legacy mark-used is
+denied. Historical repair results above remain evidence of the earlier phase.

@@ -4,6 +4,15 @@ Updated: 2026-10-25.
 
 ## Current phase
 
+Owner-requested reproducible local development, fake mail/OAuth tests, uploads
+and distributed claims, and sanitized local Git baseline: **IN PROGRESS — runtime
+and regression verification passed; staged security review and local commit
+pending**. Work is on local-only `zinema/local-dev-safety`, starting from the clean
+`bf370a4` checkout. Production integrations, remote Git operations and publishing
+are disabled for this phase. See `LOCAL_DEV_PHASE.md` and `LOCAL_DEV_*` evidence.
+
+### Earlier completed and partial work
+
 Owner-requested branch naming update: **COMPLETE within scope**. The five
 review branches use `zinema/import-*` locally and remotely. Replacement PRs
 #6–#10 are open against `main`; superseded PRs #1–#5 are closed and linked to
