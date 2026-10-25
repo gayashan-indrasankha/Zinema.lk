@@ -1,0 +1,150 @@
+{
+  "observed_existing_file_differences": [
+    "README.md",
+    "admin/_layout.php",
+    "admin/analytics.php",
+    "admin/collections.php",
+    "admin/config.php",
+    "admin/episodes.php",
+    "admin/functions.php",
+    "admin/index.php",
+    "admin/login.php",
+    "admin/logout.php",
+    "admin/manage_shots.php",
+    "admin/movies.php",
+    "admin/series.php",
+    "admin/settings.php",
+    "admin/trailers.php",
+    "admin/whatsapp-bot-tracking.php",
+    "ajax_forgot_password.php",
+    "ajax_login.php",
+    "ajax_resend_verification.php",
+    "ajax_reset_password.php",
+    "ajax_signup.php",
+    "api/auth-handler.php",
+    "api/comments.php",
+    "api/favorite_shot.php",
+    "api/includes/comment_helpers.php",
+    "api/payment-notify.php",
+    "api/record_view.php",
+    "api/search_content.php",
+    "api/track.php",
+    "api/trailers.php",
+    "api/whatsapp/get-aging-messages.php",
+    "api/whatsapp/get-popular-content.php",
+    "api/whatsapp/mark-used.php",
+    "api/whatsapp/update-cache-message-id.php",
+    "api/whatsapp/update-forward-stats.php",
+    "api/whatsapp/validate-token.php",
+    "collection-details.php",
+    "collections.php",
+    "docs/recovery/DECISIONS.md",
+    "docs/recovery/STATUS.md",
+    "docs/recovery/WORKING_STATE_ASSESSMENT.md",
+    "docs/recovery/tests/README.md",
+    "docs/recovery/tests/audit.py",
+    "docs/recovery/tests/bot.test.cjs",
+    "docs/recovery/tests/services.py",
+    "download.php",
+    "includes/TrailerManager.php",
+    "includes/csrf_helper.php",
+    "includes/database.php",
+    "includes/environment.php",
+    "includes/header.php",
+    "includes/mailer.php",
+    "includes/settings.php",
+    "includes/whatsapp_token.php",
+    "index.php",
+    "js/tracker.js",
+    "js/trailer-feed.js",
+    "login.php",
+    "logout.php",
+    "movie-comments.php",
+    "movie-details.php",
+    "movies.php",
+    "profile.php",
+    "reset-password.php",
+    "series-details.php",
+    "signup.php",
+    "trailers.php",
+    "tv-series.php",
+    "verify-email.php",
+    "whatsapp-bot-deploy/README.md",
+    "whatsapp-bot-deploy/baileys-connection-temp.js",
+    "whatsapp-bot-deploy/config/multi-tier-forwarder.js",
+    "whatsapp-bot-deploy/database/schema.sql",
+    "whatsapp-bot-deploy/package.json",
+    "whatsapp-bot-deploy/refresh-method-new.js",
+    "whatsapp-watch.php"
+  ],
+  "difference_count": 76,
+  "attribution_limit": "Inventory includes concurrent README/Git/comment-only legacy SQL changes; it is not an authored commit diff.",
+  "new_repair_files": [
+    "includes/session.php",
+    "includes/auth.php",
+    "includes/registration.php",
+    "assets/js/security.js",
+    "database/schema.sql",
+    "docs/recovery/REPAIR_PHASE.md",
+    "docs/recovery/SCHEMA_RECONCILIATION.md",
+    "docs/recovery/tests/schema_bridge.py",
+    "docs/recovery/tests/dependency-smoke.cjs",
+    "docs/recovery/tests/extractor-http/package.json",
+    "docs/recovery/tests/extractor-http/package-lock.json"
+  ],
+  "final_fixture_php_diagnostics": {
+    "php.log": {
+      "Warning": 0,
+      "Notice": 0,
+      "Fatal error": 0,
+      "Deprecated": 0
+    },
+    "bridge-php.log": {
+      "Warning": 0,
+      "Notice": 0,
+      "Fatal error": 0,
+      "Deprecated": 0
+    }
+  },
+  "syntax": {
+    ".php": {
+      "total": 167,
+      "passed": 167,
+      "failures": []
+    },
+    ".js": {
+      "total": 40,
+      "passed": 40,
+      "failures": []
+    }
+  },
+  "dependency_smoke": {
+    "passed": true,
+    "baileysVersion": "6.7.24",
+    "protobufVersions": [
+      "7.6.6"
+    ],
+    "socketStarted": false,
+    "authStoresLoaded": false
+  },
+  "dedicated_secret_scanners": {
+    "gitleaks": false,
+    "trufflehog": false
+  },
+  "ignore_checks": {
+    ".runtime/audit-20261025-154530/client.ini": true,
+    ".recovery-private/repair-20261025-145812/manifest.json": true,
+    "Database.sql": true,
+    "whatsapp-bot-deploy/whatsapp-session/creds.json": true
+  },
+  "git": {
+    "existing_commit": "f89da9b",
+    "tracked_changes": 0,
+    "untracked_entries": 50,
+    "stage_commit_push_by_repair": false
+  },
+  "limitations": [
+    "No comprehensive secret/privacy/penetration or live integration certification.",
+    "Original historical SQL rows were not imported; observed legacy bot schema difference is comment-only and was preserved."
+  ]
+}
