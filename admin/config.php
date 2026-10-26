@@ -17,7 +17,7 @@ try {
 }
 
 // Cooperative media-reference writers use DB gate -> filesystem lock order.
-if (!defined('WHATSAPP_API') && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && getenv('UPLOAD_QUOTA_MODE') === 'local') {
+if (!defined('WHATSAPP_API') && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' && in_array(getenv('UPLOAD_QUOTA_MODE'),['local','staging'],true)) {
     require_once __DIR__ . '/../includes/upload_storage.php';
     try {
         $mediaGate=storage_reference_acquire($conn);

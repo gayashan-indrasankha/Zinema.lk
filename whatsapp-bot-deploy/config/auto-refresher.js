@@ -219,8 +219,10 @@ class AutoRefresher {
                 for(const msg of messages) {
                     if(this.stopRequested || !this.socketReady)break;
                     if(!(msg.message?.videoMessage||msg.message?.documentMessage||msg.message?.imageMessage))continue;
+                    const heldWork={kind:'group_refresh',sourceGroupId:storageId,messageId:msg.key.id,targetGroupId:this.cacheGroupId};
+                    if(require('./maintenance-ledger').excluded(require('path').dirname(this.warmer.stateFile),heldWork)){skipped++;continue;}
                     if(!await this.apiClient.needsRefresh(msg.key.id)){skipped++;continue;}
-                    this.warmer.saveState({remainingFiles:[],held:true,reason:'inflight_group_refresh'});
+                    this.warmer.saveState({remainingFiles:[],held:true,reason:'inflight_group_refresh',heldWork});
                     try {
                         await this.sendMessageWithRetry(this.cacheGroupId,{forward:msg});
                         if(await this.apiClient.logRefresh(msg.key.id,'','video')!==true)throw Error();

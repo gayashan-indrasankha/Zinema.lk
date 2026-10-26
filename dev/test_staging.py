@@ -1,5 +1,5 @@
 """Artifact/archive security boundaries. No daemon, provider or application DB."""
-import io,json,shutil,subprocess,tarfile,tempfile,unittest
+import io,json,shutil,subprocess,sys,tarfile,tempfile,unittest
 from pathlib import Path
 from build_stage_artifact import build
 from rehearse_staging import Rehearsal,ROOT
@@ -17,6 +17,14 @@ class StagingBoundaries(unittest.TestCase):
     def test_output_cannot_overwrite_or_escape_private_boundary(self):
         with self.assertRaises(RuntimeError):build(self.home)
         with self.assertRaises(RuntimeError):build(ROOT/'must-not-create-artifact')
+    def test_streamed_command_io_is_private_and_never_overwrites(self):
+        subject=object.__new__(Rehearsal);subject.home=self.home;subject.diag=io.BytesIO()
+        source=self.home/'stream-in';target=self.home/'stream-out';source.write_bytes(b'fictional-stream')
+        command=[sys.executable,'-c','import sys;sys.stdout.buffer.write(sys.stdin.buffer.read())']
+        subject.command(command,data_file=source,output_file=target);self.assertEqual(target.read_bytes(),source.read_bytes())
+        with self.assertRaises(FileExistsError):subject.command(command,data_file=source,output_file=target)
+        with self.assertRaises(RuntimeError):subject.command(command,data_file=source,output_file=ROOT/'must-not-write-stream')
+        with self.assertRaises(RuntimeError):subject.command(command,data=b'fictional',data_file=source)
     def test_shell_template_survives_windows_checkout(self):
         result=subprocess.run(['git','check-attr','eol','--','dev/staging/entrypoint.sh'],cwd=ROOT,capture_output=True,text=True,check=True)
         self.assertTrue(result.stdout.strip().endswith(': lf'));self.assertNotIn(b'\r\n',(ROOT/'dev/staging/entrypoint.sh').read_bytes())

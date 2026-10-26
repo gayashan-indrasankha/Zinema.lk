@@ -11,6 +11,7 @@ WhatsApp, mail, OAuth, payments, downloads and extraction remain restricted.
 
 ## Start here
 
+- [Local staging promotion controls and evidence](docs/recovery/PROMOTION_CONTROLS.md), [operator contract](ops/README.md)
 - [Isolated staging backup/restore, TLS and load rehearsal](docs/recovery/STAGING_REHEARSAL.md)
 - [Local bot lifecycle and recovery evidence](docs/recovery/BOT_LIFECYCLE.md)
 - [Private extractor connection and local tests](docs/recovery/EXTRACTOR_CONNECTION.md)

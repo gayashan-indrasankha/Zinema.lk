@@ -511,3 +511,37 @@ Post-load resource samples are not peak measurements. Off-host keys/backups/aler
 large media, actual hosting and owner-approved live tests remain release gates.
 Private extractor remains local-only and QR pairing stops safely; both need reviewed
 promotion procedures. No production access, remote publication or deployment.
+
+## 2026-10-26 — Local promotion contract and operator boundaries
+
+Started clean at 6840da6. Authorize local implementations/fakes, not providers,
+production or publishing. Keep typed policy with every external switch off; operator
+CLI accepts bounded private request files under ignored owned runtime paths only.
+Pairing is distinct from delivery: fake challenges/approvals are private, dedicated,
+expiring and immutable/idempotent; a real worker also requires a signed normalized
+identity/test-account receipt valid at startup and shuts down at window expiry.
+Fake receipts/credentials cannot enable the worker. Account-specific real issuer
+and SDK acceptance are separate approval-gated work, not silently enabled here.
+
+Bind maintenance review to checkpoint bytes under the worker's own lease. Persist
+intent before changes, audit the original state, require exact completion metadata
+proof, and withdraw ambiguous items into persistent exclusions rather than requeue.
+Pending/corrupt/unknown work stays blocked until explicit reviewed recovery. Keep
+the owner-attested metadata/worker-stop and cooperative process limits explicit.
+
+Prefer a private keyed Unix socket over exposing extractor TCP/CORS; verify actual
+PHP/Node production-config fixtures without upstream/browser access. Exercise quota
+and reference gates under exact production-mode local fixtures; real host/volume
+policy stays unactivated. Stream SQL/media/ZIP64/GCM/mirror/restore, keep keys outside
+archives, authenticate before plaintext publication and retain all old evidence.
+A local mirror is integrity evidence, not off-host DR. Fixed bounded metric codes
+and persistent alert transitions replace raw diagnostic/recipient data in an outbox;
+full outboxes fail explicitly rather than dropping evidence or contacting a service.
+
+Transient Windows file sharing errors were reproduced on checkpoint replacement.
+Retry only those codes briefly (six attempts/115 ms); never unlink old checkpoints.
+Permanent/exhausted errors remain closed. Final Node127/targeted50 and promotion29
+checks plus retained suites passed; exact evidence/limits are in PROMOTION_CONTROLS.
+No dependency/lockfile update or advisory refresh, real SDK connection, credential
+rotation, host provisioning, remote publication or deployment. Next select the host
+and review its exact disabled configuration before any approved staging/live work.

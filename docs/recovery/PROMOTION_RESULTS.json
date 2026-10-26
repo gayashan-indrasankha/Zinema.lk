@@ -1,0 +1,614 @@
+{
+  "date": "2026-10-26",
+  "scope": "Owned local promotion fixtures only; no external adapter/production/publishing",
+  "tests": [
+    {
+      "name": "source DB ownership/no network/ports",
+      "passed": true
+    },
+    {
+      "name": "Expanded original fictional catalogue seeded",
+      "passed": true
+    },
+    {
+      "name": "source exact database before grants",
+      "passed": true
+    },
+    {
+      "name": "source private container/limits",
+      "passed": true
+    },
+    {
+      "name": "source all provider modes disabled",
+      "passed": true
+    },
+    {
+      "name": "source private container/limits",
+      "passed": true
+    },
+    {
+      "name": "source production-config quota assertions",
+      "passed": true
+    },
+    {
+      "name": "source TLS/security/load assertions",
+      "passed": true
+    },
+    {
+      "name": "Private extractor has no network/ports and uses unprivileged read-only process",
+      "passed": true
+    },
+    {
+      "name": "Private socket healthy administrator assertions",
+      "passed": true
+    },
+    {
+      "name": "Private socket stopped administrator assertions",
+      "passed": true
+    },
+    {
+      "name": "outage TLS/security/load assertions",
+      "passed": true
+    },
+    {
+      "name": "Source 38 tables/2 views/quota/DDLs denied",
+      "passed": true
+    },
+    {
+      "name": "Authenticated encryption rejects modified backup before output",
+      "passed": true
+    },
+    {
+      "name": "Streamed encrypted/mirrored backup matches original archive",
+      "passed": true
+    },
+    {
+      "name": "Backup payload allowlist",
+      "passed": true
+    },
+    {
+      "name": "restore DB ownership/no network/ports",
+      "passed": true
+    },
+    {
+      "name": "Restore canonical schema fingerprint",
+      "passed": true
+    },
+    {
+      "name": "restore exact database before grants",
+      "passed": true
+    },
+    {
+      "name": "Restored row counts and complete row hashes match all tables",
+      "passed": true
+    },
+    {
+      "name": "Restored media/private state/session hashes all match",
+      "passed": true
+    },
+    {
+      "name": "Restored owned quota inventory and least privileges survive",
+      "passed": true
+    },
+    {
+      "name": "restore private container/limits",
+      "passed": true
+    },
+    {
+      "name": "restore all provider modes disabled",
+      "passed": true
+    },
+    {
+      "name": "restore private container/limits",
+      "passed": true
+    },
+    {
+      "name": "restore production-config quota assertions",
+      "passed": true
+    },
+    {
+      "name": "restore TLS/security/load assertions",
+      "passed": true
+    },
+    {
+      "name": "Restored upload quota admits a new original image",
+      "passed": true
+    },
+    {
+      "name": "Local monitor retains one alert and recovery without duplicate unchanged alert",
+      "passed": true
+    }
+  ],
+  "details": {
+    "artifact": {
+      "source_commit": "6840da630bdd5fdfc8eea3f39a306f53d51ecea1",
+      "files": 255,
+      "forbidden_paths": 0,
+      "source_tree": "ef01b8f2e7f96018a9d878668c37570f6635a56e",
+      "source_kind": "reviewed-index-tree"
+    },
+    "source_http": {
+      "scope": "Owned isolated artifact, synthetic identities; explicit local test CA; no provider requests",
+      "tests": [
+        {
+          "name": "Artifact is available through verified local TLS",
+          "passed": true
+        },
+        {
+          "name": "Secure HTTP-only SameSite session cookie",
+          "passed": true
+        },
+        {
+          "name": "Security headers and CSP enforced at TLS proxy",
+          "passed": true
+        },
+        {
+          "name": "Runtime version header hidden",
+          "passed": true
+        },
+        {
+          "name": "Unrecognised Host rejected",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.env",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.git/config",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.runtime/example",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /Database.sql",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /dev/http/control.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /includes/database.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /api/includes/auth.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /fb-video-api/index.js",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /uploads/fictional.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /admin/run_migration.php",
+          "passed": true
+        },
+        {
+          "name": "Missing CSRF rejects administrator sign-in",
+          "passed": true
+        },
+        {
+          "name": "Fictional admin authenticates over TLS",
+          "passed": true
+        },
+        {
+          "name": "Administrator dashboard works with CRUD-only DB identity",
+          "passed": true
+        },
+        {
+          "name": "Administrator extractor remains disabled",
+          "passed": true
+        },
+        {
+          "name": "Live delivery stays disabled /whatsapp-watch.php?id=1",
+          "passed": true
+        },
+        {
+          "name": "Live delivery stays disabled /api/whatsapp/health.php",
+          "passed": true
+        },
+        {
+          "name": "Guest cannot enter administrator dashboard",
+          "passed": true
+        },
+        {
+          "name": "Bounded TLS read load has no HTTP errors at 5 clients",
+          "passed": true
+        },
+        {
+          "name": "Bounded TLS read load has no HTTP errors at 25 clients",
+          "passed": true
+        },
+        {
+          "name": "Temporary CA is explicitly trusted; default trust refuses it",
+          "passed": true
+        }
+      ],
+      "details": {
+        "loads": [
+          {
+            "concurrency": 5,
+            "requests": 100,
+            "errors": 0,
+            "p50_ms": 14.6,
+            "p95_ms": 38.95,
+            "p99_ms": 45.45,
+            "max_ms": 49.12,
+            "elapsed_s": 0.37,
+            "response_bytes": 5773260
+          },
+          {
+            "concurrency": 25,
+            "requests": 300,
+            "errors": 0,
+            "p50_ms": 96.12,
+            "p95_ms": 121.7,
+            "p99_ms": 149.61,
+            "max_ms": 154.57,
+            "elapsed_s": 1.16,
+            "response_bytes": 17319780
+          }
+        ],
+        "monitor": {
+          "healthy": true
+        }
+      },
+      "summary": {
+        "total": 25,
+        "passed": 25,
+        "failed": 0
+      }
+    },
+    "outage": {
+      "scope": "Owned isolated artifact, synthetic identities; explicit local test CA; no provider requests",
+      "tests": [
+        {
+          "name": "Local outage probe emits website-unavailable alert",
+          "passed": true
+        }
+      ],
+      "details": {
+        "alerts": [
+          {
+            "code": "website_unavailable",
+            "observed_status": 502
+          }
+        ],
+        "live_alert_sent": false
+      },
+      "summary": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      }
+    },
+    "restore_http": {
+      "scope": "Owned isolated artifact, synthetic identities; explicit local test CA; no provider requests",
+      "tests": [
+        {
+          "name": "Artifact is available through verified local TLS",
+          "passed": true
+        },
+        {
+          "name": "Secure HTTP-only SameSite session cookie",
+          "passed": true
+        },
+        {
+          "name": "Security headers and CSP enforced at TLS proxy",
+          "passed": true
+        },
+        {
+          "name": "Runtime version header hidden",
+          "passed": true
+        },
+        {
+          "name": "Unrecognised Host rejected",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.env",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.git/config",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.runtime/example",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /Database.sql",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /dev/http/control.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /includes/database.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /api/includes/auth.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /fb-video-api/index.js",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /uploads/fictional.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /admin/run_migration.php",
+          "passed": true
+        },
+        {
+          "name": "Missing CSRF rejects administrator sign-in",
+          "passed": true
+        },
+        {
+          "name": "Fictional admin authenticates over TLS",
+          "passed": true
+        },
+        {
+          "name": "Administrator dashboard works with CRUD-only DB identity",
+          "passed": true
+        },
+        {
+          "name": "Administrator extractor remains disabled",
+          "passed": true
+        },
+        {
+          "name": "Live delivery stays disabled /whatsapp-watch.php?id=1",
+          "passed": true
+        },
+        {
+          "name": "Live delivery stays disabled /api/whatsapp/health.php",
+          "passed": true
+        },
+        {
+          "name": "Guest cannot enter administrator dashboard",
+          "passed": true
+        },
+        {
+          "name": "Spoofed forwarding headers cannot bypass shared password admission",
+          "passed": true
+        }
+      ],
+      "details": {
+        "restore_http_verified": true
+      },
+      "summary": {
+        "total": 23,
+        "passed": 23,
+        "failed": 0
+      }
+    },
+    "backup": {
+      "encrypted_bytes": 163837,
+      "original_bytes": 163786,
+      "sha256": "803fc7203e7a5266ebf00aec2d78b9f5ee0bc320434ca845c6b4e254ef6a36f8",
+      "algorithm": "AES-256-GCM",
+      "key_in_archive": false,
+      "streamed_sql_media_zip_encrypt_mirror_restore": true
+    },
+    "comparison": {
+      "tables": 38,
+      "views": 2,
+      "rows": 540,
+      "files": 411,
+      "file_bytes_verified": true,
+      "row_hashes_match": true,
+      "file_hashes_match": true,
+      "fixture_counts": {
+        "movies": 251,
+        "series": 41,
+        "episodes": 201,
+        "collections": 21,
+        "trailers": 11
+      }
+    },
+    "resources_sampled_after_load_not_peak": {
+      "database": {
+        "CPUPerc": "0.05%",
+        "MemUsage": "134.8MiB / 384MiB",
+        "MemPerc": "35.09%",
+        "PIDs": "21",
+        "BlockIO": "80.6MB / 56.6MB",
+        "NetIO": "0B / 0B"
+      },
+      "application": {
+        "CPUPerc": "0.00%",
+        "MemUsage": "13.39MiB / 256MiB",
+        "MemPerc": "5.23%",
+        "PIDs": "6",
+        "BlockIO": "0B / 0B",
+        "NetIO": "0B / 0B"
+      },
+      "tls": {
+        "CPUPerc": "0.00%",
+        "MemUsage": "7.355MiB / 64MiB",
+        "MemPerc": "11.49%",
+        "PIDs": "2",
+        "BlockIO": "8.98MB / 0B",
+        "NetIO": "0B / 0B"
+      }
+    },
+    "local_only": true,
+    "providers_contacted": false,
+    "public_ports": false,
+    "retained_fixture_volumes": 9,
+    "promotion": {
+      "source_quota": {
+        "tests": [
+          {
+            "name": "Exact fictional database/port",
+            "passed": true
+          },
+          {
+            "name": "Production-config quota uses owned state",
+            "passed": true
+          },
+          {
+            "name": "Byte quota refuses an additional upload",
+            "passed": true
+          },
+          {
+            "name": "File quota refuses an additional upload",
+            "passed": true
+          },
+          {
+            "name": "Refused uploads preserve manifest bytes",
+            "passed": true
+          },
+          {
+            "name": "Production quota cannot escape explicit local fixture guard",
+            "passed": true
+          }
+        ],
+        "summary": {
+          "total": 6,
+          "passed": 6,
+          "failed": 0
+        }
+      },
+      "private_healthy": {
+        "tests": [
+          {
+            "name": "Fictional admin authenticates for private socket",
+            "passed": true
+          },
+          {
+            "name": "Administrator health traverses authenticated private Unix socket",
+            "passed": true
+          },
+          {
+            "name": "Private extraction returns original fixture only",
+            "passed": true
+          },
+          {
+            "name": "Returned managed original clip is available over verified TLS",
+            "passed": true
+          },
+          {
+            "name": "Missing CSRF cannot invoke private backend",
+            "passed": true
+          },
+          {
+            "name": "Guest cannot invoke private backend",
+            "passed": true
+          },
+          {
+            "name": "Administrator page contains no backend credential or socket path",
+            "passed": true
+          },
+          {
+            "name": "Unix socket also requires independent server key and exposes no CORS",
+            "passed": true
+          }
+        ],
+        "summary": {
+          "total": 8,
+          "passed": 8,
+          "failed": 0
+        }
+      },
+      "private_stopped": {
+        "tests": [
+          {
+            "name": "Fictional admin authenticates for private socket",
+            "passed": true
+          },
+          {
+            "name": "Stopped Unix extractor returns stable unavailable result",
+            "passed": true
+          }
+        ],
+        "summary": {
+          "total": 2,
+          "passed": 2,
+          "failed": 0
+        }
+      },
+      "restore_quota": {
+        "tests": [
+          {
+            "name": "Exact fictional database/port",
+            "passed": true
+          },
+          {
+            "name": "Production-config quota uses owned state",
+            "passed": true
+          },
+          {
+            "name": "Byte quota refuses an additional upload",
+            "passed": true
+          },
+          {
+            "name": "File quota refuses an additional upload",
+            "passed": true
+          },
+          {
+            "name": "Refused uploads preserve manifest bytes",
+            "passed": true
+          },
+          {
+            "name": "Production quota cannot escape explicit local fixture guard",
+            "passed": true
+          }
+        ],
+        "summary": {
+          "total": 6,
+          "passed": 6,
+          "failed": 0
+        }
+      }
+    },
+    "monitor_outbox_events": 2
+  },
+  "error": null,
+  "summary": {
+    "total": 29,
+    "passed": 29,
+    "failed": 0
+  },
+  "php_diagnostics": {
+    "Warning": 0,
+    "Notice": 0,
+    "Fatal error": 0,
+    "Deprecated": 0
+  },
+  "launch_decision": "NO GO; host/provider acceptance and owner approval remain pending",
+  "additional_executed_checks": {
+    "retained_fake_pure_node": {
+      "total": 127,
+      "passed": 127,
+      "failed": 0
+    },
+    "targeted_windows_pause_after_fix": {
+      "total": 50,
+      "passed": 50,
+      "failed": 0
+    },
+    "artifact_archive_stream_boundaries": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0
+    },
+    "local_target_guards": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0
+    }
+  }
+}
