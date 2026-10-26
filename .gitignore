@@ -18,6 +18,14 @@ message-cache.json
 pending-requests.json
 warming-state.json
 worker.lock
+creds.json
+pairing-intent.json
+pairing-challenge.json
+pairing-receipt.json
+maintenance-review.pending.json
+maintenance-review-*.json
+maintenance-exclusions.json
+monitor-state.json
 hot-cache*/
 cache/
 logs/

@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: claim denial never reaches delivery
+ok 1 - claim denial never reaches delivery
+  ---
+  duration_ms: 1.1249
+  type: 'test'
+  ...
+# Subtest: begin denial never reaches delivery
+ok 2 - begin denial never reaches delivery
+  ---
+  duration_ms: 0.1677
+  type: 'test'
+  ...
+# Subtest: acknowledged send completes ownership in order
+ok 3 - acknowledged send completes ownership in order
+  ---
+  duration_ms: 0.2084
+  type: 'test'
+  ...
+# Subtest: unacknowledged and throwing sends are held without completing
+ok 4 - unacknowledged and throwing sends are held without completing
+  ---
+  duration_ms: 0.2707
+  type: 'test'
+  ...
+# Subtest: completion rejection and lost response never report success or retry
+ok 5 - completion rejection and lost response never report success or retry
+  ---
+  duration_ms: 0.2314
+  type: 'test'
+  ...
+# Subtest: API client exports claim protocol and binds recipient and configured bot
+ok 6 - API client exports claim protocol and binds recipient and configured bot
+  ---
+  duration_ms: 34.3223
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 52.7259
