@@ -1,5 +1,10 @@
 # Production feature checklist — fresh free WhatsApp launch
 
+Stellar preparation follow-up: STELLAR_PREPARATION.md adds a locked review bundle
+and read-only bot-machine inventory. No adapter, live account, website quota or
+staging deployment is activated. Actual managed extractor, PHP handler, account
+resource and recovery acceptance remain unresolved.
+
 Owner decisions, 2026-10-25: **free access; full movies/episodes via WhatsApp only**.
 Shots/trailers and catalogue browsing remain website features. Hosting is undecided.
 Owner clarification, 2026-10-28: Stellar shared hosting selected for the website;
@@ -80,3 +85,23 @@ The matrix deliberately does not equate 92 responding entry points with 92 worki
 features or label every administrator action manually tested. Exact manual actions
 and screenshots are recorded in PRODUCTION_MANUAL.md. See PRODUCTION_STAGING.md
 and PRODUCTION_LIVE_TEST_PLAN.md for the remaining concrete acceptance gates.
+
+## Local Stellar adapter checkpoint — 2026-10-28
+
+[Adapter evidence](STELLAR_ADAPTERS.md) records the private bootstrap, account-owned
+quota/quarantine CLI, authenticated outbound extraction queue and worker resource
+pressure tests. Local regressions pass; these are not actual-host acceptance.
+The package remains locked, paid access stays excluded and full content remains
+WhatsApp-only. Actual PHP handler/permissions/TLS/private access, real extraction,
+SDK/account 2 GiB behavior, sustained capacity, upload speed, independent backup
+restore and alert/supervisor acceptance remain launch gates. No publishing enabled.
+
+## Local acceptance follow-up — 2026-10-28
+
+LOCAL_ACCEPTANCE.md adds 16 passing automated Chrome journeys and 94 passing
+retained HTTP checks. New runtime evidence covers generated PNG create/edit and
+invalid upload rejection, original MP4 administrator/public playback, unavailable
+handoff, mobile widths and separate member/admin authentication. Interactive tools
+could not initialize; this is not a new manual interaction pass. Actual Stellar
+is not purchased, personal-machine idle timers are nonzero, and upload/independent
+recovery/live-provider acceptance remain pending. Production/publishing stay off.

@@ -41,17 +41,52 @@
     "largeMediaLocalCeilingBytes": 2147483648,
     "providerSizeAcceptanceVerified": false,
     "machineSpecificationsVerified": false,
-    "uploadSpeedVerified": false
+    "uploadSpeedVerified": false,
+    "reportedInventory": {
+      "source": "Owner-supplied collector output; owner confirmed actual bot machine",
+      "collectionTimestampProvided": false,
+      "ownerConfirmedActualMachine": true,
+      "platform": "win32",
+      "architecture": "x64",
+      "logicalCpuCount": 16,
+      "totalMemoryBytes": 16868970496,
+      "freeMemoryBytesAtReport": 1661399040,
+      "nodeVersionAtReport": "v24.13.1",
+      "mediaVolumeTotalBytes": 269482979328,
+      "mediaVolumeAvailableBytesAtReport": 130470916096,
+      "scope": "Volume metadata only, not folder usage or quota",
+      "mediaFolderContentsInspected": false,
+      "mediaWritabilityTested": false,
+      "loadCapacityVerified": false
+    }
   },
   "extractor": {
     "enabled": false,
-    "locationCandidate": "website account if private transport and runtime requirements are supported",
+    "locationCandidate": "Private PHP queue on website; authenticated outbound polling by personal-machine extractor worker",
     "browserFallback": "disabled",
-    "privateUnixSocketCompatibilityVerified": false
+    "privateUnixSocketCompatibilityVerified": false,
+    "unattachedDaemonAllowed": false,
+    "managedNodeAdapterImplemented": false,
+    "outboundQueueImplementedLocally": true,
+    "realExtractionAdapterEnabled": false
+  },
+  "stagingPreparation": {
+    "templates": "ops/staging/stellar",
+    "activationImplemented": true,
+    "readOnlyBotReadinessScript": "ops/bot-readiness.cjs",
+    "actualAccountVerified": false,
+    "actualBotMachineReportReceived": true,
+    "activationEnabled": false,
+    "localAdapters": [
+      "private environment bootstrap and exact client allowlist",
+      "account-owned quota/quarantine/recovery CLI",
+      "bounded authenticated outbound extraction queue",
+      "worker RSS/RAM/disk reserve admission"
+    ]
   },
   "acceptancePending": [
     "Exact PHP/extensions/database/runtime and proxy/TLS behaviour",
-    "Node 24 patch version, private socket support, process and request limits",
+    "Node 24 security patch, exact account PHP/private queue behavior and separately approved real extraction/account tests",
     "Website resource/load/storage/inode and outbound request limits",
     "Independent encrypted backups, restore, alert routing and scheduled jobs",
     "Owner-machine uptime, sleep/power/network behaviour and storage budget",
