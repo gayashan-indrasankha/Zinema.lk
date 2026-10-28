@@ -675,3 +675,27 @@ PHP198/JavaScript-CJS74/Python21/JSON89 passed. Gitleaks candidate/unpublished-h
 scans returned zero findings; 21 private ignore checks passed. New-work whitespace
 diff exits 0. Prior full runtime reports are retained, not claimed as fresh runs.
 Exact source/branch boundaries and limitations: REVIEW_PUBLICATION.md and results.
+
+## 2026-10-28 — Publish unstaged two-host work in three logical checkpoints
+
+Context: The owner again requested staging, incremental logical Conventional
+Commits and ready-for-review PRs. Twenty-nine paths were unstaged at `759e4a0`;
+the prior PR series is merged into remote main `bcedd80`. Preserve this state
+instead of restarting/reimplementing the completed local phase.
+
+Decision: Group requirements/disabled hosting/bridge/admission, streaming media/
+bot integration, and guarded rehearsal/evidence into three ordered project-prefixed
+branches. Stage nine source/docs groups with checks, followed by one publication
+handoff commit. All PRs target main; merge remains manual and ordered.
+
+Consequences: PRs #19–#21 preserve source intent and earlier evidence without
+rewriting history or enabling any hosting/provider/deployment gate. Public source
+publication is authorized by this request; real accounts, recipients, infrastructure
+spend, production, credentials and deployment remain outside scope. Existing private
+fixtures and failure history remain local, including after the resolved space error.
+
+Verification: Fresh Node140, guards9+12, artifact6 and tracked/untracked syntax checks
+passed. Candidate/staged/history Gitleaks scans and private ignore21 checks passed;
+new-work whitespace checks passed. Earlier full TLS/SQL/large-byte runs are retained
+historical evidence, not reclassified as newly executed. Final PR/head verification
+and immutable handoff hash are reported in the execution handoff.

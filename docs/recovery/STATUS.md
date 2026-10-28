@@ -4,6 +4,50 @@ Updated: 2026-10-28.
 
 ## Current phase
 
+Owner-requested two-host source publication: **COMPLETE within review scope;
+overall launch remains NO GO**. Started with 29 unstaged paths at
+`759e4a09386bde0ca030ca4072df278fcc1a5d9f` on `zinema/promotion-controls`.
+Preserved all original changes and grouped them into nine logical source/docs
+commits, plus this publication handoff (ten total).
+
+- PRs **#19–#21** target `main`, in order: `zinema/two-host-bridge` (4 commits),
+  `zinema/two-host-media` (2), `zinema/two-host-rehearsal` (4 including handoff).
+  All were verified open/non-draft before this update. Later diffs include earlier
+  checkpoints until merged; normal merge commits retain the individual history.
+- Changed requirements/disabled hosting metadata, bridge/heartbeat/admission UI,
+  streaming/media preflight/queues, guarded fixture/harness files and phase records
+  were staged by purpose. Publication adds TWO_HOST_PUBLICATION.md/results and
+  workflow/status notes; no application behavior was altered during publication.
+- Fresh static/syntax PHP199, JavaScript-CJS78, Python23 and JSON93 all passed;
+  Node140/140, local guards9/9, artifact boundaries6/6 and two-host guards12/12
+  passed, zero Node skips. Relevant focused checks ran before applicable commits.
+  Every staged group and full new-work whitespace check passed.
+- Gitleaks8.30.1: checksum/binary equality verified, candidate540-file scan,
+  nine staged source-group scans and all new source-history scans passed with
+  zero findings; 21 private ignore assertions passed. Final documents/history
+  scanned again before commit/push. Limits and source/group hashes are in
+  TWO_HOST_PUBLICATION.md and TWO_HOST_PUBLICATION_RESULTS.json.
+- Resolved execution issue: diagnostic write raised ENOSPC during a failed staging
+  attempt. Only redundant chat-generated source copies were removed after boundary
+  and free-space checks; retry/subsequent checks passed. Raw initial Git cause was
+  not recoverable. No original/private fixture/volume or irreplaceable data deleted.
+- Existing TLS/SQL/2-GiB/restart/outage reports remain historical local evidence;
+  these were not freshly rerun here. No real account/provider/recipient, hosting
+  purchase, production, credential rotation, merge, deployment or advisory refresh.
+  Private legacy data, keys, sessions, large fixtures, backups and logs stay local.
+- Git source head before handoff: `ab2e69ab4bab7cd26c19608fc3bd02491e2fd463`. Final documentation hash and
+  post-push clean/remote status appear in the execution handoff. Remote main stays
+  `bcedd809c96f52260b3a674a9059fe2158b430eb`; original work branch/local main are preserved. No history
+  amend/rewrite or source deletion occurred.
+
+Owner attention: review/merge PRs #19, #20, #21 in order. Exact next Codex task:
+**Review Stellar's exact PHP/Node/private extractor, storage/cron/backup/monitoring
+capabilities and supplied personal-machine details; prepare disabled account-
+specific staging configuration. Resolve extractor compatibility/recovery gates
+before any separately authorized private deployment or capped live test.**
+
+## Previous two-machine local staging checkpoint
+
 Two-machine local staging preparation: **COMPLETE within fictional/local scope;
 overall launch NO GO**. Continued five pre-existing uncommitted planning documents
 on `zinema/promotion-controls` at `759e4a0`; the initial worktree was not clean.
