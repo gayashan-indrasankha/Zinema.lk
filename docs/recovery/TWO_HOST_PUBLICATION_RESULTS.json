@@ -1,0 +1,439 @@
+{
+  "date": "2026-10-28",
+  "state": "COMPLETE within source-publication scope; overall launch remains NO GO",
+  "authorization": "Owner requested incremental logical staging/commits and ready-for-review PRs. Prior source-publishing authorization persists. No merge, live provider, real recipient, production, deployment, purchase or credential rotation is authorized.",
+  "initial_head": "759e4a09386bde0ca030ca4072df278fcc1a5d9f",
+  "remote_main": "bcedd809c96f52260b3a674a9059fe2158b430eb",
+  "initial_changes": {
+    "tracked_modified": 17,
+    "untracked_files": 12,
+    "total_paths": 29,
+    "existing_changes_preserved": true
+  },
+  "source_commits": [
+    {
+      "sha": "4ac0a2184b07f28a5c426b64cde1882ce4df554f",
+      "branch": "zinema/two-host-bridge",
+      "message": "docs(requirements): define website and personal-bot boundaries",
+      "paths": [
+        "docs/recovery/LAUNCH_REQUIREMENTS.md",
+        "docs/recovery/PRODUCTION_FEATURES.md",
+        "docs/recovery/PRODUCTION_STAGING.md"
+      ],
+      "staged_diff_stats": "223\t0\tdocs/recovery/LAUNCH_REQUIREMENTS.md\n7\t2\tdocs/recovery/PRODUCTION_FEATURES.md\n23\t3\tdocs/recovery/PRODUCTION_STAGING.md\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true
+    },
+    {
+      "sha": "54b5714f234f5f06684b510dfa5e80665be03974",
+      "branch": "zinema/two-host-bridge",
+      "message": "chore(hosting): record disabled shared-host candidate",
+      "paths": [
+        "ops/hosting/namecheap-stellar.json"
+      ],
+      "staged_diff_stats": "60\t0\tops/hosting/namecheap-stellar.json\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 1,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_two_host_guard.py",
+          "exit": 0,
+          "tests": 12
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true
+    },
+    {
+      "sha": "394b8534f0d9e8c33a5e3203d16c632da675471d",
+      "branch": "zinema/two-host-bridge",
+      "message": "feat(bridge): validate heartbeats and bound metadata requests",
+      "paths": [
+        "api/whatsapp/bot-heartbeat.php",
+        "api/whatsapp/config.php",
+        "includes/environment.php"
+      ],
+      "staged_diff_stats": "32\t66\tapi/whatsapp/bot-heartbeat.php\n7\t1\tapi/whatsapp/config.php\n8\t0\tincludes/environment.php\n",
+      "syntax": {
+        "php": 3,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 17,
+          "pass": 17,
+          "fail": 0
+        },
+        {
+          "path": "dev/test_two_host_guard.py",
+          "exit": 0,
+          "tests": 12
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true
+    },
+    {
+      "sha": "64b07641627bb327e5cb27c3b4f64742b8770823",
+      "branch": "zinema/two-host-bridge",
+      "message": "fix(delivery): require fresh bot admission and honest offline state",
+      "paths": [
+        "includes/whatsapp_token.php",
+        "whatsapp-watch.php"
+      ],
+      "staged_diff_stats": "24\t45\tincludes/whatsapp_token.php\n9\t5\twhatsapp-watch.php\n",
+      "syntax": {
+        "php": 2,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 6,
+          "pass": 6,
+          "fail": 0
+        },
+        {
+          "path": "dev/test_two_host_guard.py",
+          "exit": 0,
+          "tests": 12
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true
+    },
+    {
+      "sha": "eb1ec313451eabbabed837021ff36038c416ec40",
+      "branch": "zinema/two-host-media",
+      "message": "feat(media): add bounded integrity-checked streaming storage",
+      "paths": [
+        "docs/recovery/tests/two-host-media.test.cjs",
+        "whatsapp-bot-deploy/config/file-manager.js",
+        "whatsapp-bot-deploy/config/media-policy.js"
+      ],
+      "staged_diff_stats": "44\t0\tdocs/recovery/tests/two-host-media.test.cjs\n32\t6\twhatsapp-bot-deploy/config/file-manager.js\n12\t0\twhatsapp-bot-deploy/config/media-policy.js\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 3,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 32,
+          "pass": 32,
+          "fail": 0
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true
+    },
+    {
+      "sha": "13e71c6efbf3a09ba4ec8b37fd44d87628997d0d",
+      "branch": "zinema/two-host-media",
+      "message": "fix(bot): preflight local sends and bound personal-server queues",
+      "paths": [
+        "whatsapp-bot-deploy/config/auto-refresher.js",
+        "whatsapp-bot-deploy/config/cache-warmer.js",
+        "whatsapp-bot-deploy/config/multi-tier-forwarder.js",
+        "whatsapp-bot-deploy/index.js"
+      ],
+      "staged_diff_stats": "1\t0\twhatsapp-bot-deploy/config/auto-refresher.js\n1\t0\twhatsapp-bot-deploy/config/cache-warmer.js\n6\t5\twhatsapp-bot-deploy/config/multi-tier-forwarder.js\n1\t1\twhatsapp-bot-deploy/index.js\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 4,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 45,
+          "pass": 45,
+          "fail": 0
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true
+    },
+    {
+      "sha": "5ec5f0fb701475b388f4c96dee60293be9340c68",
+      "branch": "zinema/two-host-rehearsal",
+      "message": "build(dev): gate two-host fixture entrypoints to exact local targets",
+      "paths": [
+        "dev/entrypoint.sh",
+        "dev/http/two-host.php"
+      ],
+      "staged_diff_stats": "9\t1\tdev/entrypoint.sh\n41\t0\tdev/http/two-host.php\n",
+      "syntax": {
+        "php": 1,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 1
+      },
+      "tests": [
+        {
+          "path": "dev/test_two_host_guard.py",
+          "exit": 0,
+          "tests": 12
+        },
+        {
+          "path": "dev/test_local_guard.py",
+          "exit": 0,
+          "tests": 9
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true
+    },
+    {
+      "sha": "992ed0b9bf1bb5d9878da4715874e3bcee7e65de",
+      "branch": "zinema/two-host-rehearsal",
+      "message": "test(staging): add guarded split-host and large-media rehearsal",
+      "paths": [
+        "dev/README.md",
+        "dev/rehearse_two_host.py",
+        "dev/test_two_host_guard.py",
+        "dev/two_host_bot.cjs",
+        "dev/two_host_large.cjs",
+        "docs/recovery/tests/README.md"
+      ],
+      "staged_diff_stats": "9\t0\tdev/README.md\n100\t0\tdev/rehearse_two_host.py\n30\t0\tdev/test_two_host_guard.py\n99\t0\tdev/two_host_bot.cjs\n55\t0\tdev/two_host_large.cjs\n8\t0\tdocs/recovery/tests/README.md\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 2,
+        "python": 2,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_two_host_guard.py",
+          "exit": 0,
+          "tests": 12
+        },
+        {
+          "path": "dev/test_staging.py",
+          "exit": 0,
+          "tests": 6
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true
+    },
+    {
+      "sha": "ab2e69ab4bab7cd26c19608fc3bd02491e2fd463",
+      "branch": "zinema/two-host-rehearsal",
+      "message": "docs(recovery): record two-host acceptance evidence and limits",
+      "paths": [
+        "docs/recovery/DECISIONS.md",
+        "docs/recovery/STATUS.md",
+        "docs/recovery/TWO_HOST_CHECKS.json",
+        "docs/recovery/TWO_HOST_LOCAL.md",
+        "docs/recovery/TWO_HOST_RESULTS.json"
+      ],
+      "staged_diff_stats": "105\t0\tdocs/recovery/DECISIONS.md\n78\t0\tdocs/recovery/STATUS.md\n33\t0\tdocs/recovery/TWO_HOST_CHECKS.json\n151\t0\tdocs/recovery/TWO_HOST_LOCAL.md\n400\t0\tdocs/recovery/TWO_HOST_RESULTS.json\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 2,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true
+    }
+  ],
+  "source_head_before_final_handoff": "ab2e69ab4bab7cd26c19608fc3bd02491e2fd463",
+  "final_handoff_commit": {
+    "subject": "docs(review): record two-host publication handoff",
+    "hash_location": "This results file belongs to the final handoff commit; its immutable hash is in Git history and the execution handoff."
+  },
+  "total_commits_for_review": 10,
+  "branches_and_prs_before_final_handoff": [
+    {
+      "order": 1,
+      "number": 19,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/19",
+      "branch": "zinema/two-host-bridge",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable": true,
+      "head_before_final_handoff": "64b07641627bb327e5cb27c3b4f64742b8770823"
+    },
+    {
+      "order": 2,
+      "number": 20,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/20",
+      "branch": "zinema/two-host-media",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable": true,
+      "head_before_final_handoff": "13e71c6efbf3a09ba4ec8b37fd44d87628997d0d"
+    },
+    {
+      "order": 3,
+      "number": 21,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/21",
+      "branch": "zinema/two-host-rehearsal",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable": true,
+      "head_before_final_handoff": "ab2e69ab4bab7cd26c19608fc3bd02491e2fd463"
+    }
+  ],
+  "fresh_verification": {
+    "date": "2026-10-28",
+    "source_head": "759e4a09386bde0ca030ca4072df278fcc1a5d9f",
+    "base_main": "bcedd809c96f52260b3a674a9059fe2158b430eb",
+    "initial_working_tree_clean": false,
+    "unpublished_commits": 0,
+    "candidate_files": 540,
+    "changed_files": 29,
+    "scanner": "Gitleaks 8.30.1",
+    "archive_and_binary_checksums_match": true,
+    "scans": [
+      {
+        "scope": "candidate",
+        "exit": 0,
+        "findings": 0
+      }
+    ],
+    "private_ignore_checks_passed": 21,
+    "syntax": {
+      "php": {
+        "total": 199,
+        "passed": 199,
+        "failures": []
+      },
+      "javascript": {
+        "total": 78,
+        "passed": 78,
+        "failures": []
+      },
+      ".py": {
+        "total": 23,
+        "passed": 23,
+        "failures": []
+      },
+      ".json": {
+        "total": 93,
+        "passed": 93,
+        "failures": []
+      }
+    },
+    "tests": {
+      "node_fake_and_local": {
+        "exit": 0,
+        "files": [
+          "docs/recovery/tests/backup-crypto.test.cjs",
+          "docs/recovery/tests/bot-api-boundary.test.cjs",
+          "docs/recovery/tests/bot-entrypoint.test.cjs",
+          "docs/recovery/tests/bot-lifecycle.test.cjs",
+          "docs/recovery/tests/bot-recovery.test.cjs",
+          "docs/recovery/tests/bot.test.cjs",
+          "docs/recovery/tests/config.test.cjs",
+          "docs/recovery/tests/extractor-fetch.test.cjs",
+          "docs/recovery/tests/extractor.test.cjs",
+          "docs/recovery/tests/promotion-controls.test.cjs",
+          "docs/recovery/tests/search-popup.test.cjs",
+          "docs/recovery/tests/token-delivery.test.cjs",
+          "docs/recovery/tests/trailer-feed.test.cjs",
+          "docs/recovery/tests/two-host-media.test.cjs"
+        ],
+        "tests": 140,
+        "pass": 140,
+        "fail": 0,
+        "skipped": 0,
+        "failed_test_names": []
+      },
+      "test_local_guard.py": {
+        "exit": 0,
+        "tests": 9
+      },
+      "test_staging.py": {
+        "exit": 0,
+        "tests": 6
+      },
+      "test_two_host_guard.py": {
+        "exit": 0,
+        "tests": 12
+      }
+    },
+    "whitespace": {
+      "exit": 0,
+      "findings": 0,
+      "files": 0
+    },
+    "privacy_pattern_inventory": {
+      "phone": 0,
+      "whatsapp_identifier": 0,
+      "email": 1,
+      "private_key": 0,
+      "sql_data_statement": 0
+    },
+    "limitations": [
+      "No new Docker, HTTP/database/TLS, browser or real-provider acceptance run in this publication phase.",
+      "Prior phase runtime evidence is retained separately; production readiness remains NO GO.",
+      "Default secret patterns do not prove every secret or personal datum absent; ignored private material is not a publication candidate.",
+      "No container vulnerability, penetration, complete licensing or dependency advisory refresh performed."
+    ]
+  },
+  "post_commit_history_scan": {
+    "scope": "origin/main..source_head_before_final_handoff",
+    "exit": 0,
+    "findings": 0
+  },
+  "evidence_classifications": {
+    "statically_inspected": "Changed source/control flow, staged path/diff stats, index/snapshot hashes, syntax, JSON, shell syntax and ignore rules.",
+    "test_covered_and_executed": "140 fake/local Node tests and 27 pure local guard/artifact cases; additional focused regressions before applicable commits.",
+    "runtime_verified": "No new Docker/TLS/SQL/browser/2-GiB full-stream rehearsal in this publication phase. Original TWO_HOST_RESULTS.json remains prior local evidence.",
+    "externally_verified": "Three new GitHub review branches/PRs, open/non-draft with base main; final updated heads verified in execution handoff.",
+    "not_yet_verified": "Actual shared-host compatibility, personal-server capacity, real provider/account/2-GiB delivery, production readiness and comprehensive security/licensing."
+  },
+  "resolved_execution_issue": {
+    "observed": "A staging attempt failed and writing its diagnostic raised ENOSPC. The original Git stderr could not be saved; its exact initial cause is unconfirmed.",
+    "action": "Verified workstation free space and removed only three redundant source-copy trees generated by this chat, totaling 9855484 bytes. Originals, verified scanner/tools, private fixtures, runtime volumes and recovery evidence were preserved.",
+    "result": "The staging retry and all subsequent commit checks passed. This was not an application regression failure. Workstation space observations are not personal-server capacity evidence."
+  },
+  "preserved_original_work_branch": "zinema/promotion-controls at 759e4a09386bde0ca030ca4072df278fcc1a5d9f",
+  "application_behavior_changed_by_publication": false,
+  "next_task": "Review Stellar's exact PHP/Node/private extractor, storage/cron/backup/monitoring capabilities and the supplied personal-machine details; prepare disabled account-specific staging configuration. Resolve extractor compatibility and recovery gates before any separately authorized private deployment or capped account/recipient/byte-specific live test."
+}

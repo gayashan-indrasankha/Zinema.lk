@@ -1,5 +1,110 @@
 # Recovery decisions
 
+## 2026-10-28 — Test the website/personal-bot split without provider access
+
+Context: Owner requests local implementation/testing and supplies a Stellar plan
+screenshot. Five earlier planning documents were already modified at `759e4a0`;
+preserve/continue them. Confirmed targets remain 500 registered/50 daily/20
+simultaneous website users and 2 GiB files. Personal hardware/upload details are
+absent from the screenshot and remain pending, not inferred from this workstation.
+
+Decision: Build fresh labelled website/DB/TLS and fake-bot namespaces on an internal
+network, with no published ports or default route. Use the actual HTTPS Node client,
+PHP bridge and SQL claims with explicit local fake-page gate and private fixture
+keys. Preserve default disabled entrypoints; no real SDK/session/provider is loaded.
+Keep full media on the personal side, bound bridge bodies to metadata and heartbeat
+state/metrics. Use fresh heartbeat/phone/queue admission without fallback, recheck
+at insertion, and leave interrupted/uncertain work held across all restarts.
+
+Use a 2,147,483,648-byte local ceiling and streaming no-overwrite ingestion/readers;
+preflight local sends and refuse large whole-buffer reads. Share file checks with
+maintenance sends, and bound worker/upload queues to the personal-server candidate.
+No local byte test establishes real WhatsApp size, media safety or codec support.
+
+Record Stellar as a disabled shared-host candidate, not the earlier VPS or a
+purchase. The screenshot price is a monthly equivalent billed annually; checkout,
+renewal and extras are unverified. Private extractor socket/process compatibility
+is an explicit account gate despite public Node support. No root/systemd/Docker
+hosting access is assumed. Public pricing/docs research is not an integration.
+
+Verification: Final local orchestration14, transport/offline25, fake delivery3,
+restart5, outage1, recovery3 and actual 2 GiB byte-stream14 checks passed. Peak
+large-fixture RSS is recorded in TWO_HOST_RESULTS.json with a 64 MiB JS heap and
+192 MiB container bound. Node140, new pure guards12, retained guards9, product112,
+fake mail/OAuth88+7, environment21 and Node/SQL/fake delivery10 passed. The 14
+orchestration checks include child-suite summaries; do not add them into one total.
+PHP warning review caught/fixed the undefined single-file page flag; final counts
+are zero. Earlier fixture setup/assertion failures are retained and distinguished
+from defects in TWO_HOST_LOCAL.md. Static/security scopes are in TWO_HOST_CHECKS.
+
+Consequences: Local scope complete; live launch NO GO. Actual shared-host load,
+private extractor transport, off-host backup/alerts, owner machine capacity,
+real pairing/provider/2 GiB acceptance and browser/soak remain release gates.
+Preserve all private evidence/volumes. No credential rotation, account access,
+hosting purchase, remote Git, deployment or publishing is authorized here.
+
+## 2026-10-28 — Owner clarification: website-only budget and personal bot server
+
+Context: The owner specifies a low budget for website hosting only, runs the bot
+on a personal machine/server, and confirms 500 registered/50 daily/20 simultaneous
+website users with videos up to 2 GiB. The existing five planning document changes
+are uncommitted on `zinema/promotion-controls` at `759e4a0`; continue them in place.
+
+Decision: Supersede the US$100 combined-hosting and 1 GiB draft assumptions in the
+active brief. Record the confirmed audience and 2,147,483,648-byte target. Propose
+US$6–12/month base website hosting, with no numeric owner-approved ceiling yet.
+Personal bot/media costs and domain/backup/mail/tax extras are separate. Catalogue
+and machine specifications remain unconfirmed. No hosting purchase is authorized.
+
+Rationale: Full-video traffic/storage belongs to the owner-machine capacity model.
+The inspected bot bridge initiates authenticated HTTP(S) requests, so the candidate
+two-host design does not require a public database or home-router inbound port.
+The extractor can retain a keyed Unix socket if hosted beside PHP on a compatible
+VPS; relocating it home requires a separately reviewed cross-host transport.
+
+Consequences: Require honest offline-delivery UX, independent site/bot monitoring,
+sleep/reboot/network recovery and local disk/upload/backup sizing. A 2 GiB file is
+larger than decimal 2 GB; provider mode and exact boundaries remain launch gates.
+Existing runtime guards/quotas, pairing approval and tiny live-test cap are unchanged.
+
+Verification: Public compute pricing rechecked; local client/config statically
+inspected only. Documentation arithmetic, disabled-policy byte comparison, links
+and diff checks executed for this update. No runtime/browser/provider/capacity test
+or private machine inspection is claimed. No external integration or deployment.
+
+## 2026-10-28 — Draft a bounded fresh-launch sizing brief
+
+Historical first draft; numerical budget/file-size assumptions superseded by the
+owner clarification above. The free/WhatsApp scope remains in effect.
+
+Context: The owner requested definition of budget, users/concurrency, catalogue
+and maximum video size, retaining free access and WhatsApp-only full content.
+Started clean at `759e4a0` on `zinema/promotion-controls`; prior publication work
+is preserved. No new hosting or external integration authorization follows.
+
+Decision: Record a proposed US$100 monthly envelope, 500 registered/50 daily users,
+20 simultaneous website sessions, 5 sustained HTTP requests/second, a 150-file
+full-content catalogue and desired 1 GiB file maximum in LAUNCH_REQUIREMENTS.md.
+Only the product/free/WhatsApp scope is confirmed; numerical values are assumptions
+pending owner input. Keep normal web uploads distinct from bot-media ingestion.
+
+Rationale: A bounded small-host pilot yields cost and acceptance criteria without
+claiming production capacity from brief local rehearsals. Public provider pricing
+supports the illustrative allocations but does not select a provider or authorize
+spending. A large-file integration limit cannot be inferred from local fakes or a
+different WhatsApp product; its verification is a release blocker.
+
+Consequences: Define measurable load, recovery, alert and browser criteria before
+host selection. Seven daily full-media backups and network costs are explicitly
+modeled; growth above 100 GiB originals requires recosting. Existing local-only
+policy/quotas, disabled adapters and live-test caps remain untouched. Real-size
+delivery tests require a separate reviewed plan beyond the tiny five-send window.
+
+Verification: Documentation arithmetic, local-reference consistency, unchanged
+policy flags and diff checks are executed in this phase. Prior runtime results
+are retained, not rerun. Host suitability, demand, account/integration limits,
+actual spending, operational objectives and provider policy remain unverified.
+
 ## 2026-10-25 — Publish the existing source as an ordered, attributed import
 
 Context: The owner requested staging, conventional commits, branches, GitHub
@@ -570,3 +675,27 @@ PHP198/JavaScript-CJS74/Python21/JSON89 passed. Gitleaks candidate/unpublished-h
 scans returned zero findings; 21 private ignore checks passed. New-work whitespace
 diff exits 0. Prior full runtime reports are retained, not claimed as fresh runs.
 Exact source/branch boundaries and limitations: REVIEW_PUBLICATION.md and results.
+
+## 2026-10-28 — Publish unstaged two-host work in three logical checkpoints
+
+Context: The owner again requested staging, incremental logical Conventional
+Commits and ready-for-review PRs. Twenty-nine paths were unstaged at `759e4a0`;
+the prior PR series is merged into remote main `bcedd80`. Preserve this state
+instead of restarting/reimplementing the completed local phase.
+
+Decision: Group requirements/disabled hosting/bridge/admission, streaming media/
+bot integration, and guarded rehearsal/evidence into three ordered project-prefixed
+branches. Stage nine source/docs groups with checks, followed by one publication
+handoff commit. All PRs target main; merge remains manual and ordered.
+
+Consequences: PRs #19–#21 preserve source intent and earlier evidence without
+rewriting history or enabling any hosting/provider/deployment gate. Public source
+publication is authorized by this request; real accounts, recipients, infrastructure
+spend, production, credentials and deployment remain outside scope. Existing private
+fixtures and failure history remain local, including after the resolved space error.
+
+Verification: Fresh Node140, guards9+12, artifact6 and tracked/untracked syntax checks
+passed. Candidate/staged/history Gitleaks scans and private ignore21 checks passed;
+new-work whitespace checks passed. Earlier full TLS/SQL/large-byte runs are retained
+historical evidence, not reclassified as newly executed. Final PR/head verification
+and immutable handoff hash are reported in the execution handoff.
