@@ -1,0 +1,8 @@
+# Review notes only: no crontab entries or commands are installed by this candidate.
+# Provider minimum: >= 300 seconds between jobs; never > 5 concurrent jobs.
+# Suggested reviewed schedule: one non-overlapping metadata/health collector every
+# five minutes, hourly DB/state backup, daily coordinated media manifest/backup.
+# No full media or bot/session store belongs on the website hosting account.
+# PHP CLI does not inherit .user.ini. An explicit private storage/operator CLI bootstrap exists; backup/collector
+# per-job locks, least-privilege identity, redacted logs and actual restore proof remain gates.
+# No remote sender, backup transport, retention deletion or provider test enabled.
