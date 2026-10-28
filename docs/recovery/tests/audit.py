@@ -15,6 +15,7 @@ import os
 from pathlib import Path
 import re
 import secrets
+from datetime import datetime,timezone,timedelta
 import shutil
 import socket
 import subprocess
@@ -406,7 +407,7 @@ def check(folder):
     new_log = php_log.read_bytes()[log_offset:].decode('utf-8', errors='replace') if php_log.exists() else ''
     diagnostics = {name:len(re.findall('PHP '+name,new_log)) for name in ['Warning','Notice','Fatal error','Deprecated']}
     record('No new PHP diagnostics during the final request suite', not any(diagnostics.values()),'runtime diagnostics',detail=diagnostics)
-    results = {'date':'2026-10-25','base':BASE,'schema':'database/schema.sql canonical local schema; zero legacy data rows','tests':rows,'summary':{'total':len(rows),'passed':sum(r['passed'] for r in rows),'failed':sum(not r['passed'] for r in rows)},'syntax':syntax(),'new_php_diagnostics':diagnostics}
+    results = {'date':datetime.now(timezone(timedelta(hours=5,minutes=30))).date().isoformat(),'base':BASE,'schema':'database/schema.sql canonical local schema; zero legacy data rows','tests':rows,'summary':{'total':len(rows),'passed':sum(r['passed'] for r in rows),'failed':sum(not r['passed'] for r in rows)},'syntax':syntax(),'new_php_diagnostics':diagnostics}
     (ROOT/f'docs/recovery/{RESULT_PREFIX}_RETAINED_HTTP.json' if RESULT_PREFIX != 'REPAIR' else ROOT/'docs/recovery/REPAIR_RESULTS.json').write_text(json.dumps(results,indent=2)+'\n')
     print(json.dumps(results['summary']))
     raise SystemExit(1 if results['summary']['failed'] else 0)
