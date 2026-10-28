@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const UploadQueue = require('./upload-queue');
+const {inspectMedia} = require('./media-policy');
 
 class MultiTierForwarder {
     constructor(client, fileManager, apiClient, cacheGroupId = null, storageGroupIds = []) {
@@ -40,9 +41,9 @@ class MultiTierForwarder {
 
         // UPLOAD QUEUE: Rate-limited concurrent uploads
         this.uploadQueue = new UploadQueue({
-            maxConcurrent: 2,           // Max 2 uploads at once
+            maxConcurrent: 1,           // One local large-file upload at a time
             delayBetweenUploads: 5000,  // 5 second gap between uploads
-            maxQueueSize: 500           // Max 500 pending uploads
+            maxQueueSize: 30            // Bounded personal-server backlog
         });
 
         // Set the upload handler
@@ -474,6 +475,7 @@ class MultiTierForwarder {
 
             const filePath = this.fileManager.getFilePath(contentType, contentId, partNumber);
             if (!filePath) return { success: false, error: 'No local file' };
+            const media = inspectMedia(filePath);
 
             const caption = this.getVideoCaption();
             const fileName = path.basename(filePath);
@@ -481,8 +483,7 @@ class MultiTierForwarder {
             // Calculate timeout based on file size (tiered for large files)
             let timeoutMs = 15 * 60 * 1000; // default 15 min
             try {
-                const stats = fs.statSync(filePath);
-                const sizeMB = stats.size / 1024 / 1024;
+                const sizeMB = media.bytes / 1024 / 1024;
                 if (sizeMB > 1024) {
                     // Large files: 10min base + 2min per 100MB
                     timeoutMs = (10 * 60 * 1000) + (sizeMB / 100) * (2 * 60 * 1000);
@@ -503,7 +504,7 @@ class MultiTierForwarder {
                 this.sendAcknowledged(chatId, {
                     document: { url: filePath },
                     caption: caption,
-                    mimetype: 'video/mp4',
+                    mimetype: media.mimetype,
                     fileName: fileName
                 }),
                 new Promise((_, reject) =>
