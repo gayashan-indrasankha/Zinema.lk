@@ -808,3 +808,29 @@ observations, not restart/uptime proof. Independent backups and upload speed are
 unverified. Leave the owned preview available for owner review with private access
 notes and exact stop command; keep real integrations, staging activation and
 publishing off. No Git staging/commit/push or purchase in this phase.
+
+## 2026-10-29 — Publish the completed Stellar and acceptance work as ordered reviews
+
+Context: The owner requested incremental staging/Conventional Commits/PRs and then
+explicitly chose to wait for the active local acceptance chat. Its completed fixes
+expanded the initial 65 changed paths to 79. Keep that work, prior reports and the
+owner-requested running preview intact; source publication does not activate a host.
+
+Decision: Wait for the other turn to complete, freeze and reverify the combined
+source, then create four ordered project-prefixed checkpoints: preparation,
+adapters, worker pressure and acceptance. Stage nineteen purpose-based groups plus
+one publication handoff. Stage the audit helper's earlier/later changes separately
+from verified snapshots without editing its working file. Do not rewrite history,
+invent activity commits, merge PRs, stop the preview or enable external switches.
+
+Consequences: PRs #22–#25 all target main and must merge in order; later diffs include
+predecessors until merged. Source review is authorized by this request independently
+of the still-disabled hosting/provider/production/deployment gates. Actual hosting,
+always-on, speed, independent recovery and live identities remain unaccepted.
+
+Verification: Settled candidate591 and all staged/new-history scans pass, zero
+Gitleaks findings; private ignores22, PHP213/JS-CJS88/Python28/JSON105, Node171 and
+pure Python49 pass. Included local acceptance reports show browser16 and HTTP94;
+no manual interaction or newly replayed full runtime acceptance is claimed. Exact
+scope/group hashes, final handoff hash and remote/clean checks are documented in
+the publication records and execution handoff.

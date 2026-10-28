@@ -1,8 +1,53 @@
 # Recovery status
 
-Updated: 2026-10-28.
+Updated: 2026-10-29.
 
 ## Current phase
+
+Owner-requested Stellar/acceptance source publication: **COMPLETE within review
+scope; broader launch plan remains PARTIAL / NO GO**. Started 2026-10-28 at
+`12c9954758b9718cabe25816d328b28db0198582`; published 2026-10-29.
+
+- Honoured the owner's request to wait for completed acceptance fixes. Initial
+  65 changed paths became 79 after that chat finished. Rescanned/verified the
+  settled source before any staging or branch changes; preserved original work.
+- Nineteen logical source/docs commits plus this publication handoff (20 total),
+  in four `zinema/` checkpoints. PRs **#22–#25** target main; merge preparation,
+  adapters, worker pressure and acceptance in that order. All were open/non-draft
+  before this update. Normal merge commits retain the reviewed commit series.
+- Fresh source checks: PHP213/JS-CJS88/Python28/JSON105 passed, Node171/171 with
+  zero skips and pure Python49/49 passed. Relevant focused tests, staged syntax,
+  JSON/index and whitespace checks ran before applicable commits. New-work diff
+  whitespace passes. Candidate591, nineteen staged groups and new source-history
+  Gitleaks scans return zero findings; archive/binary verified, private ignores22.
+- Included acceptance records: automated browser16/16 and HTTP94/94, zero new
+  PHP/page errors. Interactive tooling failed, so no manual interaction pass.
+  These and earlier Stellar/native/TLS/SQL/memory reports retain their recorded
+  scopes; full runtime/browser/provider journeys were not rerun by publication.
+- The audit helper's earlier Stellar changes and later acceptance fixes were
+  partially staged from verified snapshots without changing the working file.
+  All final application files match the settled accepted source. Publication
+  authored only the two new publication docs and workflow/status notes.
+- Local preview intentionally remains running for owner review; publication did
+  not start/stop/refresh it or its fictional database. No private access files,
+  credentials, device stores, original media/rows, keys, logs or backups published.
+- Branches/PR links, all nineteen source hashes, per-group tests and limits are in
+  STELLAR_PUBLICATION.md and STELLAR_PUBLICATION_RESULTS.json. Pre-handoff source
+  head `eaab87c6c5d49471613ddb88c13fe0560f373c15`; final documentation hash/clean status and updated remote
+  heads are reported in the execution handoff. Main stays
+  `2e85a54f9a7e2ad0dad9b2602c96e3f44b51fb21`; local main/original branch preserved, no history rewrite.
+- No actual host/account/provider/recipient, purchase, production, power-setting
+  change, credential rotation, merge or deployment. No new advisory/image/
+  penetration/comprehensive privacy/licensing certification; default scan limits
+  and actual-host/always-on/network/independent-recovery/live gates remain.
+
+Owner attention: review and merge PRs #22, #23, #24, #25 in order.
+Exact next recommended Codex task: **Review localhost results, choose an owner-
+approved always-on policy and independent recovery destination, and obtain hosting
+capability confirmation before purchase/private staging. Approve exact receivers
+and caps before any upload-speed or live-provider test.**
+
+## Previous local preview acceptance checkpoint
 
 Local preview acceptance and verification preparation: **LOCAL COMPLETE; broader
 five-step launch plan PARTIAL / NO GO**. Continued from `12c9954` with the earlier
