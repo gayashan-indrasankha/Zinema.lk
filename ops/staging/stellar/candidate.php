@@ -1,0 +1,38 @@
+<?php
+// Sanitized review template only. Keep outside the document root. No real secrets.
+return [
+    'version'=>1,
+    'purpose'=>'private-staging-candidate',
+    'deployment_enabled'=>false,
+    'external_connections'=>false,
+    'production_access'=>false,
+    'publishing'=>false,
+    'environment'=>[
+        'APP_ENV'=>'production',
+        'BASE_URL'=>'https://staging.example.invalid',
+        'ALLOW_LIVE_INTEGRATIONS'=>'false',
+        'DB_HOST'=>'localhost','DB_PORT'=>'3306',
+        'DB_NAME'=>'REPLACE_STAGING_DATABASE','DB_USER'=>'REPLACE_STAGING_DB_USER',
+        'DB_PASS'=>'REPLACE_PRIVATE_STAGING_DB_PASSWORD',
+        'SESSION_SAVE_PATH'=>'/home/REPLACE_ACCOUNT/zinema-private/staging/sessions',
+        'TRUSTED_PROXY_IPS'=>'',
+        'MAIL_MODE'=>'disabled','OAUTH_MODE'=>'disabled','WHATSAPP_MODE'=>'disabled',
+        'MEDIA_MODE'=>'disabled','EXTRACTOR_MODE'=>'disabled','PAYMENT_MODE'=>'disabled',
+        'UPLOAD_QUOTA_MODE'=>'disabled',
+        'ZINEMA_TWO_HOST_FIXTURES'=>'0','ZINEMA_PROMOTION_FIXTURES'=>'0',
+        'ZINEMA_EXTRACTOR_FIXTURES'=>'0',
+    ],
+    'storage_candidate'=>[
+        'applied'=>false,'managed_upload_bytes'=>5000000000,'quarantine_bytes'=>500000000,
+        'full_content_on_website'=>false,
+    ],
+    'backup_candidate'=>[
+        'enabled'=>false,'minimum_scheduler_interval_seconds'=>300,
+        'database_interval_seconds'=>3600,'media_interval_seconds'=>86400,
+        'key_path'=>'/home/REPLACE_ACCOUNT/zinema-private/staging/keys/backup.key',
+        'independent_recovery_copy_verified'=>false,
+    ],
+    'monitoring_candidate'=>[
+        'enabled'=>false,'collector_interval_seconds'=>300,'external_alerts_enabled'=>false,
+    ],
+];

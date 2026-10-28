@@ -1,0 +1,20 @@
+; Disabled shared-host candidate. Verify the actual PHP handler before any deployment.
+; CGI/FastCGI .user.ini support is not implied for mod_php or other handlers.
+auto_prepend_file=/home/REPLACE_ACCOUNT/zinema-private/staging/bootstrap.php
+display_errors=Off
+log_errors=On
+error_log=/home/REPLACE_ACCOUNT/zinema-private/staging/logs/php-error.log
+zend.exception_ignore_args=On
+; expose_php is php.ini-only: configure via the provider, not this per-directory file.
+date.timezone=Asia/Colombo
+memory_limit=128M
+upload_max_filesize=20M
+post_max_size=22M
+max_file_uploads=1
+max_execution_time=30
+session.use_strict_mode=1
+session.save_path=/home/REPLACE_ACCOUNT/zinema-private/staging/sessions
+session.use_only_cookies=1
+session.cookie_secure=1
+session.cookie_httponly=1
+session.cookie_samesite=Lax
