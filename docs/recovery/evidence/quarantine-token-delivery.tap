@@ -1,0 +1,14 @@
+✔ claim denial never reaches delivery (1.5862ms)
+✔ begin denial never reaches delivery (0.2388ms)
+✔ acknowledged send completes ownership in order (0.3021ms)
+✔ unacknowledged and throwing sends are held without completing (0.3613ms)
+✔ completion rejection and lost response never report success or retry (0.3568ms)
+✔ API client exports claim protocol and binds recipient and configured bot (57.451ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 139.0309

@@ -95,9 +95,11 @@ bounded traversal. Incomplete/unsafe inspection prevents cleanup candidacy.
 
 This is an advisory snapshot. It does not establish absence of future, arbitrarily
 embedded or remote references, certify malware safety or authorize deletion.
-**There is no cleanup/apply/delete command.** Do not turn candidate rows into shell
-deletion commands. Legacy/shared media and evidence remain preserved. Recoverable
-quarantine and restore need a separately scoped follow-up.
+Do not turn candidate rows into shell deletion commands. Legacy/shared media and
+evidence remain preserved. The separately authorized [quarantine workflow](QUARANTINE.md)
+adds explicit revision/case review, recoverable public withdrawal and restore.
+There is no permanent purge command. Inventory itself remains read-only and now
+also reports `quarantined` / `recovery_required` lifecycle states.
 
 ## Tests and shutdown
 

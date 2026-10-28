@@ -78,7 +78,7 @@ def initialize():
 def operator_request(payload, service='web'):
     require_local_docker()
     owner=json.loads((STATE/'ownership.json').read_text())
-    if owner.get('project') != PROJECT or owner.get('root') != str(ROOT) or service not in {'web','operator-fixtures'}:
+    if owner.get('project') != PROJECT or owner.get('root') != str(ROOT) or service not in {'web','operator-fixtures','quarantine-fixtures'}:
         raise RuntimeError('Local operator ownership mismatch')
     result=subprocess.run(BASE+['exec','-T',service,'php','/opt/zinema/dev/operator.php'],
                           cwd=ROOT,env=ENV,input=json.dumps(payload),capture_output=True,text=True)
@@ -94,7 +94,7 @@ class OperatorParser(argparse.ArgumentParser):
 
 
 def operator_cli(arguments):
-    parser=OperatorParser(description='Local-only claim review and read-only upload inventory')
+    parser=OperatorParser(description='Local-only claim review and recoverable upload cleanup')
     actions=parser.add_subparsers(dest='action',required=True)
     held=actions.add_parser('held');held.add_argument('--after-id',type=int,default=0)
     actions.add_parser('inventory')
@@ -106,6 +106,14 @@ def operator_cli(arguments):
     resolve.add_argument('--actor',required=True,help='Fictional demo_ operator name')
     resolve.add_argument('--evidence-ref',required=True,help='Fictional fixture: evidence reference')
     resolve.add_argument('--workers-stopped',action='store_true',help='Explicitly attest workers are stopped and evidence has been reviewed')
+    for name in ['storage-review','storage-history','storage-quarantine','storage-restore','storage-recover']:
+        item=actions.add_parser(name);item.add_argument('--path',required=True,help='Registered uploads/ path from inventory')
+        if name in {'storage-review','storage-history'}: continue
+        item.add_argument('--revision',type=int,required=True)
+        item.add_argument('--actor',required=True);item.add_argument('--evidence-ref',required=True);item.add_argument('--case-ref',required=True)
+        item.add_argument('--reviewed',action='store_true',help='Explicit acknowledgement of ownership and reviewed cleanup/restore facts')
+        if name=='storage-recover':
+            item.add_argument('--operation-id',required=True);item.add_argument('--decision',choices=['finish','rollback'],required=True)
     response=operator_request(vars(parser.parse_args(arguments)))
     print(json.dumps(response,indent=2))
     raise SystemExit(0 if response.get('success') is True else 1)
@@ -133,6 +141,8 @@ if __name__=='__main__':
             print(json.dumps({'success':False,'error':'local_operator_unavailable'}));raise SystemExit(1)
     elif command=='test-operations':
         raise SystemExit(subprocess.run([sys.executable,str(ROOT/'dev/test_operations.py')],cwd=ROOT,env=ENV).returncode)
+    elif command=='test-quarantine':
+        raise SystemExit(subprocess.run([sys.executable,str(ROOT/'dev/test_quarantine.py')],cwd=ROOT,env=ENV).returncode)
     elif command=='status': compose('ps')
     elif command=='config': compose('config','--quiet')
-    else: print('Usage: python dev/local.py init|up|test|test-operations|operator|down|status|config')
+    else: print('Usage: python dev/local.py init|up|test|test-operations|test-quarantine|operator|down|status|config')

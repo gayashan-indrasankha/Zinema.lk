@@ -1,0 +1,450 @@
+{
+  "environment": "isolated Docker; fake SMTP/OAuth; SQL-only bot adapter; no legacy rows imported",
+  "tests": [
+    {
+      "name": "Development health is ready",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Fixture control rejects missing key",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Fake outbox rejects missing key",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Normal WhatsApp bridge remains disabled",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Claim adapter rejects wrong fake API key",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Application namespace has no default route",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Public page renders /",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Public page renders /movies",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Public page renders /tv-series",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Public page renders /collections",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Public page renders /login.php",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Public page renders /signup.php",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Public page renders /trailers.php",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Signup rejects missing CSRF",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Signup sends fake verification and keeps session unauthenticated",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Unverified password sign-in is denied",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Resend issues another local email",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Resend revokes original link",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Verification signs in and rotates the session",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Verification link cannot be replayed",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Forgot password sends only to fake sink",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Password reset rejects missing CSRF",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Valid reset changes password",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Reset token cannot be replayed",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Old password is rejected after reset",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "New password signs in",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Expired reset cannot change password",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "SMTP failure is honest and preserves a pending account",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Expired verification remains unauthenticated",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Local mail refuses non-fictional recipients",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Verified fake OAuth creates a verified session and rotates ID",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth never logs in an unverified identity",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth cannot silently link an existing password account",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Signed-in owner may explicitly link their password account",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "A different provider subject cannot rebind that email",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth handles fake token_error",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth handles fake userinfo_error",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth state is bound to its initiating browser",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth rejects a forged state",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Valid initiating state still completes",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth state cannot be replayed",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Fake provider enforces PKCE verifier",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Fictional admin signs in",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "movies accepts a valid image with a generated name",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "movies serves rewritten image without appended payload",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Upload rejects PHP disguise and preserves original",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Upload rejects SVG and preserves original",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Upload rejects mismatched extension and preserves original",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Upload rejects malformed and preserves original",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Upload rejects traversal filename and preserves original",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Upload rejects oversized and preserves original",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "series accepts a valid image with a generated name",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "series serves rewritten image without appended payload",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "collections accepts a valid image with a generated name",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "collections serves rewritten image without appended payload",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Collection ignores posted existing image path",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Episode thumbnail uses local validated storage",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Trailer rejects executable extension",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Generated original MP4 is stored with a safe name",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Generated trailer is served as inert MP4",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Upload requires admin authentication",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Concurrent independent HTTP workers grant exactly one token claim",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Claim does not extend or truncate explicit expiry",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Recipient cannot complete another owner claim",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Cannot complete before beginning delivery",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Wrong receipt cannot begin delivery",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Claim owner begins delivery",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Crash during sending never releases a claim",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "A stale sending claim is never automatically reclaimed",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Acknowledged owner completes delivery",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Completion cannot be replayed",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Consumed token cannot be claimed",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Failure holds an uncertain claim",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Failed claim cannot later complete",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Expired token cannot be claimed",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Expiry after claim prevents a new delivery",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Inactive token cannot be claimed",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Assigned bot is enforced",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Legacy consume endpoint cannot bypass claim ownership",
+      "passed": true,
+      "evidence": "runtime verified"
+    }
+  ],
+  "summary": {
+    "total": 88,
+    "passed": 88,
+    "failed": 0
+  }
+}

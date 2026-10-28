@@ -48,6 +48,14 @@ function validateApiRequest() {
         exit;
     }
     
+    if (defined('LOCAL_MEDIA_REFERENCE_WRITE') && getenv('UPLOAD_QUOTA_MODE') === 'local') {
+        require_once __DIR__ . '/../../includes/upload_storage.php';
+        try {
+            $db=$GLOBALS['conn'];$gate=storage_reference_acquire($db);
+            register_shutdown_function(static function() use ($db,$gate) { try { storage_reference_release($db,$gate); } catch (Throwable $ignored) {} });
+            storage_validate_reference_values(local_storage_settings(),getJsonInput());
+        } catch (Throwable $error) { sendResponse(['success'=>false,'error'=>'upload_reference_unavailable'],409); }
+    }
     return true;
 }
 

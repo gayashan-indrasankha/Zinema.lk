@@ -1,6 +1,7 @@
 <?php
 /** Development storage accounting. Physical files, including unknown files, consume quota. */
 class LocalStorageError extends RuntimeException {}
+require_once __DIR__ . '/upload_lifecycle.php';
 
 function local_storage_settings() {
     if (getenv('UPLOAD_QUOTA_MODE') !== 'local') return null;
@@ -12,12 +13,16 @@ function local_storage_settings() {
     $files = filter_var(getenv('UPLOAD_MAX_FILES'), FILTER_VALIDATE_INT);
     $state = getenv('UPLOAD_STORAGE_STATE');
     $root = dirname(__DIR__) . '/uploads';
-    if (!preg_match('/^zinema-dev-[a-f0-9]{8}(?:-operator-fixtures)?$/D', $owner) ||
+    if (!preg_match('/^zinema-dev-[a-f0-9]{8}(?:-(?:operator|quarantine)-fixtures)?$/D', $owner) ||
         $state !== '/var/lib/zinema/storage' || !$bytes || $bytes < 1 || $bytes > 2147483648 ||
         !$files || $files < 1 || $files > 10000 || is_link($root) || realpath($root) !== $root ||
         is_link($state) || realpath($state) !== $state)
         throw new LocalStorageError('storage_configuration_denied');
-    return ['root'=>$root,'state'=>$state,'owner'=>$owner,'max_bytes'=>$bytes,'max_files'=>$files];
+    $qbytes=filter_var(getenv('UPLOAD_QUARANTINE_MAX_BYTES') ?: '67108864',FILTER_VALIDATE_INT);
+    $qfiles=filter_var(getenv('UPLOAD_QUARANTINE_MAX_FILES') ?: '500',FILTER_VALIDATE_INT);
+    if (!$qbytes || $qbytes<1 || $qbytes>2147483648 || !$qfiles || $qfiles<1 || $qfiles>10000)
+        throw new LocalStorageError('storage_configuration_denied');
+    return ['quarantine_max_bytes'=>$qbytes,'quarantine_max_files'=>$qfiles,'root'=>$root,'state'=>$state,'owner'=>$owner,'max_bytes'=>$bytes,'max_files'=>$files];
 }
 
 function storage_write_json($path, $data) {
@@ -82,7 +87,7 @@ function storage_with_lock($settings, $exclusive, $callback) {
     @chmod($lockPath, 0660); @chown($lockPath, 'www-data'); @chgrp($lockPath, 'www-data');
     try {
         $path = $settings['state'] . '/manifest.json';
-        if (is_link($path) || !is_file($path) || filesize($path) > 2097152) throw new LocalStorageError('storage_manifest_invalid');
+        if (is_link($path) || !is_file($path) || filesize($path) > 8388608) throw new LocalStorageError('storage_manifest_invalid');
         $manifest = json_decode(file_get_contents($path), true);
         if (($manifest['schema'] ?? null) !== 1 || ($manifest['owner'] ?? null) !== $settings['owner'] ||
             !is_array($manifest['assets'] ?? null) || count($manifest['assets']) > 10000)
@@ -93,6 +98,7 @@ function storage_with_lock($settings, $exclusive, $callback) {
                 $asset['created_at'] < 1 || !is_string($asset['sha256'] ?? null) ||
                 !preg_match('/^[a-f0-9]{64}$/D', $asset['sha256'])) throw new LocalStorageError('storage_manifest_invalid');
         }
+        storage_validate_lifecycle($manifest);
         return $callback($manifest);
     } finally { flock($lock, LOCK_UN); fclose($lock); }
 }
@@ -122,6 +128,7 @@ function storage_commit_upload($source, $relative) {
         $size = filesize($source);
         if ($size < 1 || $size > 20971520) throw new LocalStorageError('storage_input_denied');
         if ($settings) {
+            if (storage_pending($manifest)) throw new LocalStorageError('storage_recovery_required');
             $scan = storage_scan_files($settings);
             if ($scan['unsafe']) throw new LocalStorageError('storage_unsafe_entries');
             if ($scan['files']+1 > $settings['max_files'] || $scan['bytes']+$size > $settings['max_bytes'])
