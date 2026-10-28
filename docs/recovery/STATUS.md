@@ -4,6 +4,128 @@ Updated: 2026-10-28.
 
 ## Current phase
 
+Local preview acceptance and verification preparation: **LOCAL COMPLETE; broader
+five-step launch plan PARTIAL / NO GO**. Continued from `12c9954` with the earlier
+uncommitted adapter work preserved; Stellar is confirmed not purchased.
+
+- Started fresh owned native localhost preview; prepared canonical v4 fictional
+  data and generated image/clip. Automated Chrome journeys pass 16/16; interactive
+  tooling failed kernel-asset initialization even after reset, so no manual browser
+  interaction pass is claimed. Screenshots were visually inspected separately.
+- Fixed harness logo omission/private PHP GD setup, technical disabled-delivery
+  UX, administrator trailer relative preview URLs/optional-poster deprecation,
+  inconsistent upload limits and observed catalogue metadata. Added browser
+  regression driver; no schema or live-mode/publishing switch changes.
+- Read-only bot-machine/power policy inventory collected without media contents,
+  settings changes or sleep/restart. Nonzero sleep/hibernate timers require review;
+  boot age is not always-on proof. Upload speed/independent backup remain unknown.
+- Final verification: browser16 + HTTP94 pass (110); no new PHP/browser errors.
+  Syntax PHP213/JS-CJS88/Python28/JSON104 and Gitleaks source590 (zero findings),
+  private ignores22 and whitespace checks pass, with documented exclusions.
+- LOCAL_ACCEPTANCE.md and JSON reports record tests, corrections, scan scope and
+  limitations. NEXT_VERIFICATION.md gives reviewable provider/network/recovery/live
+  prerequisites. No actual hosting/account/provider/recipient connection occurred.
+- Preview intentionally remains at http://127.0.0.1:8088 in owned fixture
+  `.runtime/audit-20261028-233435` for owner review; private access file and exact
+  stop command are in LOCAL_ACCEPTANCE.md. Earlier owned preview was stopped with
+  both ports verified closed, and its files retained. No global XAMPP changes.
+- Work remains uncommitted; existing history/source and prior phase reports kept.
+  No remote publication, account purchase, deployment, credential rotation or live
+  integration. Local fixtures use only fictional data and original generated media.
+
+Next task: **Review localhost results; choose an owner-approved always-on policy
+and independent recovery destination, and obtain hosting capability confirmation
+before purchase/private staging. Approve exact receiver/caps before any network
+speed or live-provider test. Keep publishing disabled.**
+
+## Previous Stellar adapter phase
+
+Stellar account adapters and worker pressure rehearsal: **COMPLETE within local
+fake/preparation scope; overall launch NO GO**. Continued from `12c9954` on
+`zinema/two-host-rehearsal`, preserving all earlier uncommitted preparation work.
+No source publication, production or provider access is part of this task.
+
+- Implemented private allowlisted bootstrap, account-owned upload quota/state and
+  private CLI inventory/quarantine/restore/recovery. Shared operator algorithms
+  moved into includes; original local-only entry guard remains. No schema change.
+- Implemented bounded administrator/CSRF extraction queue and separately keyed
+  outbound worker. Expired/uncertain work stays held, reviewed archival is audited,
+  restart intent prevents blind replay, and results require intact active owned
+  media. Browser waits before saving; incomplete extraction cannot create a Shot.
+- Added fixed-origin HTTPS policy with fake TLS/redirect tests; executable worker
+  remains local-fixture only. Default package/INI/private candidate stay locked;
+  actual account activation and all real providers remain disabled/unverified.
+- Added RSS/free-RAM/volume-reserve checks to the worker, pre-claim/pre-send gates,
+  offline heartbeats, streaming pressure/ENOSPC cleanup and constrained memory tests.
+  No owner media contents or actual media volume were read or written by fixtures.
+- Executed local adapter/queue tests, native PHP/SQL/fake-worker rehearsal, retained
+  website and Node regressions, exporter/guard checks (343 total pass). Source/static
+  checks and Gitleaks candidate scan pass with zero findings; 22 private ignores
+  pass. Pattern/dependency/actual-host limitations remain. Exact memory evidence,
+  source/secret scan and limits: STELLAR_ADAPTERS.md and its JSON reports. Native
+  services stop with closed ports. No new manual browser/actual hosting run claimed.
+- Earlier sandbox network/hard-link attempts failed closed; native path/fixture
+  guard corrections and queued-expiry regression were fixed before final reruns.
+  Failed scratch evidence remains private. Docker was not restarted or used.
+- Changes remain uncommitted for owner review. Existing history/PRs preserved;
+  no remote Git, credential rotation, hosting spend, scheduler installation,
+  production infrastructure, real recipient, deployment or publishing.
+
+Next task: **Review the disabled adapter package, obtain separately authorized
+actual Stellar capability evidence, measure sustained personal-server upload under
+an approved capped test, and verify an independent encrypted backup/new-target
+restore. Then approve an isolated private staging rehearsal. Do not publish.**
+
+## Previous Stellar preparation
+
+Stellar staging preparation and read-only bot readiness: **COMPLETE within local
+preparation scope; overall launch NO GO**. Started clean at
+`12c9954758b9718cabe25816d328b28db0198582` on `zinema/two-host-rehearsal`.
+
+Owner inventory follow-up: actual machine role now confirmed with a supplied
+collector report. Windows x64, 16 logical processors, 15.71 GiB total RAM and
+1.55 GiB free at report; the media volume reports 121.51 GiB available. Recorded
+sanitized provenance in BOT_MACHINE_INVENTORY.md and the disabled hosting candidate.
+These are owner-reported snapshots, not capacity/security/write verification.
+Upload speed, folder use/quota, always-on policy and independent backup remain
+unknown. Follow-up checks cover JSON, arithmetic and disabled flags/diff only;
+no new runtime/provider tests or configuration activation. Earlier changes remain.
+
+- Added disabled shared-host candidate/private guards/CLI capability checker,
+  user-INI template, scheduler notes and runbook; added committed-source local
+  review exporter and locked-server rehearsal. Added a standalone read-only bot
+  inventory script and regression coverage. Updated hosting metadata and checklist.
+  Application source/default promotion policy remains unchanged; nothing activated.
+- Read public provider/PHP docs: actual PHP handler must be verified; unattached
+  daemons are disallowed and shared cron intervals must be >= five minutes.
+  Current standalone extractor is not a verified/ready managed Node adapter.
+  Private bootstrap activation and general shared-host quota/recovery adapters
+  remain implementation gates; samples are not permission to remove controls.
+- Executed readiness17 plus retained config11 (28 total), candidate8 with twelve
+  mutation subcases, retained artifact6/local guards9/two-host guards12; all pass.
+  Native owned loopback Apache/CLI guard checks pass and process/port cleanup is
+  verified. No PHP web app, database or provider was started by the native test.
+  Static/secret/ignore checks: STELLAR_CHECKS.json. Detailed evidence/limitations:
+  STELLAR_PREPARATION.md and STELLAR_RESULTS.json.
+- Windows metadata collector ran only as a development-workstation smoke, with
+  unknown storage on sandbox denial and successful local metadata outside it.
+  Actual bot machine/continuous uptime/network throughput remain unknown. No
+  credentials, sessions, media contents, network test or setting changes by it.
+- Optional Docker test aborted when its local daemon stalled in create. Only its
+  owned client was stopped, no start issued and no global restart; native Apache
+  verified the intended guard behaviour. Aborted evidence remains private; stopped
+  case metadata may require review when Docker responds. No Docker pass claimed.
+- Local files remain uncommitted for review; base/history/earlier PRs preserved.
+  No account/production/recipient/SDK access, hosting spend, credential rotation,
+  remote Git, schema execution, deployment or publishing in this phase.
+
+Exact next task: **Review the actual bot-machine readiness JSON and a separately
+authorized private account capability report; implement the provider-approved
+extractor and shared-host private bootstrap/storage/recovery adapters locally with
+fakes before requesting staging activation. Keep external access and publishing off.**
+
+## Previous two-host source publication checkpoint
+
 Owner-requested two-host source publication: **COMPLETE within review scope;
 overall launch remains NO GO**. Started with 29 unstaged paths at
 `759e4a09386bde0ca030ca4072df278fcc1a5d9f` on `zinema/promotion-controls`.

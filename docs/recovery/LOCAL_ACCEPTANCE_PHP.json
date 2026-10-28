@@ -1,0 +1,28 @@
+{
+  "scope": "Local private fixture PHP only; not actual Stellar",
+  "capabilities": {
+    "purpose": "Private staging capability inventory, not deployment approval",
+    "php_version": "8.2.12",
+    "sapi": "cli",
+    "integer_bytes": 8,
+    "extensions": {
+      "mysqli": true,
+      "pdo_mysql": true,
+      "gd": true,
+      "fileinfo": true,
+      "openssl": true,
+      "curl": true,
+      "mbstring": true,
+      "json": true,
+      "session": true
+    },
+    "curl_unix_socket_option_defined": true,
+    "web_handler_and_user_ini_effect": "not_verified",
+    "private_socket_permissions_and_managed_node_adapter": "not_verified",
+    "security_patch_status": "not_verified",
+    "database_connection_attempted": false,
+    "files_written": false,
+    "external_connections": false,
+    "activation_enabled": false
+  }
+}
