@@ -466,3 +466,24 @@ mode checks. Never promote these development images/aliases/fixtures to producti
 Remove unreachable historical live/browser entry code; Git retains that evidence,
 and pure parser/transport tests remain. Real deployment/provider/browser acceptance
 is separate. Executed local results and limitations are in EXTRACTOR_CONNECTION.md.
+
+
+## 2026-10-26 — Held work and fake-tested worker lifecycle
+
+Private extractor checkpoint 2bd63050e18ea7e749b60aa98f23c39688dbe3ab was clean.
+For bot follow-up, remove blind retry/fallback after an unacknowledged recipient
+send: a fake test reproduced six attempts and now verifies one, with SQL hold.
+Persist maintenance intent before sends and require acknowledged mapping/log writes;
+hold ambiguity/corruption and preserve legacy queue bytes. Use one shared gate and
+checkpointed range/aging path instead of duplicate unsafe maintenance loops.
+
+No-overwrite media publication, explicit Asia/Colombo jobs, one private session
+lease and bounded shutdown preserve evidence. Stale leases require review rather
+than automatic session deletion. Drop raw legacy logging arguments; stop safely
+on pairing requests without printing QR data. A reviewed owner pairing flow is
+still a launch gate. Complete fake dependency-graph tests complement, and do not
+replace, the real CLI startup guard and future approved provider testing.
+
+BOT_LIFECYCLE.md records executed tests/failures and limits. Production/live access,
+real recipients, deployment, remote Git and publishing remain disabled. Proceed
+only to an isolated synthetic staging rehearsal; no real host is selected yet.

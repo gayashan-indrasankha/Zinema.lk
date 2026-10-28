@@ -38,16 +38,19 @@ async function apiRequest(endpoint, data = {}) {
 
         const req = client.request(options, (res) => {
             let responseData = '';
+            let bytes=0;
 
             res.on('data', (chunk) => {
+                bytes+=Buffer.byteLength(chunk);if(bytes>1048576){req.destroy(new Error('API response too large'));return;}
                 responseData += chunk;
             });
 
             res.on('end', () => {
+                clearTimeout(deadline);
                 try {
                     const parsed = JSON.parse(responseData);
                     if (res.statusCode >= 400) {
-                        reject(new Error(parsed.error || `HTTP ${res.statusCode}`));
+                        reject(new Error(`API HTTP ${res.statusCode}`));
                     } else {
                         resolve(parsed);
                     }
@@ -55,13 +58,18 @@ async function apiRequest(endpoint, data = {}) {
                     reject(new Error('Invalid JSON response'));
                 }
             });
+            res.on('aborted',()=>{clearTimeout(deadline);reject(new Error('API response interrupted'));});
+            res.on('error',()=>{clearTimeout(deadline);reject(new Error('API response unavailable'));});
         });
+        const deadline=setTimeout(()=>req.destroy(new Error('API request deadline')),30000);
+        deadline.unref?.();
 
         req.on('error', (e) => {
-            reject(new Error(`API request failed: ${e.message}`));
+            clearTimeout(deadline);reject(new Error('API request unavailable'));
         });
 
         req.on('timeout', () => {
+            clearTimeout(deadline);
             req.destroy();
             reject(new Error('API request timed out'));
         });
@@ -182,10 +190,10 @@ async function addMessageId(contentType, contentId, messageId, fileName = null, 
 async function needsRefresh(messageId) {
     try {
         const response = await apiRequest('needs-refresh.php', { message_id: messageId });
-        return response.needs_refresh !== false;
+        return response.needs_refresh === true;
     } catch (error) {
         console.error('API Error (needsRefresh):', error.message);
-        return true; // On error, assume it needs refresh
+        throw new Error('Refresh metadata unavailable');
     }
 }
 
@@ -197,13 +205,15 @@ async function needsRefresh(messageId) {
  */
 async function logRefresh(messageId, fileName = '', fileType = 'video') {
     try {
-        await apiRequest('log-refresh.php', {
+        const response=await apiRequest('log-refresh.php', {
             message_id: messageId,
             file_name: fileName,
             file_type: fileType
         });
+        return response.success===true;
     } catch (error) {
         console.error('API Error (logRefresh):', error.message);
+        return false;
     }
 }
 
@@ -230,8 +240,8 @@ async function getRefreshStats() {
  */
 async function testConnection() {
     try {
-        // Try a simple validation request with dummy token
-        await apiRequest('validate-token.php', { token: 'TEST_CONNECTION' });
+        const result=await apiRequest('health.php');
+        if(result?.success!==true || result.service!=='zinema-bridge' || result.claim_protocol!=='claim-begin-complete-v1')return false;
         console.log('✅ API Bridge connected successfully!');
         console.log(`   🌐 API URL: ${API_URL}`);
         return true;

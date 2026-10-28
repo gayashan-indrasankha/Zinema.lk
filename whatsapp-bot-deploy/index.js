@@ -1,6 +1,9 @@
 // Fail before loading Baileys, authentication stores or timers.
 const recoveryConfig = require('./config/environment').readConfig();
 require('./config/environment').assertLiveWhatsAppEnabled(recoveryConfig);
+const workerLog=require('./config/safe-logger').install(console);
+const workerLease=require('./config/worker-lease').acquire(recoveryConfig.sessionPath);
+let shuttingDown=false,shutdownPromise=null;
 
 /**
  * WhatsApp Video Forwarder Bot with Baileys
@@ -16,8 +19,6 @@ require('./config/environment').assertLiveWhatsAppEnabled(recoveryConfig);
 const makeWASocket = require('@whiskeysockets/baileys').default;
 const { useMultiFileAuthState, DisconnectReason, delay, fetchLatestBaileysVersion, Browsers, downloadMediaMessage } = require('@whiskeysockets/baileys');
 const pino = require('pino');
-const qrcode = require('qrcode-terminal');
-const cliProgress = require('cli-progress');
 const fs = require('fs');
 const path = require('path');
 
@@ -197,6 +198,7 @@ process.on('warning', (warning) => {
 
 // Global instances
 let sock = null;
+let activeSocket=null,workerReady=false;
 let store = null;
 
 // Initialize store if available
@@ -254,6 +256,7 @@ global.messageQueue = messageQueue;
  * Main Baileys Connection Function
  */
 async function connectToWhatsApp() {
+    if(shuttingDown)return;
     const sessionPath = recoveryConfig.sessionPath;
 
     // Ensure session directory exists
@@ -266,6 +269,7 @@ async function connectToWhatsApp() {
     const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
 
     const { version } = await fetchLatestBaileysVersion();
+    if(shuttingDown)return;
 
     sock = makeWASocket({
         version,
@@ -352,16 +356,16 @@ async function connectToWhatsApp() {
 
 
     sock.ev.on('connection.update', async (update) => {
-        if (sock !== connectionSocket) return;
+        if (shuttingDown || sock !== connectionSocket) return;
         const { connection, lastDisconnect, qr } = update;
 
         if (qr) {
-            console.log('\\n📱 Scan this QR code with your WhatsApp:\\n');
-            qrcode.generate(qr, { small: true });
-            console.log('\\n⏳ Waiting for QR code scan...\\n');
+            workerLog.event('pairing_required');
+            await shutdownWorker(1);return;
         }
 
         if (connection === 'close') {
+            activeSocket=null;workerReady=false;workerLog.event('connection_closed');
             const statusCode = lastDisconnect?.error?.output?.statusCode;
             const errorMessage = lastDisconnect?.error?.message || 'Unknown';
 
@@ -378,14 +382,16 @@ async function connectToWhatsApp() {
             if (autoRefresher) autoRefresher.socketReady=false;
             reconnectController.disconnected(statusCode !== DisconnectReason.loggedOut);
         } else if (connection === 'open') {
+            if(activeSocket===connectionSocket)return;
+            activeSocket=connectionSocket;workerReady=false;
             reconnectController.connected();
-            await onConnectionOpen();
+            await onConnectionOpen(connectionSocket);
         }
     });
 
     // Message events - WITH DEBUG LOGGING
     sock.ev.on('messages.upsert', async ({ messages, type }) => {
-        if (sock !== connectionSocket) return;
+        if (shuttingDown || !workerReady || sock !== connectionSocket) return;
         console.log(`🔔 Message event: type=${type}, count=${messages.length}`);
         if (type !== 'notify') return;
 
@@ -399,7 +405,9 @@ async function connectToWhatsApp() {
 /**
  * Called when connection is established
  */
-async function onConnectionOpen() {
+async function onConnectionOpen(connectionSocket) {
+    const current=()=>!shuttingDown && activeSocket===connectionSocket && sock===connectionSocket;
+    if(!current())return;
     console.log('╔════════════════════════════════════════════════════════╗');
     console.log('║  ✅ WhatsApp Bot READY! (Baileys + Large File Support) ║');
     console.log('╠════════════════════════════════════════════════════════╣');
@@ -411,7 +419,9 @@ async function onConnectionOpen() {
     console.log('║     !queue - Show queue status                          ║');
     console.log('╚════════════════════════════════════════════════════════╝\\n');
 
-    await testConnection();
+    const bridgeReady=await testConnection();
+    if(!current())return;
+    if(bridgeReady!==true){workerLog.event('worker_error');await shutdownWorker(1);return;}
 
     // Display storage groups
     if (STORAGE_GROUP_IDS.length > 0) {
@@ -453,18 +463,22 @@ async function onConnectionOpen() {
             console.log(`🚀 Multi-Tier Forwarder & Auto-Refresher initialized`);
 
             const files = await fileManager.listAllFiles();
+            if(!current())return;
             console.log(`📊 Local files available: ${files.length}`);
 
             cacheWarmer = new CacheWarmer(sock, fileManager, cacheGroupId);
             cacheWarmer.setApiClient(apiClient);
-            await cacheWarmer.start(true);
-            console.log(`🔥 Cache Warmer started and scheduled (Startup Sync ENABLED)`);
+            autoRefresher.setWarmer(cacheWarmer);
+            await cacheWarmer.start(false);
+            if(!current()){cacheWarmer.stop();autoRefresher.stop();return;}
+            console.log('Cache schedules installed; startup uploads remain disabled.');
         }
 
         // Preload cache group messages for Tier 2 forwarding
         if (STORAGE_GROUP_IDS.length > 0) {
             console.log(`📥 Preloading cache group messages for Tier 2...`);
             for (const groupId of STORAGE_GROUP_IDS) {
+                if(!current())return;
                 try {
                     // Send presence to trigger message sync
                     await sock.sendPresenceUpdate('available', groupId);
@@ -484,9 +498,12 @@ async function onConnectionOpen() {
 
     } catch (err) {
         console.error(`❌ Failed to initialize Ultimate System: ${err.message}`);
+        await shutdownWorker(1);return;
     }
 
     // Start Health Monitor
+    if(!current() || !multiTierForwarder || !cacheWarmer || !autoRefresher)return;
+    workerReady=true;workerLog.event('connection_open');
     const BOT_ID = parseInt(BOT_INSTANCE_ID) || 1;
     if (healthMonitor) healthMonitor.stop();
     healthMonitor = new HealthMonitor(BOT_ID, apiClient, sock);
@@ -740,7 +757,7 @@ async function handleMessage(msg) {
                 await sendMessage(chatId, `🌙 *Starting manual nightly processing...*`);
                 try {
                     const result = await multiTierForwarder.processPendingRequests();
-                    await sendMessage(chatId, `✅ *Process Complete!*\n📥 Success: ${result.processed}\n❌ Failed: ${result.failed}`);
+                    await sendMessage(chatId, result.reason==='legacy_queue_review_required' ? 'Legacy deliveries are held for operator review; no queue was replayed.' : `Processed: ${result.processed}; failed: ${result.failed}`);
                 } catch (err) {
                     await sendMessage(chatId, `❌ *Process Failed:* ${err.message}`);
                 }
@@ -846,7 +863,26 @@ async function sendMessage(jid, text, options = {}) {
     }
 }
 
-// Global error handlers - Enhanced with Bad MAC detection
+async function shutdownWorker(exitCode=0) {
+    if(shutdownPromise)return shutdownPromise;
+    shuttingDown=true;workerReady=false;activeSocket=null;
+    workerLog.event('shutdown_started');
+    reconnectController.stop();messageQueue.stop();
+    if(storeSaveTimer){clearInterval(storeSaveTimer);storeSaveTimer=null;}
+    healthMonitor?.stop();cacheWarmer?.stop();autoRefresher?.stop();
+    shutdownPromise=(async()=>{
+        let deadline;
+        try{await Promise.race([messageQueue.whenIdle(),new Promise(resolve=>{deadline=setTimeout(resolve,5000);})]);}
+        finally{clearTimeout(deadline);}
+        try{sock?.end?.(Error('Worker shutdown'));}catch{}
+        try{workerLease.release();}catch{exitCode=1;}
+        workerLog.event('shutdown_complete');process.exit(exitCode);
+    })();
+    return shutdownPromise;
+}
+for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>{void shutdownWorker(0);});
+
+// Failure details are not safe log data; preserve private session/claim evidence.
 process.on('unhandledRejection', (reason) => {
     console.error('⚠️ Unhandled Rejection:', reason);
 
@@ -856,6 +892,7 @@ process.on('unhandledRejection', (reason) => {
     if (sender) {
         handleBadMacError(sender);
     }
+    void shutdownWorker(1);
 });
 
 process.on('uncaughtException', (error) => {
@@ -867,6 +904,7 @@ process.on('uncaughtException', (error) => {
     if (sender) {
         handleBadMacError(sender);
     }
+    void shutdownWorker(1);
 });
 
 // Start the bot
@@ -875,5 +913,5 @@ console.log(`🚀 Starting Baileys WhatsApp Bot...`);
 
 connectToWhatsApp().catch(err => {
     console.error('Failed to connect:', err);
-    process.exit(1);
+    void shutdownWorker(1);
 });

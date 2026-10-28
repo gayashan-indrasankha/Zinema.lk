@@ -1,0 +1,27 @@
+{
+  ".py": {
+    "total": 15,
+    "passed": 15,
+    "failures": []
+  },
+  ".json": {
+    "total": 79,
+    "passed": 79,
+    "failures": []
+  },
+  ".cjs": {
+    "total": 15,
+    "passed": 15,
+    "failures": []
+  },
+  ".php": {
+    "total": 196,
+    "passed": 196,
+    "failures": []
+  },
+  ".js": {
+    "total": 51,
+    "passed": 51,
+    "failures": []
+  }
+}

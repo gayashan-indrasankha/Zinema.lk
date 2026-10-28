@@ -21,7 +21,7 @@ class AutoRefresher {
         this.refreshIntervalHours = parseInt(process.env.REFRESH_INTERVAL_HOURS) || 72;
 
         // Upload retry config
-        this.maxRetries = 2;
+        this.maxRetries = 1;
         this.consecutiveErrors = 0;
         this.maxConsecutiveErrors = 5;
 
@@ -31,6 +31,7 @@ class AutoRefresher {
         // Reconnection support
         this.socketReady = true;
         this._reconnectResolve = null;
+        this.stopRequested=false;
     }
 
     /**
@@ -169,59 +170,28 @@ class AutoRefresher {
      * Send a message with timeout and retry logic
      * Timeouts are NOT retried — they indicate rate limiting.
      */
-    async sendMessageWithRetry(jid, content, filePath = null) {
-        const timeoutMs = filePath ? this.getUploadTimeout(filePath) : 10 * 60 * 1000;
-        const fileSize = filePath ? (fs.existsSync(filePath) ? fs.statSync(filePath).size : 0) : 0;
-
-        for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
-            try {
-                const result = await Promise.race([
-                    this.sock.sendMessage(jid, content),
-                    new Promise((_, reject) =>
-                        setTimeout(() => reject(new Error('Upload timed out')), timeoutMs)
-                    )
-                ]);
-                this.consecutiveErrors = 0;
-                if (fileSize > 0) {
-                    this.bytesUploadedThisSession += fileSize;
-                    const totalMB = (this.bytesUploadedThisSession / 1024 / 1024).toFixed(0);
-                    console.log(`   📊 Session bandwidth: ${totalMB} MB uploaded so far`);
-                }
-                return result;
-            } catch (error) {
-                console.error(`   ⚠️ Attempt ${attempt}/${this.maxRetries} failed: ${error.message}`);
-
-                if (this.isConnectionError(error)) {
-                    throw error;
-                }
-
-                if (error.message === 'Upload timed out') {
-                    console.log(`   🚫 Upload timed out — likely rate limited. NOT retrying.`);
-                    throw error;
-                }
-
-                if (attempt < this.maxRetries) {
-                    const backoff = 30000 * Math.pow(2, attempt - 1);
-                    console.log(`   🔄 Retrying in ${backoff / 1000}s...`);
-                    await new Promise(r => setTimeout(r, backoff));
-                } else {
-                    throw error;
-                }
-            }
-        }
+    async sendMessageWithRetry(jid,content,filePath=null) {
+        const timeoutMs=filePath ? this.getUploadTimeout(filePath) : 600000;let deadline;
+        try {
+            const result=await Promise.race([Promise.resolve().then(()=>this.sock.sendMessage(jid,content)),new Promise((_,reject)=>{deadline=setTimeout(()=>reject(Error('Upload acknowledgement unavailable')),timeoutMs);})]);
+            if(!result?.key?.id)throw Error('Upload acknowledgement unavailable');
+            return result;
+        }finally{clearTimeout(deadline);}
     }
 
     /**
      * Start the auto refresher schedule
      */
     start() {
+        if(this.job || this.isRefreshing)return;
+        this.stopRequested=false;
         if (!this.cacheGroupId || this.storageGroupIds.length === 0) {
             console.log('⚠️ AutoRefresher: Cache group or Storage groups missing. Disabled.');
             return;
         }
 
         // Schedule to run at 1:00 AM every day (staggered with Cache Warmer at 12:30 AM)
-        this.job = schedule.scheduleJob('0 1 * * *', async () => {
+        this.job = schedule.scheduleJob({rule:'0 1 * * *',tz:require('./worker-clock').timeZone()}, async () => {
             console.log('\n🔄 Scheduled Auto-Refresh cycle starting...');
             await this.runRefreshCycle();
         });
@@ -232,101 +202,41 @@ class AutoRefresher {
     /**
      * Run the full refresh cycle across all storage groups
      */
-    async runRefreshCycle(manualNotifyJid = null) {
-        if (this.isRefreshing) {
-            if (manualNotifyJid) {
-                await this.sock.sendMessage(manualNotifyJid, { text: '⚠️ Refresh already in progress!' });
-            }
-            return;
-        }
-
-        this.isRefreshing = true;
-        const startTime = Date.now();
-        console.log('🔄 AutoRefresher: Starting refresh cycle...');
-
-        if (manualNotifyJid) {
-            await this.sock.sendMessage(manualNotifyJid, { text: '🔄 Starting cache refresh cycle...' });
-        }
-
-        let totalProcessed = 0;
-        let totalRefreshed = 0;
-        let totalSkipped = 0;
-        let totalFailed = 0;
-
+    async runRefreshCycle(manualNotifyJid=null) {
+        if(this.stopRequested || !this.socketReady || this.gate?.running || this.isRefreshing || !this.warmer)return {success:false,message:'Maintenance unavailable.'};
         try {
-            for (const storageId of this.storageGroupIds) {
-                console.log(`\n📂 Processing Storage Group: ${storageId}`);
-
-                // Fetch messages from this group
-                // Use the helper we'll add to the socket
-                const messages = await this.sock.fetchMessagesFromChat(storageId, 100);
-
-                // Filter for media messages
-                const mediaMessages = messages.filter(m => {
-                    return m.message?.videoMessage || m.message?.documentMessage || m.message?.imageMessage;
-                });
-
-                console.log(`📦 Found ${mediaMessages.length} media messages to check.`);
-                totalProcessed += mediaMessages.length;
-
-                for (const msg of mediaMessages) {
+            const pending=this.warmer.loadState();
+            if(pending?.held || pending?.remainingFiles?.length)return {success:false,held:!!pending.held,paused:true};
+        }catch{return {success:false,error:'maintenance_checkpoint_unavailable'};}
+        this.isRefreshing=true;this.gate.running=true;
+        let refreshed=0,skipped=0;
+        try {
+            if(manualNotifyJid)await this.sock.sendMessage(manualNotifyJid,{text:'Starting cache maintenance.'});
+            for(const storageId of this.storageGroupIds) {
+                if(this.stopRequested || !this.socketReady)break;
+                const messages=await this.sock.fetchMessagesFromChat(storageId,100);
+                if(!Array.isArray(messages)||messages.length>100)throw Error();
+                for(const msg of messages) {
+                    if(this.stopRequested || !this.socketReady)break;
+                    if(!(msg.message?.videoMessage||msg.message?.documentMessage||msg.message?.imageMessage))continue;
+                    if(!await this.apiClient.needsRefresh(msg.key.id)){skipped++;continue;}
+                    this.warmer.saveState({remainingFiles:[],held:true,reason:'inflight_group_refresh'});
                     try {
-                        const messageId = msg.key.id;
-                        const fileName = msg.message?.videoMessage?.caption ||
-                            msg.message?.documentMessage?.fileName ||
-                            msg.message?.imageMessage?.caption ||
-                            'unnamed_file';
-
-                        // Check if it needs refresh
-                        const shouldRefresh = await this.apiClient.needsRefresh(messageId);
-
-                        if (!shouldRefresh) {
-                            totalSkipped++;
-                            continue;
-                        }
-
-                        // Forward to cache group
-                        console.log(`   🔄 Refreshing: ${fileName}`);
-                        await this.sock.sendMessage(this.cacheGroupId, {
-                            forward: msg
-                        });
-
-                        // Log refresh
-                        await this.apiClient.logRefresh(messageId, fileName, 'video');
-                        totalRefreshed++;
-
-                        // Delay between forwards to avoid rate limit
-                        await new Promise(r => setTimeout(r, 5000));
-
-                    } catch (err) {
-                        console.error(`   ❌ Failed to refresh message: ${err.message}`);
-                        totalFailed++;
-                    }
+                        await this.sendMessageWithRetry(this.cacheGroupId,{forward:msg});
+                        if(await this.apiClient.logRefresh(msg.key.id,'','video')!==true)throw Error();
+                        this.warmer.clearState();refreshed++;
+                    }catch{return {success:false,held:true,refreshed,skipped,message:'Unconfirmed cache refresh; review checkpoint.'};}
+                    if(!this.stopRequested)await new Promise(resolve=>setTimeout(resolve,5000));
                 }
             }
-
-            const duration = ((Date.now() - startTime) / 1000 / 60).toFixed(1);
-            const report = `✅ *Auto-Refresh Complete*\n\n` +
-                `📦 Processed: ${totalProcessed}\n` +
-                `🔄 Refreshed: ${totalRefreshed}\n` +
-                `⏭️ Skipped: ${totalSkipped}\n` +
-                `❌ Failed: ${totalFailed}\n` +
-                `⏱️ Duration: ${duration} min`;
-
-            console.log(`\n${report.replace(/\*/g, '')}`);
-
-            if (manualNotifyJid) {
-                await this.sock.sendMessage(manualNotifyJid, { text: report });
-            }
-
-        } catch (error) {
-            console.error('❌ AutoRefresher Error:', error.message);
-        } finally {
-            this.isRefreshing = false;
-        }
+            if(manualNotifyJid && !this.stopRequested)await this.sock.sendMessage(manualNotifyJid,{text:`Cache maintenance: ${refreshed} refreshed, ${skipped} skipped.`});
+            return {success:!this.stopRequested,refreshed,skipped};
+        }catch{return {success:false,error:'refresh_unavailable',refreshed,skipped};}
+        finally{this.isRefreshing=false;this.gate.running=false;}
     }
 
     stop() {
+        this.stopRequested=true;
         if (this.job) {
             this.job.cancel();
             this.job = null;
@@ -341,246 +251,16 @@ class AutoRefresher {
      * @param {number} endId - Ending content ID
      * @param {string} notifyJid - JID to send progress notifications to
      */
-    async refreshIdRange(contentType, startId, endId, notifyJid = null) {
-        if (this.isRefreshing) {
-            if (notifyJid) {
-                await this.sock.sendMessage(notifyJid, { text: '⚠️ Refresh already in progress!' });
-            }
-            return { success: false, message: 'Already running' };
-        }
+    setWarmer(warmer) {this.warmer=warmer;this.gate=warmer.gate;}
 
-        this.isRefreshing = true;
-        const startTime = Date.now();
-        console.log(`\n🔄 Refreshing ${contentType}s from ID ${startId} to ${endId}...`);
-
-        let refreshed = 0;
-        let notFound = 0;
-        let errors = 0;
-
-        try {
-            // Get FileManager from global
-            const fileManager = global.fileManager;
-            if (!fileManager) {
-                const errMsg = '❌ FileManager not initialized';
-                console.error(errMsg);
-                if (notifyJid) await this.sock.sendMessage(notifyJid, { text: errMsg });
-                return { success: false, message: errMsg };
-            }
-
-            const totalRange = endId - startId + 1;
-            let processed = 0;
-            this.lastProgressUpdate = 0;
-
-            for (let id = startId; id <= endId; id++) {
-                processed++;
-
-                // Show progress in console
-                this.logProgress(processed, totalRange, `${contentType} ${id}`);
-
-                // Check for full file
-                if (fileManager.hasLocalFile(contentType, id, null)) {
-                    try {
-                        const filePath = fileManager.getFilePath(contentType, id, null);
-                        await this.refreshSingleFile(contentType, id, null, filePath);
-                        refreshed++;
-                        this.consecutiveErrors = 0;
-                        console.log(`✅ Refreshed: ${contentType} ${id}`);
-                        const delayMs = this.getSmartDelay(filePath);
-                        console.log(`   ⏳ Waiting ${Math.round(delayMs / 1000)}s before next upload...`);
-                        await new Promise(r => setTimeout(r, delayMs));
-                    } catch (e) {
-                        errors++;
-                        this.consecutiveErrors++;
-                        console.log(`❌ Failed: ${contentType} ${id}: ${e.message}`);
-                        if (this.isConnectionError(e)) {
-                            console.log(`⚠️ Connection dropped! Waiting for reconnection...`);
-                            this.socketReady = false;
-                            const reconnected = await this.waitForReconnection();
-                            if (!reconnected) {
-                                console.log(`❌ Reconnection failed. Stopping refresh at ID ${id}.`);
-                                break;
-                            }
-                            // Reconnected — retry this ID
-                            this.consecutiveErrors = 0;
-                            errors--;
-                            id--;
-                            processed--;
-                            await new Promise(r => setTimeout(r, 10000));
-                            continue;
-                        }
-                        if (this.consecutiveErrors >= this.maxConsecutiveErrors) {
-                            console.log(`🚨 ${this.maxConsecutiveErrors} consecutive errors! Likely rate limited. Stopping.`);
-                            break;
-                        }
-                        const cooldown = e.message === 'Upload timed out' ? 600000 : 30000;
-                        console.log(`   ⏳ Cooldown: waiting ${cooldown / 1000}s before next attempt...`);
-                        await new Promise(r => setTimeout(r, cooldown));
-                    }
-                } else {
-                    // Check for parts (1-20)
-                    let hasAnyPart = false;
-                    let partBroken = false;
-                    for (let part = 1; part <= 20; part++) {
-                        if (fileManager.hasLocalFile(contentType, id, part)) {
-                            hasAnyPart = true;
-                            try {
-                                const filePath = fileManager.getFilePath(contentType, id, part);
-                                await this.refreshSingleFile(contentType, id, part, filePath);
-                                refreshed++;
-                                this.consecutiveErrors = 0;
-                                console.log(`✅ Refreshed: ${contentType} ${id} Part ${part}`);
-                                const delayMs = this.getSmartDelay(filePath);
-                                console.log(`   ⏳ Waiting ${Math.round(delayMs / 1000)}s before next upload...`);
-                                await new Promise(r => setTimeout(r, delayMs));
-                            } catch (e) {
-                                errors++;
-                                this.consecutiveErrors++;
-                                console.log(`❌ Failed: ${contentType} ${id} Part ${part}: ${e.message}`);
-                                if (this.isConnectionError(e)) {
-                                    console.log(`⚠️ Connection dropped! Waiting for reconnection...`);
-                                    this.socketReady = false;
-                                    const reconnected = await this.waitForReconnection();
-                                    if (!reconnected) {
-                                        partBroken = true;
-                                        break;
-                                    }
-                                    // Reconnected — retry this part
-                                    this.consecutiveErrors = 0;
-                                    errors--;
-                                    refreshed--;
-                                    part--;
-                                    await new Promise(r => setTimeout(r, 10000));
-                                    continue;
-                                }
-                                if (this.consecutiveErrors >= this.maxConsecutiveErrors) {
-                                    partBroken = true;
-                                    break;
-                                }
-                                const cooldown = e.message === 'Upload timed out' ? 600000 : 30000;
-                                await new Promise(r => setTimeout(r, cooldown));
-                            }
-                        }
-                    }
-                    if (partBroken) break;
-
-                    if (!hasAnyPart) {
-                        notFound++;
-                    }
-                }
-
-                // Send WhatsApp progress update
-                await this.sendProgressUpdate(notifyJid, processed, totalRange, refreshed, errors);
-            }
-
-            const duration = ((Date.now() - startTime) / 1000 / 60).toFixed(1);
-            const progressBar = this.generateProgressBar(processed, totalRange);
-            const report = `✅ *Refresh Complete*\n\n` +
-                `📋 Range: ${contentType} ${startId}-${endId}\n${progressBar}\n\n` +
-                `🔄 Refreshed: ${refreshed}\n` +
-                `🔍 Not Found: ${notFound}\n` +
-                `❌ Errors: ${errors}\n` +
-                `⏱️ Duration: ${duration} min`;
-
-            console.log(`\n${report.replace(/\*/g, '')}`);
-
-            if (notifyJid) {
-                await this.sock.sendMessage(notifyJid, { text: report });
-            }
-
-            return { success: true, refreshed, notFound, errors, range: `${startId}-${endId}` };
-
-        } catch (error) {
-            console.error('❌ Refresh Range Error:', error.message);
-            if (notifyJid) {
-                await this.sock.sendMessage(notifyJid, { text: `❌ Refresh failed: ${error.message}` });
-            }
-            return { success: false, message: error.message };
-        } finally {
-            this.isRefreshing = false;
-        }
+    async refreshIdRange(contentType,startId,endId,notifyJid=null) {
+        if(!this.warmer || this.stopRequested || !this.socketReady)return {success:false,message:'Maintenance unavailable.'};
+        const result=await this.warmer.warmIdRange(contentType,startId,endId,true,notifyJid,true);
+        return {...result,refreshed:result.warmed||0};
     }
 
-    /**
-     * Refresh a single file by uploading from local disk to cache group
-     * HYBRID: Parts → video, Full file → document
-     * @param {string} contentType - 'movie' or 'episode'
-     * @param {number} contentId - Content ID
-     * @param {number|null} partNumber - Part number or null for full file
-     * @param {string} filePath - Path to the local file
-     */
-    async refreshSingleFile(contentType, contentId, partNumber, filePath) {
-        const fs = require('fs');
-        const path = require('path');
+    async refreshSingleFile() {throw Error('Use checkpointed maintenance workflow');}
 
-        if (!fs.existsSync(filePath)) {
-            throw new Error(`File not found: ${filePath}`);
-        }
-
-        const stats = fs.statSync(filePath);
-        const fileName = path.basename(filePath);
-        // Use searchable format: movie_184_part11 (matches what forwarder searches for)
-        const caption = partNumber
-            ? `${contentType}_${contentId}_part${partNumber}`
-            : `${contentType}_${contentId}`;
-
-        console.log(`   📤 Uploading: ${fileName} (${(stats.size / 1024 / 1024).toFixed(2)} MB)`);
-
-        let sentMessage;
-
-        // ALL FILES: Refresh as document (better for large files)
-        console.log(`   📄 Refreshing as DOCUMENT: ${fileName}`);
-        sentMessage = await this.sendMessageWithRetry(this.cacheGroupId, {
-            document: { url: filePath },
-            caption: caption,
-            mimetype: 'video/mp4',
-            fileName: fileName
-        }, filePath);
-
-        // ✅ CRITICAL FIX: Update database AND cache with NEW message ID
-        // This ensures future requests use the fresh message, not the expired one
-        if (sentMessage && sentMessage.key && sentMessage.key.id) {
-            const newMessageId = sentMessage.key.id;
-            console.log(`   🔄 Updating DB with new message ID: ${newMessageId}`);
-
-            // Update the database with the new message ID
-            if (this.apiClient && this.apiClient.addMessageId) {
-                await this.apiClient.addMessageId(
-                    contentType,
-                    contentId,
-                    newMessageId,
-                    fileName,
-                    partNumber || 0
-                );
-            }
-
-            // ✅ ADD TO PERSISTENT CACHE for instant Tier 1 forwarding
-            if (global.multiTierForwarder && global.multiTierForwarder.messageCache) {
-                global.multiTierForwarder.addToMessageCache(newMessageId, sentMessage);
-                console.log(`   ✅ Added to persistent cache - Tier 1 ready!`);
-            }
-
-            // Also add to global store for Tier 2
-            if (global.store && global.store.messages) {
-                const cacheGroupId = this.cacheGroupId;
-                if (!global.store.messages[cacheGroupId]) {
-                    global.store.messages[cacheGroupId] = [];
-                }
-                // Add to store (handle both array and object formats)
-                if (Array.isArray(global.store.messages[cacheGroupId])) {
-                    global.store.messages[cacheGroupId].push(sentMessage);
-                } else if (global.store.messages[cacheGroupId].array) {
-                    global.store.messages[cacheGroupId].array.push(sentMessage);
-                }
-                console.log(`   ✅ Added to store - Tier 2 ready!`);
-            }
-        }
-
-        // Log refresh to API if available
-        if (this.apiClient && this.apiClient.logRefresh) {
-            const messageIdKey = `${contentType}_${contentId}${partNumber ? `_part${partNumber}` : ''}`;
-            await this.apiClient.logRefresh(messageIdKey, fileName, 'video', stats.size);
-        }
-    }
 }
 
 module.exports = AutoRefresher;

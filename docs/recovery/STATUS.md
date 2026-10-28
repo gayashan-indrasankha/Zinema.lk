@@ -1,11 +1,44 @@
 # Recovery status
 
-Updated: 2026-10-25.
+Updated: 2026-10-26.
 
 ## Current phase
 
+Bot lifecycle/ingestion/recovery hardening: **COMPLETE within executed local fake
+scope; overall launch NO GO**. Started clean at extractor checkpoint `2bd6305`.
+
+- Reproduced lost checkpoints, corrupt-state fallback, duplicate schedules, active
+  queue deduplication loss and unsafe media paths/overwrites (initial 1/9 passed).
+  Another fake recipient test observed six send attempts after a lost acknowledgement.
+  Repairs preserve/resume work, hold uncertainty without tier retries, serialize
+  jobs/reconnects, validate no-overwrite media and preserve legacy queue evidence.
+- Added explicit Asia/Colombo scheduling, private single-worker lease, bounded
+  graceful shutdown, late-heartbeat/stale-open protection, raw-log suppression,
+  safe pairing-required stop and authenticated read-only API readiness. Shared
+  maintenance paths require send + metadata/log acknowledgement; no blind retries.
+- Expanded Node 102/102, real Node/SQL/fake-send 10/10, protocol 6/6, retained Docker
+  integration 88/88 + OAuth 7/7 and environment 21/21 passed. Fresh native HTTP 94/94
+  and schema/claim bridge 22/22 passed. Exact cases, failure history and limits:
+  BOT_LIFECYCLE.md, BOT_LIFECYCLE_SQL_RESULTS.json and evidence/bot-lifecycle-*.tap.
+- Actual Baileys/device pairing, real recipients/large media and operational host
+  behavior are not externally verified. Stale worker leases and ambiguous
+  maintenance remain held for reviewed intervention; no automatic data/session
+  destruction or exactly-once provider claim. Pairing needs its own reviewed flow.
+- Real integrations, production access and publishing remain disabled. PHP 196/JS 51/CJS 15/Python 15 checks and candidate JSON parsing passed.
+  Gitleaks staged/full 483-file candidate/history scans returned zero findings;
+  12 ignore checks passed. Default-rule/private-data limits remain. Owned services
+  stopped; private volumes and evidence remain preserved.
+
+Next authorized local phase: **Prepare an isolated staging artifact and rehearse
+synthetic-data backup/restore, TLS/security boundaries, monitoring and bounded load.**
+Hosting remains undecided; no purchase, public host, real-provider test or publishing
+is authorized. Real staging/live acceptance remains a release gate.
+
+## Previous private extractor connection
+
 Private authenticated administrator-to-extractor connection: **COMPLETE within
 local fake scope**; overall launch remains **NO GO**. Started clean at `70af8a5`.
+Source checkpoint `2bd63050e18ea7e749b60aa98f23c39688dbe3ab` left a clean tree.
 
 - Added same-origin administrator POST/CSRF proxy, independent server-only key,
   bounded shared PHP client and private POST-only Node service contract. Preview,
