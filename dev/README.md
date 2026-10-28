@@ -87,6 +87,15 @@ the explicit empty `dev/compose.env` instead of preserved environment files.
 
 ## Fresh-launch audit checks
 
+For the owner's website-hosting/personal-bot topology, run
+`python -X utf8 dev/test_two_host_guard.py` and
+`python -X utf8 dev/rehearse_two_host.py`. The latter creates separate local network
+namespaces, actual authenticated TLS/PHP/SQL and fake deliveries, restarts both
+sides, and streams a 2 GiB fictional file. No host ports/provider route or SDK.
+It uses current development source, preserves owned evidence/volumes and removes
+only owned containers/network. See ../docs/recovery/TWO_HOST_LOCAL.md for limits;
+it is not an exact Namecheap/cPanel deployment or real media acceptance.
+
 Launch scope is free access and WhatsApp-only full movies/episodes; website
 shorts/trailers remain. See `../docs/recovery/PRODUCTION_AUDIT.md` for executed
 results, outstanding blockers and the approval-only live test plan.

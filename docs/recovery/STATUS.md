@@ -4,6 +4,128 @@ Updated: 2026-10-28.
 
 ## Current phase
 
+Owner-requested two-host source publication: **COMPLETE within review scope;
+overall launch remains NO GO**. Started with 29 unstaged paths at
+`759e4a09386bde0ca030ca4072df278fcc1a5d9f` on `zinema/promotion-controls`.
+Preserved all original changes and grouped them into nine logical source/docs
+commits, plus this publication handoff (ten total).
+
+- PRs **#19–#21** target `main`, in order: `zinema/two-host-bridge` (4 commits),
+  `zinema/two-host-media` (2), `zinema/two-host-rehearsal` (4 including handoff).
+  All were verified open/non-draft before this update. Later diffs include earlier
+  checkpoints until merged; normal merge commits retain the individual history.
+- Changed requirements/disabled hosting metadata, bridge/heartbeat/admission UI,
+  streaming/media preflight/queues, guarded fixture/harness files and phase records
+  were staged by purpose. Publication adds TWO_HOST_PUBLICATION.md/results and
+  workflow/status notes; no application behavior was altered during publication.
+- Fresh static/syntax PHP199, JavaScript-CJS78, Python23 and JSON93 all passed;
+  Node140/140, local guards9/9, artifact boundaries6/6 and two-host guards12/12
+  passed, zero Node skips. Relevant focused checks ran before applicable commits.
+  Every staged group and full new-work whitespace check passed.
+- Gitleaks8.30.1: checksum/binary equality verified, candidate540-file scan,
+  nine staged source-group scans and all new source-history scans passed with
+  zero findings; 21 private ignore assertions passed. Final documents/history
+  scanned again before commit/push. Limits and source/group hashes are in
+  TWO_HOST_PUBLICATION.md and TWO_HOST_PUBLICATION_RESULTS.json.
+- Resolved execution issue: diagnostic write raised ENOSPC during a failed staging
+  attempt. Only redundant chat-generated source copies were removed after boundary
+  and free-space checks; retry/subsequent checks passed. Raw initial Git cause was
+  not recoverable. No original/private fixture/volume or irreplaceable data deleted.
+- Existing TLS/SQL/2-GiB/restart/outage reports remain historical local evidence;
+  these were not freshly rerun here. No real account/provider/recipient, hosting
+  purchase, production, credential rotation, merge, deployment or advisory refresh.
+  Private legacy data, keys, sessions, large fixtures, backups and logs stay local.
+- Git source head before handoff: `ab2e69ab4bab7cd26c19608fc3bd02491e2fd463`. Final documentation hash and
+  post-push clean/remote status appear in the execution handoff. Remote main stays
+  `bcedd809c96f52260b3a674a9059fe2158b430eb`; original work branch/local main are preserved. No history
+  amend/rewrite or source deletion occurred.
+
+Owner attention: review/merge PRs #19, #20, #21 in order. Exact next Codex task:
+**Review Stellar's exact PHP/Node/private extractor, storage/cron/backup/monitoring
+capabilities and supplied personal-machine details; prepare disabled account-
+specific staging configuration. Resolve extractor compatibility/recovery gates
+before any separately authorized private deployment or capped live test.**
+
+## Previous two-machine local staging checkpoint
+
+Two-machine local staging preparation: **COMPLETE within fictional/local scope;
+overall launch NO GO**. Continued five pre-existing uncommitted planning documents
+on `zinema/promotion-controls` at `759e4a0`; the initial worktree was not clean.
+
+- Owner selected Stellar shared hosting from the screenshot, US$2.28/month
+  equivalent billed yearly, for website only. Updated LAUNCH_REQUIREMENTS.md and
+  added disabled ops/hosting/namecheap-stellar.json. No account/purchase/checkout,
+  renewal, actual runtime/socket/resource capacity or personal-server specifications
+  were verified. Public documentation/price research only; no hosting connection.
+- Added isolated two-host rehearsal/fixture controls, real verified TLS/Node/PHP/
+  SQL bridge, honest offline/busy/error page, bounded authenticated metadata and
+  validated heartbeats. Fresh admission has no fallback identity, excludes future/
+  stale/full bots and rechecks at insertion. Default live gates remain disabled.
+- Added 2 GiB source preflight, bounded streaming ingestion/readers, no-overwrite
+  integrity checks and bounded personal-server queues. Fixed the undefined watch
+  page single-file flag. Restart/outage tests preserve completed and held SQL work;
+  no uncertain replay. Full media never passes through the website bridge.
+- Executed: orchestration14/14; initial TLS/auth/offline25/25; fake delivery3/3;
+  restart5/5; outage1/1; recovery3/3; large-byte streaming14/14; Node140/140;
+  new guard12/12; retained guard9/9, product112/112, fake mail/OAuth88/88+7/7,
+  environment21/21, actual Node/SQL/fake send10/10. Composite orchestration rows
+  include child summaries, not additional independent feature passes. Final PHP
+  warnings/notices/fatals/deprecations: zero. Full evidence/failed setup history
+  and classifications: TWO_HOST_LOCAL.md and TWO_HOST_RESULTS.json.
+- Static syntax, source-candidate secret scan, private ignore and policy checks
+  are recorded in TWO_HOST_CHECKS.json. Scans are scoped, not complete security
+  certification. No new dependency advisory/container/penetration/browser/device/
+  sustained-load or actual hosting/provider acceptance is claimed.
+- All owned test containers stopped; private fictional data/credentials/keys,
+  large fixtures, volumes and failed-run evidence retained. No real SDK/account/
+  recipient, production, DNS, hosting spend, credential rotation or remote Git.
+  Changes are local and uncommitted for review; base `759e4a0` preserved.
+
+Owner attention: personal server OS/CPU/RAM/free disk/upload speed/uptime still
+unknown. Exact next task: **Review Stellar's exact PHP/Node/private extractor,
+storage/cron/backup/monitoring capabilities and the supplied personal-machine
+details; prepare disabled account-specific staging configuration. Resolve the
+extractor compatibility and recovery gates before any separately authorized
+private deployment or capped account/recipient/byte-specific live test.**
+
+## Previous requirements checkpoint
+
+Fresh-launch requirements: **COMPLETE as an owner-corrected planning brief;
+hosting/machine selection and launch verification pending; overall launch NO GO**.
+Continued the existing five uncommitted document changes at `759e4a0` on
+`zinema/promotion-controls`; the working tree was not clean at this follow-up.
+
+- Added LAUNCH_REQUIREMENTS.md: confirmed free/new-data/WhatsApp-only full-content
+  scope. Owner clarification confirms low-budget website-only hosting, a personal
+  machine for bot/full media, 500 registered/50 daily/20 simultaneous website users
+  and files up to 2 GiB. Superseded the US$100/1 GiB draft. Proposed US$6–12/month
+  base website hosting is not a confirmed ceiling; catalogue, request workload,
+  machine/disk/upload/backup sizing and service objectives remain assumptions.
+  Updated staging/features and DECISIONS.md with the two-host boundaries/offline
+  acceptance requirements. Public pricing was rechecked without account/API access.
+- The required 2 GiB delivery maximum is explicitly unverified, including its
+  difference from decimal 2 GB. Earlier provider
+  media-reference retrieval was rate-limited; no numeric provider capability is
+  claimed. Existing tiny-clip live-test caps are unchanged. Exact delivery route,
+  account suitability, large-file behaviour and costs are still release gates.
+- Documentation verification: catalogue/storage/traffic/transfer-time arithmetic,
+  required local links, unchanged disabled-policy flags and diff hygiene checked.
+  No application/source/runtime configuration changed and no runtime/browser/
+  database/provider suite rerun. No comprehensive security/advisory scan claimed;
+  documentation is sanitized and contains no account identities or secrets.
+- Git: five documentation paths changed, left for review without staging/commit;
+  base `759e4a0` preserved. No remote operations, services, production access,
+  infrastructure purchases, credential changes, deployment or publication.
+
+Owner attention: supply an exact affordable website-hosting ceiling, catalogue
+estimate and personal-server OS/RAM/disk/upload-speed/availability details.
+Exact next task: **Prepare the disabled two-host website/bridge/personal-bot
+staging model and 2 GiB local streaming/boundary workload against
+LAUNCH_REQUIREMENTS.md, then select a compatible host within the confirmed budget.
+Keep deployment, provider connections, production access and publishing disabled.**
+
+## Previous recovery publication checkpoint
+
 Owner-requested recovery source publication: **COMPLETE within review scope;
 overall launch remains NO GO**. Started clean on `zinema/local-dev-safety` at
 `4d04e204c561c64a7cfb7e1716cda93db41ef31a`; there were no unstaged files. Twelve
