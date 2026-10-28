@@ -4,23 +4,29 @@ class LocalStorageError extends RuntimeException {}
 require_once __DIR__ . '/upload_lifecycle.php';
 
 function local_storage_settings() {
-    if (getenv('UPLOAD_QUOTA_MODE') !== 'local') return null;
-    if (!defined('APP_ENV') || APP_ENV !== 'development' || DB_HOST !== '127.0.0.1' ||
+    $mode=getenv('UPLOAD_QUOTA_MODE') ?: 'disabled';
+    if ($mode==='disabled') return null;
+    if (!in_array($mode,['local','staging'],true)) throw new LocalStorageError('storage_configuration_denied');
+    $promotion=$mode==='staging';
+    if (!defined('APP_ENV') || APP_ENV !== ($promotion ? 'production' : 'development') || DB_HOST !== '127.0.0.1' ||
         DB_NAME !== 'zinema_recovery_development' || getenv('ALLOW_LIVE_INTEGRATIONS') !== 'false')
+        throw new LocalStorageError('storage_target_denied');
+    if ($promotion && (getenv('ZINEMA_PROMOTION_FIXTURES')!=='1' || DB_PORT!==3306 || BASE_URL!=='https://127.0.0.1:8443'))
         throw new LocalStorageError('storage_target_denied');
     $owner = getenv('UPLOAD_STORAGE_OWNER') ?: '';
     $bytes = filter_var(getenv('UPLOAD_MAX_BYTES'), FILTER_VALIDATE_INT);
     $files = filter_var(getenv('UPLOAD_MAX_FILES'), FILTER_VALIDATE_INT);
     $state = getenv('UPLOAD_STORAGE_STATE');
     $root = dirname(__DIR__) . '/uploads';
+    $limit=$promotion ? 34359738368 : 2147483648;
     if (!preg_match('/^zinema-dev-[a-f0-9]{8}(?:-(?:operator|quarantine)-fixtures)?$/D', $owner) ||
-        $state !== '/var/lib/zinema/storage' || !$bytes || $bytes < 1 || $bytes > 2147483648 ||
+        $state !== '/var/lib/zinema/storage' || !$bytes || $bytes < 1 || $bytes > $limit ||
         !$files || $files < 1 || $files > 10000 || is_link($root) || realpath($root) !== $root ||
         is_link($state) || realpath($state) !== $state)
         throw new LocalStorageError('storage_configuration_denied');
     $qbytes=filter_var(getenv('UPLOAD_QUARANTINE_MAX_BYTES') ?: '67108864',FILTER_VALIDATE_INT);
     $qfiles=filter_var(getenv('UPLOAD_QUARANTINE_MAX_FILES') ?: '500',FILTER_VALIDATE_INT);
-    if (!$qbytes || $qbytes<1 || $qbytes>2147483648 || !$qfiles || $qfiles<1 || $qfiles>10000)
+    if (!$qbytes || $qbytes<1 || $qbytes>$limit || !$qfiles || $qfiles<1 || $qfiles>10000)
         throw new LocalStorageError('storage_configuration_denied');
     return ['quarantine_max_bytes'=>$qbytes,'quarantine_max_files'=>$qfiles,'root'=>$root,'state'=>$state,'owner'=>$owner,'max_bytes'=>$bytes,'max_files'=>$files];
 }

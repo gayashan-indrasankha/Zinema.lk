@@ -223,6 +223,7 @@ class CacheWarmer {
      */
     loadState() {
         try {
+            require('./maintenance-ledger').assertNoPending(path.dirname(this.stateFile));
             if (fs.lstatSync(this.stateFile,{throwIfNoEntry:false})) {
                 if (fs.lstatSync(this.stateFile).isSymbolicLink() || fs.statSync(this.stateFile).size>1048576) throw Error();
                 const value = JSON.parse(fs.readFileSync(this.stateFile, 'utf8'));
@@ -245,7 +246,7 @@ class CacheWarmer {
             if(fs.lstatSync(this.stateFile,{throwIfNoEntry:false})?.isSymbolicLink())throw Error();
             const fd=fs.openSync(temporary,'wx',0o600);
             try {fs.writeFileSync(fd,raw,'utf8');fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
-            fs.renameSync(temporary,this.stateFile);
+            require('./atomic-rename').replace(temporary,this.stateFile);
             console.log(`💾 Saved warming state: ${state.remainingFiles?.length || 0} files remaining`);
         } catch (error) {
             throw Error('warming_state_unavailable');
@@ -362,6 +363,9 @@ class CacheWarmer {
                     return {success:false,paused:true,warmed,errors,skipped,total:files.length};
                 }
                 const file=files[i];
+                if(require('./maintenance-ledger').excluded(path.dirname(this.stateFile),file)) {
+                    skipped++;this.saveState({remainingFiles:files.slice(i+1)});continue;
+                }
                 if(this.fileManager.getFilePath && this.fileManager.getFilePath(file.type,file.contentId,file.partNumber)!==file.path)throw Error('warming_state_unavailable');
                 if(this.apiClient && !forceRefresh) {
                     const existing=await this.apiClient.getMessageId(file.type,file.contentId,file.partNumber);

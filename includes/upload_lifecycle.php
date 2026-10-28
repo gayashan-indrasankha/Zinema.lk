@@ -55,7 +55,7 @@ function storage_save_manifest($settings,$manifest) {
     @chown($settings['state'].'/manifest.json','www-data'); @chgrp($settings['state'].'/manifest.json','www-data');
 }
 function storage_reference_acquire($db) {
-    if (getenv('UPLOAD_QUOTA_MODE') !== 'local') return null;
+    if (!in_array(getenv('UPLOAD_QUOTA_MODE'),['local','staging'],true)) return null;
     local_storage_settings();
     $name='zinema-development-upload-references';
     $stmt=$db->prepare('SELECT GET_LOCK(?,5)');$stmt->bind_param('s',$name);$stmt->execute();

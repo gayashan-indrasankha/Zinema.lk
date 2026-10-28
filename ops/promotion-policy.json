@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "localOnly": true,
+  "externalConnections": false,
+  "productionAccess": false,
+  "publishing": false,
+  "pairing": {"adapter": "local-fake", "challengeTtlSeconds": 120, "dedicatedAccountRequired": true},
+  "extractor": {"transport": "unix", "socket": "/run/zinema/extractor.sock", "credentialFile": "/run/secrets/extractor_key", "upstream": "disabled", "browser": "disabled", "maxBodyBytes": 2048, "maxResponseBytes": 8192, "deadlineMs": 4000},
+  "storage": {"publicRoot": "/srv/zinema/app/public", "uploads": "/srv/zinema/uploads", "originals": "/srv/zinema/originals", "sessions": "/srv/zinema/private/sessions", "state": "/srv/zinema/private/state", "backups": "/srv/zinema/private/backups", "keyFile": "/run/secrets/backup_key", "maxBytes": 34359738368, "maxFiles": 10000, "maxUploadBytes": 20971520, "quarantineMaxBytes": 4294967296},
+  "backup": {"algorithm": "AES-256-GCM", "mode": "local-mirror", "offHostEnabled": false, "intervalSeconds": 3600, "restoreDrillSeconds": 604800, "writersQuiescedRequired": true},
+  "monitoring": {"sink": "local-outbox", "heartbeatMaxAgeSeconds": 90, "queueMaxAgeSeconds": 300, "backupMaxAgeSeconds": 7200, "diskUsedPercent": 85, "errorCount": 5, "outboxMaxEvents": 1000}
+}

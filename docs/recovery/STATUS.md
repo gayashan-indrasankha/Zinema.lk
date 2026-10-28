@@ -1,8 +1,107 @@
 # Recovery status
 
-Updated: 2026-10-26.
+Updated: 2026-10-28.
 
 ## Current phase
+
+Owner-requested recovery source publication: **COMPLETE within review scope;
+overall launch remains NO GO**. Started clean on `zinema/local-dev-safety` at
+`4d04e204c561c64a7cfb7e1716cda93db41ef31a`; there were no unstaged files. Twelve
+existing local commits were already logically grouped and were preserved.
+
+- Published eight ordered `zinema/` checkpoint branches and opened PRs **#11–#18**
+  against `main`. All were verified open, non-draft and mergeable before this
+  final handoff. Merge in that order; later diffs include unmerged predecessors.
+  Links/branches: REVIEW_PUBLICATION.md. No PR was merged or deployed.
+- Added `REVIEW_PUBLICATION.md` and `REVIEW_PUBLICATION_RESULTS.json`; updated
+  workflow decisions and this status in two separate documentation commits.
+  Application files, existing commit hashes/authors/dates, source work branch and
+  local main were preserved. Remote main remains
+  `db801669b6c123cc3584ed389949854266d59a0e`.
+- **Fresh static/syntax checks:** PHP198/198, JavaScript-CJS74/74, Python21/21,
+  JSON89/89 tracked source files passed. Publication JSON/index-hash and staged
+  whitespace checks passed before each new commit. New recovery diff whitespace
+  check passed; no whole-legacy-tree formatting claim is made.
+- **Test-covered and freshly executed:** Node133/133 across 13 fake/local suites,
+  no skips; local target guards9/9 and artifact/archive boundaries6/6 passed,
+  all exit 0. Application source remained stable throughout checks/publication.
+- **Security checks:** Gitleaks8.30.1 installed binary matched the saved verified
+  archive; candidate526-file and all-unpublished-history scans exit 0, zero
+  findings. Twenty-one private ignore assertions passed; staged publication and
+  final new history are scanned again before commit/push. Supplemental contact,
+  SQL-write and fixture review found only explicit fictional IDs/accounts; no
+  original rows/media, session stores, private keys, logs, backups, generated
+  credentials or installed dependencies were publication candidates.
+- **Externally verified:** all eight initial pushed heads matched local branches;
+  GitHub confirmed each PR open/non-draft/mergeable with base main. Final updated
+  head, remote main and clean status are verified again in the execution handoff.
+- **Limits:** prior Docker/HTTP/database/TLS/browser results are retained historical
+  phase evidence, not fresh publication runtime tests. No production/provider,
+  recipient, host provision, credential rotation, money spent, merge or deployment.
+  No new dependency advisory/container vulnerability/penetration/complete
+  privacy/licensing certification; default secret patterns do not prove absence
+  of every secret. Prior product launch gates remain in PROMOTION_CONTROLS.md.
+- Git: publication-plan commit `efe44d67a490203e498b5475f6b72b2844bd2778`;
+  final handoff commit hash appears in the execution handoff. Four recovery
+  document paths changed in this publication; fourteen commits total are proposed
+  for review. No history was amended or rewritten.
+
+Owner attention: review/merge PRs #11, #12, #13, #14, #15, #16, #17, #18 in order.
+Exact next recommended Codex task: **Choose the isolated staging host and budget,
+then prepare its exact runtime/TLS/CSP/storage/supervisor/key-custody/backup/metric-
+collector/alert configuration as a reviewable disabled candidate. Preserve
+history; keep external connections and deployment off until explicitly authorized.**
+
+## Previous local promotion checkpoint
+
+Local staging promotion controls: **COMPLETE within executed fake/isolated scope;
+overall launch NO GO**. Started clean at
+`6840da630bdd5fdfc8eea3f39a306f53d51ecea1` on `zinema/local-dev-safety`.
+
+- Added local-only typed promotion policy/operator contract; private fictional
+  pairing review/signature/recovery and a mandatory signed identity-bound worker
+  receipt/test window. Fresh/fake/unreviewed credentials cannot open a socket;
+  expiry quiesces jobs. Fake CLI never issues real provider receipts.
+- Added held-maintenance CAS review, immutable audit intent/explicit recovery and
+  persistent withdrawal exclusions used by actual warming/group paths. Metadata
+  completion proof and stopped-worker attestations remain trusted owner evidence.
+  Unknown legacy group work and corrupt/stale evidence stay held; originals survive.
+- Added keyed unprivileged Unix extractor fixture and production-config quota mode
+  with exact local guards. Upstream/browser/live adapters remain disabled. Candidate
+  production storage/backup/monitoring budgets are explicit, not a host purchase.
+- Added streaming GCM backup/mirror/restore and streamed SQL/media/ZIP64 pipeline;
+  authenticated restore matched 38 tables/2 views/540 rows and all 411 files before
+  new writes. 128 MiB backup memory case passed; separate mirror is local, not an
+  off-host DR claim. Bounded fixed-metric alert outbox persisted outage/recovery
+  without duplicate unchanged alerts; no external alert sender or purge exists.
+- Node **127/127**, 50/50 targeted post-fix Windows pause cases, boundary **6/6**,
+  target guards **9/9**, promotion orchestration **29/29**, source/restore TLS
+  **25/25 + 23/23**, Unix health/extraction **8/8** and stopped handling **2/2**,
+  quota **6/6 each target** passed. Full retained product **112**, mail/OAuth
+  **88+7**, operations **57**, quarantine **51**, environment **21**, SQL/fake
+  delivery **10**, extractor HTTP/client **33+14**, native HTTP/schema **94+22**
+  all passed. Scope/results/failure history: PROMOTION_CONTROLS.md and PROMOTION_*.
+- Investigated/corrected Windows fsync access, configuration shape compatibility
+  and reproduced transient renameSync EPERM without discarding old checkpoints.
+  No new PHP runtime diagnostics. Static/secret/ignore checks and limitations are
+  recorded in PROMOTION_STATIC_RESULTS.json and PROMOTION_SECURITY_RESULTS.json.
+  PHP198/JS54/CJS25/Python21 and final JSON parsing passed. Gitleaks staged/full
+  526-file candidate/history/allowlisted-artifact scans returned zero findings;
+  21 private ignore checks passed. Default-rule/private-data limitations remain.
+- Owned services stopped; ignored fictional secrets/challenges/SQL/session hashes,
+  backup volumes and failed-run evidence preserved. Only reviewed phase files are
+  committed locally; final hash appears in handoff. No production/provider, real
+  recipient, credential rotation, host/DNS purchase, remote Git or publishing.
+
+Next owner decision: **Choose the isolated staging host and budget.** Next Codex
+task: prepare the exact selected-host runtime/TLS/CSP/storage/supervisor/key-custody/
+backup/metric-collector/alert configuration as a reviewable candidate, with external
+connections and deployment still disabled until explicitly authorized. Real SDK
+pairing/receipt issuer, off-host recovery/alerts, sustained/actual large-media load,
+browser/codec and security acceptance remain gates. Review the capped account/
+recipient-specific live plan before contact; publish only after separate approval.
+
+## Previous isolated staging checkpoint
 
 Isolated staging preparation/recovery rehearsal: **COMPLETE within executed local
 synthetic scope; overall launch NO GO**. Started clean at bot checkpoint

@@ -13,8 +13,13 @@ STAGING_REHEARSAL.md). These do not satisfy real hosting/provider acceptance.
 Before approval, supply a selected isolated staging origin and reviewed live
 extractor configuration, dedicated-account pairing flow, supervisor/lease review,
 held-maintenance handling, off-host backup/key/alert arrangements and the exact
-private account/recipient allowlist. The worker currently stops on pairing rather
-than displaying QR data; do not enable it and assume a pairing path is ready.
+private account/recipient allowlist. PROMOTION_CONTROLS.md now records a separate
+owner-reviewed fictional pairing flow and worker signature/identity/window guards.
+The normal worker rejects fresh/local-fake credentials and unsigned/mismatched/
+expired reviews before a socket; a test-window expiry stops it. Local fake receipts
+cannot authorize a real account. The account-specific real SDK adapter/receipt
+issuer still requires review/approval; no provider receipt is issued by fake tools.
+Keep the approved initial window at most one hour, with no automatic renewal.
 
 ## Approval record (keep actual identifiers privately)
 

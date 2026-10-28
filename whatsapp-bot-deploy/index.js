@@ -4,6 +4,7 @@ require('./config/environment').assertLiveWhatsAppEnabled(recoveryConfig);
 const workerLog=require('./config/safe-logger').install(console);
 const workerLease=require('./config/worker-lease').acquire(recoveryConfig.sessionPath);
 let shuttingDown=false,shutdownPromise=null;
+let pairingReviewTimer=null;
 
 /**
  * WhatsApp Video Forwarder Bot with Baileys
@@ -267,6 +268,15 @@ async function connectToWhatsApp() {
     console.log(`📁 Session folder: whatsapp-session/${SESSION_NAME}`);
 
     const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
+
+    // Pairing belongs to an explicitly reviewed separate owner operation.
+    // Never let the normal delivery worker turn a fresh/fake store into a login.
+    if(state?.creds?.registered!==true||state.creds.zinemaLocalFake===true) {
+        workerLog.event('pairing_required');await shutdownWorker(1);return;
+    }
+    const pairingReview=require('./config/pairing-approval').assertReviewedPairing(state,sessionPath);
+    if(pairingReviewTimer)clearTimeout(pairingReviewTimer);
+    pairingReviewTimer=setTimeout(()=>{pairingReviewTimer=null;workerLog.event('pairing_required');void shutdownWorker(1);},Math.max(1,pairingReview.validUntil-Date.now()));
 
     const { version } = await fetchLatestBaileysVersion();
     if(shuttingDown)return;
@@ -866,6 +876,7 @@ async function sendMessage(jid, text, options = {}) {
 async function shutdownWorker(exitCode=0) {
     if(shutdownPromise)return shutdownPromise;
     shuttingDown=true;workerReady=false;activeSocket=null;
+    if(pairingReviewTimer){clearTimeout(pairingReviewTimer);pairingReviewTimer=null;}
     workerLog.event('shutdown_started');
     reconnectController.stop();messageQueue.stop();
     if(storeSaveTimer){clearInterval(storeSaveTimer);storeSaveTimer=null;}

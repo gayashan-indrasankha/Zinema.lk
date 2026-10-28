@@ -48,7 +48,7 @@ function validateApiRequest() {
         exit;
     }
     
-    if (defined('LOCAL_MEDIA_REFERENCE_WRITE') && getenv('UPLOAD_QUOTA_MODE') === 'local') {
+    if (defined('LOCAL_MEDIA_REFERENCE_WRITE') && in_array(getenv('UPLOAD_QUOTA_MODE'),['local','staging'],true)) {
         require_once __DIR__ . '/../../includes/upload_storage.php';
         try {
             $db=$GLOBALS['conn'];$gate=storage_reference_acquire($db);
