@@ -1,0 +1,38 @@
+{
+  "scope": "Executed operator CLI commands with fictional no-send evidence and numeric IDs; no live transport",
+  "tests": [
+    {
+      "name": "Manual CLI held listing",
+      "passed": true
+    },
+    {
+      "name": "Manual CLI review returns eligible revision",
+      "passed": true
+    },
+    {
+      "name": "Manual CLI refuses missing stopped-worker acknowledgement",
+      "passed": true
+    },
+    {
+      "name": "Manual CLI explicitly closes the fictional no-send claim",
+      "passed": true
+    },
+    {
+      "name": "Manual CLI review exposes audit and inactive closed claim",
+      "passed": true
+    },
+    {
+      "name": "Manual CLI repeat returns the same audit",
+      "passed": true
+    },
+    {
+      "name": "Manual CLI upload inventory is advisory and read-only",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 7,
+    "passed": 7,
+    "failed": 0
+  }
+}

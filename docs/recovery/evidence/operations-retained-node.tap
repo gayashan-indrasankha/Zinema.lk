@@ -1,0 +1,194 @@
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+❌ TIER 1: No store available, not in persistent cache
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+❌ TIER 1: No store available, not in persistent cache
+🔍 TIER 2: Attempting forward for movie_1
+🔍 TIER 2: Trying direct forward with messageId=fictional-cache-id
+🔍 TIER 2: Fetched 1 messages from fictional-group
+✅ TIER 2: Found message by ID, forwarding...
+💾 Saved 1 messages to cache
+   ⏱️ Upload timeout: 5.0 min (file: 0 MB)
+📄 Sending as DOCUMENT: sample.mp4 to fictional-recipient
+❌ TIER 3: performTier3Upload error: Delivery acknowledgement missing
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-33696\media
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-33696\media\movies
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-33696\media\episodes
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-33696\media\temp
+📥 Queued: movie_1_0 (position 1, priority 0)
+🔄 Upload queue processing started (1 items)
+📤 Processing: movie_1_0 (1/1 active)
+✅ Upload queue empty. Stats: 0 processed, 0 failed, 0 skipped
+📥 Queued: movie_2_0 (position 1, priority 0)
+🔄 Upload queue processing started (1 items)
+📥 Queued: movie_3_0 (position 2, priority 0)
+TAP version 13
+# Subtest: cached-message forwarding reaches only the fake client
+ok 1 - cached-message forwarding reaches only the fake client
+  ---
+  duration_ms: 79.4327
+  type: 'test'
+  ...
+# Subtest: cache miss and missing local file return a failure
+ok 2 - cache miss and missing local file return a failure
+  ---
+  duration_ms: 24.7721
+  type: 'test'
+  ...
+# Subtest: storage-group lookup forwards using the fake client
+ok 3 - storage-group lookup forwards using the fake client
+  ---
+  duration_ms: 65.0429
+  type: 'test'
+  ...
+# Subtest: coalesced requests deliver and resolve waiting recipients
+ok 4 - coalesced requests deliver and resolve waiting recipients
+  ---
+  duration_ms: 4.4458
+  type: 'test'
+  ...
+# Subtest: local upload must reject a missing delivery acknowledgement
+ok 5 - local upload must reject a missing delivery acknowledgement
+  ---
+  duration_ms: 26.5843
+  type: 'test'
+  ...
+# Subtest: file manager resolves fixture media and absent files
+ok 6 - file manager resolves fixture media and absent files
+  ---
+  duration_ms: 23.602
+  type: 'test'
+  ...
+✅ Completed: movie_1_0
+📤 Processing: movie_2_0 (1/1 active)
+✅ Completed: movie_2_0
+📤 Processing: movie_3_0 (1/1 active)
+✅ Upload queue empty. Stats: 2 processed, 0 failed, 0 skipped
+✅ Completed: movie_3_0
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+❌ TIER 1: Error - Rejected
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+❌ TIER 1: Error - Delivery acknowledgement missing
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+   ⏱️ Upload timeout: 5.0 min (file: 0 MB)
+📄 Sending as DOCUMENT: acknowledged.mp4 to fictional-recipient
+📬 TIER 3: sendMessage returned: key=fictional-sent-id, remoteJid=undefined
+💾 Saved 1 messages to cache
+✅ TIER 3: Upload complete! New messageId=fictional-sent-id saved to DB
+# Subtest: upload queue respects configured concurrency with fake uploads
+ok 7 - upload queue respects configured concurrency with fake uploads
+  ---
+  duration_ms: 1060.1508
+  type: 'test'
+  ...
+# Subtest: concurrent recipients and duplicate requests await acknowledgement
+ok 8 - concurrent recipients and duplicate requests await acknowledgement
+  ---
+  duration_ms: 9.1265
+  type: 'test'
+  ...
+# Subtest: failed primary delivery settles all coalesced recipients as failures
+ok 9 - failed primary delivery settles all coalesced recipients as failures
+  ---
+  duration_ms: 2.0978
+  type: 'test'
+  ...
+# Subtest: one recipient rejection is not reported as a successful delivery
+ok 10 - one recipient rejection is not reported as a successful delivery
+  ---
+  duration_ms: 3.2883
+  type: 'test'
+  ...
+# Subtest: cached forwarding also rejects an absent acknowledgement
+ok 11 - cached forwarding also rejects an absent acknowledgement
+  ---
+  duration_ms: 1.8927
+  type: 'test'
+  ...
+# Subtest: successful disk upload releases its timeout and retains acknowledgement
+ok 12 - successful disk upload releases its timeout and retains acknowledgement
+  ---
+  duration_ms: 6.8076
+  type: 'test'
+  ...
+# Subtest: bot accepts explicit local configuration
+ok 13 - bot accepts explicit local configuration
+  ---
+  duration_ms: 0.3662
+  type: 'test'
+  ...
+# Subtest: bot rejects missing configuration
+ok 14 - bot rejects missing configuration
+  ---
+  duration_ms: 1.2332
+  type: 'test'
+  ...
+# Subtest: bot rejects non-loopback development API
+ok 15 - bot rejects non-loopback development API
+  ---
+  duration_ms: 0.9717
+  type: 'test'
+  ...
+# Subtest: bot rejects preserved WhatsApp session path
+ok 16 - bot rejects preserved WhatsApp session path
+  ---
+  duration_ms: 0.6681
+  type: 'test'
+  ...
+# Subtest: bot cannot enable live access merely through local flag
+ok 17 - bot cannot enable live access merely through local flag
+  ---
+  duration_ms: 0.5518
+  type: 'test'
+  ...
+# Subtest: bot entry point exits at the live startup guard
+ok 18 - bot entry point exits at the live startup guard
+  ---
+  duration_ms: 611.7739
+  type: 'test'
+  ...
+# Subtest: extractor disabled mode binds only loopback
+ok 19 - extractor disabled mode binds only loopback
+  ---
+  duration_ms: 2.7643
+  type: 'test'
+  ...
+# Subtest: extractor rejects live mode
+ok 20 - extractor rejects live mode
+  ---
+  duration_ms: 1.7885
+  type: 'test'
+  ...
+# Subtest: extractor rejects non-local fixture URL
+ok 21 - extractor rejects non-local fixture URL
+  ---
+  duration_ms: 1.2346
+  type: 'test'
+  ...
+# Subtest: extractor accepts local fixture
+ok 22 - extractor accepts local fixture
+  ---
+  duration_ms: 0.738
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2328.8003

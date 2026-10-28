@@ -35,7 +35,7 @@ SAMPLE_PASSWORD = 'Fictional-local-test-42!'
 SKIP = {'node_modules', '.git', 'whatsapp-session', '.wwebjs_auth', '.runtime', '.recovery-private', 'uploads'}
 NO_WINDOW = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
 RESULT_PREFIX = os.environ.get('ZINEMA_TEST_PHASE', 'REPAIR')
-if RESULT_PREFIX not in {'REPAIR', 'LOCAL_DEV'}: raise RuntimeError('Unknown sanitized result prefix')
+if RESULT_PREFIX not in {'REPAIR', 'LOCAL_DEV', 'OPERATIONS'}: raise RuntimeError('Unknown sanitized result prefix')
 
 
 
@@ -407,7 +407,7 @@ def check(folder):
     diagnostics = {name:len(re.findall('PHP '+name,new_log)) for name in ['Warning','Notice','Fatal error','Deprecated']}
     record('No new PHP diagnostics during the final request suite', not any(diagnostics.values()),'runtime diagnostics',detail=diagnostics)
     results = {'date':'2026-10-25','base':BASE,'schema':'database/schema.sql canonical local schema; zero legacy data rows','tests':rows,'summary':{'total':len(rows),'passed':sum(r['passed'] for r in rows),'failed':sum(not r['passed'] for r in rows)},'syntax':syntax(),'new_php_diagnostics':diagnostics}
-    (ROOT/f'docs/recovery/{RESULT_PREFIX}_RETAINED_HTTP.json' if RESULT_PREFIX == 'LOCAL_DEV' else ROOT/'docs/recovery/REPAIR_RESULTS.json').write_text(json.dumps(results,indent=2)+'\n')
+    (ROOT/f'docs/recovery/{RESULT_PREFIX}_RETAINED_HTTP.json' if RESULT_PREFIX != 'REPAIR' else ROOT/'docs/recovery/REPAIR_RESULTS.json').write_text(json.dumps(results,indent=2)+'\n')
     print(json.dumps(results['summary']))
     raise SystemExit(1 if results['summary']['failed'] else 0)
 

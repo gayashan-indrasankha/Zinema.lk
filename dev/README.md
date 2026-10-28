@@ -7,6 +7,7 @@ root; no native PHP/MySQL installation is required for the Docker workflow.
 ```powershell
 python dev/local.py up
 python dev/local.py test
+python dev/local.py test-operations
 python dev/verify_environment.py
 node --test --test-isolation=none docs/recovery/tests/config.test.cjs docs/recovery/tests/bot.test.cjs
 node --test docs/recovery/tests/token-delivery.test.cjs
@@ -23,8 +24,8 @@ a model of provider consent, MFA, production security or Google's complete API.
 
 `up` generates private random configuration under ignored `.runtime/local-dev/`,
 builds the pinned images, starts a new database from `database/schema.sql` when
-its named volume is empty, checks its identity, applies the additive local claim
-migration and seeds `demo_admin` / `verified@example.invalid`. Both accounts use
+its named volume is empty, checks its identity, applies the additive local claim/reconciliation
+migrations, initializes private quota metadata and seeds `demo_admin` / `verified@example.invalid`. Both accounts use
 the private value in `.runtime/local-dev/demo_password`. Read that file privately
 if a manual password login is needed. Do not paste it into reports or commit it.
 Existing demo accounts are not overwritten. Production configuration, databases,
@@ -74,3 +75,10 @@ because both harnesses intentionally use loopback port 8088. Set
 `ZINEMA_TEST_PHASE=LOCAL_DEV` to preserve historical repair evidence under new
 result filenames. The new claim-client socket test also requires local socket
 permission in restricted execution environments.
+
+For held-claim reconciliation and the read-only quota/cleanup inventory, follow
+the [local operator runbook](OPERATIONS.md).
+
+The launcher requires a local Docker context (Unix socket or local named pipe);
+remote contexts and DOCKER_HOST overrides are refused. Compose interpolation uses
+the explicit empty `dev/compose.env` instead of preserved environment files.

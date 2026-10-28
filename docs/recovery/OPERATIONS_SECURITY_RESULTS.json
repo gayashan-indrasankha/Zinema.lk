@@ -1,0 +1,30 @@
+{
+  "scanner": "Gitleaks 8.30.1",
+  "archive_checksum_matches_saved_upstream_record": true,
+  "candidate_files": 363,
+  "forbidden_index_paths": 0,
+  "private_ignore_checks_passed": 8,
+  "scans": [
+    {
+      "scope": "staged",
+      "exit": 0,
+      "findings": 0
+    },
+    {
+      "scope": "candidate-tree",
+      "exit": 0,
+      "findings": 0
+    },
+    {
+      "scope": "all-local-history",
+      "exit": 0,
+      "findings": 0
+    }
+  ],
+  "limitations": [
+    "Default rules do not establish absence of all secrets.",
+    "Ignored private/legacy data was excluded, preserved and not certified safe.",
+    "Unchanged demonstration media/screenshot provenance retained from prior review.",
+    "No remote Git or production infrastructure was contacted."
+  ]
+}
