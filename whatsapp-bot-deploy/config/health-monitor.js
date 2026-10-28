@@ -6,10 +6,11 @@
 const os = require('os');
 
 class HealthMonitor {
-    constructor(botInstanceId, apiClient, client) {
+    constructor(botInstanceId, apiClient, client,resourceGuard=null) {
         this.botInstanceId = botInstanceId;
         this.apiClient = apiClient;
         this.client = client;
+        this.resourceGuard=resourceGuard;
         this.startTime = Date.now();
         this.interval = null;
         this.running=false;this.generation=0;
@@ -77,9 +78,9 @@ class HealthMonitor {
         return {
             queue_size: global.messageQueue ? global.messageQueue.getStatus().size : 0,
             disk_usage_mb: diskUsage,
-            memory_usage_mb: (memoryUsage.heapUsed / (1024 * 1024)).toFixed(2),
+            memory_usage_mb: ((memoryUsage.rss ?? memoryUsage.heapUsed) / (1024 * 1024)).toFixed(2),
             uptime_seconds: uptime,
-            status: 'online',
+            status: this.resourceGuard && !this.resourceGuard.sample().allowed ? 'offline' : 'online',
             bot_phone: this.client?.user?.id ? this.client.user.id.split('@')[0].split(':')[0] : (this.client?.info?.wid?.user || null)
         };
     }
