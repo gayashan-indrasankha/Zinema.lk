@@ -191,6 +191,7 @@ class CacheWarmer {
      * Only non-timeout errors (network blips, etc.) are retried.
      */
     async sendMessageWithRetry(jid, content, filePath = null) {
+        if(filePath)require('./media-policy').inspectMedia(filePath);
         const timeoutMs=filePath ? this.getUploadTimeout(filePath) : 600000;
         let deadline;
         try {

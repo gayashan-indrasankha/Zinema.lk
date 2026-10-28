@@ -250,7 +250,7 @@ function extractGroupFromMessageId(messageId) {
 // Message Queue for rate limiting
 const MessageQueue = require('./config/message-queue');
 
-const messageQueue = new MessageQueue();
+const messageQueue = new MessageQueue({maxQueueSize:30});
 global.messageQueue = messageQueue;
 
 /**

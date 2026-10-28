@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const {MAX_MEDIA_BYTES,inspectMedia} = require('./media-policy');
 
 class FileManager {
     constructor(basePath) {
@@ -181,18 +182,35 @@ class FileManager {
      * @returns {string} Saved file path
      */
     async saveFile(contentType, contentId, partNumber, buffer, extension = '.mp4') {
-        const savePath = this.getSavePath(contentType, contentId, partNumber, extension);
         if(!Buffer.isBuffer(buffer)||buffer.length===0)throw Error('Invalid media buffer');
-        const crypto=require('crypto');const expected=crypto.createHash('sha256').update(buffer).digest('hex');
+        return this.saveStream(contentType,contentId,partNumber,require('node:stream').Readable.from([buffer]),extension,{expectedBytes:buffer.length});
+    }
+
+    // Operators can ingest large originals without allocating a whole-file Buffer.
+    async saveStream(contentType,contentId,partNumber,source,extension='.mp4',options={}) {
+        const {Transform}=require('node:stream'),{pipeline}=require('node:stream/promises'),crypto=require('node:crypto');
+        const max=options.maxBytes===undefined?MAX_MEDIA_BYTES:options.maxBytes;
+        if(!Number.isSafeInteger(max)||max<1||max>MAX_MEDIA_BYTES||!source||typeof source.pipe!=='function')throw Error('Invalid media stream');
+        if(options.expectedBytes!==undefined&&(!Number.isSafeInteger(options.expectedBytes)||options.expectedBytes<1||options.expectedBytes>max))throw Error('Invalid media length');
+        if(options.expectedSha256!==undefined&&(typeof options.expectedSha256!=='string'||!(/^[a-f0-9]{64}$/).test(options.expectedSha256)))throw Error('Invalid media digest');
+        const savePath=this.getSavePath(contentType,contentId,partNumber,extension);
+        let bytes=0,expected;const digest=crypto.createHash('sha256');
         const matches=async()=>{
-            this.assertContained(savePath);if(!fs.existsSync(savePath)||!fs.lstatSync(savePath).isFile()||fs.statSync(savePath).size!==buffer.length)return false;
+            this.assertContained(savePath);if(!fs.existsSync(savePath)||!fs.lstatSync(savePath).isFile()||fs.statSync(savePath).size!==bytes)return false;
             const hash=crypto.createHash('sha256');for await(const chunk of fs.createReadStream(savePath))hash.update(chunk);return hash.digest('hex')===expected;
         };
-        if(fs.existsSync(savePath)){if(await matches())return savePath;throw Error('media_conflict');}
         const temporary=path.join(path.dirname(savePath),'.ingest-'+crypto.randomBytes(16).toString('hex'));
+        const validator=new Transform({transform(chunk,_encoding,callback){
+            bytes+=chunk.length;
+            if(bytes>max)return callback(Error('media_size_exceeded'));
+            digest.update(chunk);callback(null,chunk);
+        }});
         try {
-            const fd=await fs.promises.open(temporary,'wx',0o600);
-            try{await fd.writeFile(buffer);await fd.sync();}finally{await fd.close();}
+            await pipeline(source,validator,fs.createWriteStream(temporary,{flags:'wx',mode:0o600}),...(options.signal?[{signal:options.signal}]:[]));
+            expected=digest.digest('hex');
+            if(bytes===0||(options.expectedBytes!==undefined&&bytes!==options.expectedBytes)||(options.expectedSha256!==undefined&&expected!==options.expectedSha256))throw Error('media_integrity_mismatch');
+            const fd=await fs.promises.open(temporary,'r+');try{await fd.sync();}finally{await fd.close();}
+            this.assertContained(savePath);
             try {await fs.promises.link(temporary,savePath);}catch(error){if(error.code!=='EEXIST')throw Error('media_publish_unavailable');if(!(await matches()))throw Error('media_conflict');}
             return savePath;
         }finally{if(fs.existsSync(temporary))await fs.promises.unlink(temporary);}
@@ -208,6 +226,7 @@ class FileManager {
     async readFile(contentType, contentId, partNumber = null) {
         const filePath = this.getFilePath(contentType, contentId, partNumber);
         if (!filePath) return null;
+        if(inspectMedia(filePath).bytes>16*1024*1024)throw Error('media_stream_required');
 
         try {
             return await fs.promises.readFile(filePath);
@@ -215,6 +234,13 @@ class FileManager {
             console.error(`❌ Error reading file: ${error.message}`);
             return null;
         }
+    }
+
+    readStream(contentType,contentId,partNumber=null) {
+        const filePath=this.getFilePath(contentType,contentId,partNumber);
+        if(!filePath)return null;
+        inspectMedia(filePath);
+        return fs.createReadStream(filePath,{highWaterMark:65536});
     }
 
     /**

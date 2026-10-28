@@ -171,6 +171,7 @@ class AutoRefresher {
      * Timeouts are NOT retried — they indicate rate limiting.
      */
     async sendMessageWithRetry(jid,content,filePath=null) {
+        if(filePath)require('./media-policy').inspectMedia(filePath);
         const timeoutMs=filePath ? this.getUploadTimeout(filePath) : 600000;let deadline;
         try {
             const result=await Promise.race([Promise.resolve().then(()=>this.sock.sendMessage(jid,content)),new Promise((_,reject)=>{deadline=setTimeout(()=>reject(Error('Upload acknowledgement unavailable')),timeoutMs);})]);
