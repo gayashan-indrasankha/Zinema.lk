@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "purpose": "Disabled hosting candidate and acceptance requirements, not deployment input",
+  "provider": "Namecheap",
+  "plan": "Stellar shared hosting",
+  "selectedByOwner": true,
+  "purchaseVerified": false,
+  "deploymentEnabled": false,
+  "externalConnections": false,
+  "productionAccess": false,
+  "publishing": false,
+  "pricing": {
+    "currency": "USD",
+    "source": "Owner screenshot, annual billing selected",
+    "displayedMonthlyEquivalent": 2.28,
+    "billingPeriodMonths": 12,
+    "arithmeticAnnualEquivalent": 27.36,
+    "checkoutTotalVerified": false,
+    "renewalPrice": null,
+    "taxAndExtrasIncluded": false
+  },
+  "publishedResourceReference": {
+    "storageGB": 20,
+    "cpuCore": 0.5,
+    "ramGB": 1,
+    "websites": 3,
+    "mailboxes": 30,
+    "measuredCapacity": false
+  },
+  "websiteStorageCandidate": {
+    "applied": false,
+    "managedUploadBytes": 5000000000,
+    "quarantineBytes": 500000000,
+    "publicFullContentFiles": false,
+    "backupAndDatabaseAndMailShareAccountSpace": true
+  },
+  "bot": {
+    "location": "owner-personal-server",
+    "inboundPublicPortRequired": false,
+    "bridgeDirection": "bot initiates authenticated HTTPS requests to website",
+    "largeMediaLocalCeilingBytes": 2147483648,
+    "providerSizeAcceptanceVerified": false,
+    "machineSpecificationsVerified": false,
+    "uploadSpeedVerified": false
+  },
+  "extractor": {
+    "enabled": false,
+    "locationCandidate": "website account if private transport and runtime requirements are supported",
+    "browserFallback": "disabled",
+    "privateUnixSocketCompatibilityVerified": false
+  },
+  "acceptancePending": [
+    "Exact PHP/extensions/database/runtime and proxy/TLS behaviour",
+    "Node 24 patch version, private socket support, process and request limits",
+    "Website resource/load/storage/inode and outbound request limits",
+    "Independent encrypted backups, restore, alert routing and scheduled jobs",
+    "Owner-machine uptime, sleep/power/network behaviour and storage budget",
+    "Approved account/recipient-specific real 2 GiB boundary acceptance"
+  ]
+}
