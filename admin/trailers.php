@@ -182,8 +182,8 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
                 <div class="form-group">
                     <label for="trailer_video">Video File:</label>
                     <input type="file" name="trailer_video" id="trailer_video" 
-                           accept="video/mp4,video/quicktime,video/webm" required>
-                    <small>Recommended: Vertical format (9:16 aspect ratio), max 100MB</small>
+                           accept="video/mp4,video/webm" required>
+                    <small>MP4 or WebM short previews, up to 20 MiB. Vertical format (9:16) recommended. Full movies are delivered through WhatsApp.</small>
                 </div>
 
                 <button type="submit" class="btn primary">Upload Trailer</button>
@@ -195,8 +195,8 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
             <?php while($trailer = $trailers->fetch_assoc()): ?>
                 <div class="trailer-card">
                     <video class="trailer-preview" 
-                           src="<?php echo htmlspecialchars($trailer['video_url']); ?>"
-                           poster="<?php echo htmlspecialchars($trailer['thumbnail_url']); ?>"
+                           src="<?php echo htmlspecialchars(str_starts_with($trailer['video_url'],'uploads/') ? BASE_URL.'/'.$trailer['video_url'] : $trailer['video_url']); ?>"
+                           poster="<?php echo htmlspecialchars($trailer['thumbnail_url'] ?? ''); ?>"
                            preload="metadata"
                            muted></video>
                     <h3><?php echo htmlspecialchars($trailer['title']); ?></h3>
