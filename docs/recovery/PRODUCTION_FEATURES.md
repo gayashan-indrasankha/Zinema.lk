@@ -2,8 +2,13 @@
 
 Owner decisions, 2026-10-25: **free access; full movies/episodes via WhatsApp only**.
 Shots/trailers and catalogue browsing remain website features. Hosting is undecided.
-Use a small single-server beta plus separate staging as a planning assumption,
-not a purchased platform or a measured capacity promise. Publishing remains disabled.
+Owner clarification, 2026-10-28: Stellar shared hosting selected for the website;
+bot/full media on the personal server; targets 500 registered/50 daily/20 simultaneous
+website users and full files up to 2 GiB. LAUNCH_REQUIREMENTS.md records scope/cost
+assumptions. TWO_HOST_LOCAL.md adds executed local TLS/SQL/offline/busy/restart/
+outage and bounded 2 GiB fake-streaming evidence. Actual hosting, SDK/file-size,
+machine capacity and browser acceptance remain pending. Production configuration
+is not enabled; publishing is disabled.
 
 The route inventory indexes 92 first-party PHP entry candidates, including internal
 partials and disabled diagnostics. `PRODUCTION_ROUTE_INVENTORY.json` identifies each.

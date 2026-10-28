@@ -1,8 +1,15 @@
 # Production staging requirements — not a deployment
 
 Owner-approved launch scope: free access, website catalogue/shorts/trailers, full
-movies and episodes through WhatsApp. Hosting is undecided. Planning assumption:
-a modest single-server beta with a separately isolated staging environment.
+movies and episodes through WhatsApp. Owner clarification, 2026-10-28: Stellar
+shared hosting selected for the website (screenshot US$2.28/month equivalent,
+billed yearly); bot/full media on the personal server. LAUNCH_REQUIREMENTS.md
+confirms 500 registered/50 daily/20 simultaneous website users and a 2 GiB target.
+TWO_HOST_LOCAL.md records locally verified two-host TLS/client/SQL/offline/restart
+and fictional 2 GiB streaming tests. Actual account/private extractor compatibility,
+provider size acceptance, server hardware/upload/uptime and recovery remain gates.
+The disabled hosting candidate is ops/hosting/namecheap-stellar.json; production
+quotas are not applied and no host/account/DNS was connected or provisioned.
 No host, DNS, certificate, cloud resource or public service has been provisioned.
 The 2026-10-26 local rehearsal is documented in STAGING_REHEARSAL.md. Its temporary
 CA and isolated production-mode fixture are not provisioned production infrastructure.
@@ -16,16 +23,23 @@ extractor, production-config quota, streaming recovery and local alert outbox.
 - Private MariaDB with a fresh canonical v4 schema, explicit migrations/defaults
   and a separate migration identity. Runtime credentials have CRUD permissions,
   not schema administration. Do not serve/import the workspace or legacy dumps.
-- A separate supervised Node bot process with its own account/session directory,
+- An owner-machine supervised Node bot process with its own account/session directory,
   read-only access to ingested original media and private writable operational state.
   Use the HTTP claim adapter; the obsolete direct-SQL bot adapter is not a deployment
   requirement. WhatsApp cached/group copies are optional delivery caches, not the
   durable media master or backup.
+  The bot initiates authenticated HTTPS bridge requests to the website; verify
+  this across separate isolated targets, without exposing the database or personal
+  machine inbound ports. Offline status must distinguish site and delivery health.
 - A private extractor process with explicit resource/concurrency/time budgets.
   Browser fallback remains blocked. The administrator POST/CSRF server proxy and
   private keyed service now pass local fake tests (EXTRACTOR_CONNECTION.md). Live
   and production promotion remain blocked pending a reviewed transport/provider
   policy and controlled test; do not publish the raw API.
+  Candidate location is the website VPS with a keyed local Unix socket; moving it
+  to the personal machine requires a separately reviewed private network transport.
+  A Unix socket cannot connect different machines. PHP-only hosting compatibility
+  and live extractor resource needs have not been established.
 - Stable storage for uploads, original bot media, sessions, journals and logs, with
   ownership/permissions and capacity alerts. Keep private directories outside the
   public document root. Development quarantine/quotas are not a certified production
@@ -107,3 +121,9 @@ alert delivery on the selected target after authorization.
 Verify an isolated browser only if fallback is required. Then review exact accounts,
 recipients, original media, caps and stop conditions in PRODUCTION_LIVE_TEST_PLAN.md.
 No local pass authorizes a provider connection, deployment or publishing.
+
+The selected shared account needs a capability review before staging: actual PHP/
+extensions/schema privileges, Node patch/private socket/process control, resource
+and upload/storage limits, cron, backup export and alert delivery. The two-host
+Docker test is not an emulation of cPanel/LVE or an actual account acceptance test.
+Full-content files stay on the personal server and never become website uploads.
