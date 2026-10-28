@@ -8,6 +8,16 @@
 require_once __DIR__ . '/rate_limiter.php';
 require_once __DIR__ . '/settings.php';
 
+function whatsapp_bot_admission_sql() {
+    return "status='online' AND bot_id>0 AND queue_size BETWEEN 0 AND 29
+        AND last_heartbeat>DATE_SUB(NOW(),INTERVAL 2 MINUTE) AND last_heartbeat<=NOW()
+        AND bot_phone REGEXP '^[0-9]{5,20}$'";
+}
+function whatsapp_unavailable() {
+    return ['error'=>true,'no_bots_available'=>true,'online_count'=>0,
+        'message'=>'WhatsApp delivery is offline or busy. Catalogue browsing is still available. Please try again later.'];
+}
+
 /**
  * Generate a unique 12-character alphanumeric token
  * 
@@ -49,26 +59,14 @@ function createWhatsAppToken($conn, $contentId, $contentType, $expiryMinutes = 1
         ];
     }
     
-    // Check if any bots are online (heartbeat within last 2 minutes)
-    $onlineBotCheck = mysqli_query($conn, 
-        "SELECT COUNT(*) as online_count FROM bot_health_status 
-         WHERE status = 'online' AND last_heartbeat > DATE_SUB(NOW(), INTERVAL 2 MINUTE)"
-    );
-    $onlineCount = 0;
-    if ($onlineBotCheck) {
-        $row = mysqli_fetch_assoc($onlineBotCheck);
-        $onlineCount = (int)($row['online_count'] ?? 0);
-    }
-    
-    if ($onlineCount === 0) {
-        return [
-            'error' => true,
-            'no_bots_available' => true,
-            'message' => 'WhatsApp service is temporarily unavailable. Please try again in a few minutes.',
-            'online_count' => 0
-        ];
-    }
-    
+    // One fresh candidate, with no fallback identity when admission fails.
+    $policy=whatsapp_bot_admission_sql();
+    try {
+        $bot=$conn->query("SELECT bot_id,bot_phone FROM bot_health_status WHERE $policy ORDER BY queue_size,bot_id LIMIT 1")->fetch_assoc();
+    } catch (Throwable $error) { return whatsapp_unavailable(); }
+    if (!$bot) return whatsapp_unavailable();
+    $assignedBotId=(int)$bot['bot_id']; $assignedBotPhone=$bot['bot_phone'];
+
     $messageId = null;
     
     // For movie parts, get message_id from movie_parts table
@@ -136,43 +134,24 @@ function createWhatsAppToken($conn, $contentId, $contentType, $expiryMinutes = 1
         return false; // Failed to generate unique token
     }
     
-    // Get available bot for load balancing
-    $assignedBotId = 1;
-    $assignedBotPhone = getSetting($conn, 'default_bot_phone', ''); // From database
-    
-    try {
-        // Query to get the best available bot and its phone number
-        // Prefer the online bot with the smallest queue; no stored function required.
-        $botQuery = "SELECT b.bot_id, b.bot_phone 
-                     FROM bot_health_status b 
-                     WHERE b.status = 'online' AND b.last_heartbeat > DATE_SUB(NOW(), INTERVAL 2 MINUTE) ORDER BY b.queue_size ASC, b.bot_id ASC LIMIT 1";
-        $botStmt = $conn->query($botQuery);
-        if ($botStmt && $botStmt->num_rows > 0) {
-            $botRow = $botStmt->fetch_assoc();
-            $assignedBotId = $botRow['bot_id'];
-            $assignedBotPhone = $botRow['bot_phone'];
-        }
-    } catch (Exception $e) {
-        // Keep defaults on error
-        error_log("Bot assignment failed: " . $e->getMessage());
-    }
-
+    // Recheck eligibility in the insert; never silently publish an offline token.
     // Insert token into database (include part_number if provided)
     if ($partNumber !== null && $partNumber > 0) {
         $insertStmt = $conn->prepare(
             "INSERT INTO whatsapp_tokens (token, content_type, content_id, message_id, part_number, assigned_bot_id, is_used, is_active, expires_at) 
-             VALUES (?, ?, ?, ?, ?, ?, 0, 1, DATE_ADD(NOW(), INTERVAL ? MINUTE))"
+             SELECT ?,?,?,?,?,bot_id,0,1,DATE_ADD(NOW(),INTERVAL ? MINUTE) FROM bot_health_status WHERE bot_id=? AND $policy"
         );
-        $insertStmt->bind_param("ssisiii", $token, $contentType, $contentId, $messageId, $partNumber, $assignedBotId, $expiryMinutes);
+        $insertStmt->bind_param("ssisiii", $token, $contentType, $contentId, $messageId, $partNumber, $expiryMinutes, $assignedBotId);
     } else {
         $insertStmt = $conn->prepare(
             "INSERT INTO whatsapp_tokens (token, content_type, content_id, message_id, assigned_bot_id, is_used, is_active, expires_at) 
-             VALUES (?, ?, ?, ?, ?, 0, 1, DATE_ADD(NOW(), INTERVAL ? MINUTE))"
+             SELECT ?,?,?,?,bot_id,0,1,DATE_ADD(NOW(),INTERVAL ? MINUTE) FROM bot_health_status WHERE bot_id=? AND $policy"
         );
-        $insertStmt->bind_param("ssisii", $token, $contentType, $contentId, $messageId, $assignedBotId, $expiryMinutes);
+        $insertStmt->bind_param("ssisii", $token, $contentType, $contentId, $messageId, $expiryMinutes, $assignedBotId);
     }
     
     if ($insertStmt->execute()) {
+        if ($insertStmt->affected_rows !== 1) { $insertStmt->close(); return whatsapp_unavailable(); }
         $tokenId = $insertStmt->insert_id;
         $insertStmt->close();
         
