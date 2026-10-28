@@ -15,49 +15,20 @@ class RateLimiter {
     
     public function __construct($conn) {
         $this->conn = $conn;
-        $this->ensureTableExists();
-    }
-    
-    /**
-     * Create rate_limits table if it doesn't exist
-     */
-    private function ensureTableExists() {
-        $sql = "CREATE TABLE IF NOT EXISTS rate_limits (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            ip_address VARCHAR(45) NOT NULL,
-            action_type VARCHAR(50) NOT NULL DEFAULT 'token_request',
-            request_count INT DEFAULT 1,
-            first_request_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            last_request_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            blocked_until TIMESTAMP NULL,
-            INDEX idx_ip_action (ip_address, action_type),
-            INDEX idx_blocked (blocked_until)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-        
-        mysqli_query($this->conn, $sql);
+        // Canonical migrations own schema; request credentials need no DDL privilege.
+        require_once __DIR__.'/settings.php';
+        $minute=filter_var(getSetting($conn,'rate_limit_per_minute','10'),FILTER_VALIDATE_INT);
+        $hour=filter_var(getSetting($conn,'rate_limit_per_hour','50'),FILTER_VALIDATE_INT);
+        if ($minute && $minute>=1 && $minute<=100) $this->maxTokensPerMinute=$minute;
+        if ($hour && $hour>=1 && $hour<=5000) $this->maxTokensPerHour=$hour;
     }
     
     /**
      * Get client IP address
      */
     public function getClientIP() {
-        $ipKeys = ['HTTP_CF_CONNECTING_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_REAL_IP', 'REMOTE_ADDR'];
-        
-        foreach ($ipKeys as $key) {
-            if (!empty($_SERVER[$key])) {
-                $ip = $_SERVER[$key];
-                // Handle comma-separated IPs (X-Forwarded-For)
-                if (strpos($ip, ',') !== false) {
-                    $ip = trim(explode(',', $ip)[0]);
-                }
-                // Validate IP
-                if (filter_var($ip, FILTER_VALIDATE_IP)) {
-                    return $ip;
-                }
-            }
-        }
-        
-        return '0.0.0.0';
+        require_once __DIR__.'/client_ip.php';
+        return recovery_client_ip();
     }
     
     /**
@@ -65,10 +36,17 @@ class RateLimiter {
      * Returns: ['allowed' => bool, 'reason' => string, 'retry_after' => int]
      */
     public function checkLimit($actionType = 'token_request') {
+        $name=substr('zinema-limit-'.hash('sha256',$this->getClientIP().':'.$actionType),0,64);
+        $stmt=$this->conn->prepare('SELECT GET_LOCK(?,5)');$stmt->bind_param('s',$name);$stmt->execute();
+        if ((int)$stmt->get_result()->fetch_row()[0]!==1) throw new RuntimeException('Rate limiter busy');
+        try {return $this->checkLimitLocked($actionType);}
+        finally {$stmt=$this->conn->prepare('SELECT RELEASE_LOCK(?)');$stmt->bind_param('s',$name);$stmt->execute();}
+    }
+    private function checkLimitLocked($actionType) {
         $ip = $this->getClientIP();
         
         // Skip rate limiting for localhost/development
-        if (in_array($ip, ['127.0.0.1', '::1', '0.0.0.0'])) {
+        if (defined('APP_ENV') && APP_ENV !== 'production' && in_array($ip, ['127.0.0.1', '::1'])) {
             return ['allowed' => true, 'reason' => 'localhost'];
         }
         

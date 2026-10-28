@@ -1,0 +1,761 @@
+{
+  "scope": "All indexed/unignored first-party PHP entry candidates excluding libraries/dev/docs/database; unused diagnostics/partials are included explicitly",
+  "routes": [
+    {
+      "source": "_bottom_nav.php",
+      "group": "Internal partial",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "_pagination.php",
+      "group": "Internal partial",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "_top_nav.php",
+      "group": "Internal partial",
+      "declared_method_mentions": [
+        "GET"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/_layout.php",
+      "group": "Administrator",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/analytics.php",
+      "group": "Administrator",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/collections.php",
+      "group": "Administrator",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/config.php",
+      "group": "Administrator",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/cron/cleanup-tokens.php",
+      "group": "Administrator",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/cron/reset-daily-stats.php",
+      "group": "Administrator",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/episodes.php",
+      "group": "Administrator",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/functions.php",
+      "group": "Administrator",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/index.php",
+      "group": "Administrator",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/login.php",
+      "group": "Administrator",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/logout.php",
+      "group": "Administrator",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/manage_shots.php",
+      "group": "Administrator",
+      "declared_method_mentions": [
+        "GET",
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/movies.php",
+      "group": "Administrator",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/run_migration.php",
+      "group": "Administrator",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/series.php",
+      "group": "Administrator",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/settings.php",
+      "group": "Administrator",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/trailers.php",
+      "group": "Administrator",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "admin/whatsapp-bot-tracking.php",
+      "group": "Administrator",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "ajax_forgot_password.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "ajax_login.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "ajax_resend_verification.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "ajax_reset_password.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "ajax_signup.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/add_comment.php",
+      "group": "Website API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/auth-handler.php",
+      "group": "Website API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/check-session.php",
+      "group": "Website API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/collections.php",
+      "group": "Website API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/comments.php",
+      "group": "Website API",
+      "declared_method_mentions": [
+        "GET",
+        "POST",
+        "DELETE",
+        "OPTIONS"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/favorite_shot.php",
+      "group": "Website API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/get_comments.php",
+      "group": "Website API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/includes/comment_helpers.php",
+      "group": "Website API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/like_shot.php",
+      "group": "Website API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/live_search.php",
+      "group": "Website API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/movies.php",
+      "group": "Website API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/payment-notify.php",
+      "group": "Website API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/record_view.php",
+      "group": "Website API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/search_content.php",
+      "group": "Website API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/series.php",
+      "group": "Website API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/server-check.php",
+      "group": "Website API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/subscribe.php",
+      "group": "Website API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/track.php",
+      "group": "Website API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/trailers.php",
+      "group": "Website API",
+      "declared_method_mentions": [
+        "GET",
+        "POST",
+        "OPTIONS"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/add-message-id.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/bot-error.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/bot-heartbeat.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/claim-token.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/config.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/get-aging-messages.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/get-all-message-ids.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/get-message-id.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/get-message-ids.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/get-movie-parts.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "GET",
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/get-popular-content.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/get-popular-files.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/log-cache-warming.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/log-forward.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/log-refresh.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/mark-used.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/needs-refresh.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/refresh-stats.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/token-data.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/update-cache-message-id.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/update-daily-stats.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/update-forward-stats.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "api/whatsapp/validate-token.php",
+      "group": "WhatsApp API",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "collection-details.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "collections.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "GET",
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "download.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "find_movies.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "google-callback.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "index.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "GET",
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "login.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "logout.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "movie-comments.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "movie-details.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "movies.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "GET",
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "oauth-start.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "GET"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "pages/download.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "pages/movie-detail.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "pages/trailers.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "profile.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "reset-password.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "series-details.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "signup.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "sitemap.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "trailers.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "tv-series.php",
+      "group": "Website",
+      "declared_method_mentions": [
+        "GET",
+        "POST"
+      ],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "verify-email.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    },
+    {
+      "source": "whatsapp-watch.php",
+      "group": "Website",
+      "declared_method_mentions": [],
+      "discovery": "statically indexed; mentions are not a route contract",
+      "verification": "See feature matrix and executed result names; file discovery alone is not a pass"
+    }
+  ],
+  "total": 92
+}

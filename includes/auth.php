@@ -1,6 +1,10 @@
 <?php
 // Password authentication has one verification policy for every browser route.
 function authenticate_password($conn, $email, $password) {
+    require_once __DIR__.'/password_throttle.php';
+    return password_attempt($conn,'member',$email,static fn()=>verify_password_credentials($conn,$email,$password));
+}
+function verify_password_credentials($conn, $email, $password) {
     if (!is_string($email) || !is_string($password) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         return ['success' => false, 'message' => 'Invalid email or password.'];
     }

@@ -1,0 +1,78 @@
+{
+  "scope": "Owned isolated local fixtures only; no real provider or recipient; sanitized projection",
+  "tests": [
+    {
+      "name": "Facebook accepted host www.facebook.com",
+      "passed": true
+    },
+    {
+      "name": "Facebook accepted host fb.watch",
+      "passed": true
+    },
+    {
+      "name": "Facebook deceptive/unsafe URL case 0",
+      "passed": true
+    },
+    {
+      "name": "Facebook deceptive/unsafe URL case 1",
+      "passed": true
+    },
+    {
+      "name": "Facebook deceptive/unsafe URL case 2",
+      "passed": true
+    },
+    {
+      "name": "Facebook deceptive/unsafe URL case 3",
+      "passed": true
+    },
+    {
+      "name": "Facebook deceptive/unsafe URL case 4",
+      "passed": true
+    },
+    {
+      "name": "Facebook deceptive/unsafe URL case 5",
+      "passed": true
+    },
+    {
+      "name": "Untrusted proxy headers cannot replace peer",
+      "passed": true
+    },
+    {
+      "name": "Explicit trusted edge can supply one real client address",
+      "passed": true
+    },
+    {
+      "name": "Proxy chains are not guessed",
+      "passed": true
+    },
+    {
+      "name": "Password failures are bounded across shared verification policy",
+      "passed": true
+    },
+    {
+      "name": "Admin/member failures share the peer admission limit",
+      "passed": true
+    },
+    {
+      "name": "Invalid token/rate tuning values cannot be saved",
+      "passed": true
+    },
+    {
+      "name": "Valid token lifetime is persisted in the temporary policy",
+      "passed": true
+    },
+    {
+      "name": "Token limiter enforces configured minute budget despite spoofed loopback headers",
+      "passed": true
+    },
+    {
+      "name": "A nonexistent administrator cannot retain session access",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 17,
+    "passed": 17,
+    "failed": 0
+  }
+}

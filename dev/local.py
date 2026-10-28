@@ -143,6 +143,22 @@ if __name__=='__main__':
         raise SystemExit(subprocess.run([sys.executable,str(ROOT/'dev/test_operations.py')],cwd=ROOT,env=ENV).returncode)
     elif command=='test-quarantine':
         raise SystemExit(subprocess.run([sys.executable,str(ROOT/'dev/test_quarantine.py')],cwd=ROOT,env=ENV).returncode)
+    elif command=='test-product':
+        require_local_docker()
+        require_owned_gateway()
+        seed=subprocess.run(BASE+['exec','-T','web','php','/opt/zinema/dev/product_fixture.php'],cwd=ROOT,env=ENV,
+            input=json.dumps({'run':secrets.token_hex(6)}),capture_output=True,text=True)
+        fixture=json.loads(seed.stdout)
+        if seed.returncode or fixture.get('success') is not True:raise SystemExit('Fictional product seed unavailable')
+        (STATE/'results/product-fixture.json').write_text(json.dumps(fixture,indent=2)+'\n')
+        compose('run','--build','--rm','--no-deps','tests','python','-B','dev/product.py')
+    elif command=='test-security':
+        require_local_docker();require_owned_gateway()
+        result=subprocess.run(BASE+['exec','-T','web','php','/opt/zinema/dev/security_unit.php'],cwd=ROOT,env=ENV,capture_output=True,text=True)
+        try:report=json.loads(result.stdout)
+        except ValueError:raise SystemExit('Local security checks unavailable; diagnostics not printed') from None
+        (STATE/'results/product-security.json').write_text(json.dumps(report,indent=2)+'\n')
+        print(json.dumps(report.get('summary',{'error':'local_checks_unavailable'})));raise SystemExit(result.returncode)
     elif command=='status': compose('ps')
     elif command=='config': compose('config','--quiet')
-    else: print('Usage: python dev/local.py init|up|test|test-operations|test-quarantine|operator|down|status|config')
+    else: print('Usage: python dev/local.py init|up|test|test-operations|test-quarantine|test-product|test-security|operator|down|status|config')

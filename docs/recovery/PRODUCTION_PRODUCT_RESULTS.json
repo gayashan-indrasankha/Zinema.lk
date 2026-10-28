@@ -1,0 +1,458 @@
+{
+  "scope": "Owned isolated local fixtures only; no real provider or recipient; sanitized projection",
+  "tests": [
+    {
+      "name": "Fictional product seed available",
+      "passed": true
+    },
+    {
+      "name": "Administrator password sign-in redirects to dashboard",
+      "passed": true
+    },
+    {
+      "name": "Trailer administration is reachable from the shared sidebar",
+      "passed": true
+    },
+    {
+      "name": "Administrator page renders index",
+      "passed": true
+    },
+    {
+      "name": "Guest denied administrator page index",
+      "passed": true
+    },
+    {
+      "name": "Administrator page renders movies",
+      "passed": true
+    },
+    {
+      "name": "Guest denied administrator page movies",
+      "passed": true
+    },
+    {
+      "name": "Administrator page renders series",
+      "passed": true
+    },
+    {
+      "name": "Guest denied administrator page series",
+      "passed": true
+    },
+    {
+      "name": "Administrator page renders episodes",
+      "passed": true
+    },
+    {
+      "name": "Guest denied administrator page episodes",
+      "passed": true
+    },
+    {
+      "name": "Administrator page renders collections",
+      "passed": true
+    },
+    {
+      "name": "Guest denied administrator page collections",
+      "passed": true
+    },
+    {
+      "name": "Administrator page renders manage_shots",
+      "passed": true
+    },
+    {
+      "name": "Guest denied administrator page manage_shots",
+      "passed": true
+    },
+    {
+      "name": "Administrator page renders trailers",
+      "passed": true
+    },
+    {
+      "name": "Guest denied administrator page trailers",
+      "passed": true
+    },
+    {
+      "name": "Administrator page renders analytics",
+      "passed": true
+    },
+    {
+      "name": "Guest denied administrator page analytics",
+      "passed": true
+    },
+    {
+      "name": "Administrator page renders settings",
+      "passed": true
+    },
+    {
+      "name": "Guest denied administrator page settings",
+      "passed": true
+    },
+    {
+      "name": "Administrator page renders whatsapp-bot-tracking",
+      "passed": true
+    },
+    {
+      "name": "Guest denied administrator page whatsapp-bot-tracking",
+      "passed": true
+    },
+    {
+      "name": "Public product route /",
+      "passed": true
+    },
+    {
+      "name": "Public product route /movies.php",
+      "passed": true
+    },
+    {
+      "name": "Public product route /tv-series.php",
+      "passed": true
+    },
+    {
+      "name": "Public product route /collections.php",
+      "passed": true
+    },
+    {
+      "name": "Public product route /trailers.php",
+      "passed": true
+    },
+    {
+      "name": "Public product route /pages/trailers.php",
+      "passed": true
+    },
+    {
+      "name": "Public product route /profile.php",
+      "passed": true
+    },
+    {
+      "name": "Public product route /sitemap.xml",
+      "passed": true
+    },
+    {
+      "name": "Public product route /movie/40/fictional",
+      "passed": true
+    },
+    {
+      "name": "Public product route /series/29/fictional",
+      "passed": true
+    },
+    {
+      "name": "Public product route /collection/61/fictional",
+      "passed": true
+    },
+    {
+      "name": "Catalogue API includes fictional data /api/movies.php",
+      "passed": true
+    },
+    {
+      "name": "Catalogue API includes fictional data /api/series.php",
+      "passed": true
+    },
+    {
+      "name": "Catalogue API includes fictional data /api/collections.php",
+      "passed": true
+    },
+    {
+      "name": "Catalogue API includes fictional data /api/trailers.php",
+      "passed": true
+    },
+    {
+      "name": "Detail API supplies related data /api/series.php",
+      "passed": true
+    },
+    {
+      "name": "Detail API supplies related data /api/collections.php",
+      "passed": true
+    },
+    {
+      "name": "Detail API supplies related data /api/trailers.php",
+      "passed": true
+    },
+    {
+      "name": "Search locates fictional catalogue /api/live_search.php",
+      "passed": true
+    },
+    {
+      "name": "Search locates fictional catalogue /api/search_content.php",
+      "passed": true
+    },
+    {
+      "name": "Full movie CTA uses WhatsApp-only delivery",
+      "passed": true
+    },
+    {
+      "name": "Episodes route to WhatsApp without exposing legacy streaming references",
+      "passed": true
+    },
+    {
+      "name": "Original test media served byte-for-byte",
+      "passed": true
+    },
+    {
+      "name": "Member password sign-in succeeds",
+      "passed": true
+    },
+    {
+      "name": "Trailer action like",
+      "passed": true
+    },
+    {
+      "name": "Trailer action favorite",
+      "passed": true
+    },
+    {
+      "name": "Trailer action view",
+      "passed": true
+    },
+    {
+      "name": "Trailer action share",
+      "passed": true
+    },
+    {
+      "name": "Member interaction /api/like_shot.php",
+      "passed": true
+    },
+    {
+      "name": "Member interaction /api/favorite_shot.php",
+      "passed": true
+    },
+    {
+      "name": "Member interaction /api/record_view.php",
+      "passed": true
+    },
+    {
+      "name": "Member interaction /api/add_comment.php",
+      "passed": true
+    },
+    {
+      "name": "Saved shot appears on member profile",
+      "passed": true
+    },
+    {
+      "name": "Shot comments can be read",
+      "passed": true
+    },
+    {
+      "name": "Trailer pagination bounded page=-1",
+      "passed": true
+    },
+    {
+      "name": "Trailer pagination bounded limit=-1",
+      "passed": true
+    },
+    {
+      "name": "Trailer pagination bounded limit=1000000",
+      "passed": true
+    },
+    {
+      "name": "Views reject nonexistent shots",
+      "passed": true
+    },
+    {
+      "name": "Malformed search is a controlled client error /api/live_search.php",
+      "passed": true
+    },
+    {
+      "name": "Malformed search is a controlled client error /api/search_content.php",
+      "passed": true
+    },
+    {
+      "name": "Malformed search is a controlled client error /api/live_search.php",
+      "passed": true
+    },
+    {
+      "name": "Oversized shot comments are rejected",
+      "passed": true
+    },
+    {
+      "name": "Comments reject nonexistent shots",
+      "passed": true
+    },
+    {
+      "name": "Shot form rejects deceptive Facebook host",
+      "passed": true
+    },
+    {
+      "name": "Shot form supports its advertised collection content type",
+      "passed": true
+    },
+    {
+      "name": "Administrator edits a fictional collection shot",
+      "passed": true
+    },
+    {
+      "name": "Administrator deletes only the created fictional shot",
+      "passed": true
+    },
+    {
+      "name": "Administrator can create a fictional setting",
+      "passed": true
+    },
+    {
+      "name": "Administrator can update a fictional setting",
+      "passed": true
+    },
+    {
+      "name": "Administrator create movies",
+      "passed": true
+    },
+    {
+      "name": "Catalogue JSON-LD cannot break out of its script movies",
+      "passed": true
+    },
+    {
+      "name": "Catalogue JSON-LD retains valid decoded metadata movies",
+      "passed": true
+    },
+    {
+      "name": "Administrator edit movies",
+      "passed": true
+    },
+    {
+      "name": "Administrator delete only the created fictional movies",
+      "passed": true
+    },
+    {
+      "name": "Catalogue deletion retains recoverable media movies",
+      "passed": true
+    },
+    {
+      "name": "Administrator create series",
+      "passed": true
+    },
+    {
+      "name": "Catalogue JSON-LD cannot break out of its script series",
+      "passed": true
+    },
+    {
+      "name": "Catalogue JSON-LD retains valid decoded metadata series",
+      "passed": true
+    },
+    {
+      "name": "Administrator edit series",
+      "passed": true
+    },
+    {
+      "name": "Administrator delete only the created fictional series",
+      "passed": true
+    },
+    {
+      "name": "Catalogue deletion retains recoverable media series",
+      "passed": true
+    },
+    {
+      "name": "Administrator create collections",
+      "passed": true
+    },
+    {
+      "name": "Catalogue JSON-LD cannot break out of its script collections",
+      "passed": true
+    },
+    {
+      "name": "Catalogue JSON-LD retains valid decoded metadata collections",
+      "passed": true
+    },
+    {
+      "name": "Administrator edit collections",
+      "passed": true
+    },
+    {
+      "name": "Administrator delete only the created fictional collections",
+      "passed": true
+    },
+    {
+      "name": "Catalogue deletion retains recoverable media collections",
+      "passed": true
+    },
+    {
+      "name": "Administrator create episodes",
+      "passed": true
+    },
+    {
+      "name": "Administrator edit episodes",
+      "passed": true
+    },
+    {
+      "name": "Administrator delete only the created fictional episodes",
+      "passed": true
+    },
+    {
+      "name": "Catalogue deletion retains recoverable media episodes",
+      "passed": true
+    },
+    {
+      "name": "Administrator create trailer",
+      "passed": true
+    },
+    {
+      "name": "Administrator edit trailer",
+      "passed": true
+    },
+    {
+      "name": "Inactive trailer is hidden from public detail",
+      "passed": true
+    },
+    {
+      "name": "Administrator can preview an inactive trailer",
+      "passed": true
+    },
+    {
+      "name": "Members cannot interact with an inactive trailer",
+      "passed": true
+    },
+    {
+      "name": "Administrator delete only the created fictional trailer",
+      "passed": true
+    },
+    {
+      "name": "Quarantined feature stays disabled /api/subscribe.php",
+      "passed": true
+    },
+    {
+      "name": "Quarantined feature stays disabled /api/payment-notify.php",
+      "passed": true
+    },
+    {
+      "name": "Quarantined feature stays disabled /download.php",
+      "passed": true
+    },
+    {
+      "name": "Quarantined feature stays disabled /find_movies.php",
+      "passed": true
+    },
+    {
+      "name": "Quarantined feature stays disabled /api/server-check.php",
+      "passed": true
+    },
+    {
+      "name": "Quarantined feature stays disabled /admin/run_migration.php",
+      "passed": true
+    },
+    {
+      "name": "Quarantined feature stays disabled /admin/cron/cleanup-tokens.php",
+      "passed": true
+    },
+    {
+      "name": "Quarantined feature stays disabled /admin/cron/reset-daily-stats.php",
+      "passed": true
+    },
+    {
+      "name": "Normal WhatsApp delivery page stays disabled locally",
+      "passed": true
+    },
+    {
+      "name": "Bounded five-client read-only smoke returns no HTTP errors",
+      "passed": true
+    },
+    {
+      "name": "Member sign-out succeeds",
+      "passed": true
+    },
+    {
+      "name": "Administrator sign-out removes access",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 112,
+    "passed": 112,
+    "failed": 0
+  }
+}

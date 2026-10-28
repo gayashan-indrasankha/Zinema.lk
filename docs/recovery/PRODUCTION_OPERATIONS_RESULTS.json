@@ -1,0 +1,238 @@
+{
+  "scope": "Owned isolated local fixtures only; no real provider or recipient; sanitized projection",
+  "tests": [
+    {
+      "name": "Owned loopback gateway is verified before sending fixture keys",
+      "passed": true
+    },
+    {
+      "name": "CLI argument errors do not echo accidentally pasted bearer material",
+      "passed": true
+    },
+    {
+      "name": "Old sending claim is reviewable with an integer revision",
+      "passed": true
+    },
+    {
+      "name": "Held listing exposes no bearer token, receipt or recipient hash",
+      "passed": true
+    },
+    {
+      "name": "Resolution requires explicit stopped-worker attestation",
+      "passed": true
+    },
+    {
+      "name": "Resolution accepts only fictional operator/evidence references",
+      "passed": true
+    },
+    {
+      "name": "Stale operator revision cannot resolve a claim",
+      "passed": true
+    },
+    {
+      "name": "Confirmed non-delivery atomically closes and audits the old claim",
+      "passed": true
+    },
+    {
+      "name": "An identical repeat returns the original audit without another mutation",
+      "passed": true
+    },
+    {
+      "name": "A contradictory decision is rejected",
+      "passed": true
+    },
+    {
+      "name": "Closed non-delivery never releases the old token or worker receipt",
+      "passed": true
+    },
+    {
+      "name": "Confirmed prior delivery consumes an uncertain claim with audit",
+      "passed": true
+    },
+    {
+      "name": "A late bot acknowledgement cannot overwrite operator resolution",
+      "passed": true
+    },
+    {
+      "name": "Recent claims stay held",
+      "passed": true
+    },
+    {
+      "name": "A worker transition invalidates an earlier operator review",
+      "passed": true
+    },
+    {
+      "name": "A stopped-before-send claim can close without allowing a late begin",
+      "passed": true
+    },
+    {
+      "name": "Concurrent identical operators produce one audit and one replay",
+      "passed": true
+    },
+    {
+      "name": "Concurrent conflicting decisions cannot both succeed",
+      "passed": true
+    },
+    {
+      "name": "Operator rejects unexpected APP_ENV",
+      "passed": true
+    },
+    {
+      "name": "Operator rejects unexpected DB_NAME",
+      "passed": true
+    },
+    {
+      "name": "Operator rejects unexpected WHATSAPP_MODE",
+      "passed": true
+    },
+    {
+      "name": "Operator rejects unexpected UPLOAD_STORAGE_OWNER",
+      "passed": true
+    },
+    {
+      "name": "Inventory cannot accept a deletion/apply flag",
+      "passed": true
+    },
+    {
+      "name": "Cleanup mutation is not an operator action",
+      "passed": true
+    },
+    {
+      "name": "Operator/production HTTP boundary /dev/operator.php",
+      "passed": true
+    },
+    {
+      "name": "Operator/production HTTP boundary /__dev/operator.php",
+      "passed": true
+    },
+    {
+      "name": "Operator/production HTTP boundary /api/whatsapp/claim-token.php",
+      "passed": true
+    },
+    {
+      "name": "Separate fictional storage initializes without importing app media",
+      "passed": true
+    },
+    {
+      "name": "Expiry cleanup retains held and reconciled evidence in a temporary fixture table",
+      "passed": true
+    },
+    {
+      "name": "HTTP catalogue upload registers media under the local quota",
+      "passed": true
+    },
+    {
+      "name": "HTTP quota denial is 507 and preserves the original database path",
+      "passed": true
+    },
+    {
+      "name": "Denied replacement writes neither media nor a manifest entry",
+      "passed": true
+    },
+    {
+      "name": "Concurrent initialization preserves populated storage accounting",
+      "passed": true
+    },
+    {
+      "name": "Independent upload processes cannot oversubscribe a one-file remainder",
+      "passed": true
+    },
+    {
+      "name": "Byte quota denial leaves physical usage unchanged",
+      "passed": true
+    },
+    {
+      "name": "Concurrent byte accounting allows only the available bytes",
+      "passed": true
+    },
+    {
+      "name": "Storage commit rejects path traversal before creating a file",
+      "passed": true
+    },
+    {
+      "name": "New unreferenced media is held through its grace period",
+      "passed": true
+    },
+    {
+      "name": "Old registered unchanged orphan becomes a review candidate",
+      "passed": true
+    },
+    {
+      "name": "Bounded/truncated reference scans hold all otherwise eligible files",
+      "passed": true
+    },
+    {
+      "name": "A referenced old asset is retained",
+      "passed": true
+    },
+    {
+      "name": "Shared and URL-encoded references retain the asset",
+      "passed": true
+    },
+    {
+      "name": "Derived SQL views do not double-count a single stored delivery reference",
+      "passed": true
+    },
+    {
+      "name": "Manifest/content mismatch blocks cleanup candidacy",
+      "passed": true
+    },
+    {
+      "name": "Missing registered media remains visible as held evidence",
+      "passed": true
+    },
+    {
+      "name": "Unknown filenames are held and redacted, not adopted",
+      "passed": true
+    },
+    {
+      "name": "Every physical retained/unknown file consumes quota",
+      "passed": true
+    },
+    {
+      "name": "Cleanup inventory performs no deletion or accounting mutation",
+      "passed": true
+    },
+    {
+      "name": "Symlinks and hard links are not followed or cleanup candidates",
+      "passed": true
+    },
+    {
+      "name": "Unsafe links make upload admission fail closed",
+      "passed": true
+    },
+    {
+      "name": "Corrupt manifest blocks writes without silently rebuilding provenance",
+      "passed": true
+    },
+    {
+      "name": "Corrupt manifest also blocks advisory inventory",
+      "passed": true
+    },
+    {
+      "name": "Missing provenance is not silently recreated by initialization",
+      "passed": true
+    },
+    {
+      "name": "Missing manifest blocks new uploads",
+      "passed": true
+    },
+    {
+      "name": "Missing-manifest fixture restoration preserves all accounting",
+      "passed": true
+    },
+    {
+      "name": "Fixture restoration preserves accounting and enables inventory",
+      "passed": true
+    },
+    {
+      "name": "Owned fixture container stopped; named media/state volumes retained",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 57,
+    "passed": 57,
+    "failed": 0
+  }
+}

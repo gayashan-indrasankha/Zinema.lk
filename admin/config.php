@@ -27,6 +27,12 @@ if (!defined('WHATSAPP_API') && ($_SERVER['REQUEST_METHOD'] ?? '') === 'POST' &&
 }
 
 // Older sessions must not retain access after verification is revoked.
+if (isset($_SESSION['admin_id'])) {
+    $stmt=$conn->prepare('SELECT id FROM admins WHERE id=?');
+    $stmt->bind_param('i',$_SESSION['admin_id']);$stmt->execute();
+    if (!$stmt->get_result()->fetch_row()) unset($_SESSION['admin_id']);
+    $stmt->close();
+}
 if (isset($_SESSION['user_id'])) {
     $stmt = $conn->prepare('SELECT is_verified FROM users WHERE id = ?');
     $stmt->bind_param('i', $_SESSION['user_id']);

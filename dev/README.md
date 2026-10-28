@@ -84,3 +84,36 @@ interruption handling, follow the [quarantine runbook](QUARANTINE.md).
 The launcher requires a local Docker context (Unix socket or local named pipe);
 remote contexts and DOCKER_HOST overrides are refused. Compose interpolation uses
 the explicit empty `dev/compose.env` instead of preserved environment files.
+
+## Fresh-launch audit checks
+
+Launch scope is free access and WhatsApp-only full movies/episodes; website
+shorts/trailers remain. See `../docs/recovery/PRODUCTION_AUDIT.md` for executed
+results, outstanding blockers and the approval-only live test plan.
+
+After `python dev/local.py up`, run these sequentially from the workspace root:
+
+```powershell
+python dev/local.py test-security
+python dev/test_admission_concurrency.py
+python dev/local.py test-product
+node dev/bot_integration.cjs
+python dev/route_smoke.py
+python dev/local.py test
+python dev/local.py test-operations
+python dev/local.py test-quarantine
+python dev/verify_environment.py
+python dev/local.py down
+```
+
+Each suite exits nonzero on failure. Product/SQL bridge tests guard the exact owned
+gateway/database and create fictional records, never production data. Product
+fixture JSON includes a delivery bearer and must stay ignored/private; report
+only projected test labels/booleans/counts. Tests do not start Baileys. Repeat only
+affected suites after changes; use fresh fixtures for clean-install verification.
+
+The product fixture additionally uses `fixtures/motion-demo.mp4.b64`, an original
+102,793-byte, four-second FFmpeg 8.0.1 `testsrc2=size=160x240:rate=24` clip encoded
+with libx264/yuv420p/faststart and no audio. The older red-frame fixture is retained.
+Generated fixture rows/media accumulate within the owned volume and quota. Use
+the reviewed inventory/quarantine runbook; do not erase volumes to conceal failures.

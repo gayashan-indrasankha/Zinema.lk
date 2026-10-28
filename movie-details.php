@@ -129,27 +129,13 @@ $og_type = "video.movie";
     
     <!-- JSON-LD Schema.org Markup -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Movie",
-      "name": "<?php echo addslashes($movie['title']); ?>",
-      "image": "<?php echo addslashes($movie['cover_image']); ?>",
-      "description": "<?php echo addslashes(strip_tags($movie['description'])); ?>",
-      "datePublished": "<?php echo $movie['release_date']; ?>",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "<?php echo $movie['rating'] ?? 0; ?>",
-        "bestRating": "10",
-        "ratingCount": "<?php echo $movie['views'] ?? 1; ?>"
-      },
-      "genre": [
-        <?php 
-            $genres = explode(',', $movie['genre']);
-            $quoted_genres = array_map(function($g) { return '"' . trim(addslashes($g)) . '"'; }, $genres);
-            echo implode(',', $quoted_genres);
-        ?>
-      ]
-    }
+    <?php echo json_encode([
+        '@context'=>'https://schema.org', '@type'=>'Movie', 'name'=>$movie['title'],
+        'image'=>$movie['cover_image'], 'description'=>strip_tags((string)($movie['description'] ?? '')),
+        'datePublished'=>$movie['release_date'],
+        'aggregateRating'=>['@type'=>'AggregateRating','ratingValue'=>(string)($movie['rating'] ?? 0),'bestRating'=>'10','ratingCount'=>(string)($movie['views'] ?? 1)],
+        'genre'=>array_map('trim',explode(',',(string)$movie['genre']))
+    ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>
     </script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -519,15 +505,7 @@ $og_type = "video.movie";
 
                     <!-- Action Buttons -->
                     <div class="action-buttons">
-                        <?php if (!empty($movie['video_url'])): ?>
-                            <div id="video-container">
-                                <button class="btn btn-watch" id="watchNowBtn" onclick="playMovie(<?php echo $movie['id']; ?>, '<?php echo addslashes($movie['video_url']); ?>')">
-                                    <i class="fas fa-play"></i>
-                                    <span>Watch Now</span>
-                                </button>
-                            </div>
-                        <?php endif; ?>
-                        <a href="<?php echo BASE_URL; ?>/download.php?id=<?php echo $movie['id']; ?>" class="btn btn-whatsapp">
+                        <a href="<?php echo BASE_URL; ?>/whatsapp-watch.php?id=<?php echo $movie['id']; ?>" class="btn btn-whatsapp">
                             <i class="fab fa-whatsapp"></i>
                             <span>WhatsApp Packages මගින් නරඹන්න.</span>
                         </a>
@@ -561,80 +539,6 @@ $og_type = "video.movie";
         // INLINE VIDEO PLAYER FUNCTION
         // ========================================
         
-        async function playMovie(movieId, dbVideoUrl) {
-            const container = document.getElementById('video-container');
-            if (!container) return;
-
-            // Show loader
-            container.innerHTML = `
-                <div class="video-loader">
-                    <div class="video-loader-spinner"></div>
-                    <p class="video-loader-text">Loading video...</p>
-                </div>
-            `;
-
-            try {
-                console.log('📡 Playing movie ID:', movieId);
-                console.log('🎬 Video URL:', dbVideoUrl);
-                
-                // Add small delay for smooth UX
-                await new Promise(resolve => setTimeout(resolve, 300));
-                
-                // Replace loader with video player with custom controls
-                container.innerHTML = `
-                    <div class="video-wrapper" style="position: relative; width: 100%; background: #000; border-radius: 8px; overflow: hidden;">
-                        <video 
-                            id="moviePlayer"
-                            controls 
-                            autoplay 
-                            playsinline
-                            poster="<?php 
-                                $v_poster = $movie['cover_image'];
-                                if (!preg_match('/^http/', $v_poster)) {
-                                    $v_poster = BASE_URL . '/' . ltrim($v_poster, '/');
-                                }
-                                echo htmlspecialchars($v_poster); 
-                            ?>"
-                            style="width: 100%; display: block;">
-                            <source src="${dbVideoUrl}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                `;
-                
-                // Get video element and add functionality
-                const video = document.getElementById('moviePlayer');
-                
-                if (video) {
-                    // Save progress tracking
-                    video.addEventListener('timeupdate', function() {
-                        if (this.duration > 0) {
-                            localStorage.setItem(`movie_${movieId}_progress`, this.currentTime);
-                        }
-                    });
-                    
-                    // Check for saved progress
-                    const savedTime = localStorage.getItem(`movie_${movieId}_progress`);
-                    if (savedTime && parseFloat(savedTime) > 10) {
-                        video.currentTime = parseFloat(savedTime);
-                    }
-                }
-                
-                console.log('🎬 Video player loaded successfully');
-                
-            } catch (error) {
-                console.error('❌ Error loading video:', error);
-                
-                // Show error and restore button
-                alert('Failed to load video: ' + error.message);
-                container.innerHTML = `
-                    <button class="btn btn-watch" onclick="playMovie(${movieId}, '${dbVideoUrl.replace(/'/g, "\\'")}')">
-                        <i class="fas fa-play"></i>
-                        <span>Watch Now</span>
-                    </button>
-                `;
-            }
-        }
     </script>
 </body>
 </html>

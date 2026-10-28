@@ -40,7 +40,7 @@ try {
     http_response_code(500);
     echo json_encode([
         'error' => 'Failed to fetch movies',
-        'message' => $e->getMessage()
+        'message' => 'Catalogue temporarily unavailable.'
     ]);
 }
 
