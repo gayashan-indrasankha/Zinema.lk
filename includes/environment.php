@@ -58,6 +58,14 @@ define('PAYMENT_API_URL', PAYMENT_MODE === 'disabled' ? '' : recovery_url('PAYME
 function recovery_require_adapter($name) {
     if (constant($name . '_MODE') === 'disabled') recovery_config_error($name . ' integration disabled');
 }
+// Explicit fictional two-host rehearsal only. Never a request-controlled live gate.
+function recovery_local_delivery_fixture() {
+    return APP_ENV === 'development' && WHATSAPP_MODE === 'local' &&
+        recovery_env('ZINEMA_TWO_HOST_FIXTURES') === '1' &&
+        recovery_env('ALLOW_LIVE_INTEGRATIONS') === 'false' &&
+        BASE_URL === 'http://127.0.0.1:8088' && DB_HOST === '127.0.0.1' &&
+        DB_PORT === 3306 && DB_NAME === 'zinema_recovery_development';
+}
 function recovery_browser_policy() {
     if (APP_ENV !== 'production') {
         // Cached legacy CDN URLs and browser storage cannot bypass this local policy.
