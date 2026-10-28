@@ -1,0 +1,12 @@
+{
+  "owned_running_containers": 0,
+  "loopback_ports_closed": {
+    "8088": true,
+    "9081": true,
+    "3307": true,
+    "8089": true,
+    "3334": true
+  },
+  "data_and_rescue_volumes_retained": true,
+  "production_and_publishing_enabled": false
+}

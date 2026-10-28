@@ -35,7 +35,7 @@ SAMPLE_PASSWORD = 'Fictional-local-test-42!'
 SKIP = {'node_modules', '.git', 'whatsapp-session', '.wwebjs_auth', '.runtime', '.recovery-private', 'uploads'}
 NO_WINDOW = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
 RESULT_PREFIX = os.environ.get('ZINEMA_TEST_PHASE', 'REPAIR')
-if RESULT_PREFIX not in {'REPAIR', 'LOCAL_DEV', 'OPERATIONS'}: raise RuntimeError('Unknown sanitized result prefix')
+if RESULT_PREFIX not in {'REPAIR', 'LOCAL_DEV', 'OPERATIONS', 'QUARANTINE'}: raise RuntimeError('Unknown sanitized result prefix')
 
 
 

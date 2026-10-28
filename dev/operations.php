@@ -117,7 +117,9 @@ function operator_inventory($db,$settings) {
         foreach ($manifest['assets'] as $relative=>$asset) {
             $file = $scan['entries'][$relative] ?? null;
             $reference = $references[basename($relative)] ?? ['count'=>0,'sources'=>[]];
-            if (!$file) $status = 'missing_or_unsafe';
+            if (storage_location($asset)==='quarantined') $status='quarantined';
+            elseif (storage_location($asset)==='pending') $status='recovery_required';
+            elseif (!$file) $status = 'missing_or_unsafe';
             elseif ($file['linked']) $status = 'linked_hold';
             elseif ($file['bytes'] !== $asset['bytes'] || !hash_equals($asset['sha256'],hash_file('sha256',$settings['root'].'/'.$relative))) $status = 'changed_hold';
             elseif ($reference['count'] > 1) $status = 'shared_hold';
@@ -137,19 +139,37 @@ function operator_inventory($db,$settings) {
             'max_bytes'=>$settings['max_bytes'],'used_bytes'=>$scan['bytes'],'remaining_bytes'=>max(0,$settings['max_bytes']-$scan['bytes']),
             'max_files'=>$settings['max_files'],'used_files'=>$scan['files'],'remaining_files'=>max(0,$settings['max_files']-$scan['files'])],
             'counts'=>$counts,'managed'=>$items,'unregistered'=>$unknown,'unsafe'=>$scan['unsafe'],
-            'reference_columns'=>$coverage,'reference_scan_complete'=>$complete];
+            'reference_columns'=>$coverage,'reference_scan_complete'=>$complete,
+            'cleanup_available'=>true,'recovery_required'=>storage_pending($manifest)];
     });
 }
 
-function operator_dispatch($db,$settings,$input) {
+function operator_dispatch($db,$settings,$input,$checkpoint=null) {
     if (!is_array($input) || !is_string($input['action'] ?? null)) throw new LocalOperationError('invalid_request');
     $action = $input['action'];
     $allowed = match ($action) {
         'held'=>['action','after_id'], 'inventory'=>['action'], 'review'=>['action','token_id'],
         'resolve'=>['action','token_id','revision','outcome','actor','evidence_ref','workers_stopped'],
+        'storage-review'=>['action','path'], 'storage-history'=>['action','path'],
+        'storage-quarantine','storage-restore'=>['action','path','revision','actor','evidence_ref','case_ref','reviewed'],
+        'storage-recover'=>['action','path','revision','actor','evidence_ref','case_ref','reviewed','operation_id','decision'],
         default=>throw new LocalOperationError('invalid_action'),
     };
     if (array_diff(array_keys($input),$allowed)) throw new LocalOperationError('invalid_request');
+    if (str_starts_with($action,'storage-')) {
+        require_once __DIR__.'/upload_cleanup.php';
+        $relative=cleanup_relative($input['path'] ?? null);
+        if ($action==='storage-review') return storage_with_lock($settings,false,static fn($manifest)=>
+            ['success'=>true,'review'=>cleanup_review_locked($db,$settings,$manifest,$relative)]);
+        if ($action==='storage-history') return storage_with_lock($settings,false,static function($manifest) use ($relative) {
+            $ops=[];$events=[];
+            foreach ($manifest['cleanup_ops'] ?? [] as $id=>$op) if ($op['path']===$relative) $ops[]=cleanup_public_operation($id,$op);
+            foreach ($manifest['cleanup_audit'] ?? [] as $event) if (($manifest['cleanup_ops'][$event['operation_id']]['path'] ?? null)===$relative) $events[]=$event;
+            return ['success'=>true,'operations'=>$ops,'audit'=>$events,'permanent_purge_supported'=>false];
+        });
+        if ($checkpoint && (PHP_SAPI!=='cli' || getenv('ZINEMA_QUARANTINE_FIXTURES')!=='1')) throw new LocalOperationError('fixture_denied');
+        return cleanup_execute($db,$settings,$input,$checkpoint);
+    }
     if ($action === 'inventory') return operator_inventory($db,$settings);
     if ($action === 'held') {
         $after = $input['after_id'] ?? 0;
