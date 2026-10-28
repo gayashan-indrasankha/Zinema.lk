@@ -25,6 +25,7 @@ require_once __DIR__ . '/PHPMailer/src/SMTP.php';
 function sendEmail($to, $subject, $htmlBody, $textBody = '') {
     require_once __DIR__ . '/environment.php';
     if (MAIL_MODE === 'disabled') return ['success' => false, 'message' => 'Mail is disabled during recovery.'];
+    if (MAIL_MODE === 'local' && (!is_string($to) || !preg_match('/@[^@]+\.invalid$/i', $to))) return ['success' => false, 'message' => 'Local mail accepts fictional recipients only.'];
     $mail = new PHPMailer(true);
     
     try {

@@ -1,0 +1,63 @@
+{
+  "scanner": "Gitleaks 8.30.1",
+  "archive_checksum_matches_upstream_record": true,
+  "candidate_files": 337,
+  "forbidden_index_paths": 0,
+  "ignore_checks": [
+    {
+      "category": ".runtime",
+      "ignored": true
+    },
+    {
+      "category": ".runtime",
+      "ignored": true
+    },
+    {
+      "category": ".runtime",
+      "ignored": true
+    },
+    {
+      "category": ".recovery-private",
+      "ignored": true
+    },
+    {
+      "category": ".env",
+      "ignored": true
+    },
+    {
+      "category": "uploads",
+      "ignored": true
+    },
+    {
+      "category": "whatsapp-bot-deploy",
+      "ignored": true
+    },
+    {
+      "category": "whatsapp-bot-deploy",
+      "ignored": true
+    }
+  ],
+  "scans": [
+    {
+      "scope": "staged",
+      "exit": 0,
+      "findings": 0
+    },
+    {
+      "scope": "candidate-tree",
+      "exit": 0,
+      "findings": 0
+    },
+    {
+      "scope": "all-local-history",
+      "exit": 0,
+      "findings": 0
+    }
+  ],
+  "limitations": [
+    "Default rules cannot prove absence of all secrets.",
+    "Binary screenshot/media provenance reviewed manually; generated fixture only.",
+    "Ignored legacy/private evidence was excluded, preserved and not certified safe.",
+    "All local Git refs scanned; remotes were not contacted."
+  ]
+}

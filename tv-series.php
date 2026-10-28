@@ -8,16 +8,7 @@ require_once 'includes/ads.php';
  * Generate Google OAuth URL
  */
 function getGoogleAuthUrl() {
-    if (OAUTH_MODE === 'disabled') return '#';
-    $params = [
-        'client_id' => GOOGLE_CLIENT_ID,
-        'redirect_uri' => GOOGLE_REDIRECT_URI,
-        'response_type' => 'code',
-        'scope' => 'email profile',
-        'access_type' => 'online',
-        'prompt' => 'select_account'
-    ];
-    return OAUTH_AUTHORIZE_URL . '?' . http_build_query($params);
+    return OAUTH_MODE === 'disabled' ? '#' : BASE_URL . '/oauth-start.php';
 }
 
 // Initialize series array

@@ -1,0 +1,20 @@
+{
+  "tested_date": "2026-10-25",
+  "tested_platform": "linux/amd64 on Docker Desktop for Windows",
+  "php": "8.2.35",
+  "apache": "2.4.69 Debian",
+  "mariadb": "10.11.19",
+  "php_base": "php@sha256:1dcd13aa67697127a140a7d303ab955c923098c39d525ecd728f2e8afb4d1546",
+  "python_base": "python@sha256:b658b05ce9c4eb97ec6fc19424818a1f31993659c2b505a532f470e83807815d",
+  "database_base": "mariadb@sha256:0d0945c57f75b3a3b9ebe71aedaaad005fa5305054e8fca3d2e42a8c92b43b5e",
+  "development_libraries": {
+    "libpng-dev": "1.6.48-1+deb13u6",
+    "libjpeg62-turbo-dev": "1:2.1.5-4",
+    "libwebp-dev": "1.5.0-0.1"
+  },
+  "limitations": [
+    "Multi-platform image digests select the host architecture; only linux/amd64 was executed.",
+    "Debian repository availability is required for extension builds; package archives and build outputs are not vendored.",
+    "No production integration, real provider, container vulnerability scan or full browser/codec matrix is certified."
+  ]
+}

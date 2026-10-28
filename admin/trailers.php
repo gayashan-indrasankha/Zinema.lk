@@ -1,6 +1,7 @@
 <?php
 require_once 'config.php';
 check_login();
+require_once __DIR__ . '/../includes/uploads.php';
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -12,26 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $title = $_POST['title'];
                     $description = $_POST['description'];
                     
-                    // Handle file upload
-                    $target_dir = "../uploads/trailers/";
-                    $file_extension = pathinfo($_FILES["trailer_video"]["name"], PATHINFO_EXTENSION);
-                    $video_filename = uniqid() . '.' . $file_extension;
-                    $target_file = $target_dir . $video_filename;
-                    
-                    if (move_uploaded_file($_FILES["trailer_video"]["tmp_name"], $target_file)) {
-                        $video_url = '/uploads/trailers/' . $video_filename;
-                        
-                        // Create thumbnail using ffmpeg if available
+                    $video_url = store_catalogue_upload('trailer_video', 'video');
+                    if ($video_url !== '') {
                         $thumbnail_url = null;
-                        if (function_exists('exec')) {
-                            $thumb_filename = uniqid() . '.jpg';
-                            $thumb_path = $target_dir . $thumb_filename;
-                            exec("ffmpeg -i $target_file -ss 00:00:01 -vframes 1 $thumb_path");
-                            if (file_exists($thumb_path)) {
-                                $thumbnail_url = '/uploads/trailers/' . $thumb_filename;
-                            }
-                        }
-                        
                         // Insert into database
                         $stmt = $conn->prepare("INSERT INTO trailers (movie_id, title, description, video_url, thumbnail_url) VALUES (?, ?, ?, ?, ?)");
                         $stmt->bind_param("issss", $movie_id, $title, $description, $video_url, $thumbnail_url);
@@ -68,21 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'delete':
                 $id = $_POST['id'];
                 
-                // Get video path before deleting
-                $stmt = $conn->prepare("SELECT video_url, thumbnail_url FROM trailers WHERE id=?");
-                $stmt->bind_param("i", $id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                if ($file_data = $result->fetch_assoc()) {
-                    // Delete files
-                    if (file_exists("../" . $file_data['video_url'])) {
-                        unlink("../" . $file_data['video_url']);
-                    }
-                    if ($file_data['thumbnail_url'] && file_exists("../" . $file_data['thumbnail_url'])) {
-                        unlink("../" . $file_data['thumbnail_url']);
-                    }
-                }
-                
+                // Retain media; never unlink a path supplied by a database record.
                 // Delete from database
                 $stmt = $conn->prepare("DELETE FROM trailers WHERE id=?");
                 $stmt->bind_param("i", $id);

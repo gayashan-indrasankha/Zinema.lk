@@ -1,0 +1,78 @@
+{
+  "scope": "Owned Compose metadata and allowlisted image paths; no secret values retained",
+  "tests": [
+    {
+      "name": "Application network is internal",
+      "passed": true
+    },
+    {
+      "name": "Only gateway has an external network",
+      "passed": true
+    },
+    {
+      "name": "db shares the guarded loopback namespace",
+      "passed": true
+    },
+    {
+      "name": "fakes shares the guarded loopback namespace",
+      "passed": true
+    },
+    {
+      "name": "Exactly two loopback gateway ports are published",
+      "passed": true
+    },
+    {
+      "name": "Gateway has no private mounts",
+      "passed": true
+    },
+    {
+      "name": "web is not privileged",
+      "passed": true
+    },
+    {
+      "name": "web binds only allowlisted schema/secret inputs",
+      "passed": true
+    },
+    {
+      "name": "db is not privileged",
+      "passed": true
+    },
+    {
+      "name": "db binds only allowlisted schema/secret inputs",
+      "passed": true
+    },
+    {
+      "name": "fakes is not privileged",
+      "passed": true
+    },
+    {
+      "name": "fakes binds only allowlisted schema/secret inputs",
+      "passed": true
+    },
+    {
+      "name": "gateway is not privileged",
+      "passed": true
+    },
+    {
+      "name": "gateway binds only allowlisted schema/secret inputs",
+      "passed": true
+    },
+    {
+      "name": "All production-capable adapters remain disabled",
+      "passed": true
+    },
+    {
+      "name": "Mail and OAuth target only local fakes",
+      "passed": true
+    },
+    {
+      "name": "App image contains no legacy/private root inputs",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 17,
+    "passed": 17,
+    "failed": 0
+  }
+}

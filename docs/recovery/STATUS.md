@@ -4,6 +4,47 @@ Updated: 2026-10-25.
 
 ## Current phase
 
+Owner-requested reproducible local development, fake mail/OAuth tests, uploads
+and distributed claims, and sanitized local Git baseline: **COMPLETE within the
+authorized local scope**. Source baseline commit: `9c48b7ca8a2b6535b6da0b408d49bbdfe7280f1a`
+on local-only `zinema/local-dev-safety`; starting checkout was clean `bf370a4`.
+Production integrations, deployment, remote Git operations and publishing stayed
+disabled. The product remains in recovery and is not production-ready.
+
+- Added pinned Docker development, fictional SMTP/OAuth, private generated config,
+  upload validation/preservation, session-bound OAuth state/PKCE, database claims
+  and the additive owned-development migration. Files and limits are recorded in
+  `LOCAL_DEV_PHASE.md`, `DECISIONS.md` and `dev/README.md`.
+- Executed 88 HTTP + 7 OAuth helper + 6 new bot protocol/client + 17 environment
+  checks; retained 94 HTTP + 22 schema/bridge + 22 Node + 4 extractor checks passed.
+  A fresh sanitized source export with new database volumes also passed 88/7/17.
+  Manual browser invalid login, fake OAuth member login and sign-out passed.
+- PHP 177/177 and JavaScript 41/41 syntax, Python AST 8 files and JSON parsing
+  26 files passed. Two scoped npm audits reported zero advisories. These are
+  executed static/local test results; real integrations are not yet verified.
+- Gitleaks 8.30.1 archive checksum rechecked; final staged changes, all 337
+  candidate files and all local history scans returned exit 0 / zero findings.
+  Eight ignore checks passed; no forbidden private/data paths were indexed.
+  New staged whitespace checks passed. Historical publication whitespace remains
+  unresolved; scanner/audit and runtime limits are explicit in the phase report.
+- Source commit left a clean worktree. This documentation-only completion record
+  follows it in a separate local handoff commit. No existing history was rewritten
+  and nothing was pushed. Both Docker stacks and all owned native test processes
+  stopped; ports 8088, 9081, 3307, 8089 and 3334 closed. Private config and volumes
+  remain preserved and ignored.
+
+Owner attention: held/uncertain deliveries need reviewed operator reconciliation;
+media quotas/cleanup, full video/malware validation, complete extractor/container
+security checks and real provider verification remain outside this completed local
+scope. The shared bot API key remains a worker trust boundary. See the full report
+for the absence of an exactly-once delivery guarantee.
+
+Exact next recommended task: **Implement a local-only operator reconciliation
+workflow for held token deliveries and an upload quota/cleanup inventory, using
+fictional fixtures; keep production integrations and publishing disabled.**
+
+### Earlier completed and partial work
+
 Owner-requested branch naming update: **COMPLETE within scope**. The five
 review branches use `zinema/import-*` locally and remotely. Replacement PRs
 #6–#10 are open against `main`; superseded PRs #1–#5 are closed and linked to

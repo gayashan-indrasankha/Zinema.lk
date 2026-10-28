@@ -1,0 +1,134 @@
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+❌ TIER 1: No store available, not in persistent cache
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+❌ TIER 1: No store available, not in persistent cache
+🔍 TIER 2: Attempting forward for movie_1
+🔍 TIER 2: Trying direct forward with messageId=fictional-cache-id
+🔍 TIER 2: Fetched 1 messages from fictional-group
+✅ TIER 2: Found message by ID, forwarding...
+💾 Saved 1 messages to cache
+   ⏱️ Upload timeout: 5.0 min (file: 0 MB)
+📄 Sending as DOCUMENT: sample.mp4 to fictional-recipient
+❌ TIER 3: performTier3Upload error: Delivery acknowledgement missing
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-15304\media
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-15304\media\movies
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-15304\media\episodes
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-15304\media\temp
+📥 Queued: movie_1_0 (position 1, priority 0)
+🔄 Upload queue processing started (1 items)
+📤 Processing: movie_1_0 (1/1 active)
+✅ Upload queue empty. Stats: 0 processed, 0 failed, 0 skipped
+📥 Queued: movie_2_0 (position 1, priority 0)
+🔄 Upload queue processing started (1 items)
+📥 Queued: movie_3_0 (position 2, priority 0)
+TAP version 13
+# Subtest: cached-message forwarding reaches only the fake client
+ok 1 - cached-message forwarding reaches only the fake client
+  ---
+  duration_ms: 5.2135
+  type: 'test'
+  ...
+# Subtest: cache miss and missing local file return a failure
+ok 2 - cache miss and missing local file return a failure
+  ---
+  duration_ms: 1.2805
+  type: 'test'
+  ...
+# Subtest: storage-group lookup forwards using the fake client
+ok 3 - storage-group lookup forwards using the fake client
+  ---
+  duration_ms: 20.2806
+  type: 'test'
+  ...
+# Subtest: coalesced requests deliver and resolve waiting recipients
+ok 4 - coalesced requests deliver and resolve waiting recipients
+  ---
+  duration_ms: 0.8654
+  type: 'test'
+  ...
+# Subtest: local upload must reject a missing delivery acknowledgement
+ok 5 - local upload must reject a missing delivery acknowledgement
+  ---
+  duration_ms: 4.589
+  type: 'test'
+  ...
+# Subtest: file manager resolves fixture media and absent files
+ok 6 - file manager resolves fixture media and absent files
+  ---
+  duration_ms: 4.2368
+  type: 'test'
+  ...
+✅ Completed: movie_1_0
+📤 Processing: movie_2_0 (1/1 active)
+✅ Completed: movie_2_0
+📤 Processing: movie_3_0 (1/1 active)
+✅ Upload queue empty. Stats: 2 processed, 0 failed, 0 skipped
+✅ Completed: movie_3_0
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+❌ TIER 1: Error - Rejected
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+❌ TIER 1: Error - Delivery acknowledgement missing
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+   ⏱️ Upload timeout: 5.0 min (file: 0 MB)
+📄 Sending as DOCUMENT: acknowledged.mp4 to fictional-recipient
+📬 TIER 3: sendMessage returned: key=fictional-sent-id, remoteJid=undefined
+💾 Saved 1 messages to cache
+✅ TIER 3: Upload complete! New messageId=fictional-sent-id saved to DB
+# Subtest: upload queue respects configured concurrency with fake uploads
+ok 7 - upload queue respects configured concurrency with fake uploads
+  ---
+  duration_ms: 1046.1828
+  type: 'test'
+  ...
+# Subtest: concurrent recipients and duplicate requests await acknowledgement
+ok 8 - concurrent recipients and duplicate requests await acknowledgement
+  ---
+  duration_ms: 2.178
+  type: 'test'
+  ...
+# Subtest: failed primary delivery settles all coalesced recipients as failures
+ok 9 - failed primary delivery settles all coalesced recipients as failures
+  ---
+  duration_ms: 0.9317
+  type: 'test'
+  ...
+# Subtest: one recipient rejection is not reported as a successful delivery
+ok 10 - one recipient rejection is not reported as a successful delivery
+  ---
+  duration_ms: 0.7905
+  type: 'test'
+  ...
+# Subtest: cached forwarding also rejects an absent acknowledgement
+ok 11 - cached forwarding also rejects an absent acknowledgement
+  ---
+  duration_ms: 0.644
+  type: 'test'
+  ...
+# Subtest: successful disk upload releases its timeout and retains acknowledgement
+ok 12 - successful disk upload releases its timeout and retains acknowledgement
+  ---
+  duration_ms: 2.5201
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1137.9036
