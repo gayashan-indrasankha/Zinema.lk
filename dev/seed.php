@@ -6,8 +6,12 @@ if (APP_ENV !== 'development' || DB_HOST !== '127.0.0.1' || DB_NAME !== 'zinema_
 $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 if ($db->query('SELECT DATABASE()')->fetch_row()[0] !== DB_NAME) exit(1);
 // The target identity was checked above. This migration does not delete rows.
-$db->multi_query(file_get_contents('/opt/zinema/migrations/002-token-claims.sql'));
-do { if ($result = $db->store_result()) $result->free(); } while ($db->more_results() && $db->next_result());
+foreach (['002-token-claims.sql','003-local-operations.sql'] as $migration) {
+    $db->multi_query(file_get_contents('/opt/zinema/migrations/' . $migration));
+    do { if ($result = $db->store_result()) $result->free(); } while ($db->more_results() && $db->next_result());
+}
+require_once '/var/www/html/includes/upload_storage.php';
+initialize_local_upload_storage();
 $hash = password_hash(trim(file_get_contents('/run/secrets/demo_password')), PASSWORD_DEFAULT);
 $name = 'demo_admin';
 $stmt = $db->prepare('INSERT IGNORE INTO admins(username,password_hash) VALUES(?,?)');

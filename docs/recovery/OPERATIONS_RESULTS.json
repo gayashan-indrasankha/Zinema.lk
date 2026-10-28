@@ -1,0 +1,295 @@
+{
+  "environment": "owned local Docker database; fictional claims; separate fixture storage; no live transports",
+  "tests": [
+    {
+      "name": "Owned loopback gateway is verified before sending fixture keys",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "CLI argument errors do not echo accidentally pasted bearer material",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Old sending claim is reviewable with an integer revision",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Held listing exposes no bearer token, receipt or recipient hash",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Resolution requires explicit stopped-worker attestation",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Resolution accepts only fictional operator/evidence references",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Stale operator revision cannot resolve a claim",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Confirmed non-delivery atomically closes and audits the old claim",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "An identical repeat returns the original audit without another mutation",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "A contradictory decision is rejected",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Closed non-delivery never releases the old token or worker receipt",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Confirmed prior delivery consumes an uncertain claim with audit",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "A late bot acknowledgement cannot overwrite operator resolution",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Recent claims stay held",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "A worker transition invalidates an earlier operator review",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "A stopped-before-send claim can close without allowing a late begin",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Concurrent identical operators produce one audit and one replay",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Concurrent conflicting decisions cannot both succeed",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Operator rejects unexpected APP_ENV",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Operator rejects unexpected DB_NAME",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Operator rejects unexpected WHATSAPP_MODE",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Operator rejects unexpected UPLOAD_STORAGE_OWNER",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Inventory cannot accept a deletion/apply flag",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Cleanup mutation is not an operator action",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Operator/production HTTP boundary /dev/operator.php",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Operator/production HTTP boundary /__dev/operator.php",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Operator/production HTTP boundary /api/whatsapp/claim-token.php",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Separate fictional storage initializes without importing app media",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Expiry cleanup retains held and reconciled evidence in a temporary fixture table",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "HTTP catalogue upload registers media under the local quota",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "HTTP quota denial is 507 and preserves the original database path",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Denied replacement writes neither media nor a manifest entry",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Concurrent initialization preserves populated storage accounting",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Independent upload processes cannot oversubscribe a one-file remainder",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Byte quota denial leaves physical usage unchanged",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Concurrent byte accounting allows only the available bytes",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Storage commit rejects path traversal before creating a file",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "New unreferenced media is held through its grace period",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Old registered unchanged orphan becomes a review candidate",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Bounded/truncated reference scans hold all otherwise eligible files",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "A referenced old asset is retained",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Shared and URL-encoded references retain the asset",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Derived SQL views do not double-count a single stored delivery reference",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Manifest/content mismatch blocks cleanup candidacy",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Missing registered media remains visible as held evidence",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Unknown filenames are held and redacted, not adopted",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Every physical retained/unknown file consumes quota",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Cleanup inventory performs no deletion or accounting mutation",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Symlinks and hard links are not followed or cleanup candidates",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Unsafe links make upload admission fail closed",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Corrupt manifest blocks writes without silently rebuilding provenance",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Corrupt manifest also blocks advisory inventory",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Missing provenance is not silently recreated by initialization",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Missing manifest blocks new uploads",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Missing-manifest fixture restoration preserves all accounting",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Fixture restoration preserves accounting and enables inventory",
+      "passed": true,
+      "evidence": "runtime verified"
+    },
+    {
+      "name": "Owned fixture container stopped; named media/state volumes retained",
+      "passed": true,
+      "evidence": "runtime verified"
+    }
+  ],
+  "summary": {
+    "total": 57,
+    "passed": 57,
+    "failed": 0
+  }
+}

@@ -38,3 +38,15 @@ Fresh schema rebuild and 22 bridge checks passed; the concurrent claim and expir
 checks are in `LOCAL_DEV_RESULTS.json`. Full-file fallback now joins part zero
 explicitly. Token completion requires the claim protocol; legacy mark-used is
 denied. Historical repair results above remain evidence of the earlier phase.
+
+## Local operations follow-up (2026-10-25)
+
+Canonical v3 adds `claim_revision`, `reconciled_at` and the append-only-through-tool
+`delivery_reconciliations` audit table (38 base tables, 2 views). Claim transitions
+advance the revision; operator review/closure locks the token and writes the audit
+atomically. Audit token deletion is restricted by a foreign key. The additive
+`003-local-operations.sql` upgrade runs only on the verified development target;
+no production or preserved legacy dataset was migrated. Expiry cleanup predicates
+retain all claimed/reconciled evidence, and the cron remains disabled. Fresh native
+schema/bridge execution passed 22/22; Linux development upgrade and operator races
+passed in the recorded operations suite. See `OPERATIONS_PHASE.md` for limits.

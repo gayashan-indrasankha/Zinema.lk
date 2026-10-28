@@ -4,6 +4,52 @@ Updated: 2026-10-25.
 
 ## Current phase
 
+Owner-requested local operator reconciliation and upload quota/cleanup inventory:
+**COMPLETE within the authorized local scope**. Source commit
+`cae7ab7f05680a8a4894c732aa3529c518d95e33` on `zinema/local-dev-safety`; starting tree
+was clean at `b9dead6`. Production integrations, publishing, deployment and remote
+Git actions remained disabled. The overall product remains in local recovery.
+
+- Added CLI held-claim list/review/resolve with version checks, row locking, explicit
+  stopped-worker/evidence attestation, replay handling and an append-only-through-tool
+  audit. Old claims close permanently; no delivery, reuse or replacement is triggered.
+- Added owned-volume quotas (64 MiB/500 physical files), private provenance, shared
+  admission/initialization locking and fail-closed missing/corrupt-state handling.
+  Read-only cleanup inventory retains referenced/shared/young/changed/unknown/unsafe
+  assets. There is no cleanup mutation command. Legacy/media data stays preserved.
+- Canonical v3 has 38 tables/2 views and an additive development-only migration.
+  Claim revisions/reconciliation guards and expiry predicates preserve held evidence;
+  the legacy cron remains disabled. Local Docker context and owned-gateway checks
+  prevent remote-daemon/unknown-listener test use; explicit Compose env-file avoids
+  preserved configuration loading. See `dev/OPERATIONS.md` and `OPERATIONS_PHASE.md`.
+- Executed final operations 57/57, direct CLI 7/7, local-target boundary 7/7, retained
+  integration 88/88, OAuth helper 7/7 and environment 20/20. Fresh native canonical
+  schema/bridge 22/22, HTTP 94/94, Node configuration/bot 22/22, token protocol 6/6
+  and extractor 4/4 passed. PHP 182/182, JavaScript 41/41, Python AST 10 and JSON
+  parsing 37 files passed. Both scoped npm audits returned zero advisories.
+- Documented and corrected fixture setup failures and one agent orchestration port
+  collision; no failures were hidden. Final suites passed after corrections.
+- Gitleaks 8.30.1 checksum rechecked against saved upstream record. Staged changes,
+  all 363 candidate files and all local history returned exit 0 / zero findings.
+  Eight private-path ignore checks passed; new staged whitespace checks passed.
+  Scanner/audit limits and historical publication whitespace remain explicit.
+- Source commit left a clean tree. This documentation-only completion record follows
+  in a separate local commit. All owned containers/native test processes stopped;
+  ports 8088, 9081, 3307, 8089 and 3334 verified closed. Private credentials, metadata,
+  datasets and named volumes remain preserved/ignored. Nothing was pushed.
+
+Owner attention: worker quiescence and delivery evidence remain trusted operator
+attestations, not external verification. Exactly-once delivery, live integrations,
+production access control, arbitrary reference detection, malware/codec validation
+and distributed quota enforcement are not established. Fictional test records and
+held examples accumulate intentionally. Inventory candidates remain advisory.
+
+Exact next recommended task: **Add recoverable quarantine and explicitly reviewed
+cleanup for owned development uploads, with audit, restore and concurrency tests;
+keep production integrations and publishing disabled.**
+
+### Previous local development phase
+
 Owner-requested reproducible local development, fake mail/OAuth tests, uploads
 and distributed claims, and sanitized local Git baseline: **COMPLETE within the
 authorized local scope**. Source baseline commit: `9c48b7ca8a2b6535b6da0b408d49bbdfe7280f1a`
