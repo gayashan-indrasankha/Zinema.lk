@@ -1,7 +1,9 @@
 <?php
 // Live delivery only; local fake delivery will use a separate adapter.
 require_once __DIR__ . '/includes/environment.php';
-if (APP_ENV !== 'production' || WHATSAPP_MODE !== 'live') recovery_config_error('WhatsApp delivery disabled');
+if (!(APP_ENV === 'production' && WHATSAPP_MODE === 'live') && !recovery_local_delivery_fixture()) recovery_config_error('WhatsApp delivery disabled');
+header('Cache-Control: no-store');
+header('Pragma: no-cache');
 
 // Include database connection
 require_once 'admin/config.php';
@@ -75,6 +77,7 @@ $service_unavailable = false;
 $service_message = '';
 
 // Single token for full movie/episode
+$has_parts = false; // This page issues one full-content token, never part links.
 $expiry = filter_var(getSetting($conn,'token_expiry_minutes','10'), FILTER_VALIDATE_INT);
 $expiry = $expiry && $expiry >= 1 && $expiry <= 180 ? $expiry : 10;
 $token_data = createWhatsAppToken($conn, $id, $content_type, $expiry);
@@ -95,9 +98,10 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
     $whatsapp_link = getWhatsAppLink($token_data['token'], $token_data['bot_phone'] ?? $whatsapp_number);
     $token_expires = $token_data['expires_at'];
 } else {
-    // Fallback if token generation fails
-    $whatsapp_message = urlencode("Hi! I want to watch: " . $content['title']);
-    $whatsapp_link = "https://wa.me/{$whatsapp_number}?text={$whatsapp_message}";
+    // No delivery claim or unverified contact link when issuance fails.
+    $service_unavailable = true;
+    $service_message = 'Delivery could not be prepared. Catalogue browsing is still available. Please try again later.';
+    $whatsapp_link = '#';
     $token_expires = null;
 }
 ?>
@@ -739,7 +743,7 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
                         <i class="fas fa-server"></i>
                         <h3>Service Temporarily Unavailable</h3>
                         <p><?php echo htmlspecialchars($service_message); ?></p>
-                        <p class="retry-info">All bots are currently offline. Please try again shortly.</p>
+                        <p class="retry-info">Delivery is offline or busy. You can continue browsing the catalogue.</p>
                         <button onclick="location.reload()" class="btn-retry-blue">
                             <i class="fas fa-sync-alt"></i> Check Again
                         </button>
