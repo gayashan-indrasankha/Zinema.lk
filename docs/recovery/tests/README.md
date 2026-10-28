@@ -1,5 +1,13 @@
 # Local repair verification
 
+The two-machine follow-up is documented in ../TWO_HOST_LOCAL.md. Run
+`python -X utf8 dev/test_two_host_guard.py`,
+`python -X utf8 dev/rehearse_two_host.py`, and the pure/fake regression
+`node --test --test-reporter=tap --test-isolation=none docs/recovery/tests/two-host-media.test.cjs`.
+Large-file bytes are fictional, real providers remain disabled and the selected
+shared hosting account is not contacted. Do not equate these checks with live
+WhatsApp size support or shared-host capacity.
+
 The original assessment JSON/TAP files preserve the pre-repair failures. Current checks write `REPAIR_RESULTS.json`, `REPAIR_SERVICE_RESULTS.json`, `REPAIR_SCHEMA_RESULTS.json` and repair-prefixed TAP files. Negative security assertions remain; positive writes use valid CSRF tokens and POST deletion/logout.
 
 The recorded environment is Windows XAMPP (PHP 8.2.12, Apache 2.4.58, MariaDB 10.4.32), Python 3.11 and Node 24.13.1. Bot dependencies now require Node >=20. Run from `C:\xampp\htdocs\Zinema.lk`.
