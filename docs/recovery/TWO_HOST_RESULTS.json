@@ -1,0 +1,400 @@
+{
+  "date": "2026-10-28",
+  "source_base": "759e4a0",
+  "source_kind": "Reviewed uncommitted local source and read-only bot modules",
+  "scope": "Separate local network namespaces; actual TLS/PHP/SQL/client; fictional recipients and bytes only",
+  "orchestration": {
+    "tests": [
+      {
+        "name": "Owned local bridge is internal",
+        "passed": true
+      },
+      {
+        "name": "Fresh fictional catalogue and schema initialized",
+        "passed": true
+      },
+      {
+        "name": "source exact database before grants",
+        "passed": true
+      },
+      {
+        "name": "Website and bot have distinct network namespaces",
+        "passed": true
+      },
+      {
+        "name": "No fixture container publishes a port",
+        "passed": true
+      },
+      {
+        "name": "Database is unreachable from bot namespace",
+        "passed": true
+      },
+      {
+        "name": "Bot namespace has no default route",
+        "passed": true
+      },
+      {
+        "name": "Two-host initial scenario",
+        "passed": true
+      },
+      {
+        "name": "Two-host delivery scenario",
+        "passed": true
+      },
+      {
+        "name": "Two-host restart scenario",
+        "passed": true
+      },
+      {
+        "name": "Two-host outage scenario",
+        "passed": true
+      },
+      {
+        "name": "Two-host recovered scenario",
+        "passed": true
+      },
+      {
+        "name": "Large-file exact boundary and bounded-memory streaming",
+        "passed": true
+      },
+      {
+        "name": "No PHP warnings/notices/fatals/deprecations in rehearsal",
+        "passed": true
+      }
+    ],
+    "summary": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0
+    }
+  },
+  "scenarios": {
+    "initial": {
+      "scope": "Actual HTTPS PHP/SQL and Node client in separate isolated network namespaces; fictional sender; no SDK",
+      "tests": [
+        {
+          "name": "Authenticated remote-namespace bridge health succeeds",
+          "passed": true
+        },
+        {
+          "name": "Bridge refuses missing key",
+          "passed": true
+        },
+        {
+          "name": "Bridge refuses incorrect key",
+          "passed": true
+        },
+        {
+          "name": "Untrusted TLS chain is rejected",
+          "passed": true
+        },
+        {
+          "name": "TLS hostname mismatch is rejected",
+          "passed": true
+        },
+        {
+          "name": "Health GET is refused",
+          "passed": true
+        },
+        {
+          "name": "Bridge refuses oversized metadata instead of accepting video bytes",
+          "passed": true
+        },
+        {
+          "name": "Website catalogue works without a bot",
+          "passed": true
+        },
+        {
+          "name": "No heartbeat shows honest offline page",
+          "passed": true
+        },
+        {
+          "name": "Heartbeat GET is refused",
+          "passed": true
+        },
+        {
+          "name": "Malformed heartbeat is refused",
+          "passed": true
+        },
+        {
+          "name": "Invalid heartbeat status is refused",
+          "passed": true
+        },
+        {
+          "name": "Negative heartbeat queue is refused",
+          "passed": true
+        },
+        {
+          "name": "Oversized heartbeat is refused",
+          "passed": true
+        },
+        {
+          "name": "Online heartbeat is acknowledged",
+          "passed": true
+        },
+        {
+          "name": "Private fixture counter is an actual database count",
+          "passed": true
+        },
+        {
+          "name": "Full bot queue does not issue a token",
+          "passed": true
+        },
+        {
+          "name": "Busy bot shows unavailable rather than a delivery link",
+          "passed": true
+        },
+        {
+          "name": "Unavailable requests do not create tokens",
+          "passed": true
+        },
+        {
+          "name": "Stale heartbeat blocks new delivery",
+          "passed": true
+        },
+        {
+          "name": "Future heartbeat cannot keep delivery online",
+          "passed": true
+        },
+        {
+          "name": "Explicit offline status blocks delivery",
+          "passed": true
+        },
+        {
+          "name": "Fresh heartbeat renders the correct fictional bot handoff",
+          "passed": true
+        },
+        {
+          "name": "Delivery page does not leak server credential or fixture control key",
+          "passed": true
+        },
+        {
+          "name": "Token-bearing delivery page cannot be cached",
+          "passed": true
+        }
+      ],
+      "summary": {
+        "total": 25,
+        "passed": 25,
+        "failed": 0
+      }
+    },
+    "delivery": {
+      "scope": "Actual HTTPS PHP/SQL and Node client in separate isolated network namespaces; fictional sender; no SDK",
+      "tests": [
+        {
+          "name": "Cross-host real SQL claim/begin/complete acknowledges one fake send",
+          "passed": true
+        },
+        {
+          "name": "Pre-restart claim is stored",
+          "passed": true
+        },
+        {
+          "name": "Pre-restart sending intent is stored",
+          "passed": true
+        }
+      ],
+      "summary": {
+        "total": 3,
+        "passed": 3,
+        "failed": 0
+      }
+    },
+    "restart": {
+      "scope": "Actual HTTPS PHP/SQL and Node client in separate isolated network namespaces; fictional sender; no SDK",
+      "tests": [
+        {
+          "name": "Website and database restart preserve completed claim",
+          "passed": true
+        },
+        {
+          "name": "New bot process cannot replay a completed token",
+          "passed": true
+        },
+        {
+          "name": "Interrupted sending stays held after both restarts",
+          "passed": true
+        },
+        {
+          "name": "Unclaimed accepted work survives restart and completes once",
+          "passed": true
+        },
+        {
+          "name": "Lost send acknowledgement produces an uncertain held claim",
+          "passed": true
+        }
+      ],
+      "summary": {
+        "total": 5,
+        "passed": 5,
+        "failed": 0
+      }
+    },
+    "outage": {
+      "scope": "Actual HTTPS PHP/SQL and Node client in separate isolated network namespaces; fictional sender; no SDK",
+      "tests": [
+        {
+          "name": "Website outage fails closed before any fake send",
+          "passed": true
+        }
+      ],
+      "summary": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      }
+    },
+    "recovered": {
+      "scope": "Actual HTTPS PHP/SQL and Node client in separate isolated network namespaces; fictional sender; no SDK",
+      "tests": [
+        {
+          "name": "Recovered bridge health succeeds",
+          "passed": true
+        },
+        {
+          "name": "Recovered connection does not replay uncertain delivery",
+          "passed": true
+        },
+        {
+          "name": "Fresh work completes after recovery without stale replay",
+          "passed": true
+        }
+      ],
+      "summary": {
+        "total": 3,
+        "passed": 3,
+        "failed": 0
+      }
+    },
+    "large": {
+      "scope": "Local fictional bytes and fake document sender; no real video/codec/SDK/provider",
+      "tests": [
+        {
+          "name": "A 2 GiB plus one byte source is rejected before any fake send",
+          "passed": true
+        },
+        {
+          "name": "Empty local source is rejected before any fake send",
+          "passed": true
+        },
+        {
+          "name": "Below and exact 2 GiB lengths remain 64-bit integers",
+          "passed": true
+        },
+        {
+          "name": "Large originals cannot enter the whole-buffer reader",
+          "passed": true
+        },
+        {
+          "name": "Large-file reader uses bounded stream chunks",
+          "passed": true
+        },
+        {
+          "name": "Actual 2 GiB file streams to fake document sink without truncation",
+          "passed": true
+        },
+        {
+          "name": "Bounded-heap large-file fake send stays below 192 MiB peak RSS",
+          "passed": true
+        },
+        {
+          "name": "Actual 2 GiB streaming ingestion has matching length and SHA-256",
+          "passed": true
+        },
+        {
+          "name": "Streamed ingestion also stays below 192 MiB peak RSS",
+          "passed": true
+        },
+        {
+          "name": "Conflicting stream never overwrites an owned original",
+          "passed": true
+        },
+        {
+          "name": "Streaming quota overflow publishes no destination",
+          "passed": true
+        },
+        {
+          "name": "Truncated stream publishes no destination",
+          "passed": true
+        },
+        {
+          "name": "Hash mismatch publishes no destination",
+          "passed": true
+        },
+        {
+          "name": "Interrupted ingestion preserves original and removes only its private partial",
+          "passed": true
+        }
+      ],
+      "summary": {
+        "total": 14,
+        "passed": 14,
+        "failed": 0
+      },
+      "max_bytes": 2147483648,
+      "streamed_bytes": 2147483648,
+      "peak_rss_kib": 89204
+    }
+  },
+  "node_regressions": {
+    "total": 140,
+    "passed": 140,
+    "failed": 0
+  },
+  "pure_two_host_guards": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0
+  },
+  "retained_local_guards": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0
+  },
+  "retained": {
+    "product": {
+      "total": 112,
+      "passed": 112,
+      "failed": 0
+    },
+    "integration": {
+      "total": 88,
+      "passed": 88,
+      "failed": 0
+    },
+    "environment": {
+      "total": 21,
+      "passed": 21,
+      "failed": 0
+    },
+    "production-bot-integration": {
+      "total": 10,
+      "passed": 10,
+      "failed": 0
+    },
+    "oauth-unit": {
+      "total": 7,
+      "passed": 7,
+      "failed": 0
+    }
+  },
+  "php_diagnostics": {
+    "Warning": 0,
+    "Notice": 0,
+    "Fatal error": 0,
+    "Deprecated": 0
+  },
+  "external_provider_tests_executed": false,
+  "production_access": false,
+  "deployment": false,
+  "publishing": false,
+  "launch_decision": "NO GO; actual host/private extractor/account/2 GiB provider acceptance and personal-machine capacity remain unverified",
+  "limitations": [
+    "2 GiB tests use fictional bytes and a fake sender, not actual SDK/media codecs or WhatsApp.",
+    "No new manual browser/device or sustained shared-host load/soak performed.",
+    "No actual Namecheap account/resource scheduler or personal machine capacity verified.",
+    "Shared bridge key is still a worker trust boundary; heartbeat may take 120 seconds to become stale.",
+    "Current source tested, not a signed/committed release artifact; no publishing."
+  ]
+}

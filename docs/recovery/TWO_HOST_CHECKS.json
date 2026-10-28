@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-28",
+  "scope": "Current tracked and explicitly unignored source candidate; generated private state excluded",
+  "syntax": {
+    "counts": {
+      "php": 199,
+      "javascript_cjs": 78,
+      "python": 23,
+      "json": 92
+    },
+    "failed": 0
+  },
+  "git_diff_check_passed": true,
+  "forbidden_candidate_paths": 0,
+  "private_ignore_checks_passed": 21,
+  "promotion_policy_bytes_unchanged": true,
+  "external_production_publishing_flags_disabled": true,
+  "scanner": {
+    "name": "Gitleaks 8.30.1",
+    "archive_matches_saved_upstream_checksum": true,
+    "binary_matches_verified_archive": true,
+    "candidate_files": 539,
+    "exit_code": 0,
+    "findings": 0
+  },
+  "limitations": [
+    "Default secret patterns do not prove absence of every secret.",
+    "Ignored private credentials/CA/sessions/DB/media/backup/logs are retained, not scanned.",
+    "Source candidate scanned before generation of this sanitized checks summary.",
+    "No dependency advisory refresh, image vulnerability scan, penetration test or actual hosting/provider acceptance.",
+    "No Git staging, commit, remote operation, account access or deployment performed."
+  ]
+}
