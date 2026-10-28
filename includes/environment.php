@@ -22,7 +22,8 @@ function recovery_url($key, $local) {
 }
 function recovery_mode($name) {
     $mode = recovery_env($name . '_MODE', 'disabled');
-    if (!in_array($mode, ['disabled', 'local', 'live', 'private-fixture'], true)) recovery_config_error($name . '_MODE');
+    if (!in_array($mode, ['disabled', 'local', 'live', 'private-fixture', 'account-queue'], true)) recovery_config_error($name . '_MODE');
+    if ($mode==='account-queue' && ($name!=='EXTRACTOR' || !defined('ZINEMA_STELLAR_CONTEXT') || recovery_env('ALLOW_LIVE_INTEGRATIONS')!=='false')) recovery_config_error($name . '_MODE');
     if ($mode==='private-fixture' && ($name!=='EXTRACTOR' || APP_ENV!=='production' || recovery_env('ALLOW_LIVE_INTEGRATIONS')!=='false' || recovery_env('ZINEMA_PROMOTION_FIXTURES')!=='1')) recovery_config_error($name . '_MODE');
     if ($mode === 'live' && (APP_ENV !== 'production' || recovery_env('ALLOW_LIVE_INTEGRATIONS') !== 'true')) recovery_config_error($name . '_MODE');
     return $mode;
@@ -51,7 +52,7 @@ foreach (['OAUTH_AUTHORIZE_URL', 'OAUTH_TOKEN_URL', 'OAUTH_USERINFO_URL'] as $ke
 define('WHATSAPP_API_KEY', WHATSAPP_MODE === 'disabled' ? '' : recovery_required('WHATSAPP_API_KEY'));
 define('STREAM_SIGNING_SECRET', MEDIA_MODE === 'disabled' ? '' : recovery_required('STREAM_SIGNING_SECRET'));
 define('STREAM_BASE_URL', MEDIA_MODE === 'disabled' ? '' : recovery_url('STREAM_BASE_URL', MEDIA_MODE === 'local'));
-define('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'private-fixture' ? 'http://localhost' : (EXTRACTOR_MODE === 'disabled' ? BASE_URL . '/__recovery_disabled_extractor' : recovery_url('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'local')));
+define('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'account-queue' ? '' : (EXTRACTOR_MODE === 'private-fixture' ? 'http://localhost' : (EXTRACTOR_MODE === 'disabled' ? BASE_URL . '/__recovery_disabled_extractor' : recovery_url('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'local'))));
 foreach (['PAYMENT_APP_ID', 'PAYMENT_APP_SECRET'] as $key) define($key, PAYMENT_MODE === 'disabled' ? '' : recovery_required($key));
 define('PAYMENT_API_URL', PAYMENT_MODE === 'disabled' ? '' : recovery_url('PAYMENT_API_URL', PAYMENT_MODE === 'local'));
 // Legacy payment handlers stay disabled independently of these future adapter settings.
@@ -67,7 +68,7 @@ function recovery_local_delivery_fixture() {
         DB_PORT === 3306 && DB_NAME === 'zinema_recovery_development';
 }
 function recovery_browser_policy() {
-    if (APP_ENV !== 'production') {
+    if (APP_ENV !== 'production' || defined('ZINEMA_STELLAR_CONTEXT')) {
         // Cached legacy CDN URLs and browser storage cannot bypass this local policy.
         header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: http://127.0.0.1:*; media-src 'self' http://127.0.0.1:*; connect-src 'self' http://127.0.0.1:*; frame-src 'self' http://127.0.0.1:*; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'");
     }
