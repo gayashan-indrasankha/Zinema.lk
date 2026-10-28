@@ -6,6 +6,7 @@ require_once __DIR__ . '/upload_lifecycle.php';
 function local_storage_settings() {
     $mode=getenv('UPLOAD_QUOTA_MODE') ?: 'disabled';
     if ($mode==='disabled') return null;
+    if ($mode==='account') return account_storage_settings();
     if (!in_array($mode,['local','staging'],true)) throw new LocalStorageError('storage_configuration_denied');
     $promotion=$mode==='staging';
     if (!defined('APP_ENV') || APP_ENV !== ($promotion ? 'production' : 'development') || DB_HOST !== '127.0.0.1' ||
@@ -30,6 +31,36 @@ function local_storage_settings() {
         throw new LocalStorageError('storage_configuration_denied');
     return ['quarantine_max_bytes'=>$qbytes,'quarantine_max_files'=>$qfiles,'root'=>$root,'state'=>$state,'owner'=>$owner,'max_bytes'=>$bytes,'max_files'=>$files];
 }
+
+function account_storage_settings() {
+    if (!defined('ZINEMA_STELLAR_CONTEXT') || getenv('ALLOW_LIVE_INTEGRATIONS')!=='false') throw new LocalStorageError('storage_target_denied');
+    $context=ZINEMA_STELLAR_CONTEXT; $env=$context['environment'];
+    foreach (['APP_ENV','DB_HOST','DB_NAME','DB_PORT','BASE_URL'] as $key)
+        if ((string)constant($key)!==$env[$key]) throw new LocalStorageError('storage_target_denied');
+    foreach (['UPLOAD_STORAGE_STATE','UPLOAD_STORAGE_OWNER','UPLOAD_MAX_BYTES','UPLOAD_MAX_FILES','UPLOAD_QUARANTINE_MAX_BYTES','UPLOAD_QUARANTINE_MAX_FILES'] as $key)
+        if (getenv($key)!==$env[$key]) throw new LocalStorageError('storage_configuration_denied');
+    $root=$context['public'].'/uploads'; $state=$context['private'].'/storage';
+    if (!stellar_plain_directory($root) || !stellar_plain_directory($state) || storage_real_path(dirname(__DIR__))!==$context['public']) throw new LocalStorageError('storage_target_denied');
+    $values=[];
+    foreach (['max_bytes'=>'UPLOAD_MAX_BYTES','max_files'=>'UPLOAD_MAX_FILES','quarantine_max_bytes'=>'UPLOAD_QUARANTINE_MAX_BYTES','quarantine_max_files'=>'UPLOAD_QUARANTINE_MAX_FILES'] as $key=>$name) {
+        $value=filter_var($env[$name],FILTER_VALIDATE_INT);
+        if (!$value || $value<1 || $value>(str_ends_with($key,'files')?10000:5000000000)) throw new LocalStorageError('storage_configuration_denied');
+        $values[$key]=$value;
+    }
+    return $values+['root'=>$root,'state'=>$state,'owner'=>$env['UPLOAD_STORAGE_OWNER'],'ownership'=>'account'];
+}
+
+function storage_permissions($settings,$path,$mode=0640) {
+    if (!@chmod($path,$mode)) throw new LocalStorageError('storage_permissions_failed');
+    if (($settings['ownership'] ?? '')==='account') {
+        // cPanel PHP and CLI must run as the same account; root/chown is not required.
+        if (function_exists('posix_geteuid') && fileowner($path)!==posix_geteuid()) throw new LocalStorageError('storage_permissions_failed');
+        return;
+    }
+    if (!@chown($path,'www-data') || !@chgrp($path,'www-data')) throw new LocalStorageError('storage_permissions_failed');
+}
+
+function storage_real_path($path) { return str_replace('\\','/',realpath($path) ?: ''); }
 
 function storage_write_json($path, $data) {
     $temp = $path . '.' . bin2hex(random_bytes(8)) . '.tmp';
@@ -64,8 +95,7 @@ function initialize_local_upload_storage() {
         }
         // The web worker must own state files, not merely their directory.
         foreach (['owner.json','manifest.json','storage.lock'] as $name) {
-            if (!@chown($settings['state'].'/'.$name, 'www-data') || !@chgrp($settings['state'].'/'.$name, 'www-data'))
-                throw new LocalStorageError('storage_permissions_failed');
+            storage_permissions($settings,$settings['state'].'/'.$name,$name==='storage.lock'?0660:0640);
         }
         @chmod($lockPath,0660);
     } finally { flock($bootstrap,LOCK_UN);fclose($bootstrap); }
@@ -90,7 +120,9 @@ function storage_with_lock($settings, $exclusive, $callback) {
     if (is_link($lockPath)) throw new LocalStorageError('storage_lock_denied');
     $lock = @fopen($lockPath, 'c+');
     if (!$lock || !flock($lock, $exclusive ? LOCK_EX : LOCK_SH)) throw new LocalStorageError('storage_lock_failed');
-    @chmod($lockPath, 0660); @chown($lockPath, 'www-data'); @chgrp($lockPath, 'www-data');
+    // Existing container workers cannot chown other users' files; account workers must own theirs.
+    if (($settings['ownership'] ?? '')==='account') storage_permissions($settings,$lockPath,0660);
+    else { @chmod($lockPath,0660); @chown($lockPath,'www-data'); @chgrp($lockPath,'www-data'); }
     try {
         $path = $settings['state'] . '/manifest.json';
         if (is_link($path) || !is_file($path) || filesize($path) > 8388608) throw new LocalStorageError('storage_manifest_invalid');
@@ -114,7 +146,7 @@ function storage_scan_files($settings) {
     $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($settings['root'], FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach ($iterator as $file) {
         if (++$seen > 20000) throw new LocalStorageError('storage_inventory_limit');
-        $relative = substr($file->getPathname(), strlen($settings['root'])+1);
+        $relative = str_replace('\\','/',substr($file->getPathname(), strlen($settings['root'])+1));
         if ($file->isLink()) { $unsafe[]=['entry_ref'=>hash('sha256',$relative),'reason'=>'symbolic_link']; continue; }
         if ($file->isDir()) continue;
         $stat = @lstat($file->getPathname());
@@ -145,7 +177,7 @@ function storage_commit_upload($source, $relative) {
         $target = $root . '/' . $relative;
         $dir = dirname($target);
         if (!is_dir($dir) && !@mkdir($dir, 0755, true)) throw new LocalStorageError('storage_write_failed');
-        if (is_link($dir) || realpath($dir) !== $dir) throw new LocalStorageError('storage_path_denied');
+        if (is_link($dir) || storage_real_path($dir) !== str_replace('\\','/',$dir)) throw new LocalStorageError('storage_path_denied');
         $output = @fopen($target, 'x+b');
         if (!$output) throw new LocalStorageError('storage_write_failed');
         $created = fstat($output); $input = null;
@@ -156,7 +188,8 @@ function storage_commit_upload($source, $relative) {
             if ($settings) {
                 $manifest['assets'][$relative] = ['bytes'=>$size,'sha256'=>hash_file('sha256',$target),'created_at'=>time()];
                 storage_write_json($settings['state'].'/manifest.json', $manifest);
-                @chown($settings['state'].'/manifest.json','www-data'); @chgrp($settings['state'].'/manifest.json','www-data');
+                if (($settings['ownership'] ?? '')==='account') storage_permissions($settings,$settings['state'].'/manifest.json');
+                else { @chown($settings['state'].'/manifest.json','www-data'); @chgrp($settings['state'].'/manifest.json','www-data'); }
             }
         } catch (Throwable $error) {
             // Discard only this newly-created partial file, never a previous upload.

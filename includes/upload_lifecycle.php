@@ -52,12 +52,13 @@ function storage_validate_lifecycle($manifest) {
 function storage_save_manifest($settings,$manifest) {
     storage_validate_lifecycle($manifest);
     storage_write_json($settings['state'].'/manifest.json',$manifest);
-    @chown($settings['state'].'/manifest.json','www-data'); @chgrp($settings['state'].'/manifest.json','www-data');
+    if (($settings['ownership'] ?? '')==='account') storage_permissions($settings,$settings['state'].'/manifest.json');
+    else { @chown($settings['state'].'/manifest.json','www-data'); @chgrp($settings['state'].'/manifest.json','www-data'); }
 }
 function storage_reference_acquire($db) {
-    if (!in_array(getenv('UPLOAD_QUOTA_MODE'),['local','staging'],true)) return null;
-    local_storage_settings();
-    $name='zinema-development-upload-references';
+    if (!in_array(getenv('UPLOAD_QUOTA_MODE'),['local','staging','account'],true)) return null;
+    $settings=local_storage_settings();
+    $name=getenv('UPLOAD_QUOTA_MODE')==='account' ? 'zinema-uploads-'.substr(hash('sha256',$settings['owner'].DB_NAME),0,32) : 'zinema-development-upload-references';
     $stmt=$db->prepare('SELECT GET_LOCK(?,5)');$stmt->bind_param('s',$name);$stmt->execute();
     if ((int)$stmt->get_result()->fetch_row()[0] !== 1) throw new LocalStorageError('storage_reference_busy');
     return $name;
