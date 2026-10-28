@@ -153,3 +153,7 @@ scheduler/restart/ingest and log-redaction regressions. Keep all live integratio
 production access and publishing disabled.** Follow with staging recovery/load
 rehearsals, then the prepared live approval gate. Do not combine publication with
 those verification tasks.
+
+Local follow-up: [private extractor contract](EXTRACTOR_CONNECTION.md) is now
+verified with actual PHP/Node fakes. Historical audit counts above are preserved.
+Live extraction/deployment, bot lifecycle and staging acceptance remain gates.
