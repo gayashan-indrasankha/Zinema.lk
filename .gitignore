@@ -86,3 +86,5 @@ __pycache__/
 *.py[cod]
 # Empty legacy npm lockfile has no matching root package manifest.
 /package-lock.json
+# Account runtime credentials are never source or export input.
+/ops/staging/stellar/runtime-config.php
