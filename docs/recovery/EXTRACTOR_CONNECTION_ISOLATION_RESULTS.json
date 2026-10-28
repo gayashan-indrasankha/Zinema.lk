@@ -1,0 +1,58 @@
+{
+  "scope": "Exact owned fake extractor; no secret values retained",
+  "tests": [
+    {
+      "name": "Owned fake service and shared namespace verified",
+      "passed": true
+    },
+    {
+      "name": "Extractor runs as non-root node user",
+      "passed": true
+    },
+    {
+      "name": "Root filesystem read only",
+      "passed": true
+    },
+    {
+      "name": "No published extractor ports",
+      "passed": true
+    },
+    {
+      "name": "No added capabilities",
+      "passed": true
+    },
+    {
+      "name": "All Linux capabilities dropped",
+      "passed": true
+    },
+    {
+      "name": "Memory capped at 192 MiB",
+      "passed": true
+    },
+    {
+      "name": "PID cap 64",
+      "passed": true
+    },
+    {
+      "name": "Service key absent from inspectable configured environment",
+      "passed": true
+    },
+    {
+      "name": "Secret mount is read only",
+      "passed": true
+    },
+    {
+      "name": "No default route/private source inputs in extractor image",
+      "passed": true
+    },
+    {
+      "name": "Host extractor listener remains closed",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0
+  }
+}

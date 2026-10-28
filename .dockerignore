@@ -28,6 +28,13 @@
 !database/migrations/*.sql
 !dev/
 !dev/**
+!fb-video-api/
+!fb-video-api/package.json
+!fb-video-api/package-lock.json
+!fb-video-api/index.js
+!fb-video-api/app.js
+!fb-video-api/environment.js
+!fb-video-api/extraction.js
 **/node_modules/**
 **/.env*
 **/uploads/**

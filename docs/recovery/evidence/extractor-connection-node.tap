@@ -1,0 +1,445 @@
+TAP version 13
+Queued task failed; sensitive details suppressed.
+# Subtest: Incoming command queue rejects overflow and runs accepted tasks sequentially
+ok 1 - Incoming command queue rejects overflow and runs accepted tasks sequentially
+  ---
+  duration_ms: 6.5973
+  type: 'test'
+  ...
+💓 Health monitor started (reporting every 1s)
+💓 Health monitor stopped
+💓 Health monitor started (reporting every 1s)
+💓 Health monitor stopped
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+❌ TIER 1: No store available, not in persistent cache
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+❌ TIER 1: No store available, not in persistent cache
+🔍 TIER 2: Attempting forward for movie_1
+🔍 TIER 2: Trying direct forward with messageId=fictional-cache-id
+🔍 TIER 2: Fetched 1 messages from fictional-group
+✅ TIER 2: Found message by ID, forwarding...
+💾 Saved 1 messages to cache
+   ⏱️ Upload timeout: 5.0 min (file: 0 MB)
+📄 Sending as DOCUMENT: sample.mp4 to fictional-recipient
+❌ TIER 3: performTier3Upload error: Delivery acknowledgement missing
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-24232\media
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-24232\media\movies
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-24232\media\episodes
+📁 Created directory: C:\xampp\htdocs\Zinema.lk\.runtime\audit-bot-unit-24232\media\temp
+📥 Queued: movie_1_0 (position 1, priority 0)
+🔄 Upload queue processing started (1 items)
+📤 Processing: movie_1_0 (1/1 active)
+✅ Upload queue empty. Stats: 0 processed, 0 failed, 0 skipped
+📥 Queued: movie_2_0 (position 1, priority 0)
+🔄 Upload queue processing started (1 items)
+📥 Queued: movie_3_0 (position 2, priority 0)
+# Subtest: Incoming task failure does not prevent the next accepted command
+ok 2 - Incoming task failure does not prevent the next accepted command
+  ---
+  duration_ms: 2.4496
+  type: 'test'
+  ...
+# Subtest: Administrator identity comparison rejects substring, malformed and empty identities
+ok 3 - Administrator identity comparison rejects substring, malformed and empty identities
+  ---
+  duration_ms: 0.3959
+  type: 'test'
+  ...
+# Subtest: Health accepts a fictional Baileys user identity
+ok 4 - Health accepts a fictional Baileys user identity
+  ---
+  duration_ms: 0.398
+  type: 'test'
+  ...
+# Subtest: Repeated monitor starts retain one timer and stop clears it
+ok 5 - Repeated monitor starts retain one timer and stop clears it
+  ---
+  duration_ms: 1.659
+  type: 'test'
+  ...
+# Subtest: Reconnect backoff survives connection attempts and has a hard bound
+ok 6 - Reconnect backoff survives connection attempts and has a hard bound
+  ---
+  duration_ms: 0.4066
+  type: 'test'
+  ...
+# Subtest: Duplicate close events schedule one retry; login resets budget
+ok 7 - Duplicate close events schedule one retry; login resets budget
+  ---
+  duration_ms: 0.1689
+  type: 'test'
+  ...
+# Subtest: A rejected reconnect retries within the same budget without unhandled errors
+ok 8 - A rejected reconnect retries within the same budget without unhandled errors
+  ---
+  duration_ms: 0.1888
+  type: 'test'
+  ...
+# Subtest: cached-message forwarding reaches only the fake client
+ok 9 - cached-message forwarding reaches only the fake client
+  ---
+  duration_ms: 2.204
+  type: 'test'
+  ...
+# Subtest: cache miss and missing local file return a failure
+ok 10 - cache miss and missing local file return a failure
+  ---
+  duration_ms: 0.8966
+  type: 'test'
+  ...
+# Subtest: storage-group lookup forwards using the fake client
+ok 11 - storage-group lookup forwards using the fake client
+  ---
+  duration_ms: 3.3651
+  type: 'test'
+  ...
+# Subtest: coalesced requests deliver and resolve waiting recipients
+ok 12 - coalesced requests deliver and resolve waiting recipients
+  ---
+  duration_ms: 0.6677
+  type: 'test'
+  ...
+# Subtest: local upload must reject a missing delivery acknowledgement
+ok 13 - local upload must reject a missing delivery acknowledgement
+  ---
+  duration_ms: 1.7549
+  type: 'test'
+  ...
+# Subtest: file manager resolves fixture media and absent files
+ok 14 - file manager resolves fixture media and absent files
+  ---
+  duration_ms: 3.4401
+  type: 'test'
+  ...
+✅ Completed: movie_1_0
+📤 Processing: movie_2_0 (1/1 active)
+✅ Completed: movie_2_0
+📤 Processing: movie_3_0 (1/1 active)
+✅ Upload queue empty. Stats: 2 processed, 0 failed, 0 skipped
+✅ Completed: movie_3_0
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+❌ TIER 1: Error - Rejected
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+🔍 TIER 1: Checking for messageId=fictional-cache-id
+✅ TIER 1: Found in persistent cache!
+❌ TIER 1: Error - Delivery acknowledgement missing
+🔍 TIER 2: Attempting forward for movie_1
+❌ TIER 2: No cache group configured
+   ⏱️ Upload timeout: 5.0 min (file: 0 MB)
+📄 Sending as DOCUMENT: acknowledged.mp4 to fictional-recipient
+📬 TIER 3: sendMessage returned: key=fictional-sent-id, remoteJid=undefined
+💾 Saved 1 messages to cache
+✅ TIER 3: Upload complete! New messageId=fictional-sent-id saved to DB
+# Subtest: upload queue respects configured concurrency with fake uploads
+ok 15 - upload queue respects configured concurrency with fake uploads
+  ---
+  duration_ms: 1057.882
+  type: 'test'
+  ...
+# Subtest: concurrent recipients and duplicate requests await acknowledgement
+ok 16 - concurrent recipients and duplicate requests await acknowledgement
+  ---
+  duration_ms: 2.5118
+  type: 'test'
+  ...
+# Subtest: failed primary delivery settles all coalesced recipients as failures
+ok 17 - failed primary delivery settles all coalesced recipients as failures
+  ---
+  duration_ms: 1.0222
+  type: 'test'
+  ...
+# Subtest: one recipient rejection is not reported as a successful delivery
+ok 18 - one recipient rejection is not reported as a successful delivery
+  ---
+  duration_ms: 1.3744
+  type: 'test'
+  ...
+# Subtest: cached forwarding also rejects an absent acknowledgement
+ok 19 - cached forwarding also rejects an absent acknowledgement
+  ---
+  duration_ms: 0.8374
+  type: 'test'
+  ...
+# Subtest: successful disk upload releases its timeout and retains acknowledgement
+ok 20 - successful disk upload releases its timeout and retains acknowledgement
+  ---
+  duration_ms: 5.5222
+  type: 'test'
+  ...
+# Subtest: bot accepts explicit local configuration
+ok 21 - bot accepts explicit local configuration
+  ---
+  duration_ms: 0.3917
+  type: 'test'
+  ...
+# Subtest: bot rejects missing configuration
+ok 22 - bot rejects missing configuration
+  ---
+  duration_ms: 0.6975
+  type: 'test'
+  ...
+# Subtest: bot rejects non-loopback development API
+ok 23 - bot rejects non-loopback development API
+  ---
+  duration_ms: 0.5777
+  type: 'test'
+  ...
+# Subtest: bot rejects preserved WhatsApp session path
+ok 24 - bot rejects preserved WhatsApp session path
+  ---
+  duration_ms: 0.2121
+  type: 'test'
+  ...
+# Subtest: bot cannot enable live access merely through local flag
+ok 25 - bot cannot enable live access merely through local flag
+  ---
+  duration_ms: 0.1557
+  type: 'test'
+  ...
+# Subtest: bot entry point exits at the live startup guard
+ok 26 - bot entry point exits at the live startup guard
+  ---
+  duration_ms: 87.9027
+  type: 'test'
+  ...
+# Subtest: extractor disabled mode binds only loopback
+ok 27 - extractor disabled mode binds only loopback
+  ---
+  duration_ms: 0.7495
+  type: 'test'
+  ...
+# Subtest: extractor rejects live mode
+ok 28 - extractor rejects live mode
+  ---
+  duration_ms: 0.2341
+  type: 'test'
+  ...
+# Subtest: extractor rejects non-local fixture URL
+ok 29 - extractor rejects non-local fixture URL
+  ---
+  duration_ms: 0.2254
+  type: 'test'
+  ...
+# Subtest: extractor accepts local fixture
+ok 30 - extractor accepts local fixture
+  ---
+  duration_ms: 0.1515
+  type: 'test'
+  ...
+# Subtest: local extractor refuses absent service credential
+ok 31 - local extractor refuses absent service credential
+  ---
+  duration_ms: 0.1039
+  type: 'test'
+  ...
+# Subtest: Public address filter excludes loopback, private, mapped and metadata ranges
+ok 32 - Public address filter excludes loopback, private, mapped and metadata ranges
+  ---
+  duration_ms: 8.9829
+  type: 'test'
+  ...
+# Subtest: HTTPS request pins validated DNS results and preserves TLS verification
+ok 33 - HTTPS request pins validated DNS results and preserves TLS verification
+  ---
+  duration_ms: 1.8121
+  type: 'test'
+  ...
+# Subtest: Mixed private/public DNS answers fail before any HTTP request
+ok 34 - Mixed private/public DNS answers fail before any HTTP request
+  ---
+  duration_ms: 0.6516
+  type: 'test'
+  ...
+# Subtest: Redirect hosts are validated before resolution or a second request
+ok 35 - Redirect hosts are validated before resolution or a second request
+  ---
+  duration_ms: 0.3841
+  type: 'test'
+  ...
+# Subtest: Allowed redirects recheck DNS and redirect chains are bounded
+ok 36 - Allowed redirects recheck DNS and redirect chains are bounded
+  ---
+  duration_ms: 0.9416
+  type: 'test'
+  ...
+# Subtest: Oversized, non-HTML and failed responses are rejected
+ok 37 - Oversized, non-HTML and failed responses are rejected
+  ---
+  duration_ms: 6.6001
+  type: 'test'
+  ...
+# Subtest: A stalled DNS resolver is bounded without any network call
+ok 38 - A stalled DNS resolver is bounded without any network call
+  ---
+  duration_ms: 0.4476
+  type: 'test'
+  ...
+# Subtest: A stalled HTTP response has an absolute deadline
+ok 39 - A stalled HTTP response has an absolute deadline
+  ---
+  duration_ms: 6.2795
+  type: 'test'
+  ...
+# Subtest: Facebook host normalization preserves the original shared path
+ok 40 - Facebook host normalization preserves the original shared path
+  ---
+  duration_ms: 0.7387
+  type: 'test'
+  ...
+# Subtest: Deceptive, credential-bearing and non-HTTPS Facebook URLs are rejected
+ok 41 - Deceptive, credential-bearing and non-HTTPS Facebook URLs are rejected
+  ---
+  duration_ms: 0.5707
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction playable_url_quality_hd
+ok 42 - Original HTML fixture extraction playable_url_quality_hd
+  ---
+  duration_ms: 0.4395
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction browser_native_hd_url
+ok 43 - Original HTML fixture extraction browser_native_hd_url
+  ---
+  duration_ms: 0.2264
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction hd_src
+ok 44 - Original HTML fixture extraction hd_src
+  ---
+  duration_ms: 0.1831
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction playable_url
+ok 45 - Original HTML fixture extraction playable_url
+  ---
+  duration_ms: 0.1524
+  type: 'test'
+  ...
+# Subtest: Original HTML fixture extraction browser_native_sd_url
+ok 46 - Original HTML fixture extraction browser_native_sd_url
+  ---
+  duration_ms: 0.3993
+  type: 'test'
+  ...
+# Subtest: HD is preferred over SD; unsafe candidates do not become media URLs
+ok 47 - HD is preferred over SD; unsafe candidates do not become media URLs
+  ---
+  duration_ms: 0.4229
+  type: 'test'
+  ...
+# Subtest: Empty, private/login and oversized HTML produce no result
+ok 48 - Empty, private/login and oversized HTML produce no result
+  ---
+  duration_ms: 0.1522
+  type: 'test'
+  ...
+# Subtest: Rewritten movies search resolves root API and detail links
+ok 49 - Rewritten movies search resolves root API and detail links
+  ---
+  duration_ms: 2.4513
+  type: 'test'
+  ...
+# Subtest: Rewritten series search resolves root API and detail links
+ok 50 - Rewritten series search resolves root API and detail links
+  ---
+  duration_ms: 1.3125
+  type: 'test'
+  ...
+# Subtest: Rewritten collections search resolves root API and detail links
+ok 51 - Rewritten collections search resolves root API and detail links
+  ---
+  duration_ms: 1.1474
+  type: 'test'
+  ...
+# Subtest: No-results query and API title stay inert text
+ok 52 - No-results query and API title stay inert text
+  ---
+  duration_ms: 1.9609
+  type: 'test'
+  ...
+# Subtest: Clearing search invalidates an older response
+ok 53 - Clearing search invalidates an older response
+  ---
+  duration_ms: 1.2715
+  type: 'test'
+  ...
+# Subtest: Trailer markup supports muted playback and explicit browser controls
+ok 54 - Trailer markup supports muted playback and explicit browser controls
+  ---
+  duration_ms: 2.4739
+  type: 'test'
+  ...
+# Subtest: Overlapping API pages append each trailer once
+ok 55 - Overlapping API pages append each trailer once
+  ---
+  duration_ms: 2.5321
+  type: 'test'
+  ...
+# Subtest: An empty final page stops repeated infinite-scroll requests
+ok 56 - An empty final page stops repeated infinite-scroll requests
+  ---
+  duration_ms: 1.5032
+  type: 'test'
+  ...
+# Subtest: Autoplay denial exposes controls instead of an endless spinner
+ok 57 - Autoplay denial exposes controls instead of an endless spinner
+  ---
+  duration_ms: 3.2473
+  type: 'test'
+  ...
+# Subtest: Trailer share links target the real feed route
+ok 58 - Trailer share links target the real feed route
+  ---
+  duration_ms: 1.0285
+  type: 'test'
+  ...
+# Subtest: Failed trailer actions restore the exact prior count and saved state
+ok 59 - Failed trailer actions restore the exact prior count and saved state
+  ---
+  duration_ms: 2.4047
+  type: 'test'
+  ...
+# Subtest: Guest reactions open sign-in without a phantom state or POST
+ok 60 - Guest reactions open sign-in without a phantom state or POST
+  ---
+  duration_ms: 1.0784
+  type: 'test'
+  ...
+# Subtest: Appending initializes and observes new videos without resetting existing playback
+ok 61 - Appending initializes and observes new videos without resetting existing playback
+  ---
+  duration_ms: 1.9825
+  type: 'test'
+  ...
+# Subtest: A shared trailer beyond page one is loaded and scrolled into view
+ok 62 - A shared trailer beyond page one is loaded and scrolled into view
+  ---
+  duration_ms: 1.9805
+  type: 'test'
+  ...
+# Subtest: Fully buffered loop transitions do not cover a playable frame with a spinner
+ok 63 - Fully buffered loop transitions do not cover a playable frame with a spinner
+  ---
+  duration_ms: 1.8962
+  type: 'test'
+  ...
+1..63
+# tests 63
+# suites 0
+# pass 63
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1353.8179

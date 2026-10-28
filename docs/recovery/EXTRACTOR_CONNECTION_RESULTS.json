@@ -1,0 +1,236 @@
+{
+  "scope": "Explicit owned local fake profile; no live/provider/browser extraction; no production/publishing",
+  "suites": {
+    "http": {
+      "tests": [
+        {
+          "name": "Member denial is exercised with a verified signed-in member",
+          "passed": true
+        },
+        {
+          "name": "Guest with CSRF cannot call private administrator proxy",
+          "passed": true
+        },
+        {
+          "name": "Member with CSRF cannot call administrator proxy",
+          "passed": true
+        },
+        {
+          "name": "Administrator proxy requires CSRF",
+          "passed": true
+        },
+        {
+          "name": "Proxy refuses GET extraction and method confusion",
+          "passed": true
+        },
+        {
+          "name": "Authenticated private health traverses PHP and Node",
+          "passed": true
+        },
+        {
+          "name": "PHP extraction returns only sanitized local fake contract",
+          "passed": true
+        },
+        {
+          "name": "Returned original demonstration media matches fixture bytes",
+          "passed": true
+        },
+        {
+          "name": "Proxy rejects malformed/deceptive source 8",
+          "passed": true
+        },
+        {
+          "name": "Proxy rejects malformed/deceptive source 9",
+          "passed": true
+        },
+        {
+          "name": "Proxy rejects malformed/deceptive source 10",
+          "passed": true
+        },
+        {
+          "name": "Proxy rejects malformed/deceptive source 11",
+          "passed": true
+        },
+        {
+          "name": "Proxy rejects malformed/deceptive source 12",
+          "passed": true
+        },
+        {
+          "name": "Proxy rejects malformed/deceptive source 13",
+          "passed": true
+        },
+        {
+          "name": "Proxy rejects malformed/deceptive source 14",
+          "passed": true
+        },
+        {
+          "name": "Proxy refuses unknown fields/actions 15",
+          "passed": true
+        },
+        {
+          "name": "Proxy refuses unknown fields/actions 16",
+          "passed": true
+        },
+        {
+          "name": "Proxy refuses unknown fields/actions 17",
+          "passed": true
+        },
+        {
+          "name": "Proxy refuses unknown fields/actions 18",
+          "passed": true
+        },
+        {
+          "name": "Proxy rejects malformed JSON",
+          "passed": true
+        },
+        {
+          "name": "Proxy bounds browser request size",
+          "passed": true
+        },
+        {
+          "name": "Direct service health requires service key",
+          "passed": true
+        },
+        {
+          "name": "Direct service rejects wrong key",
+          "passed": true
+        },
+        {
+          "name": "Service key cannot be supplied through query",
+          "passed": true
+        },
+        {
+          "name": "Direct service rejects legacy GET even with key",
+          "passed": true
+        },
+        {
+          "name": "Direct service exact-host URL policy enforced",
+          "passed": true
+        },
+        {
+          "name": "Direct service bounds body size",
+          "passed": true
+        },
+        {
+          "name": "Service publishes no browser CORS permission",
+          "passed": true
+        },
+        {
+          "name": "Browser receives no private key or service address",
+          "passed": true
+        },
+        {
+          "name": "Shot save uses the same authenticated server client",
+          "passed": true
+        },
+        {
+          "name": "Only exact created fictional shot removed",
+          "passed": true
+        },
+        {
+          "name": "Extractor admission fails busy at bounded budget",
+          "passed": true
+        },
+        {
+          "name": "Busy service still answers authenticated health",
+          "passed": true
+        }
+      ],
+      "summary": {
+        "total": 33,
+        "passed": 33,
+        "failed": 0
+      }
+    },
+    "client": {
+      "tests": [
+        {
+          "name": "Client projects only permitted health fields",
+          "passed": true
+        },
+        {
+          "name": "Client projects only permitted extract fields",
+          "passed": true
+        },
+        {
+          "name": "Client rejects status",
+          "passed": true
+        },
+        {
+          "name": "Client rejects redirect",
+          "passed": true
+        },
+        {
+          "name": "Client rejects invalid JSON",
+          "passed": true
+        },
+        {
+          "name": "Client rejects wrong mode",
+          "passed": true
+        },
+        {
+          "name": "Client rejects wrong success type",
+          "passed": true
+        },
+        {
+          "name": "Client preserves busy classification",
+          "passed": true
+        },
+        {
+          "name": "Client rejects unsafe media result 8",
+          "passed": true
+        },
+        {
+          "name": "Client rejects unsafe media result 9",
+          "passed": true
+        },
+        {
+          "name": "Client rejects unsafe media result 10",
+          "passed": true
+        },
+        {
+          "name": "Client rejects unsafe media result 11",
+          "passed": true
+        },
+        {
+          "name": "Client rejects unsafe media result 12",
+          "passed": true
+        },
+        {
+          "name": "Missing/invalid private credential fails before transport",
+          "passed": true
+        }
+      ],
+      "summary": {
+        "total": 14,
+        "passed": 14,
+        "failed": 0
+      }
+    },
+    "transport": {
+      "tests": [
+        {
+          "name": "Transport rejects oversize",
+          "passed": true
+        },
+        {
+          "name": "Transport rejects html",
+          "passed": true
+        },
+        {
+          "name": "Transport rejects timeout",
+          "passed": true
+        },
+        {
+          "name": "Transport does not follow redirects or forward its key",
+          "passed": true
+        }
+      ],
+      "summary": {
+        "total": 4,
+        "passed": 4,
+        "failed": 0
+      }
+    }
+  }
+}

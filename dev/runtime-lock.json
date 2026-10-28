@@ -10,11 +10,14 @@
   "development_libraries": {
     "libpng-dev": "1.6.48-1+deb13u6",
     "libjpeg62-turbo-dev": "1:2.1.5-4",
-    "libwebp-dev": "1.5.0-0.1"
+    "libwebp-dev": "1.5.0-0.1",
+    "libcurl4-openssl-dev": "8.14.1-2+deb13u7"
   },
   "limitations": [
     "Multi-platform image digests select the host architecture; only linux/amd64 was executed.",
     "Debian repository availability is required for extension builds; package archives and build outputs are not vendored.",
     "No production integration, real provider, container vulnerability scan or full browser/codec matrix is certified."
-  ]
+  ],
+  "extractor_fake_node_base": "node@sha256:55fb5f5a527ea2c5c4a95f963e48ef90aa38c7b346054fdc8ee9957a2b55d205",
+  "extractor_fake_node_version": "24.22.1"
 }

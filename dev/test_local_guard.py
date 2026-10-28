@@ -58,4 +58,22 @@ class LocalGuardTests(unittest.TestCase):
         with patch.object(local.subprocess,'run',side_effect=[SimpleNamespace(returncode=0,stdout='fictional-gateway'),SimpleNamespace(returncode=0,stdout=json.dumps([info]))]):local.require_owned_gateway()
 
 
+class ExtractorGuardTests(unittest.TestCase):
+    def info(self,service):
+        return {'Id':service+'-id','State':{'Running':True},'Config':{'Labels':{'com.docker.compose.project':local.PROJECT,'com.docker.compose.service':service},'Env':['APP_ENV=development','EXTRACTOR_MODE=local','ALLOW_LIVE_INTEGRATIONS=false']},'HostConfig':{'NetworkMode':'container:web-id','PortBindings':{}}}
+    def check(self,node,web=None):
+        results=[SimpleNamespace(returncode=0,stdout='web-id'),SimpleNamespace(returncode=0,stdout=json.dumps([web or self.info('web')])),SimpleNamespace(returncode=0,stdout='extractor-id'),SimpleNamespace(returncode=0,stdout=json.dumps([node]))]
+        with patch.object(local,'require_owned_gateway'),patch.object(local.subprocess,'run',side_effect=results):local.require_owned_extractor()
+    def test_exact_private_owned_fake_is_accepted(self):self.check(self.info('extractor'))
+    def test_foreign_service_modes_or_namespace_fail_before_key_use(self):
+        for field in ['foreign','stopped','mode','published','namespace']:
+            node=self.info('extractor')
+            if field=='foreign':node['Config']['Labels']['com.docker.compose.project']='unrelated'
+            if field=='stopped':node['State']['Running']=False
+            if field=='mode':node['Config']['Env']=['APP_ENV=production','EXTRACTOR_MODE=live','ALLOW_LIVE_INTEGRATIONS=true']
+            if field=='published':node['HostConfig']['PortBindings']={'3334/tcp':[{}]}
+            if field=='namespace':node['HostConfig']['NetworkMode']='host'
+            with self.assertRaises(RuntimeError):self.check(node)
+
+
 if __name__=='__main__':unittest.main()

@@ -1,0 +1,35 @@
+# Explicit isolated fake connection rehearsal; never a production configuration.
+services:
+  web:
+    environment:
+      EXTRACTOR_MODE: local
+      ZINEMA_EXTRACTOR_FIXTURES: "1"
+      FB_VIDEO_API_URL: http://127.0.0.1:3334
+    secrets: [extractor_key]
+  extractor:
+    build:
+      context: ..
+      dockerfile: dev/extractor.Dockerfile
+    network_mode: service:web
+    environment:
+      APP_ENV: development
+      EXTRACTOR_MODE: local
+      ALLOW_LIVE_INTEGRATIONS: "false"
+      PORT: "3334"
+      FAKE_MEDIA_URL: http://127.0.0.1:8088/__dev/extractor-media.php
+    secrets: [extractor_key]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 192m
+    pids_limit: 64
+    healthcheck:
+      test: [CMD, node, -e, "const fs=require('fs'),http=require('http');const r=http.request({host:'127.0.0.1',port:3334,path:'/health',method:'POST',headers:{'X-Extractor-Key':fs.readFileSync('/run/secrets/extractor_key','utf8').trim()}},s=>process.exit(s.statusCode===200?0:1));r.on('error',()=>process.exit(1));r.end();"]
+      interval: 3s
+      timeout: 2s
+      retries: 30
+  tests:
+    secrets: [extractor_key]
+secrets:
+  extractor_key:
+    file: ${ZINEMA_DEV_STATE}/extractor_key

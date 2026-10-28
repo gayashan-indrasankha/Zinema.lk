@@ -23,7 +23,8 @@ test('bot entry point exits at the live startup guard',()=>{
   assert.match(result.stderr,/live WhatsApp startup disabled/);
   assert.doesNotMatch(result.stdout,/QR|Connected|Baileys/);
 });
-test('extractor disabled mode binds only loopback',()=>assert.deepEqual(extractor.readConfig({APP_ENV:'test',PORT:'3334'}),{mode:'disabled',port:3334,host:'127.0.0.1',fakeMediaUrl:null}));
+test('extractor disabled mode binds only loopback',()=>assert.deepEqual(extractor.readConfig({APP_ENV:'test',PORT:'3334'}),{mode:'disabled',port:3334,host:'127.0.0.1',fakeMediaUrl:null,apiKey:null}));
 test('extractor rejects live mode',()=>assert.throws(()=>extractor.readConfig({APP_ENV:'production',PORT:'3334',EXTRACTOR_MODE:'live'}),/quarantined/));
-test('extractor rejects non-local fixture URL',()=>assert.throws(()=>extractor.readConfig({APP_ENV:'test',PORT:'3334',EXTRACTOR_MODE:'local',FAKE_MEDIA_URL:'https://example.invalid/movie.mp4'}),/FAKE_MEDIA_URL/));
-test('extractor accepts local fixture',()=>assert.equal(extractor.readConfig({APP_ENV:'test',PORT:'3334',EXTRACTOR_MODE:'local',FAKE_MEDIA_URL:'http://127.0.0.1:8088/demo.mp4'}).fakeMediaUrl,'http://127.0.0.1:8088/demo.mp4'));
+test('extractor rejects non-local fixture URL',()=>assert.throws(()=>extractor.readConfig({APP_ENV:'test',PORT:'3334',EXTRACTOR_MODE:'local',EXTRACTOR_API_KEY:'a'.repeat(64),FAKE_MEDIA_URL:'https://example.invalid/movie.mp4'}),/FAKE_MEDIA_URL/));
+test('extractor accepts local fixture',()=>assert.equal(extractor.readConfig({APP_ENV:'test',PORT:'3334',EXTRACTOR_MODE:'local',EXTRACTOR_API_KEY:'a'.repeat(64),FAKE_MEDIA_URL:'http://127.0.0.1:8088/demo.mp4'}).fakeMediaUrl,'http://127.0.0.1:8088/demo.mp4'));
+test('local extractor refuses absent service credential',()=>assert.throws(()=>extractor.readConfig({APP_ENV:'test',PORT:'3334',EXTRACTOR_MODE:'local'}),/EXTRACTOR_API_KEY/));

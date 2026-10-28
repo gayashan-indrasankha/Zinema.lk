@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import secrets
 import subprocess
 import sys
 import time
@@ -19,19 +20,20 @@ folder = checked_runtime(sys.argv[1])
 assert not port_open(3334), 'Do not reuse an unknown extractor'
 rows = []
 for mode in ['disabled','local']:
-    env = dict(os.environ, APP_ENV='test', EXTRACTOR_MODE=mode, PORT='3334', FAKE_MEDIA_URL='http://127.0.0.1:8088/demo.mp4', NODE_PATH=str(folder/'extractor-deps/node_modules'))
+    env = dict(os.environ, APP_ENV='test', EXTRACTOR_MODE=mode, PORT='3334', EXTRACTOR_API_KEY=secrets.token_hex(32), FAKE_MEDIA_URL='http://127.0.0.1:8088/demo.mp4', NODE_PATH=str(folder/'extractor-deps/node_modules'))
     log = open(folder/f'extractor-{mode}.log','w')
     child = subprocess.Popen(['node',str(ROOT/'fb-video-api/index.js')],env=env,stdout=log,stderr=log,creationflags=NO_WINDOW)
     try:
         wait_port(3334,child)
-        for route in ['/health','/api/extract?url=https%3A%2F%2Fexample.invalid%2Fnever-fetch-this']:
+        for route in ['/health','/api/extract']:
+            request=urllib.request.Request('http://127.0.0.1:3334'+route,data=json.dumps({'url':'https://facebook.com/reel/fictional'} if route=='/api/extract' else {}).encode(),headers={'Content-Type':'application/json','X-Extractor-Key':env['EXTRACTOR_API_KEY']})
             try:
-                response=urllib.request.urlopen('http://127.0.0.1:3334'+route,timeout=5)
+                response=urllib.request.urlopen(request,timeout=5)
             except urllib.error.HTTPError as e:
                 response=e
             body=json.loads(response.read())
             if route == '/health':
-                passed=response.status==200 and body.get('status')=='ok'
+                passed=response.status==200 and body.get('success') is True and body.get('mode')==mode
             elif mode=='disabled':
                 passed=response.status==503 and body.get('success') is False
             else:
