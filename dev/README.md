@@ -136,3 +136,14 @@ The separate override mounts a generated independent secret and exposes no Node
 port. No provider request/browser starts. Do not run operator mutation tests in
 the opt-in mode; their strict disabled-adapter checks remain. Test seed JSON has
 private bearer material and stays ignored. See ../docs/recovery/EXTRACTOR_CONNECTION.md.
+
+## Isolated staging rehearsal
+
+See [the staging rehearsal](../docs/recovery/STAGING_REHEARSAL.md). Run
+`python -X utf8 dev/test_staging.py`, then `python -X utf8 dev/rehearse_staging.py`.
+It exports committed source plus hashed rehearsal templates, creates two new local
+fictional targets with no published ports, verifies TLS/security/load, encrypts a
+quiesced snapshot and restores/comparisons it. All providers stay disabled; this
+does not provision a host or approve a release. Private evidence/keys/volumes remain
+under ignored state; never publish the SQL/archive/session fingerprints. The backup
+helper is capped at 64 MiB and is only for fixtures. No volume cleanup is automatic.

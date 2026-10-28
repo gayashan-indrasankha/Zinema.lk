@@ -1,0 +1,456 @@
+{
+  "date": "2026-10-26",
+  "scope": "Isolated local production-configuration rehearsal; fictional data; all providers disabled",
+  "tests": [
+    {
+      "name": "source DB ownership/no network/ports",
+      "passed": true
+    },
+    {
+      "name": "Expanded original fictional catalogue seeded",
+      "passed": true
+    },
+    {
+      "name": "source exact database before grants",
+      "passed": true
+    },
+    {
+      "name": "source private container/limits",
+      "passed": true
+    },
+    {
+      "name": "source all provider modes disabled",
+      "passed": true
+    },
+    {
+      "name": "source private container/limits",
+      "passed": true
+    },
+    {
+      "name": "source TLS/security/load assertions",
+      "passed": true
+    },
+    {
+      "name": "outage TLS/security/load assertions",
+      "passed": true
+    },
+    {
+      "name": "Source 38 tables/2 views/quota/DDLs denied",
+      "passed": true
+    },
+    {
+      "name": "Authenticated encryption rejects modified backup before output",
+      "passed": true
+    },
+    {
+      "name": "Encrypted backup round trip byte equality",
+      "passed": true
+    },
+    {
+      "name": "Backup payload allowlist",
+      "passed": true
+    },
+    {
+      "name": "restore DB ownership/no network/ports",
+      "passed": true
+    },
+    {
+      "name": "Restore canonical schema fingerprint",
+      "passed": true
+    },
+    {
+      "name": "restore exact database before grants",
+      "passed": true
+    },
+    {
+      "name": "Restored row counts and complete row hashes match all tables",
+      "passed": true
+    },
+    {
+      "name": "Restored media/private state/session hashes all match",
+      "passed": true
+    },
+    {
+      "name": "Restored owned quota inventory and least privileges survive",
+      "passed": true
+    },
+    {
+      "name": "restore private container/limits",
+      "passed": true
+    },
+    {
+      "name": "restore all provider modes disabled",
+      "passed": true
+    },
+    {
+      "name": "restore private container/limits",
+      "passed": true
+    },
+    {
+      "name": "restore TLS/security/load assertions",
+      "passed": true
+    },
+    {
+      "name": "Restored upload quota admits a new original image",
+      "passed": true
+    }
+  ],
+  "details": {
+    "artifact": {
+      "source_commit": "0fb8566ea2056518100bd727086e3a6b3efc2dc8",
+      "files": 252,
+      "forbidden_paths": 0
+    },
+    "source_http": {
+      "scope": "Owned isolated artifact, synthetic identities; explicit local test CA; no provider requests",
+      "tests": [
+        {
+          "name": "Artifact is available through verified local TLS",
+          "passed": true
+        },
+        {
+          "name": "Secure HTTP-only SameSite session cookie",
+          "passed": true
+        },
+        {
+          "name": "Security headers and CSP enforced at TLS proxy",
+          "passed": true
+        },
+        {
+          "name": "Runtime version header hidden",
+          "passed": true
+        },
+        {
+          "name": "Unrecognised Host rejected",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.env",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.git/config",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.runtime/example",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /Database.sql",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /dev/http/control.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /includes/database.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /api/includes/auth.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /fb-video-api/index.js",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /uploads/fictional.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /admin/run_migration.php",
+          "passed": true
+        },
+        {
+          "name": "Missing CSRF rejects administrator sign-in",
+          "passed": true
+        },
+        {
+          "name": "Fictional admin authenticates over TLS",
+          "passed": true
+        },
+        {
+          "name": "Administrator dashboard works with CRUD-only DB identity",
+          "passed": true
+        },
+        {
+          "name": "Administrator extractor remains disabled",
+          "passed": true
+        },
+        {
+          "name": "Live delivery stays disabled /whatsapp-watch.php?id=1",
+          "passed": true
+        },
+        {
+          "name": "Live delivery stays disabled /api/whatsapp/health.php",
+          "passed": true
+        },
+        {
+          "name": "Guest cannot enter administrator dashboard",
+          "passed": true
+        },
+        {
+          "name": "Bounded TLS read load has no HTTP errors at 5 clients",
+          "passed": true
+        },
+        {
+          "name": "Bounded TLS read load has no HTTP errors at 25 clients",
+          "passed": true
+        },
+        {
+          "name": "Temporary CA is explicitly trusted; default trust refuses it",
+          "passed": true
+        }
+      ],
+      "details": {
+        "loads": [
+          {
+            "concurrency": 5,
+            "requests": 100,
+            "errors": 0,
+            "p50_ms": 16.54,
+            "p95_ms": 45.96,
+            "p99_ms": 62.96,
+            "max_ms": 63.76,
+            "elapsed_s": 0.42,
+            "response_bytes": 5772220
+          },
+          {
+            "concurrency": 25,
+            "requests": 300,
+            "errors": 0,
+            "p50_ms": 122.81,
+            "p95_ms": 220.28,
+            "p99_ms": 286.76,
+            "max_ms": 309.6,
+            "elapsed_s": 1.71,
+            "response_bytes": 17316660
+          }
+        ],
+        "monitor": {
+          "healthy": true
+        }
+      },
+      "summary": {
+        "total": 25,
+        "passed": 25,
+        "failed": 0
+      }
+    },
+    "outage": {
+      "scope": "Owned isolated artifact, synthetic identities; explicit local test CA; no provider requests",
+      "tests": [
+        {
+          "name": "Local outage probe emits website-unavailable alert",
+          "passed": true
+        }
+      ],
+      "details": {
+        "alerts": [
+          {
+            "code": "website_unavailable",
+            "observed_status": 502
+          }
+        ],
+        "live_alert_sent": false
+      },
+      "summary": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      }
+    },
+    "restore_http": {
+      "scope": "Owned isolated artifact, synthetic identities; explicit local test CA; no provider requests",
+      "tests": [
+        {
+          "name": "Artifact is available through verified local TLS",
+          "passed": true
+        },
+        {
+          "name": "Secure HTTP-only SameSite session cookie",
+          "passed": true
+        },
+        {
+          "name": "Security headers and CSP enforced at TLS proxy",
+          "passed": true
+        },
+        {
+          "name": "Runtime version header hidden",
+          "passed": true
+        },
+        {
+          "name": "Unrecognised Host rejected",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.env",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.git/config",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /.runtime/example",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /Database.sql",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /dev/http/control.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /includes/database.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /api/includes/auth.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /fb-video-api/index.js",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /uploads/fictional.php",
+          "passed": true
+        },
+        {
+          "name": "Artifact refuses private/unsafe path /admin/run_migration.php",
+          "passed": true
+        },
+        {
+          "name": "Missing CSRF rejects administrator sign-in",
+          "passed": true
+        },
+        {
+          "name": "Fictional admin authenticates over TLS",
+          "passed": true
+        },
+        {
+          "name": "Administrator dashboard works with CRUD-only DB identity",
+          "passed": true
+        },
+        {
+          "name": "Administrator extractor remains disabled",
+          "passed": true
+        },
+        {
+          "name": "Live delivery stays disabled /whatsapp-watch.php?id=1",
+          "passed": true
+        },
+        {
+          "name": "Live delivery stays disabled /api/whatsapp/health.php",
+          "passed": true
+        },
+        {
+          "name": "Guest cannot enter administrator dashboard",
+          "passed": true
+        },
+        {
+          "name": "Spoofed forwarding headers cannot bypass shared password admission",
+          "passed": true
+        }
+      ],
+      "details": {
+        "restore_http_verified": true
+      },
+      "summary": {
+        "total": 23,
+        "passed": 23,
+        "failed": 0
+      }
+    },
+    "backup": {
+      "encrypted_bytes": 163467,
+      "original_bytes": 163417,
+      "sha256": "8623acce602bea07ce9e2d03710d21204d77055c63f3eadf277815eee51e1f49",
+      "algorithm": "AES-256-GCM",
+      "key_in_archive": false
+    },
+    "comparison": {
+      "tables": 38,
+      "views": 2,
+      "rows": 538,
+      "files": 408,
+      "file_bytes_verified": true,
+      "row_hashes_match": true,
+      "file_hashes_match": true,
+      "fixture_counts": {
+        "movies": 251,
+        "series": 41,
+        "episodes": 201,
+        "collections": 21,
+        "trailers": 11
+      }
+    },
+    "resources_sampled_after_load_not_peak": {
+      "database": {
+        "CPUPerc": "0.12%",
+        "MemUsage": "134.4MiB / 384MiB",
+        "MemPerc": "35.01%",
+        "PIDs": "20",
+        "BlockIO": "79.7MB / 55.7MB",
+        "NetIO": "0B / 0B"
+      },
+      "application": {
+        "CPUPerc": "0.00%",
+        "MemUsage": "19.93MiB / 256MiB",
+        "MemPerc": "7.79%",
+        "PIDs": "6",
+        "BlockIO": "21.5MB / 991kB",
+        "NetIO": "0B / 0B"
+      },
+      "tls": {
+        "CPUPerc": "0.00%",
+        "MemUsage": "3.379MiB / 64MiB",
+        "MemPerc": "5.28%",
+        "PIDs": "2",
+        "BlockIO": "8.98MB / 0B",
+        "NetIO": "0B / 0B"
+      }
+    },
+    "local_only": true,
+    "providers_contacted": false,
+    "public_ports": false,
+    "retained_fixture_volumes": 8
+  },
+  "error": null,
+  "summary": {
+    "total": 23,
+    "passed": 23,
+    "failed": 0
+  },
+  "launch_decision": "NO GO; real hosting/provider/large-media/operations acceptance remains pending",
+  "php_diagnostics": {
+    "Warning": 0,
+    "Notice": 0,
+    "Fatal error": 0,
+    "Deprecated": 0
+  },
+  "evidence": "Executed local Docker/TLS/SQL/restore; fictional fixtures; not externally verified",
+  "additional_executed_checks": {
+    "artifact_archive_checkout_boundaries": {
+      "total": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "retained_fake_pure_node_with_backup": {
+      "total": 103,
+      "passed": 103,
+      "failed": 0
+    },
+    "local_target_guards": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0
+    }
+  }
+}

@@ -132,3 +132,13 @@ Set ZINEMA_TEST_PHASE=LIFECYCLE for fresh native HTTP/schema output, preserving
 earlier records. The bot's actual CLI startup guard remains unchanged. Pairing,
 stale-lease review and uncertain maintenance resolution need separate controlled
 procedures; no cleanup of real session data or live test is authorized here.
+
+## Staging rehearsal
+
+Use `python -X utf8 dev/test_staging.py` and
+`node --test docs/recovery/tests/backup-crypto.test.cjs` for artifact/archive/crypto
+boundaries. `python -X utf8 dev/rehearse_staging.py` creates its own fictional Docker
+targets with no published ports, checks local TLS/security/load/outage detection,
+and authenticates/restores a coordinated snapshot. See ../STAGING_REHEARSAL.md for
+the exact executed scope, failure history, retained private evidence and limits.
+This is not actual hosting/provider/large-media acceptance or publishing approval.
