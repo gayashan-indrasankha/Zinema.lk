@@ -545,3 +545,28 @@ checks plus retained suites passed; exact evidence/limits are in PROMOTION_CONTR
 No dependency/lockfile update or advisory refresh, real SDK connection, credential
 rotation, host provisioning, remote publication or deployment. Next select the host
 and review its exact disabled configuration before any approved staging/live work.
+
+## 2026-10-28 — Publish existing recovery commits as ordered review checkpoints
+
+Context: The owner again requested incremental logical commits and review PRs.
+The working tree is clean; twelve existing local commits already contain the
+recovery work. The earlier import PRs are merged into remote main `db80166`.
+The previous local-only phase restrictions do not prohibit the owner's new
+explicit source-publication request; production/deployment restrictions persist.
+
+Decision: Preserve the twelve commits, source work branch and local main. Create
+eight project-prefixed checkpoint branches, all targeting remote main, and add
+separate documentation commits for the review plan and final PR handoff. Do not
+rewrite working history or create empty activity commits. Re-scan unpublished
+history as well as final source, since a clean final tree alone is insufficient.
+
+Consequences: PRs must merge in order; later diffs initially include predecessors.
+Each description provides the unique checkpoint comparison and verification scope.
+No provider access, real recipient, actual host, credential rotation, merge or
+deployment is authorized. Launch remains NO GO independently of source publication.
+
+Verification: Fresh Node133, local guards9 and artifact boundaries6 passed;
+PHP198/JavaScript-CJS74/Python21/JSON89 passed. Gitleaks candidate/unpublished-history
+scans returned zero findings; 21 private ignore checks passed. New-work whitespace
+diff exits 0. Prior full runtime reports are retained, not claimed as fresh runs.
+Exact source/branch boundaries and limitations: REVIEW_PUBLICATION.md and results.
