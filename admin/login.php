@@ -7,10 +7,12 @@ require_once 'config.php';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
-    $password = $_POST['password'];
+    $username = is_string($_POST['username'] ?? null) ? trim($_POST['username']) : '';
+    $password = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
 
     try {
+        require_once __DIR__.'/../includes/password_throttle.php';
+        $result=password_attempt($conn,'admin',$username,static function() use($conn,$username,$password) {
         // Prepare statement to get user (MUST SELECT id column)
         $stmt = $conn->prepare("SELECT id, password_hash FROM admins WHERE username = ?");
         if (!$stmt) {
@@ -26,18 +28,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Verify password using password_verify (secure)
             if (password_verify($password, $admin['password_hash'])) {
-                // Set ONLY admin_id in session
-                session_regenerate_id(true);
-                $_SESSION['admin_id'] = $admin['id'];
-                header('Location: index.php');
-                exit;
-            } else {
-                $error = 'Invalid username or password!';
+                return ['success'=>true,'id'=>(int)$admin['id']];
             }
-        } else {
-            $error = 'Invalid username or password!';
         }
         $stmt->close();
+        return ['success'=>false,'message'=>'Invalid username or password!'];
+        });
+        if ($result['success']) {
+            session_regenerate_id(true);$_SESSION['admin_id']=$result['id'];
+            header('Location: index.php');exit;
+        }
+        $error=$result['message'];
     } catch (Exception $e) {
         $error = 'Unable to sign in. Please try again later.';
     }
@@ -50,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css">
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
 <?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>

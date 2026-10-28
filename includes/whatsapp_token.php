@@ -36,9 +36,7 @@ function generateUniqueToken() {
  * @return array|false Token data on success, false on failure, or rate limit error array
  */
 function createWhatsAppToken($conn, $contentId, $contentType, $expiryMinutes = 180, $partNumber = null) {
-    // Rate limiting check - DISABLED
-    // To re-enable, uncomment the code below:
-    /*
+    // Serialize per-peer admission; forwarded identity requires an explicitly trusted proxy.
     $rateLimiter = new RateLimiter($conn);
     $rateCheck = $rateLimiter->checkLimit('token_request');
     
@@ -50,7 +48,6 @@ function createWhatsAppToken($conn, $contentId, $contentType, $expiryMinutes = 1
             'retry_after' => $rateCheck['retry_after'] ?? 60
         ];
     }
-    */
     
     // Check if any bots are online (heartbeat within last 2 minutes)
     $onlineBotCheck = mysqli_query($conn, 
@@ -148,7 +145,7 @@ function createWhatsAppToken($conn, $contentId, $contentType, $expiryMinutes = 1
         // Prefer the online bot with the smallest queue; no stored function required.
         $botQuery = "SELECT b.bot_id, b.bot_phone 
                      FROM bot_health_status b 
-                     WHERE b.status = 'online' AND b.last_heartbeat > DATE_SUB(NOW(), INTERVAL 5 MINUTE) ORDER BY b.queue_size ASC, b.bot_id ASC LIMIT 1";
+                     WHERE b.status = 'online' AND b.last_heartbeat > DATE_SUB(NOW(), INTERVAL 2 MINUTE) ORDER BY b.queue_size ASC, b.bot_id ASC LIMIT 1";
         $botStmt = $conn->query($botQuery);
         if ($botStmt && $botStmt->num_rows > 0) {
             $botRow = $botStmt->fetch_assoc();

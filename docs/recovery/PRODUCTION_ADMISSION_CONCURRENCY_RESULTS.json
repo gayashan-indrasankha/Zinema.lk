@@ -1,0 +1,18 @@
+{
+  "scope": "Owned isolated local fixtures only; no real provider or recipient; sanitized projection",
+  "tests": [
+    {
+      "name": "Independent PHP processes cannot oversubscribe password admission",
+      "passed": true
+    },
+    {
+      "name": "Independent PHP processes cannot oversubscribe token admission",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0
+  }
+}

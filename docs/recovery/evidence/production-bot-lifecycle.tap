@@ -1,0 +1,63 @@
+TAP version 13
+# Queued task failed; sensitive details suppressed.
+# Subtest: Incoming command queue rejects overflow and runs accepted tasks sequentially
+ok 1 - Incoming command queue rejects overflow and runs accepted tasks sequentially
+  ---
+  duration_ms: 5.2347
+  type: 'test'
+  ...
+# 💓 Health monitor started (reporting every 1s)
+# 💓 Health monitor stopped
+# 💓 Health monitor started (reporting every 1s)
+# 💓 Health monitor stopped
+# Subtest: Incoming task failure does not prevent the next accepted command
+ok 2 - Incoming task failure does not prevent the next accepted command
+  ---
+  duration_ms: 0.8763
+  type: 'test'
+  ...
+# Subtest: Administrator identity comparison rejects substring, malformed and empty identities
+ok 3 - Administrator identity comparison rejects substring, malformed and empty identities
+  ---
+  duration_ms: 0.3729
+  type: 'test'
+  ...
+# Subtest: Health accepts a fictional Baileys user identity
+ok 4 - Health accepts a fictional Baileys user identity
+  ---
+  duration_ms: 0.7001
+  type: 'test'
+  ...
+# Subtest: Repeated monitor starts retain one timer and stop clears it
+ok 5 - Repeated monitor starts retain one timer and stop clears it
+  ---
+  duration_ms: 1.4196
+  type: 'test'
+  ...
+# Subtest: Reconnect backoff survives connection attempts and has a hard bound
+ok 6 - Reconnect backoff survives connection attempts and has a hard bound
+  ---
+  duration_ms: 0.3819
+  type: 'test'
+  ...
+# Subtest: Duplicate close events schedule one retry; login resets budget
+ok 7 - Duplicate close events schedule one retry; login resets budget
+  ---
+  duration_ms: 0.1655
+  type: 'test'
+  ...
+# Subtest: A rejected reconnect retries within the same budget without unhandled errors
+ok 8 - A rejected reconnect retries within the same budget without unhandled errors
+  ---
+  duration_ms: 0.2359
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 99.559

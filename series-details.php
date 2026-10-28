@@ -157,7 +157,7 @@ $schema_data = [
 
     <!-- JSON-LD Schema -->
     <script type="application/ld+json">
-        <?php echo json_encode($schema_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES); ?>
+        <?php echo json_encode($schema_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>
     </script>
 
     <!-- CSS Assets (Absolute Paths) -->
@@ -822,8 +822,8 @@ $schema_data = [
                                     <?php foreach ($episodes as $episode): ?>
                                         <div class="episode-item" 
                                              data-season="<?php echo $episode['season_number']; ?>" 
-                                             data-video-url="<?php echo htmlspecialchars($episode['video_url'] ?? ''); ?>"
-                                             onclick="playEpisode(<?php echo $episode['id']; ?>, '<?php echo addslashes($episode['video_url'] ?? ''); ?>')">
+
+                                             onclick="playEpisode(<?php echo $episode['id']; ?>)">
                                             <?php 
                                                 $ep_thumb = !empty($episode['thumb_image']) ? $episode['thumb_image'] : $series['cover_image'];
                                                 
@@ -986,90 +986,8 @@ $schema_data = [
         });
 
         // Play episode function
-        async function playEpisode(episodeId, videoUrl) {
-            const container = document.getElementById('video-container');
-            const actionButtons = document.getElementById('action-buttons');
-            const downloadBtn = document.getElementById('download-btn');
-            
-            if (!container) return;
-
-            // Show container and download button
-            container.style.display = 'block';
-            actionButtons.style.display = 'flex';
-
-            // If same episode, do nothing
-            if (currentEpisodeId === episodeId && container.querySelector('video')) {
-                return;
-            }
-
-            currentEpisodeId = episodeId;
-            
-            // Update download button to download current episode
-            downloadBtn.href = `<?php echo BASE_URL; ?>/download.php?id=${episodeId}&type=episode`;
-
-            // Show loader
-            container.innerHTML = `
-                <div class="video-loader">
-                    <div class="video-loader-spinner"></div>
-                    <p class="video-loader-text">Loading episode...</p>
-                </div>
-            `;
-
-            try {
-                console.log('📡 Using video URL for episode ID:', episodeId);
-                console.log('🎬 Video URL:', videoUrl);
-                
-                // Add small delay for smooth UX
-                await new Promise(resolve => setTimeout(resolve, 300));
-                
-                // Replace loader with video player
-                container.innerHTML = `
-                    <div class="video-wrapper" style="position: relative; width: 100%; background: #000; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);">
-                        <video 
-                            id="seriesPlayer"
-                            controls 
-                            autoplay 
-                            playsinline
-                            poster="<?php 
-                                $v_poster = $series['cover_image'];
-                                if (!preg_match('/^http/', $v_poster)) {
-                                    $v_poster = BASE_URL . '/' . ltrim($v_poster, '/');
-                                }
-                                echo htmlspecialchars($v_poster);
-                            ?>"
-                            style="width: 100%; display: block;">
-                            <source src="${videoUrl}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                `;
-                
-                const video = document.getElementById('seriesPlayer');
-                
-                if (video) {
-                    // Save progress tracking
-                    video.addEventListener('timeupdate', () => {
-                        if (video.duration > 0) {
-                            localStorage.setItem(`episode_${episodeId}_progress`, video.currentTime);
-                        }
-                    });
-
-                    // Resume Playback (automatic, no popup)
-                    const savedTime = localStorage.getItem(`episode_${episodeId}_progress`);
-                    if (savedTime && parseFloat(savedTime) > 10) {
-                        video.currentTime = parseFloat(savedTime);
-                    }
-                }
-                
-                console.log('🎬 Episode player loaded successfully');
-                
-                // Scroll to video
-                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                
-            } catch (error) {
-                console.error('❌ Error loading episode:', error);
-                alert('Failed to load episode: ' + error.message);
-            }
+        function playEpisode(episodeId) {
+            window.location.href = <?php echo json_encode(BASE_URL . '/whatsapp-watch.php?id='); ?> + encodeURIComponent(episodeId) + '&type=episode';
         }
 
         // Format time helper

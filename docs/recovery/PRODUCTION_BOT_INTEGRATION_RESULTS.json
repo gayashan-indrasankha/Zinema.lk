@@ -1,0 +1,38 @@
+{
+  "scope": "Owned isolated local fixtures only; no real provider or recipient; sanitized projection",
+  "tests": [
+    {
+      "name": "Real Node client and SQL claim bridge complete one fake acknowledged send",
+      "passed": true
+    },
+    {
+      "name": "Consumed delivery cannot replay through a second Node recipient",
+      "passed": true
+    },
+    {
+      "name": "Concurrent Node recipients obtain only one SQL claim and one send",
+      "passed": true
+    },
+    {
+      "name": "Failed fake send remains uncertain in the actual database",
+      "passed": true
+    },
+    {
+      "name": "Lost completion acknowledgement keeps the actual claim held",
+      "passed": true
+    },
+    {
+      "name": "Actual PHP-issued token completes its assigned-bot Node delivery",
+      "passed": true
+    },
+    {
+      "name": "The PHP-issued token remains consumed after completion",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 7,
+    "passed": 7,
+    "failed": 0
+  }
+}

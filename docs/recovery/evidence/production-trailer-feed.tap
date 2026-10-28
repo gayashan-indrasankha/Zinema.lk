@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: Trailer markup supports muted playback and explicit browser controls
+ok 1 - Trailer markup supports muted playback and explicit browser controls
+  ---
+  duration_ms: 6.545
+  type: 'test'
+  ...
+# Subtest: Overlapping API pages append each trailer once
+ok 2 - Overlapping API pages append each trailer once
+  ---
+  duration_ms: 7.4299
+  type: 'test'
+  ...
+# Subtest: An empty final page stops repeated infinite-scroll requests
+ok 3 - An empty final page stops repeated infinite-scroll requests
+  ---
+  duration_ms: 1.9175
+  type: 'test'
+  ...
+# Subtest: Autoplay denial exposes controls instead of an endless spinner
+ok 4 - Autoplay denial exposes controls instead of an endless spinner
+  ---
+  duration_ms: 2.3783
+  type: 'test'
+  ...
+# Subtest: Trailer share links target the real feed route
+ok 5 - Trailer share links target the real feed route
+  ---
+  duration_ms: 2.9673
+  type: 'test'
+  ...
+# Subtest: Failed trailer actions restore the exact prior count and saved state
+ok 6 - Failed trailer actions restore the exact prior count and saved state
+  ---
+  duration_ms: 3.3555
+  type: 'test'
+  ...
+# Subtest: Guest reactions open sign-in without a phantom state or POST
+ok 7 - Guest reactions open sign-in without a phantom state or POST
+  ---
+  duration_ms: 2.3151
+  type: 'test'
+  ...
+# Subtest: Appending initializes and observes new videos without resetting existing playback
+ok 8 - Appending initializes and observes new videos without resetting existing playback
+  ---
+  duration_ms: 3.6212
+  type: 'test'
+  ...
+# Subtest: A shared trailer beyond page one is loaded and scrolled into view
+ok 9 - A shared trailer beyond page one is loaded and scrolled into view
+  ---
+  duration_ms: 2.3662
+  type: 'test'
+  ...
+# Subtest: Fully buffered loop transitions do not cover a playable frame with a spinner
+ok 10 - Fully buffered loop transitions do not cover a playable frame with a spinner
+  ---
+  duration_ms: 2.8423
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 303.6041

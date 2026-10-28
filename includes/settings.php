@@ -51,6 +51,11 @@ function getSetting($conn, $key, $default = null) {
  * @return bool Success
  */
 function setSetting($conn, $key, $value, $description = null) {
+    $limits=['token_expiry_minutes'=>180,'rate_limit_per_minute'=>100,'rate_limit_per_hour'=>5000];
+    if (isset($limits[$key])) {
+        $number=filter_var($value,FILTER_VALIDATE_INT);
+        if ($number===false || $number<1 || $number>$limits[$key]) return false;
+    }
     ensureSettingsTable($conn);
     
     $stmt = mysqli_prepare($conn, 
@@ -101,43 +106,9 @@ function ensureSettingsTable($conn) {
     
     if ($tableChecked) return;
     
-    $sql = "CREATE TABLE IF NOT EXISTS site_settings (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        setting_key VARCHAR(100) NOT NULL UNIQUE,
-        setting_value TEXT,
-        description VARCHAR(255),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        INDEX idx_key (setting_key)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-    
-    mysqli_query($conn, $sql);
-    
-    // Insert default settings if table is empty
-    $check = mysqli_query($conn, "SELECT COUNT(*) as cnt FROM site_settings");
-    $row = mysqli_fetch_assoc($check);
-    
-    if ($row['cnt'] == 0) {
-        // Default settings
-        $defaults = [
-            ['default_bot_phone', '', 'Default WhatsApp bot phone number (fallback)'],
-            ['token_expiry_minutes', '10', 'How long tokens remain valid (minutes)'],
-            ['rate_limit_per_minute', '10', 'Max token requests per IP per minute'],
-            ['rate_limit_per_hour', '50', 'Max token requests per IP per hour'],
-            ['site_name', 'Zinema.lk', 'Website name'],
-            ['admin_whatsapp', '', 'Admin WhatsApp number for support']
-        ];
-        
-        foreach ($defaults as $setting) {
-            $stmt = mysqli_prepare($conn, 
-                "INSERT IGNORE INTO site_settings (setting_key, setting_value, description) VALUES (?, ?, ?)"
-            );
-            mysqli_stmt_bind_param($stmt, 'sss', $setting[0], $setting[1], $setting[2]);
-            mysqli_stmt_execute($stmt);
-            mysqli_stmt_close($stmt);
-        }
-    }
-    
+    // Read-only assertion: migrations/bootstrap own schema and initial defaults.
+    mysqli_query($conn, "SELECT setting_key FROM site_settings LIMIT 0");
+
     $tableChecked = true;
 }
 ?>

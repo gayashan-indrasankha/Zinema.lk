@@ -17,6 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+if (!is_string($_POST['comment_text'] ?? '') || strlen($_POST['comment_text'] ?? '')>1000) { http_response_code(400);echo json_encode(['status'=>'error','message'=>'Invalid comment (maximum 1000 bytes).']);exit; }
+
 // Get POST data
 $shot_id = isset($_POST['shot_id']) ? intval($_POST['shot_id']) : 0;
 $comment_text = isset($_POST['comment_text']) ? trim($_POST['comment_text']) : '';
@@ -31,6 +33,9 @@ if (empty($comment_text)) {
     echo json_encode(['status' => 'error', 'message' => 'Comment text cannot be empty']);
     exit;
 }
+
+$exists=$conn->prepare('SELECT id FROM shots WHERE id=?');$exists->bind_param('i',$shot_id);$exists->execute();
+if (!$exists->get_result()->fetch_row()) { http_response_code(404);echo json_encode(['status'=>'error','message'=>'Shot not found']);exit; }
 
 // Insert new comment into database
 $stmt = $conn->prepare("INSERT INTO shot_comments (shot_id, user_id, comment_text, created_at) VALUES (?, ?, ?, NOW())");

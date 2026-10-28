@@ -1,0 +1,362 @@
+{
+  "scope": "Owned isolated local fixtures only; no real provider or recipient; sanitized projection",
+  "tests": [
+    {
+      "name": "Development health is ready",
+      "passed": true
+    },
+    {
+      "name": "Fixture control rejects missing key",
+      "passed": true
+    },
+    {
+      "name": "Fake outbox rejects missing key",
+      "passed": true
+    },
+    {
+      "name": "Normal WhatsApp bridge remains disabled",
+      "passed": true
+    },
+    {
+      "name": "Claim adapter rejects wrong fake API key",
+      "passed": true
+    },
+    {
+      "name": "Application namespace has no default route",
+      "passed": true
+    },
+    {
+      "name": "Public page renders /",
+      "passed": true
+    },
+    {
+      "name": "Public page renders /movies",
+      "passed": true
+    },
+    {
+      "name": "Public page renders /tv-series",
+      "passed": true
+    },
+    {
+      "name": "Public page renders /collections",
+      "passed": true
+    },
+    {
+      "name": "Public page renders /login.php",
+      "passed": true
+    },
+    {
+      "name": "Public page renders /signup.php",
+      "passed": true
+    },
+    {
+      "name": "Public page renders /trailers.php",
+      "passed": true
+    },
+    {
+      "name": "Signup rejects missing CSRF",
+      "passed": true
+    },
+    {
+      "name": "Signup sends fake verification and keeps session unauthenticated",
+      "passed": true
+    },
+    {
+      "name": "Unverified password sign-in is denied",
+      "passed": true
+    },
+    {
+      "name": "Resend issues another local email",
+      "passed": true
+    },
+    {
+      "name": "Resend revokes original link",
+      "passed": true
+    },
+    {
+      "name": "Verification signs in and rotates the session",
+      "passed": true
+    },
+    {
+      "name": "Verification link cannot be replayed",
+      "passed": true
+    },
+    {
+      "name": "Forgot password sends only to fake sink",
+      "passed": true
+    },
+    {
+      "name": "Password reset rejects missing CSRF",
+      "passed": true
+    },
+    {
+      "name": "Valid reset changes password",
+      "passed": true
+    },
+    {
+      "name": "Reset token cannot be replayed",
+      "passed": true
+    },
+    {
+      "name": "Old password is rejected after reset",
+      "passed": true
+    },
+    {
+      "name": "New password signs in",
+      "passed": true
+    },
+    {
+      "name": "Expired reset cannot change password",
+      "passed": true
+    },
+    {
+      "name": "SMTP failure is honest and preserves a pending account",
+      "passed": true
+    },
+    {
+      "name": "Expired verification remains unauthenticated",
+      "passed": true
+    },
+    {
+      "name": "Local mail refuses non-fictional recipients",
+      "passed": true
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true
+    },
+    {
+      "name": "Verified fake OAuth creates a verified session and rotates ID",
+      "passed": true
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true
+    },
+    {
+      "name": "OAuth never logs in an unverified identity",
+      "passed": true
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true
+    },
+    {
+      "name": "OAuth cannot silently link an existing password account",
+      "passed": true
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true
+    },
+    {
+      "name": "Signed-in owner may explicitly link their password account",
+      "passed": true
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true
+    },
+    {
+      "name": "A different provider subject cannot rebind that email",
+      "passed": true
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true
+    },
+    {
+      "name": "OAuth handles fake token_error",
+      "passed": true
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true
+    },
+    {
+      "name": "OAuth handles fake userinfo_error",
+      "passed": true
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true
+    },
+    {
+      "name": "OAuth state is bound to its initiating browser",
+      "passed": true
+    },
+    {
+      "name": "OAuth rejects a forged state",
+      "passed": true
+    },
+    {
+      "name": "Valid initiating state still completes",
+      "passed": true
+    },
+    {
+      "name": "OAuth state cannot be replayed",
+      "passed": true
+    },
+    {
+      "name": "OAuth authorization carries S256 and state",
+      "passed": true
+    },
+    {
+      "name": "Fake provider enforces PKCE verifier",
+      "passed": true
+    },
+    {
+      "name": "Fictional admin signs in",
+      "passed": true
+    },
+    {
+      "name": "movies accepts a valid image with a generated name",
+      "passed": true
+    },
+    {
+      "name": "movies serves rewritten image without appended payload",
+      "passed": true
+    },
+    {
+      "name": "Upload rejects PHP disguise and preserves original",
+      "passed": true
+    },
+    {
+      "name": "Upload rejects SVG and preserves original",
+      "passed": true
+    },
+    {
+      "name": "Upload rejects mismatched extension and preserves original",
+      "passed": true
+    },
+    {
+      "name": "Upload rejects malformed and preserves original",
+      "passed": true
+    },
+    {
+      "name": "Upload rejects traversal filename and preserves original",
+      "passed": true
+    },
+    {
+      "name": "Upload rejects oversized and preserves original",
+      "passed": true
+    },
+    {
+      "name": "series accepts a valid image with a generated name",
+      "passed": true
+    },
+    {
+      "name": "series serves rewritten image without appended payload",
+      "passed": true
+    },
+    {
+      "name": "collections accepts a valid image with a generated name",
+      "passed": true
+    },
+    {
+      "name": "collections serves rewritten image without appended payload",
+      "passed": true
+    },
+    {
+      "name": "Collection ignores posted existing image path",
+      "passed": true
+    },
+    {
+      "name": "Episode thumbnail uses local validated storage",
+      "passed": true
+    },
+    {
+      "name": "Trailer rejects executable extension",
+      "passed": true
+    },
+    {
+      "name": "Generated original MP4 is stored with a safe name",
+      "passed": true
+    },
+    {
+      "name": "Generated trailer is served as inert MP4",
+      "passed": true
+    },
+    {
+      "name": "Upload requires admin authentication",
+      "passed": true
+    },
+    {
+      "name": "Concurrent independent HTTP workers grant exactly one token claim",
+      "passed": true
+    },
+    {
+      "name": "Claim does not extend or truncate explicit expiry",
+      "passed": true
+    },
+    {
+      "name": "Recipient cannot complete another owner claim",
+      "passed": true
+    },
+    {
+      "name": "Cannot complete before beginning delivery",
+      "passed": true
+    },
+    {
+      "name": "Wrong receipt cannot begin delivery",
+      "passed": true
+    },
+    {
+      "name": "Claim owner begins delivery",
+      "passed": true
+    },
+    {
+      "name": "Crash during sending never releases a claim",
+      "passed": true
+    },
+    {
+      "name": "A stale sending claim is never automatically reclaimed",
+      "passed": true
+    },
+    {
+      "name": "Acknowledged owner completes delivery",
+      "passed": true
+    },
+    {
+      "name": "Completion cannot be replayed",
+      "passed": true
+    },
+    {
+      "name": "Consumed token cannot be claimed",
+      "passed": true
+    },
+    {
+      "name": "Failure holds an uncertain claim",
+      "passed": true
+    },
+    {
+      "name": "Failed claim cannot later complete",
+      "passed": true
+    },
+    {
+      "name": "Expired token cannot be claimed",
+      "passed": true
+    },
+    {
+      "name": "Expiry after claim prevents a new delivery",
+      "passed": true
+    },
+    {
+      "name": "Inactive token cannot be claimed",
+      "passed": true
+    },
+    {
+      "name": "Assigned bot is enforced",
+      "passed": true
+    },
+    {
+      "name": "Legacy consume endpoint cannot bypass claim ownership",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 88,
+    "passed": 88,
+    "failed": 0
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "scope": "Exact owned Docker project plus native fixture; volumes preserved",
+  "owned_running_containers": 0,
+  "ports_closed": {
+    "8088": true,
+    "9081": true,
+    "3307": true,
+    "8089": true,
+    "3334": true
+  },
+  "production_connections": false,
+  "remote_git_actions": false,
+  "publishing": false
+}

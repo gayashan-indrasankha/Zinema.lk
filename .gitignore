@@ -16,6 +16,7 @@ message-store*/
 store.json
 message-cache.json
 pending-requests.json
+warming-state.json
 hot-cache*/
 cache/
 logs/

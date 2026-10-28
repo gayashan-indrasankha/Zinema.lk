@@ -106,7 +106,7 @@ $current_php_file = basename($_SERVER['PHP_SELF']);
 </nav>
 
 <!-- Search Popup Overlay (Desktop/Tablet Only) -->
-<div id="search-popup-overlay" class="search-popup-overlay">
+<div id="search-popup-overlay" class="search-popup-overlay" data-base-url="<?php echo htmlspecialchars(BASE_URL . '/', ENT_QUOTES); ?>">
     <div class="search-popup-container">
         <button class="search-popup-close" onclick="closeSearchPopup()">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -190,61 +190,10 @@ function handleSearchSubmit(e) {
     e.preventDefault();
     const query = document.getElementById('search-popup-input').value.trim();
     if (query) {
-        window.location.href = `movies.php?search=${encodeURIComponent(query)}`;
+        window.location.href = new URL(`movies.php?search=${encodeURIComponent(query)}`, popupBase).href;
     }
 }
 
-// Live Search in Popup
-let popupSearchTimeout;
-
-function handlePopupSearch(query) {
-    clearTimeout(popupSearchTimeout);
-    
-    const resultsContainer = document.getElementById('search-popup-results');
-    
-    if (query.length < 2) {
-        resultsContainer.innerHTML = '';
-        return;
-    }
-    
-    resultsContainer.innerHTML = '<div class="search-loading">Searching...</div>';
-    
-    popupSearchTimeout = setTimeout(() => {
-        // Fetch search results via AJAX
-        fetch(`api/live_search.php?q=${encodeURIComponent(query)}`)
-            .then(response => response.json())
-            .then(data => {
-                if (Array.isArray(data) && data.length > 0) {
-                    let html = '<div class="search-results-grid">';
-                    data.forEach(item => {
-                        // Determine URL based on current page (movies or series)
-                        // Use Clean URL format: /movie/123/watch or /series/123/watch
-                        // Ideally we would slugify the title, but JS slugify matches loose regex in htaccess
-                        const isSeries = window.location.pathname.includes('series') || item.type === 'series'; // item.type depends on API
-                        // Fallback logic if API doesn't return type
-                        const urlPrefix = isSeries ? 'series' : 'movie';
-                        const url = `${urlPrefix}/${item.id}/watch`;
-                        const year = item.release_date ? new Date(item.release_date).getFullYear() : 'N/A';
-                        html += `
-                            <a href="${url}" class="search-result-card" onclick="closeSearchPopup()">
-                                <img src="${item.cover_image}" alt="${item.title}">
-                                <div class="search-result-info">
-                                    <div class="search-result-title">${item.title}</div>
-                                    <div class="search-result-year">${year}</div>
-                                </div>
-                            </a>
-                        `;
-                    });
-                    html += '</div>';
-                    resultsContainer.innerHTML = html;
-                } else {
-                    resultsContainer.innerHTML = '<div class="search-no-results">😕 No results found for "' + query + '"</div>';
-                }
-            })
-            .catch(error => {
-                console.error('Search error:', error);
-                resultsContainer.innerHTML = '<div class="search-error">❌ Search failed. Please try again.</div>';
-            });
-    }, 300);
-}
 </script>
+
+<script src="<?php echo htmlspecialchars(BASE_URL, ENT_QUOTES); ?>/assets/js/search-popup.js?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/js/search-popup.js'),0,12); ?>"></script>

@@ -6,9 +6,14 @@ if (APP_ENV !== 'development' || DB_HOST !== '127.0.0.1' || DB_NAME !== 'zinema_
 $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME, DB_PORT);
 if ($db->query('SELECT DATABASE()')->fetch_row()[0] !== DB_NAME) exit(1);
 // The target identity was checked above. This migration does not delete rows.
-foreach (['002-token-claims.sql','003-local-operations.sql'] as $migration) {
+foreach (['002-token-claims.sql','003-local-operations.sql','004-shot-collections.sql'] as $migration) {
     $db->multi_query(file_get_contents('/opt/zinema/migrations/' . $migration));
     do { if ($result = $db->store_result()) $result->free(); } while ($db->more_results() && $db->next_result());
+}
+// Non-secret development defaults are bootstrap work, never request-time DDL.
+foreach ([['default_bot_phone','','Default bot fallback'],['token_expiry_minutes','10','Token lifetime'],['rate_limit_per_minute','10','Token requests per minute'],['rate_limit_per_hour','50','Token requests per hour'],['site_name','Zinema.lk','Website name'],['admin_whatsapp','','Support contact']] as $setting) {
+    $stmt=$db->prepare('INSERT IGNORE INTO site_settings(setting_key,setting_value,description) VALUES(?,?,?)');
+    $stmt->bind_param('sss',$setting[0],$setting[1],$setting[2]);$stmt->execute();
 }
 require_once '/var/www/html/includes/upload_storage.php';
 initialize_local_upload_storage();

@@ -21,10 +21,10 @@ if (in_array($action, ['user','expire_verification','expire_reset'], true)) {
     $result = $action === 'user' ? ($stmt->get_result()->fetch_assoc() ?: []) : ['success'=>true];
 } elseif ($action === 'catalogue') {
     $table = $input['table'] ?? '';
-    if (!in_array($table, ['movies','series','episodes','collections','trailers'], true)) { http_response_code(400); exit; }
+    if (!in_array($table, ['movies','series','episodes','collections','trailers','shots'], true)) { http_response_code(400); exit; }
     $title = $input['title'] ?? '';
     if (!is_string($title) || !str_starts_with($title, 'Local Test ')) { http_response_code(400); exit; }
-    $column = $table === 'episodes' ? 'thumb_image' : ($table === 'trailers' ? 'video_url' : 'cover_image');
+    $column = match($table) {'episodes'=>'thumb_image','trailers'=>'video_url','shots'=>'shot_video_file',default=>'cover_image'};
     $stmt = $db->prepare("SELECT id, $column AS path FROM $table WHERE title=? ORDER BY id DESC LIMIT 1");
     $stmt->bind_param('s', $title); $stmt->execute(); $result = $stmt->get_result()->fetch_assoc() ?: [];
 } elseif (in_array($action, ['token_status','expire_token','age_claim'], true)) {

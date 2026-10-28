@@ -1,0 +1,214 @@
+{
+  "scope": "Owned isolated local fixtures only; no real provider or recipient; sanitized projection",
+  "tests": [
+    {
+      "name": "Explicit review acknowledgement is mandatory",
+      "passed": true
+    },
+    {
+      "name": "Stale reviewed revision cannot mutate media",
+      "passed": true
+    },
+    {
+      "name": "Invalid fictional actor/evidence is rejected",
+      "passed": true
+    },
+    {
+      "name": "Traversal cannot address storage outside the owned root",
+      "passed": true
+    },
+    {
+      "name": "Generated-looking unregistered files are never adopted",
+      "passed": true
+    },
+    {
+      "name": "Reviewed orphan is copied, verified and withdrawn into quarantine",
+      "passed": true
+    },
+    {
+      "name": "Private archive retains exact registered content",
+      "passed": true
+    },
+    {
+      "name": "Public quota is released while private quarantine usage remains counted",
+      "passed": true
+    },
+    {
+      "name": "An identical reordered case is an idempotent replay",
+      "passed": true
+    },
+    {
+      "name": "Conflicting reuse of a case is rejected",
+      "passed": true
+    },
+    {
+      "name": "Cooperative reference writers reject quarantined assets",
+      "passed": true
+    },
+    {
+      "name": "Browser reference writes are rejected before catalogue/upload mutation",
+      "passed": true
+    },
+    {
+      "name": "Private quarantine object names are not served by the public app",
+      "passed": true
+    },
+    {
+      "name": "Restore cannot overwrite a colliding public file",
+      "passed": true
+    },
+    {
+      "name": "Changed quarantine content is held rather than restored",
+      "passed": true
+    },
+    {
+      "name": "Restore republishes verified bytes without losing the rescue archive",
+      "passed": true
+    },
+    {
+      "name": "Restored files receive a fresh cleanup grace period",
+      "passed": true
+    },
+    {
+      "name": "Audit contains reviewed actors, cases and strictly increasing sequences",
+      "passed": true
+    },
+    {
+      "name": "Permanent purge is not an exposed action",
+      "passed": true
+    },
+    {
+      "name": "Young assets remain in place",
+      "passed": true
+    },
+    {
+      "name": "A reference added after review is rechecked at execution",
+      "passed": true
+    },
+    {
+      "name": "Content drift after review cannot be quarantined",
+      "passed": true
+    },
+    {
+      "name": "Quarantine file quota is enforced without removing the source",
+      "passed": true
+    },
+    {
+      "name": "Quarantine byte quota is enforced independently",
+      "passed": true
+    },
+    {
+      "name": "Concurrent identical cleanup creates one move and one replay",
+      "passed": true
+    },
+    {
+      "name": "Different reviewed cases cannot both withdraw the same asset",
+      "passed": true
+    },
+    {
+      "name": "A reference writer already holding the gate wins before cleanup",
+      "passed": true
+    },
+    {
+      "name": "Reference creation waits for cleanup then rejects the withdrawn asset",
+      "passed": true
+    },
+    {
+      "name": "Interruption at prepared retains at least one verified copy",
+      "passed": true
+    },
+    {
+      "name": "Pending prepared pauses new upload admission",
+      "passed": true
+    },
+    {
+      "name": "Reviewed recovery finishes prepared idempotently and safely",
+      "passed": true
+    },
+    {
+      "name": "Completed recovery replays without adding audit or moving data",
+      "passed": true
+    },
+    {
+      "name": "Interruption at copied retains at least one verified copy",
+      "passed": true
+    },
+    {
+      "name": "Pending copied pauses new upload admission",
+      "passed": true
+    },
+    {
+      "name": "Reviewed recovery finishes copied idempotently and safely",
+      "passed": true
+    },
+    {
+      "name": "Interruption at source_removed retains at least one verified copy",
+      "passed": true
+    },
+    {
+      "name": "Pending source_removed pauses new upload admission",
+      "passed": true
+    },
+    {
+      "name": "Reviewed recovery finishes source_removed idempotently and safely",
+      "passed": true
+    },
+    {
+      "name": "Recovery rechecks references added through a trusted bypass",
+      "passed": true
+    },
+    {
+      "name": "Reviewed rollback preserves newly referenced public data",
+      "passed": true
+    },
+    {
+      "name": "Rollback can restore a source already removed after verified copy",
+      "passed": true
+    },
+    {
+      "name": "Interrupted restore at prepared preserves the archive",
+      "passed": true
+    },
+    {
+      "name": "Restore recovery finishes prepared without overwriting data",
+      "passed": true
+    },
+    {
+      "name": "Interrupted restore at published preserves the archive",
+      "passed": true
+    },
+    {
+      "name": "Restore recovery finishes published without overwriting data",
+      "passed": true
+    },
+    {
+      "name": "Interrupted restore at restore_published preserves the archive",
+      "passed": true
+    },
+    {
+      "name": "Restore recovery finishes restore_published without overwriting data",
+      "passed": true
+    },
+    {
+      "name": "Reviewed rollback of an unpublished restore keeps the private copy",
+      "passed": true
+    },
+    {
+      "name": "Restore respects active quota and keeps its private rescue copy",
+      "passed": true
+    },
+    {
+      "name": "Restore and upload cannot oversubscribe the last public slot",
+      "passed": true
+    },
+    {
+      "name": "Owned quarantine fixture stopped; media and audit volumes retained",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 51,
+    "passed": 51,
+    "failed": 0
+  }
+}

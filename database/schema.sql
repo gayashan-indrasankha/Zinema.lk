@@ -1,4 +1,4 @@
--- Canonical local schema v3, MariaDB 10.4+. Structure only, no data.
+-- Canonical local schema v4, MariaDB 10.4+. Structure only, no data.
 
 -- Validated in the isolated recovery fixture. Not an in-place migration.
 
@@ -198,7 +198,8 @@ CREATE TABLE `login_attempts` (
   `username` varchar(100) DEFAULT NULL COMMENT 'Username or email attempted',
   `attempt_time` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'When the attempt occurred',
   `successful` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Whether the login was successful',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_login_peer_time` (`ip_address`,`attempt_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Tracks login attempts for rate limiting and security monitoring';
 
 CREATE TABLE `media_refresh_log` (
@@ -346,7 +347,7 @@ CREATE TABLE `shots` (
   `description` text DEFAULT NULL,
   `fb_share_url` varchar(512) DEFAULT NULL,
   `shot_video_file` longtext NOT NULL,
-  `linked_content_type` enum('movie','series') NOT NULL,
+  `linked_content_type` enum('movie','series','collection') NOT NULL,
   `linked_content_id` int(11) NOT NULL,
   `admin_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),

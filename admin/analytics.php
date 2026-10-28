@@ -30,7 +30,7 @@ $monthly_watch_hours = round($monthly_watch_seconds / 3600, 2); // Convert to ho
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css">
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
     <style>
         /* Add some specific styles for the analytics page */
         .analytics-widgets {
