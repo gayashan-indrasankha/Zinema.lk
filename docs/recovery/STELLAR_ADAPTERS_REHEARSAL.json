@@ -1,0 +1,201 @@
+{
+  "scope": "Local native account adapters and fictional outbound extraction; not provider verification",
+  "tests": [
+    {
+      "name": "Private CLI initializes account-owned quota state without chown",
+      "passed": true
+    },
+    {
+      "name": "Only generated legal clip is used",
+      "passed": true
+    },
+    {
+      "name": "Account quota writer admits generated clip",
+      "passed": true
+    },
+    {
+      "name": "Private/INI material is inaccessible: /.user.ini",
+      "passed": true
+    },
+    {
+      "name": "Private/INI material is inaccessible: /zinema-private/staging/runtime-config.php",
+      "passed": true
+    },
+    {
+      "name": "Private/INI material is inaccessible: /ops/staging/stellar/operator.php",
+      "passed": true
+    },
+    {
+      "name": "Anonymous worker call is denied",
+      "passed": true
+    },
+    {
+      "name": "Wrong worker key is denied",
+      "passed": true
+    },
+    {
+      "name": "Worker rejects GET",
+      "passed": true
+    },
+    {
+      "name": "Worker rejects oversized request",
+      "passed": true
+    },
+    {
+      "name": "Independent key sends heartbeat",
+      "passed": true
+    },
+    {
+      "name": "Worker key does not authorize browser endpoint",
+      "passed": true
+    },
+    {
+      "name": "Anonymous browser with CSRF still cannot extract",
+      "passed": true
+    },
+    {
+      "name": "Fictional administrator can sign in",
+      "passed": true
+    },
+    {
+      "name": "Worker key is never rendered to administrator",
+      "passed": true
+    },
+    {
+      "name": "Administrator still needs CSRF",
+      "passed": true
+    },
+    {
+      "name": "Admin health reports authenticated outbound worker",
+      "passed": true
+    },
+    {
+      "name": "Admin enqueues instead of waiting in PHP",
+      "passed": true
+    },
+    {
+      "name": "Pending extraction cannot create a broken shot",
+      "passed": true
+    },
+    {
+      "name": "Outbound fake worker completes one claim",
+      "passed": true
+    },
+    {
+      "name": "Administrator observes only the verified same-origin managed clip",
+      "passed": true
+    },
+    {
+      "name": "Account operator inventories an owned review candidate",
+      "passed": true
+    },
+    {
+      "name": "Account cleanup quarantines with audit",
+      "passed": true
+    },
+    {
+      "name": "Quarantined clip is recoverable",
+      "passed": true
+    },
+    {
+      "name": "Account restore preserves original clip",
+      "passed": true
+    },
+    {
+      "name": "Account history retains both actions",
+      "passed": true
+    },
+    {
+      "name": "Private bootstrap rejects an unlisted client",
+      "passed": true
+    },
+    {
+      "name": "Retained website regressions pass on the fresh database",
+      "passed": true
+    },
+    {
+      "name": "Owned adapter HTTP process stopped and port closed",
+      "passed": true
+    }
+  ],
+  "external_connections": false,
+  "production_access": false,
+  "publishing": false,
+  "native_fixture": "audit-20261028-231023",
+  "source_commit": "12c9954758b9718cabe25816d328b28db0198582",
+  "source_overlays": [
+    {
+      "path": "admin/config.php",
+      "sha256": "cf4271f30af26e3408257f9f117d37a1ef9adf3eed53d7a1680398c6a7fa765b"
+    },
+    {
+      "path": "admin/extractor.php",
+      "sha256": "6e0c492e50dee0ed0d407b9cda1745d1985bb85060389c7d4679dd68261696e5"
+    },
+    {
+      "path": "admin/manage_shots.php",
+      "sha256": "b12b448be2f40e7761ba29ac7d084463a51e226ff91fb6ffa0f83dd040047008"
+    },
+    {
+      "path": "api/extractor-work.php",
+      "sha256": "78f59b833b16051fb2e3d5e197f6031d981838e7862aa99e294b60029448e7aa"
+    },
+    {
+      "path": "api/whatsapp/config.php",
+      "sha256": "296d80090e947bd8461d089664f9af8d8c55580dcbc2bd0366eb803e02879613"
+    },
+    {
+      "path": "includes/environment.php",
+      "sha256": "2e16e0512aac2b0e51132fa01baa07fc46cd9da32ef70f752f46976743f9a860"
+    },
+    {
+      "path": "includes/extractor_client.php",
+      "sha256": "895b5bbfd16b586e72cd6b4afc7758b82369eecaa763f124bbb0832390188cd8"
+    },
+    {
+      "path": "includes/extractor_queue.php",
+      "sha256": "2445404171eab51b54679dd5d8835ecde723e96ee64e6197f42deed3a818196c"
+    },
+    {
+      "path": "includes/operator_operations.php",
+      "sha256": "8bf376ad07f449e829175017b4fc41abeb69be309461478ff4fd39b10932b452"
+    },
+    {
+      "path": "includes/upload_cleanup.php",
+      "sha256": "33e3e4a84be866c9745184b3fc4a0d3ee3cafe78edd12b522914b874eba13b01"
+    },
+    {
+      "path": "includes/upload_lifecycle.php",
+      "sha256": "ec81b62574592515261cf9cea219be7d7d531f864fe964a3ecf703c33c65da90"
+    },
+    {
+      "path": "includes/upload_storage.php",
+      "sha256": "ebf794b23d91f0e3718285f05211f94fbea6dd6744baf014dae787067d45d11c"
+    },
+    {
+      "path": "js/extractor-queue.js",
+      "sha256": "06d77293e9d62af805c0c69e61c35d4cccfe6ec554a958a19d2387dc14a9d772"
+    }
+  ],
+  "website_regressions": {
+    "total": 94,
+    "passed": 94,
+    "failed": 0
+  },
+  "php_diagnostics": {
+    "Warning": 0,
+    "Notice": 0,
+    "Fatal error": 0,
+    "Deprecated": 0
+  },
+  "summary": {
+    "total": 29,
+    "passed": 29,
+    "failed": 0
+  },
+  "limitations": [
+    "Native mod_php does not verify Stellar CGI/FastCGI user.ini or account policy.",
+    "Only generated clip and loopback fake extraction; no upstream/SDK/provider contacted.",
+    "Upload speed, sustained personal-machine capacity and independent backups remain unverified."
+  ]
+}
