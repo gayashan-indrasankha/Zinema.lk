@@ -1,0 +1,2 @@
+# Shell entrypoints must remain executable by Linux containers after a Windows clone.
+dev/*.sh text eol=lf

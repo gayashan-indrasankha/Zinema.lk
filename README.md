@@ -15,7 +15,8 @@ WhatsApp, mail, OAuth, payments, downloads and extraction remain restricted.
 - [Current recovery status](docs/recovery/STATUS.md)
 - [Repair scope and executed evidence](docs/recovery/REPAIR_PHASE.md)
 - [Canonical schema](database/schema.sql) and [schema reconciliation](docs/recovery/SCHEMA_RECONCILIATION.md)
-- [Local test instructions](docs/recovery/tests/README.md)
+- [Portable local development](dev/README.md) and [executed local phase](docs/recovery/LOCAL_DEV_PHASE.md)
+- [Retained test instructions](docs/recovery/tests/README.md)
 - [Publication and PR review order](docs/recovery/PUBLISHING.md)
 - [Third-party attribution](THIRD_PARTY.md)
 
@@ -24,16 +25,16 @@ WhatsApp, mail, OAuth, payments, downloads and extraction remain restricted.
 With Node.js 24, run these fake-client and configuration regressions from the
 project root:
 
-`powershell
+```powershell
 node --test --test-isolation=none --test-reporter=tap docs/recovery/tests/config.test.cjs
 node --test --test-isolation=none --test-reporter=tap docs/recovery/tests/bot.test.cjs
-`
+```
 
 The HTTP/database harness additionally requires the documented Windows XAMPP
 binaries. It creates isolated loopback fixtures with fictional accounts and
 generated media, and refuses occupied service ports. Follow its README and stop
-its owned services after testing. A portable development environment is future
-work.
+its owned services after testing. The Docker workflow in [dev/README.md](dev/README.md) provides a separate
+portable environment with fake SMTP/OAuth and an internal database.
 
 ## Configuration and data
 

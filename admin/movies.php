@@ -1,6 +1,7 @@
 <?php
 require_once 'config.php';
 check_login();
+require_once __DIR__ . '/../includes/uploads.php';
 
 $admin_id = $_SESSION['admin_id'];
 $message = '';
@@ -14,14 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     $stmt->execute();
     $result = $stmt->get_result()->fetch_assoc();
     
-    // Delete the cover image file if it exists
-    if ($result && !empty($result['cover_image'])) {
-        $filename = basename($result['cover_image']);
-        if (file_exists('../uploads/' . $filename)) {
-            unlink('../uploads/' . $filename);
-        }
-    }
-    
+    // Media cleanup requires separate review; retain legacy and shared files.
     $stmt = $conn->prepare("DELETE FROM movies WHERE id = ?");
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
@@ -46,20 +40,7 @@ if (isset($_POST['add_movie'])) {
     
     $cover_image_path = '';
 
-    // Handle file upload
-    if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] == 0) {
-        $target_dir = "../uploads/";
-        if (!is_dir($target_dir)) {
-            mkdir($target_dir, 0755, true);
-        }
-        
-        $image_name = uniqid() . '_' . basename($_FILES["cover_image"]["name"]);
-        $target_file = $target_dir . $image_name;
-        
-        if (move_uploaded_file($_FILES["cover_image"]["tmp_name"], $target_file)) {
-            $cover_image_path = 'uploads/' . $image_name;
-        }
-    }
+    $cover_image_path = store_catalogue_upload('cover_image', 'image', $cover_image_path);
 
     // Insert movie
     $stmt = $conn->prepare("INSERT INTO movies (title, release_date, genre, rating, cover_image, video_url, language_type, collection_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
@@ -93,25 +74,7 @@ if (isset($_POST['edit_movie'])) {
     $current = $stmt->get_result()->fetch_assoc();
     $cover_image_path = $current['cover_image'];
 
-    // Handle new file upload
-    if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] == 0) {
-        $target_dir = "../uploads/";
-        
-        // Delete old cover image
-        if (!empty($cover_image_path)) {
-            $old_filename = basename($cover_image_path);
-            if (file_exists($target_dir . $old_filename)) {
-                unlink($target_dir . $old_filename);
-            }
-        }
-        
-        $image_name = uniqid() . '_' . basename($_FILES["cover_image"]["name"]);
-        $target_file = $target_dir . $image_name;
-        
-        if (move_uploaded_file($_FILES["cover_image"]["tmp_name"], $target_file)) {
-            $cover_image_path = 'uploads/' . $image_name;
-        }
-    }
+    $cover_image_path = store_catalogue_upload('cover_image', 'image', $cover_image_path);
 
     // Update movie
     $stmt = $conn->prepare("UPDATE movies SET title = ?, release_date = ?, genre = ?, rating = ?, cover_image = ?, video_url = ?, language_type = ?, collection_id = ? WHERE id = ?");

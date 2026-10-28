@@ -1,0 +1,27 @@
+{
+  "source": "reviewed Git index export, no .git/private/legacy inputs",
+  "fresh_canonical_database": true,
+  "build": "pinned images and image-library versions; startup exit 0",
+  "http": {
+    "total": 88,
+    "passed": 88,
+    "failed": 0
+  },
+  "oauth_unit": {
+    "total": 7,
+    "passed": 7
+  },
+  "environment": {
+    "total": 17,
+    "passed": 17,
+    "failed": 0
+  },
+  "stop": "owned Compose containers and networks removed; generated configuration and volumes retained",
+  "owned_ports_closed": {
+    "8088": true,
+    "9081": true,
+    "3307": true,
+    "8089": true,
+    "3334": true
+  }
+}
