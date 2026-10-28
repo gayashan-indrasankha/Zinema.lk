@@ -36,7 +36,7 @@ SAMPLE_PASSWORD = 'Fictional-local-test-42!'
 SKIP = {'node_modules', '.git', 'whatsapp-session', '.wwebjs_auth', '.runtime', '.recovery-private', 'uploads'}
 NO_WINDOW = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
 RESULT_PREFIX = os.environ.get('ZINEMA_TEST_PHASE', 'REPAIR')
-if RESULT_PREFIX not in {'REPAIR', 'LOCAL_DEV', 'OPERATIONS', 'QUARANTINE', 'PRODUCTION', 'EXTRACTOR_CONNECTION', 'LIFECYCLE', 'STAGING', 'PROMOTION'}: raise RuntimeError('Unknown sanitized result prefix')
+if RESULT_PREFIX not in {'REPAIR', 'LOCAL_DEV', 'OPERATIONS', 'QUARANTINE', 'PRODUCTION', 'EXTRACTOR_CONNECTION', 'LIFECYCLE', 'STAGING', 'PROMOTION', 'STELLAR_ADAPTERS'}: raise RuntimeError('Unknown sanitized result prefix')
 
 
 
@@ -111,7 +111,7 @@ def syntax():
     return result
 
 
-def prepare():
+def prepare(on_created=None):
     assert not port_open(DB_PORT) and not port_open(PORT), 'Required loopback ports already occupied; do not reuse an unknown service'
     folder = ROOT / '.runtime' / ('audit-' + time.strftime('%Y%m%d-%H%M%S'))
     folder.mkdir(parents=True, exist_ok=False)
@@ -125,13 +125,14 @@ def prepare():
     (folder / 'sessions').mkdir()
     ownership = {'purpose': 'owner-authorized isolated Zinema assessment', 'base': BASE, 'pids': {}}
     (folder / 'ownership.json').write_text(json.dumps(ownership, indent=2))
+    if on_created is not None:on_created(folder)
     manifest = {}
     # Mirror code and style only. No environment, SQL rows, logs, sessions or private media.
     for path in source_files():
         rel = path.relative_to(ROOT)
         if not path.is_file() or any(x in SKIP for x in rel.parts):
             continue
-        if rel.parts[0] in {'docs', 'whatsapp-bot-deploy', 'fb-video-api', 'migrations'}:
+        if rel.parts[0] in {'docs', 'whatsapp-bot-deploy', 'fb-video-api', 'migrations', 'ops'}:
             continue
         if path.suffix.lower() not in {'.php', '.js', '.css'} and rel.as_posix() != '.htaccess':
             continue
