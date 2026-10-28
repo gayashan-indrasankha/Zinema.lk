@@ -1,0 +1,97 @@
+{
+  "scope": "Automated headless Chrome plus separate visual screenshot review; fictional localhost only",
+  "tests": [
+    {
+      "name": "Catalogue renders tracked local logo and fictional cards",
+      "passed": true
+    },
+    {
+      "name": "Search popup opens, searches and follows a rewritten detail route",
+      "passed": true
+    },
+    {
+      "name": "Full movie detail offers WhatsApp handoff without a full-content player",
+      "passed": true
+    },
+    {
+      "name": "Signup honestly reports disabled verification without signing in",
+      "passed": true
+    },
+    {
+      "name": "Missing reset token displays an invalid-link message",
+      "passed": true
+    },
+    {
+      "name": "Verified fictional member signs in and reaches profile",
+      "passed": true
+    },
+    {
+      "name": "Administrator login reaches the dashboard",
+      "passed": true
+    },
+    {
+      "name": "Administrator creates a fictional movie with a generated PNG",
+      "passed": true
+    },
+    {
+      "name": "Administrator edits the new movie while retaining its cover",
+      "passed": true
+    },
+    {
+      "name": "An invalid image is rejected before creating a movie",
+      "passed": true
+    },
+    {
+      "name": "Administrator uploads the original generated MP4 with honest limits",
+      "passed": true
+    },
+    {
+      "name": "Uploaded original preview decodes and advances without external media",
+      "passed": true
+    },
+    {
+      "name": "Public trailer feed selects and plays the uploaded short preview",
+      "passed": true
+    },
+    {
+      "name": "Mobile administration fits the viewport",
+      "passed": true
+    },
+    {
+      "name": "Mobile catalogue fits the viewport with a working uploaded cover",
+      "passed": true
+    },
+    {
+      "name": "Administrator logout returns to login and retains separate member session",
+      "passed": true
+    }
+  ],
+  "externalConnections": false,
+  "productionAccess": false,
+  "publishing": false,
+  "blockedExternalRequests": 0,
+  "pageErrors": [],
+  "screenshots": [
+    "catalogue-desktop.png",
+    "delivery-unavailable.png",
+    "signup-disabled.png",
+    "member-profile.png",
+    "admin-dashboard.png",
+    "admin-movie-created.png",
+    "admin-clip-upload.png",
+    "public-generated-clip.png",
+    "admin-mobile.png",
+    "catalogue-mobile.png"
+  ],
+  "summary": {
+    "total": 16,
+    "passed": 16,
+    "failed": 0
+  },
+  "limitations": [
+    "Interactive computer-use tools could not initialize; no manual interaction pass claimed.",
+    "Real hosting, provider extraction, email, WhatsApp, speed tests and independent backups not exercised.",
+    "Only generated small PNG/MP4 fixtures, not arbitrary codecs, real media or sustained load.",
+    "CSP blocks legacy external assets; no CDN requests or external page destinations are permitted."
+  ]
+}
