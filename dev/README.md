@@ -147,3 +147,10 @@ quiesced snapshot and restores/comparisons it. All providers stay disabled; this
 does not provision a host or approve a release. Private evidence/keys/volumes remain
 under ignored state; never publish the SQL/archive/session fingerprints. The backup
 helper is capped at 64 MiB and is only for fixtures. No volume cleanup is automatic.
+
+The promotion follow-up uses `python -X utf8 dev/rehearse_promotion.py` against the
+reviewed Git index tree. It adds production-config quota checks, the private Unix
+extractor, streaming SQL/media/ZIP64/encryption/local mirror/restore and bounded
+local alerts. See [the operator contract](../ops/README.md) and
+[promotion evidence](../docs/recovery/PROMOTION_CONTROLS.md). No live adapter,
+production path, external backup/alert destination or publishing is enabled.

@@ -1,0 +1,314 @@
+{
+  "date": "2026-10-28",
+  "state": "COMPLETE within source-publication scope; overall launch remains NO GO",
+  "authorization": "Owner requested staging, incremental logical commits and review-ready PRs; previous publishing authorization persists. No merge, deployment, provider, production, credential rotation or host spending authorization is inferred.",
+  "initial_source_head": "4d04e204c561c64a7cfb7e1716cda93db41ef31a",
+  "remote_main_at_start": "db801669b6c123cc3584ed389949854266d59a0e",
+  "initial_unstaged_files": 0,
+  "existing_unpublished_commits": [
+    {
+      "sha": "9c48b7ca8a2b6535b6da0b408d49bbdfe7280f1a",
+      "subject": "feat(dev): add isolated runtime and delivery safety tests"
+    },
+    {
+      "sha": "b9dead6b98579760386aed229a4847712d3f1601",
+      "subject": "docs(recovery): record verified local development baseline"
+    },
+    {
+      "sha": "cae7ab7f05680a8a4894c732aa3529c518d95e33",
+      "subject": "feat(operations): add local reconciliation and upload inventory"
+    },
+    {
+      "sha": "a31d47eb8610bd54567175913d7f6d5806b58dfb",
+      "subject": "docs(recovery): record verified local operator workflow"
+    },
+    {
+      "sha": "637327e55d772dcb6acce4383b226bbaee606bd5",
+      "subject": "feat(storage): add reviewed recoverable upload quarantine"
+    },
+    {
+      "sha": "28e0ddf810755525255c9a9f5dc5146b7989527a",
+      "subject": "docs(recovery): record quarantine verification and handoff"
+    },
+    {
+      "sha": "013bd480889c5adad1e0d2d9b290b842018e8910",
+      "subject": "fix(relaunch): harden local flows and record readiness gaps"
+    },
+    {
+      "sha": "70af8a5298c1922e3a700be717ec3144a8fa140f",
+      "subject": "docs(relaunch): record verified local audit checkpoint"
+    },
+    {
+      "sha": "2bd63050e18ea7e749b60aa98f23c39688dbe3ab",
+      "subject": "feat(extractor): add private authenticated local adapter contract"
+    },
+    {
+      "sha": "0fb8566ea2056518100bd727086e3a6b3efc2dc8",
+      "subject": "fix(bot): preserve uncertain work and bound worker lifecycle"
+    },
+    {
+      "sha": "6840da630bdd5fdfc8eea3f39a306f53d51ecea1",
+      "subject": "build(staging): rehearse isolated TLS backup and restore"
+    },
+    {
+      "sha": "4d04e204c561c64a7cfb7e1716cda93db41ef31a",
+      "subject": "feat(ops): add reviewed local promotion controls"
+    }
+  ],
+  "branches": [
+    {
+      "order": 1,
+      "branch": "zinema/local-development",
+      "source_checkpoint": "b9dead6b98579760386aed229a4847712d3f1601",
+      "existing_commits_in_checkpoint": 2,
+      "scope": "Isolated local development and delivery safeguards",
+      "pr_number": 11,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/11",
+      "base": "main",
+      "state_before_final_handoff": "open",
+      "draft": false,
+      "mergeable_before_final_handoff": true,
+      "pr_head_before_final_handoff": "b9dead6b98579760386aed229a4847712d3f1601"
+    },
+    {
+      "order": 2,
+      "branch": "zinema/local-operations",
+      "source_checkpoint": "a31d47eb8610bd54567175913d7f6d5806b58dfb",
+      "existing_commits_in_checkpoint": 2,
+      "scope": "Local reconciliation and upload inventory",
+      "pr_number": 12,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/12",
+      "base": "main",
+      "state_before_final_handoff": "open",
+      "draft": false,
+      "mergeable_before_final_handoff": true,
+      "pr_head_before_final_handoff": "a31d47eb8610bd54567175913d7f6d5806b58dfb"
+    },
+    {
+      "order": 3,
+      "branch": "zinema/upload-quarantine",
+      "source_checkpoint": "28e0ddf810755525255c9a9f5dc5146b7989527a",
+      "existing_commits_in_checkpoint": 2,
+      "scope": "Reviewed recoverable upload quarantine",
+      "pr_number": 13,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/13",
+      "base": "main",
+      "state_before_final_handoff": "open",
+      "draft": false,
+      "mergeable_before_final_handoff": true,
+      "pr_head_before_final_handoff": "28e0ddf810755525255c9a9f5dc5146b7989527a"
+    },
+    {
+      "order": 4,
+      "branch": "zinema/product-hardening",
+      "source_checkpoint": "70af8a5298c1922e3a700be717ec3144a8fa140f",
+      "existing_commits_in_checkpoint": 2,
+      "scope": "Product hardening and local readiness audit",
+      "pr_number": 14,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/14",
+      "base": "main",
+      "state_before_final_handoff": "open",
+      "draft": false,
+      "mergeable_before_final_handoff": true,
+      "pr_head_before_final_handoff": "70af8a5298c1922e3a700be717ec3144a8fa140f"
+    },
+    {
+      "order": 5,
+      "branch": "zinema/private-extractor",
+      "source_checkpoint": "2bd63050e18ea7e749b60aa98f23c39688dbe3ab",
+      "existing_commits_in_checkpoint": 1,
+      "scope": "Private authenticated extractor contract",
+      "pr_number": 15,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/15",
+      "base": "main",
+      "state_before_final_handoff": "open",
+      "draft": false,
+      "mergeable_before_final_handoff": true,
+      "pr_head_before_final_handoff": "2bd63050e18ea7e749b60aa98f23c39688dbe3ab"
+    },
+    {
+      "order": 6,
+      "branch": "zinema/bot-lifecycle",
+      "source_checkpoint": "0fb8566ea2056518100bd727086e3a6b3efc2dc8",
+      "existing_commits_in_checkpoint": 1,
+      "scope": "Uncertain-work preservation and worker lifecycle",
+      "pr_number": 16,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/16",
+      "base": "main",
+      "state_before_final_handoff": "open",
+      "draft": false,
+      "mergeable_before_final_handoff": true,
+      "pr_head_before_final_handoff": "0fb8566ea2056518100bd727086e3a6b3efc2dc8"
+    },
+    {
+      "order": 7,
+      "branch": "zinema/staging-rehearsal",
+      "source_checkpoint": "6840da630bdd5fdfc8eea3f39a306f53d51ecea1",
+      "existing_commits_in_checkpoint": 1,
+      "scope": "Isolated TLS backup and restore rehearsal",
+      "pr_number": 17,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/17",
+      "base": "main",
+      "state_before_final_handoff": "open",
+      "draft": false,
+      "mergeable_before_final_handoff": true,
+      "pr_head_before_final_handoff": "6840da630bdd5fdfc8eea3f39a306f53d51ecea1"
+    },
+    {
+      "order": 8,
+      "branch": "zinema/promotion-controls",
+      "source_checkpoint": "4d04e204c561c64a7cfb7e1716cda93db41ef31a",
+      "existing_commits_in_checkpoint": 1,
+      "scope": "Reviewed local promotion controls",
+      "pr_number": 18,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/18",
+      "base": "main",
+      "state_before_final_handoff": "open",
+      "draft": false,
+      "mergeable_before_final_handoff": true,
+      "pr_head_before_final_handoff": "efe44d67a490203e498b5475f6b72b2844bd2778"
+    }
+  ],
+  "checks": {
+    "date": "2026-10-28",
+    "source_head": "4d04e204c561c64a7cfb7e1716cda93db41ef31a",
+    "base_main": "db801669b6c123cc3584ed389949854266d59a0e",
+    "initial_working_tree_clean": true,
+    "unpublished_commits": 12,
+    "candidate_files": 526,
+    "changed_files": 308,
+    "scanner": "Gitleaks 8.30.1",
+    "archive_and_binary_checksums_match": true,
+    "scans": [
+      {
+        "scope": "candidate",
+        "exit": 0,
+        "findings": 0
+      },
+      {
+        "scope": "unpublished-history",
+        "exit": 0,
+        "findings": 0
+      }
+    ],
+    "private_ignore_checks_passed": 21,
+    "syntax": {
+      "php": {
+        "total": 198,
+        "passed": 198,
+        "failures": []
+      },
+      "javascript": {
+        "total": 74,
+        "passed": 74,
+        "failures": []
+      },
+      ".py": {
+        "total": 21,
+        "passed": 21,
+        "failures": []
+      },
+      ".json": {
+        "total": 89,
+        "passed": 89,
+        "failures": []
+      }
+    },
+    "tests": {
+      "node_fake_and_local": {
+        "exit": 0,
+        "files": [
+          "docs/recovery/tests/backup-crypto.test.cjs",
+          "docs/recovery/tests/bot-api-boundary.test.cjs",
+          "docs/recovery/tests/bot-entrypoint.test.cjs",
+          "docs/recovery/tests/bot-lifecycle.test.cjs",
+          "docs/recovery/tests/bot-recovery.test.cjs",
+          "docs/recovery/tests/bot.test.cjs",
+          "docs/recovery/tests/config.test.cjs",
+          "docs/recovery/tests/extractor-fetch.test.cjs",
+          "docs/recovery/tests/extractor.test.cjs",
+          "docs/recovery/tests/promotion-controls.test.cjs",
+          "docs/recovery/tests/search-popup.test.cjs",
+          "docs/recovery/tests/token-delivery.test.cjs",
+          "docs/recovery/tests/trailer-feed.test.cjs"
+        ],
+        "tests": 133,
+        "pass": 133,
+        "fail": 0,
+        "skipped": 0,
+        "failed_test_names": []
+      },
+      "test_local_guard.py": {
+        "exit": 0,
+        "tests": 9
+      },
+      "test_staging.py": {
+        "exit": 0,
+        "tests": 6
+      }
+    },
+    "whitespace": {
+      "exit": 0,
+      "findings": 0,
+      "files": 0
+    },
+    "privacy_pattern_inventory": {
+      "phone": 0,
+      "whatsapp_identifier": 2,
+      "email": 28,
+      "private_key": 0,
+      "sql_data_statement": 10
+    },
+    "limitations": [
+      "No new Docker, HTTP/database/TLS, browser or real-provider acceptance run in this publication phase.",
+      "Prior phase runtime evidence is retained separately; production readiness remains NO GO.",
+      "Default secret patterns do not prove every secret or personal datum absent; ignored private material is not a publication candidate.",
+      "No container vulnerability, penetration, complete licensing or dependency advisory refresh performed."
+    ]
+  },
+  "preserved_work_branch": "zinema/local-dev-safety",
+  "inspection": "Read recovery records and relevant test/guard source; inspected changed paths and per-commit stats, reviewed ignore rules and supplemental contact/SQL patterns, matched scanned snapshot hashes. This is not a fresh exhaustive application or licensing audit.",
+  "privacy_review": "No production telephone numbers or embedded private keys found in supplemental changed-file patterns. Two numeric WhatsApp IDs occur in explicitly fictional fake-client tests; schema group-ID examples and example.invalid accounts are retained. SQL data writes are application/fictional fixture code, not a production dump. Generated clip sources and prior fictional screenshots remain covered by their recorded phase provenance; no complete media-rights certification is claimed.",
+  "runtime_evidence": "Earlier local Docker/HTTP/database/TLS/browser reports remain historical phase evidence. This publication only reruns the listed fake/local regressions, guard/artifact boundaries, static checks and scans.",
+  "next_task": "Choose the isolated staging host and budget, then prepare its exact runtime/TLS/CSP/storage/supervisor/key-custody/backup/metric-collector/alert configuration as a reviewable disabled candidate. Preserve history; keep external connections and deployment off until explicitly authorized.",
+  "documentation_commits": [
+    {
+      "subject": "docs(review): prepare ordered recovery publication",
+      "sha": "efe44d67a490203e498b5475f6b72b2844bd2778",
+      "paths": [
+        "docs/recovery/REVIEW_PUBLICATION.md",
+        "docs/recovery/REVIEW_PUBLICATION_RESULTS.json",
+        "docs/recovery/DECISIONS.md"
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_scan_findings": 0,
+      "history_scan_findings": 0,
+      "json_and_index_hash_checks": "passed",
+      "source_unchanged": true,
+      "working_tree_clean": true
+    },
+    {
+      "subject": "docs(recovery): record published recovery PR handoff",
+      "hash_location": "This results file is part of the final handoff commit; inspect its Git history or the execution handoff."
+    }
+  ],
+  "total_commits_for_review": 14,
+  "new_documentation_commits": 2,
+  "source_commit_hashes_authors_dates_preserved": true,
+  "application_source_changed_by_publication": false,
+  "remote_checks": {
+    "all_eight_heads_matched_local_checkpoints_after_initial_push": true,
+    "all_prs_open_non_draft_mergeable_before_final_handoff": true,
+    "main_unchanged_at_initial_push": true,
+    "main_sha": "db801669b6c123cc3584ed389949854266d59a0e",
+    "post_handoff_head_and_clean_tree": "Verified again after final commit/push and reported in the execution handoff.",
+    "merged": false,
+    "deployed": false
+  },
+  "publication_document_paths": [
+    "docs/recovery/REVIEW_PUBLICATION.md",
+    "docs/recovery/REVIEW_PUBLICATION_RESULTS.json",
+    "docs/recovery/DECISIONS.md",
+    "docs/recovery/STATUS.md"
+  ]
+}

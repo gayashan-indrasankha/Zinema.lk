@@ -13,6 +13,9 @@ Final executed counts and limitations are recorded in PRODUCTION_AUDIT.md.
 Follow-up evidence on 2026-10-26: EXTRACTOR_CONNECTION.md, BOT_LIFECYCLE.md and
 STAGING_REHEARSAL.md. The corresponding rows below reflect those local results;
 all real provider and selected-host acceptance remains pending.
+PROMOTION_CONTROLS.md adds the 127-case fake suite, signed worker test-window guard,
+reviewed maintenance, keyed Unix connection, quota, streaming restore and local
+alert-outbox evidence. These do not authorize a real account, host or publication.
 
 | Feature | Automatic local evidence | Manual browser evidence | Launch gap / acceptance |
 | --- | --- | --- | --- |
@@ -49,9 +52,9 @@ all real provider and selected-host acceptance remains pending.
 | Bot cached/group/local-disk forwarding tiers | Retained fake-client component tests | No live client/UI launched | Live group lookup/media transfer still requires approval |
 | Bot commands/administrator identity | Exact identity tests, guarded entry point, static command review | No WhatsApp commands sent | Full Baileys event/command surface not yet live verified |
 | Bot incoming/upload queues | Bounded queue/dedup/drain and persisted maintenance/held recovery tests | Backend component | Real SDK and sustained ingestion/overload remain staging requirements |
-| Bot reconnect/health/session handling | Serialized reconnect, worker lease, stale-event/heartbeat, fake entrypoint/shutdown tests | No real QR/session access | Actual SDK/account/pairing/supervisor compatibility remains unverified |
-| Bot cache warming/auto-refresh/night jobs | Explicit-time-zone/idempotent schedule, shared gate, restart/checkpoint/held tests in 102-case suite | Fake SDK only; no group upload | Actual schedules/groups/large media and reviewed held-maintenance handling pending |
-| fb-video-api health/disabled/local modes | Private actual PHP/Node 33-case contract, 14 client/4 cURL faults, 6 service checks | Administrator fake health/preview and stopped/disabled states verified | Live promotion/provider extraction remains blocked |
+| Bot reconnect/health/session handling | Serialized reconnect/lease/stale-event/shutdown plus owner signature/identity/window-expiry and fake pairing review tests | No real QR/session access | Approved actual SDK pairing/issuer/account/supervisor acceptance remains unverified |
+| Bot cache warming/auto-refresh/night jobs | Explicit TZ/shared gate and reviewed held-state CAS audit/withdrawal/recovery/exclusion across force scans in expanded 127-case suite | Fake SDK only; no group upload | Actual schedules/groups/large media and live metadata evidence acceptance pending |
+| fb-video-api health/disabled/local modes | Retained 33-case contract, 14 client checks plus production-config Unix socket 8/8 and stopped backend 2/2 | Earlier administrator fake health/preview/stopped/disabled states verified | Provider/browser extraction remains blocked; real host policy pending |
 | Facebook URL parsing/HTML extraction | Original HTML fixtures; deceptive hosts/unsafe media rejection | Shot form validation reviewed | Real provider HTML/login/deleted/expired cases need approval |
 | Extractor HTTPS transport | Mock DNS/HTTPS, pinned-address/redirect/body/deadline tests | Backend component | No real DNS/provider extraction executed; outbound staging controls required |
 | Extractor browser fallback/dependencies | Full declared npm audits; pinned upgrade/import test | No browser launched for extraction | Explicit compatible Chrome binary, sandbox/network isolation and full fallback tests remain blocked |
@@ -60,7 +63,7 @@ all real provider and selected-host acceptance remains pending.
 | Payments/subscriptions | Disabled endpoint boundary checks | Owner selected free access | Excluded; handlers stay disabled and must not be advertised |
 | Unsafe downloader/cron/migration/diagnostics | Disabled/denied boundary checks | Legacy download link replaced in public CTA | No old fetcher/cron enabled |
 | Security headers/CSRF/secrets/error boundaries | Retained HTTP, URL/input/throttle tests, source review, Gitleaks | Browser auth/role states and search review | Deployment-specific TLS/proxy/CSP/secret rotation/pen test still required |
-| Capacity/recovery/operations | Local TLS 5/25-client 400-request load, stopped-writer encrypted restore, all-row/file comparisons and unavailable alert passed | No selected-host browser run | Sustained/large-media/host capacity, off-host keys/backups/alerts and rollout rollback remain gates |
+| Capacity/recovery/operations | Local 5/25-client load; streamed SQL/media/ZIP64/GCM/mirror/restore; 128 MiB crypto memory case; fixed metric/outbox and outage/recovery passed | No selected-host browser run | Sustained/actual media/host capacity, off-host keys/backups/alerts and rollout rollback remain gates |
 
 Evidence classifications: source indexing is **statically inspected** only. A
 written test is **test-covered**, with execution/results recorded separately.

@@ -14,13 +14,13 @@ function createApp(config,{clock=Date.now,extract=async()=>({url:config.fakeMedi
  app.use(express.json({limit:2048,strict:true}));
  app.post('/health',(_req,res)=>res.json({success:true,mode:config.mode,uptime:Math.floor(process.uptime()),version:'local-contract-1'}));
  app.post('/api/extract',async(req,res)=>{
-  if (config.mode!=='local') return res.status(503).json({success:false,error:'disabled'});
+  if (!['local','private-fixture'].includes(config.mode)) return res.status(503).json({success:false,error:'disabled'});
   if (!req.body || Object.keys(req.body).some(key=>key!=='url')) return res.status(400).json({success:false,error:'invalid_request'});
   try {if (typeof req.body.url!=='string'||req.body.url.length>512) throw Error();normalizeUrl(req.body.url);} catch {return res.status(422).json({success:false,error:'invalid_source'});}
   if (clock()-windowStart>=60000) {windowStart=clock();admitted=0;}
   if (inFlight>=2 || admitted>=30) return res.status(429).set('Retry-After','60').json({success:false,error:'busy'});
   admitted++;inFlight++;
-  try {const result=await extract();return res.json({success:true,mode:'local',url:result.url,method:'local-fixture',duration_ms:0});}
+  try {const result=await extract();return res.json({success:true,mode:config.mode,url:result.url,method:'local-fixture',duration_ms:0});}
   catch {return res.status(502).json({success:false,error:'unavailable'});}finally{inFlight--;}
  });
  app.use((_req,res)=>res.status(405).json({success:false,error:'method_not_allowed'}));

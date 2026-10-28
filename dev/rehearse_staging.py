@@ -25,11 +25,24 @@ class Rehearsal:
         # Restore accounts are copied from source; only the two DB identities differ.
         (self.home/'restore/demo_password').write_bytes((self.home/'source/demo_password').read_bytes())
         self.results=self.home/'results';self.results.mkdir()
-    def command(self,args,data=None,allow=False):
-        result=subprocess.run(args,cwd=ROOT,env=local.ENV,input=data,capture_output=True)
+    def command(self,args,data=None,allow=False,output_file=None,data_file=None):
+        if data is not None and data_file is not None:raise RuntimeError('ambiguous_input')
+        streams=[]
+        try:
+            options={'stderr':subprocess.PIPE,'stdout':subprocess.PIPE}
+            for value in [output_file,data_file]:
+                if value is not None and self.home.resolve() not in Path(value).resolve().parents:raise RuntimeError('private_stream_boundary')
+            if output_file is not None:
+                stream=open(output_file,'xb');streams.append(stream);options['stdout']=stream
+            if data_file is not None:
+                stream=open(data_file,'rb');streams.append(stream);options['stdin']=stream
+            else:options['input']=data
+            result=subprocess.run(args,cwd=ROOT,env=local.ENV,**options)
+        finally:
+            for stream in streams:stream.close()
         self.diag.write(result.stderr);self.diag.flush()
         if result.returncode and not allow:
-            self.diag.write(result.stdout);self.diag.flush();raise RuntimeError('local_step_failed:'+Path(args[0]).name)
+            self.diag.write(result.stdout or b'');self.diag.flush();raise RuntimeError('local_step_failed:'+Path(args[0]).name)
         return result
     def docker(self,*args,**kw):return self.command(['docker',*map(str,args)],**kw)
     def check(self,name,value):
@@ -80,14 +93,14 @@ class Rehearsal:
         self.owned(db['name'])
         result=self.docker('run','--rm','-i','--network','container:'+db['name'],*self.label,*self.env(),*self.mounts(db),local.PROJECT+'-web','php','/opt/zinema/dev/'+file,data=json.dumps(payload).encode() if payload is not None else None)
         return result.stdout
-    def sql(self,db,sql=None,dump=False):
+    def sql(self,db,sql=None,dump=False,output_file=None,data_file=None):
         self.owned(db['name'])
         # Constant shell text. Password travels only through the existing mounted file.
         script='umask 077; cnf=$(mktemp /dev/shm/zinema.XXXXXX); trap \'rm -f "$cnf"\' EXIT; printf "[client]\\nuser=root\\npassword=%s\\n" "$(cat /run/secrets/db_root)" > "$cnf"; '
         script+=('exec mariadb-dump --defaults-extra-file="$cnf" --single-transaction --no-create-info --skip-add-drop-table --skip-triggers --skip-lock-tables --hex-blob --skip-comments '+DB_NAME if dump else 'mariadb --defaults-extra-file="$cnf" --batch --skip-column-names '+DB_NAME)
         # No exec: preserve the trap so the private options file is removed on exit.
         script=script.replace('exec mariadb-dump','mariadb-dump')
-        return self.docker('exec','-i',db['name'],'sh','-c',script,data=sql).stdout
+        return self.docker('exec','-i',db['name'],'sh','-c',script,data=sql,output_file=output_file,data_file=data_file).stdout
     def restrict(self,db):
         self.check(db['side']+' exact database before grants',self.sql(db,b'SELECT DATABASE(),@@port;').strip()==(DB_NAME+'\t3306').encode())
         self.sql(db,(f"REVOKE ALL PRIVILEGES, GRANT OPTION FROM '{DB_USER}'@'%'; GRANT SELECT, INSERT, UPDATE, DELETE ON `{DB_NAME}`.* TO '{DB_USER}'@'%';").encode())

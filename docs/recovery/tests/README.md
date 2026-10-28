@@ -142,3 +142,19 @@ targets with no published ports, checks local TLS/security/load/outage detection
 and authenticates/restores a coordinated snapshot. See ../STAGING_REHEARSAL.md for
 the exact executed scope, failure history, retained private evidence and limits.
 This is not actual hosting/provider/large-media acceptance or publishing approval.
+
+## Promotion controls
+
+Run `node --test --test-isolation=none docs/recovery/tests/promotion-controls.test.cjs`
+and the expanded fake entrypoint/recovery suites. Tests use owned unique ignored
+directories, fictional challenges/identities, private review keys, fault injection
+and a 128 MiB backup blob. No actual SDK/authentication store is loaded. Include
+this file in the retained pure/fake selection; extractor-service.test.cjs still
+requires its explicit isolated dependency directory.
+
+`python -X utf8 dev/test_staging.py` now covers streaming command boundaries;
+`python -X utf8 dev/rehearse_promotion.py` verifies the reviewed index candidate on
+fresh owned isolated Docker targets. Set ZINEMA_TEST_PHASE=PROMOTION for fresh
+native HTTP/schema evidence without overwriting earlier reports. Exact commands,
+observed failures, executed counts and limitations: ../PROMOTION_CONTROLS.md and
+../../../ops/README.md. Production/provider/publishing gates remain closed.
