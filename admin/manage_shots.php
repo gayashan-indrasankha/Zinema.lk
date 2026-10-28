@@ -51,8 +51,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_shot'])) {
         if (!$linked->get_result()->fetch_row()) { http_response_code(422);exit('Linked content not found.'); }
         // Try to extract CDN URL for initial cache (optional, non-blocking)
         $cached_cdn_url = '';
-        try {$cached_cdn_url=extractor_request('extract',$fb_share_url)['url'];}
-        catch (ExtractorFailure $ignored) { /* Optional cache: source reference can be saved while disabled/unavailable. */ }
+        try {
+            $cached_cdn_url=extractor_request('extract',$fb_share_url)['url'] ?? '';
+            if (EXTRACTOR_MODE==='account-queue' && $cached_cdn_url==='') throw new ExtractorFailure('extractor_pending',409);
+        } catch (ExtractorFailure $ignored) {
+            if (EXTRACTOR_MODE==='account-queue') {
+                http_response_code(409);exit('Clip processing is incomplete or held. Return to the form, check the worker and test the URL before saving.');
+            }
+            /* Optional cache: source reference can be saved while disabled/unavailable. */
+        }
 
         // Proceed with database operations
         if ($is_edit_mode) {
@@ -491,16 +498,21 @@ if ($shots_result && $shots_result->num_rows > 0) {
         </div>
     </div>
 
+    <script src="../js/extractor-queue.js"></script>
     <script>
         // ============================================
         // API HEALTH CHECK
         // ============================================
         const API_URL = 'extractor.php';
+        const queueExtractor = <?php echo json_encode(EXTRACTOR_MODE==='account-queue'); ?>;
         async function extractorCall(action,url) {
-            const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(url ? {action,url} : {action})});
-            const data=await response.json();
-            if (!response.ok || data.success!==true) throw new Error(data.error || 'extractor_unavailable');
-            return data;
+            const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),4000);
+            try {
+                const response=await fetch(API_URL,{method:'POST',signal:controller.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify(url ? (action==='status'?{action,job_id:url}:{action,url}) : {action})});
+                const data=await response.json();
+                if (!response.ok || data.success!==true) throw new Error(data.error || 'extractor_unavailable');
+                return data;
+            } finally {clearTimeout(timeout);}
         }
         
         async function checkApiHealth() {
@@ -516,11 +528,12 @@ if ($shots_result && $shots_result->num_rows > 0) {
             
             try {
                 const data = await extractorCall('health');
+                if (data.mode==='account-queue' && data.online!==true) throw new Error('extractor_offline');
                 const responseTime = Date.now() - startTime;
 
                 // Update UI
                 indicator.classList.add('online');
-                document.getElementById('api-status-text').textContent = '✅ Local fake online';
+                document.getElementById('api-status-text').textContent = data.mode==='account-queue'?'✅ Private worker online':'✅ Local fake online';
                 document.getElementById('api-uptime').textContent = formatUptime(data.uptime);
                 document.getElementById('api-response-time').textContent = responseTime + 'ms';
                 document.getElementById('api-version').textContent = data.version || 'Unknown';
@@ -570,16 +583,34 @@ if ($shots_result && $shots_result->num_rows > 0) {
             resultSpan.innerHTML = '<span style="color: #2196f3;">⏳ Testing...</span>';
             
             try {
-                const data = await extractorCall('extract',fbUrl);
+                const data = await ZinemaExtractor.waitForExtraction(extractorCall,fbUrl,state=>{resultSpan.textContent='⏳ Worker: '+state;});
                 
                 if (data.success) {
-                    resultSpan.textContent = '✅ Local fake connection verified';
+                    resultSpan.textContent = data.mode==='account-queue'?'✅ Clip ready; save the form to use it':'✅ Local fake connection verified';
                 } else {
                     resultSpan.textContent = '❌ Extraction unavailable';
                 }
             } catch (error) {
                 resultSpan.textContent = '❌ Connection unavailable ('+error.message+')';
             }
+        }
+
+        // Complete an asynchronous extraction before submitting a new clip reference.
+        const shotSubmit=document.querySelector('button[name="submit_shot"]');
+        if (queueExtractor && shotSubmit) {
+            const form=shotSubmit.form;let preparedSource=null,busy=false;
+            form.addEventListener('submit',async event=>{
+                const source=document.getElementById('fb_share_url').value.trim();
+                if (preparedSource===source) return;
+                event.preventDefault();if(busy)return;busy=true;shotSubmit.disabled=true;
+                const result=document.getElementById('test-result');
+                try {
+                    await ZinemaExtractor.waitForExtraction(extractorCall,source,state=>{result.textContent='⏳ Worker: '+state;});
+                    if (document.getElementById('fb_share_url').value.trim()!==source)throw new Error('source_changed');
+                    preparedSource=source;shotSubmit.disabled=false;form.requestSubmit(shotSubmit);
+                } catch(error) {result.textContent='❌ Clip was not saved ('+error.message+').';}
+                finally {busy=false;shotSubmit.disabled=false;}
+            });
         }
 
         // ============================================

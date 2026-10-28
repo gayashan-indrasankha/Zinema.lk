@@ -18,6 +18,10 @@ function extractor_transport($destination,$body,$key,$unixSocket=null) {
     } finally {curl_close($stream);}
 }
 function extractor_request($action,$source=null,$transport=null) {
+    if (defined('EXTRACTOR_MODE') && EXTRACTOR_MODE==='account-queue') {
+        require_once __DIR__.'/extractor_queue.php';
+        return account_extractor_queue()->admin($action,(int)($_SESSION['admin_id'] ?? 0),$action==='status'?['job_id'=>$source]:['url'=>$source]);
+    }
     if (!in_array($action,['health','extract'],true)) throw new ExtractorFailure('invalid_action',400);
     if ($action==='extract' && !valid_facebook_url($source)) throw new ExtractorFailure('invalid_source',422);
     // Both branches are original fixtures only; neither enables an upstream adapter.
