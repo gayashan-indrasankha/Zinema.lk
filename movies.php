@@ -133,15 +133,15 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Watch the latest movies online in Full HD with Sinhala subtitles and dubbing. Stream action, comedy, drama, horror and more on Zinema.lk - Sri Lanka's #1 movie streaming site.">
+    <meta name="description" content="Browse Sinhala dubbed and subtitled movies. Full movies are delivered through WhatsApp; short previews play on the website.">
     <meta name="keywords" content="sinhala movies, sinhala dubbed movies, watch movies online, sinhala subtitles, HD movies, free movies, Zinema.lk">
     <link rel="canonical" href="<?php echo BASE_URL; ?>/movies.php">
     <link rel="icon" type="image/png" href="<?php echo BASE_URL; ?>/assets/images/tab-logo.png">
-    <title>Watch Movies Online - Sinhala Dubbed & Subtitled | Zinema.lk</title>
+    <title>Movies - Sinhala Dubbed & Subtitled | Zinema.lk</title>
     
     <!-- Open Graph Tags -->
-    <meta property="og:title" content="Watch Movies Online - Sinhala Dubbed & Subtitled | Zinema.lk">
-    <meta property="og:description" content="Stream the latest movies in Full HD with Sinhala subtitles and dubbing. Action, comedy, drama, horror and more!">
+    <meta property="og:title" content="Movies - Sinhala Dubbed & Subtitled | Zinema.lk">
+    <meta property="og:description" content="Browse Sinhala dubbed and subtitled movies. Full movies are delivered through WhatsApp; short previews play on the website.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo BASE_URL; ?>/movies.php">
     <meta property="og:site_name" content="Zinema.lk">
