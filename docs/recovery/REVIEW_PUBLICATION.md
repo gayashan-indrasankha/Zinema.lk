@@ -1,6 +1,6 @@
 # Recovery work review publication
 
-Date: 2026-10-28. State: **PREPARED — publication and final handoff pending**.
+Date: 2026-10-28. State: **COMPLETE within source-publication scope; overall launch NO GO**.
 
 ## Authorized scope and starting state
 
@@ -38,7 +38,7 @@ a comparison against the immediately preceding checkpoint for focused review.
 Two additional documentation commits record the publication plan/decision and
 the final PR handoff. They belong to the final promotion-controls checkpoint;
 application behavior is unchanged. The original local work branch is preserved.
-Actual PR links and final metadata are added in the final handoff below.
+Actual PR links and final metadata are recorded in the final handoff below.
 
 ## Fresh executed verification
 
@@ -80,8 +80,38 @@ Exact prior verification, source commit inventory and scope limits are in
 
 ## Final PR handoff
 
-Pending remote head verification, open ready-for-review PR links and the final
-publication status commit. `main` must remain at its starting remote head.
+Published the twelve existing source/recovery commits, plus two documentation
+commits, through eight ordered review branches. All PRs were verified open,
+non-draft and mergeable against `main` before this final handoff update.
+
+| Order | PR | Branch |
+| --- | --- | --- |
+| 1 | [#11](https://github.com/gayashan-indrasankha/Zinema.lk/pull/11) | `zinema/local-development` |
+| 2 | [#12](https://github.com/gayashan-indrasankha/Zinema.lk/pull/12) | `zinema/local-operations` |
+| 3 | [#13](https://github.com/gayashan-indrasankha/Zinema.lk/pull/13) | `zinema/upload-quarantine` |
+| 4 | [#14](https://github.com/gayashan-indrasankha/Zinema.lk/pull/14) | `zinema/product-hardening` |
+| 5 | [#15](https://github.com/gayashan-indrasankha/Zinema.lk/pull/15) | `zinema/private-extractor` |
+| 6 | [#16](https://github.com/gayashan-indrasankha/Zinema.lk/pull/16) | `zinema/bot-lifecycle` |
+| 7 | [#17](https://github.com/gayashan-indrasankha/Zinema.lk/pull/17) | `zinema/staging-rehearsal` |
+| 8 | [#18](https://github.com/gayashan-indrasankha/Zinema.lk/pull/18) | `zinema/promotion-controls` |
+
+Merge #11 through #18 in order. Each PR body includes the comparison to its
+preceding checkpoint and fresh-versus-historical verification limits. All created
+PRs are attached to the chat. Nothing is merged, deployed or promoted to a host.
+
+The plan/decision documentation commit is
+`efe44d67a490203e498b5475f6b72b2844bd2778`. This final status/PR-link handoff is the second documentation
+commit; its immutable hash is available in Git history and the execution handoff.
+The original twelve hashes are unchanged and listed in the results JSON.
+
+Initial pushed heads matched all eight local checkpoints. Remote `main` remained
+`db801669b6c123cc3584ed389949854266d59a0e`. The original local work branch and behind local
+`main` were preserved. The final documentation commit is scanned and pushed to
+`zinema/promotion-controls`, followed by final remote/PR and clean-tree checks.
+
+No unresolved new check failure remains in this publication scope. Prior product
+acceptance and historical imported-whitespace limits remain in their phase
+reports. No dependency, application or deployment code changed during publication.
 
 Next recommended Codex task:
 

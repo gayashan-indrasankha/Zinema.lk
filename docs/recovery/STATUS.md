@@ -1,8 +1,58 @@
 # Recovery status
 
-Updated: 2026-10-26.
+Updated: 2026-10-28.
 
 ## Current phase
+
+Owner-requested recovery source publication: **COMPLETE within review scope;
+overall launch remains NO GO**. Started clean on `zinema/local-dev-safety` at
+`4d04e204c561c64a7cfb7e1716cda93db41ef31a`; there were no unstaged files. Twelve
+existing local commits were already logically grouped and were preserved.
+
+- Published eight ordered `zinema/` checkpoint branches and opened PRs **#11–#18**
+  against `main`. All were verified open, non-draft and mergeable before this
+  final handoff. Merge in that order; later diffs include unmerged predecessors.
+  Links/branches: REVIEW_PUBLICATION.md. No PR was merged or deployed.
+- Added `REVIEW_PUBLICATION.md` and `REVIEW_PUBLICATION_RESULTS.json`; updated
+  workflow decisions and this status in two separate documentation commits.
+  Application files, existing commit hashes/authors/dates, source work branch and
+  local main were preserved. Remote main remains
+  `db801669b6c123cc3584ed389949854266d59a0e`.
+- **Fresh static/syntax checks:** PHP198/198, JavaScript-CJS74/74, Python21/21,
+  JSON89/89 tracked source files passed. Publication JSON/index-hash and staged
+  whitespace checks passed before each new commit. New recovery diff whitespace
+  check passed; no whole-legacy-tree formatting claim is made.
+- **Test-covered and freshly executed:** Node133/133 across 13 fake/local suites,
+  no skips; local target guards9/9 and artifact/archive boundaries6/6 passed,
+  all exit 0. Application source remained stable throughout checks/publication.
+- **Security checks:** Gitleaks8.30.1 installed binary matched the saved verified
+  archive; candidate526-file and all-unpublished-history scans exit 0, zero
+  findings. Twenty-one private ignore assertions passed; staged publication and
+  final new history are scanned again before commit/push. Supplemental contact,
+  SQL-write and fixture review found only explicit fictional IDs/accounts; no
+  original rows/media, session stores, private keys, logs, backups, generated
+  credentials or installed dependencies were publication candidates.
+- **Externally verified:** all eight initial pushed heads matched local branches;
+  GitHub confirmed each PR open/non-draft/mergeable with base main. Final updated
+  head, remote main and clean status are verified again in the execution handoff.
+- **Limits:** prior Docker/HTTP/database/TLS/browser results are retained historical
+  phase evidence, not fresh publication runtime tests. No production/provider,
+  recipient, host provision, credential rotation, money spent, merge or deployment.
+  No new dependency advisory/container vulnerability/penetration/complete
+  privacy/licensing certification; default secret patterns do not prove absence
+  of every secret. Prior product launch gates remain in PROMOTION_CONTROLS.md.
+- Git: publication-plan commit `efe44d67a490203e498b5475f6b72b2844bd2778`;
+  final handoff commit hash appears in the execution handoff. Four recovery
+  document paths changed in this publication; fourteen commits total are proposed
+  for review. No history was amended or rewritten.
+
+Owner attention: review/merge PRs #11, #12, #13, #14, #15, #16, #17, #18 in order.
+Exact next recommended Codex task: **Choose the isolated staging host and budget,
+then prepare its exact runtime/TLS/CSP/storage/supervisor/key-custody/backup/metric-
+collector/alert configuration as a reviewable disabled candidate. Preserve
+history; keep external connections and deployment off until explicitly authorized.**
+
+## Previous local promotion checkpoint
 
 Local staging promotion controls: **COMPLETE within executed fake/isolated scope;
 overall launch NO GO**. Started clean at
