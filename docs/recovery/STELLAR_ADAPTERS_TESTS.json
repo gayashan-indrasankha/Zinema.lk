@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-28",
+  "scope": "Local fictional adapter/resource regressions; no external verification",
+  "source_commit": "12c9954758b9718cabe25816d328b28db0198582",
+  "working_copy_uncommitted": true,
+  "node": {
+    "tests": 171,
+    "pass": 171,
+    "fail": 0,
+    "skipped": 0,
+    "exit_code": 0
+  },
+  "python": {
+    "test_stellar_adapters.py": {
+      "exit_code": 0,
+      "tests": 14,
+      "ok": true
+    },
+    "test_stellar.py": {
+      "exit_code": 0,
+      "tests": 8,
+      "ok": true
+    },
+    "test_staging.py": {
+      "exit_code": 0,
+      "tests": 6,
+      "ok": true
+    },
+    "test_local_guard.py": {
+      "exit_code": 0,
+      "tests": 9,
+      "ok": true
+    },
+    "test_two_host_guard.py": {
+      "exit_code": 0,
+      "tests": 12,
+      "ok": true
+    }
+  },
+  "python_total": 49,
+  "native_adapters": {
+    "total": 29,
+    "passed": 29,
+    "failed": 0
+  },
+  "retained_website": {
+    "total": 94,
+    "passed": 94,
+    "failed": 0
+  },
+  "memory_virtual_2gib": {
+    "bytes": 2147483648,
+    "peakRssBytes": 51044352,
+    "rssGrowthBytes": 5136384,
+    "heapLimitMiB": 64,
+    "physicalMediaBytesWritten": 0,
+    "virtualSink": true
+  },
+  "memory_real_64mib": {
+    "bytes": 67108864,
+    "peakRssBytes": 162029568,
+    "rssGrowthBytes": 27971584,
+    "physicalScratchFile": true
+  },
+  "external_connections": false,
+  "production_access": false,
+  "publishing": false,
+  "limitations": [
+    "Node virtual sink is not a physical 2 GiB disk or real SDK/account test.",
+    "Real ingestion uses 64 MiB scratch media; thresholds are conservative local admission, not a hard OS memory limit.",
+    "Native mod_php is not actual Stellar CGI/FastCGI/account acceptance.",
+    "Original Docker-dependent operations/quarantine suites not rerun; shared algorithms exercised through new native account CLI.",
+    "Upload speed, sustained host capacity, independent backup/new-target restore, actual alerts/supervisor, real FB/SDK and recipient boundaries remain unverified.",
+    "No new manual browser run, dependency/advisory refresh, production access or publishing."
+  ],
+  "executed_checks_total": 343
+}
