@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-30",
+  "scope": "Owner-approved real SDK pairing plus authenticated local controls; no outgoing messages in this check",
+  "tests": [
+    {
+      "name": "Actual real transport is selected instead of simulator",
+      "passed": true
+    },
+    {
+      "name": "Automatic jobs remain disabled",
+      "passed": true
+    },
+    {
+      "name": "Pairing page requires administrator",
+      "passed": true
+    },
+    {
+      "name": "Private QR image requires administrator",
+      "passed": true
+    },
+    {
+      "name": "Administrator pairing page reports real connection",
+      "passed": true
+    },
+    {
+      "name": "Private pairing QR is served with no-store",
+      "passed": true
+    },
+    {
+      "name": "Owner send action requires CSRF",
+      "passed": true
+    },
+    {
+      "name": "Unlinked account displays offline and prevents token issuance",
+      "passed": true
+    },
+    {
+      "name": "Simulator suite refuses real transport: python",
+      "passed": true
+    },
+    {
+      "name": "Simulator suite refuses real transport: node",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 10,
+    "passed": 10,
+    "failed": 0
+  },
+  "connection": "pairing_required",
+  "pairing_available": true,
+  "real_message_submissions": 0,
+  "source_installation": "D:/Zinema.lk/whatsapp-bot-deploy",
+  "legacy_session_imported": false,
+  "production": false,
+  "publishing": false,
+  "initial_probe_correction": "Offline active-profile page intentionally renders HTTP200 with explicit unavailable state; disabled-profile503 is a different contract."
+}
