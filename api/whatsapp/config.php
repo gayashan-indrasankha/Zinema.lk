@@ -53,7 +53,7 @@ function validateApiRequest() {
         strlen(file_get_contents('php://input',false,null,0,65537))>65536)
         sendResponse(['success'=>false,'error'=>'metadata_too_large'],413);
     
-    if (defined('LOCAL_MEDIA_REFERENCE_WRITE') && in_array(getenv('UPLOAD_QUOTA_MODE'),['local','staging'],true)) {
+    if (defined('LOCAL_MEDIA_REFERENCE_WRITE') && in_array(getenv('UPLOAD_QUOTA_MODE'),['local','staging','account'],true)) {
         require_once __DIR__ . '/../../includes/upload_storage.php';
         try {
             $db=$GLOBALS['conn'];$gate=storage_reference_acquire($db);
