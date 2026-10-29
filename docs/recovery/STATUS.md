@@ -4,6 +4,39 @@ Updated: 2026-10-30.
 
 ## Current phase
 
+**Native local stack and owner WhatsApp source publication: COMPLETE within source-review scope.**
+Broader production launch remains **PARTIAL / NO GO**. Continued the owner-authorized
+publishing request after the earlier PRs merged; all 46 changed paths are staged in
+15 focused source commits plus one final review/handoff commit, across three
+zinema/ branches. Earlier local/account verification is preserved below.
+
+- Open, non-draft PRs: #26 native-local-stack (7 commits), #27 admin-trailer-editor
+  (2), #28 owner-whatsapp-local (7 including handoff). Merge in that order using
+  normal merge commits. Later diffs include predecessors until merged.
+- Fresh executed Node180/180, Python guards58/58, syntax PHP223/JS-CJS94/Python32/
+  JSON115; final handoff JSON separately parsed. Integrated candidate627 and each
+  staged group/new-history Gitleaks8.30.1 scans report zero findings; ignore22 and
+  whitespace checks pass. Initial sandbox Node29 failures were resolved by the
+  identical fixture tests with required local permissions; both runs retained.
+- Source/actual staged blobs statically inspected and hash-checked. Prior native28,
+  Chrome9, disabled HTTP94, batch/persistence and owner-reported real clip evidence
+  retain their original scopes; runtime/browser/live delivery were not replayed
+  during publication. No full dependency/security/large-media certification.
+- Existing linked native runtime/private account state and services untouched;
+  no new send, pairing, production connection, deployment, purchase or PR merge.
+  Canonical schema/promotion policy and original branch/main preserved. Original
+  source checkpoint f80d6ed50314456ebf378b237f97d42bf9158e57; final immutable handoff
+  hash is in Git history for NATIVE_PUBLICATION.md and the execution handoff.
+- NATIVE_PUBLICATION.md/results record files, commit hashes, verification,
+  security-scan limitations and review order. All public changes are committed
+  and remote heads/worktree cleanliness are verified after the final push.
+
+Next recommended task: **Review #26 → #27 → #28; continue local administrator,
+large-file and failure-recovery verification with generated fixtures. Any extra
+live send/recipient requires a specifically scoped owner request.**
+
+## Previous real WhatsApp local integration checkpoint
+
 **Real WhatsApp local integration: COMPLETE for the capped owner-only clip test.**
 Owner linked the selected account, and confirmed receipt/playback of the original
 test clip in the account's self-chat. Broader real-user/large-media acceptance is

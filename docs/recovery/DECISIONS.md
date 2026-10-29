@@ -963,3 +963,26 @@ account's Message yourself/You chat. Record this as owner-reported external
 verification; do not mislabel the SDK return as a device delivery/read receipt.
 No resend, extra recipient or new provider action was needed. Local capped test
 is complete; other launch verification remains outside that evidence.
+
+## 2026-10-30 — Publish native local, trailer-editor and owner WhatsApp work
+
+Owner explicitly requested incremental staging, Conventional Commits, branches and
+review-ready PRs. Earlier PRs are merged into remote main137fe8f. Continue existing
+46-path unstaged work at ee3d223; preserve the idle engineering chat's completed
+runtime/owner clip evidence and the linked runtime. Source publishing permission
+does not authorize more sends, pairing, deployment or production operations.
+
+Decision: freeze/reverify source, stage15 purpose-based groups and one final
+handoff on zinema/native-local-stack, zinema/admin-trailer-editor and
+zinema/owner-whatsapp-local. Open #26/#27/#28 to main and retain merge order and
+individual commits with normal merges. Correct README claims that conflicted with
+the saved real mode. No artificial activity commits or rewritten identity/history.
+
+Verification: fresh Node180/Python guards58 pass; syntax PHP223/JS-CJS94/Python32/
+JSON115, Gitleaks627 source plus staged/history checks, private ignores22 and
+new-work whitespace pass. The initial restricted Node29 failures are preserved;
+the same tests pass with required localhost/hard-link permissions. Prior runtime,
+browser and owner-reported real receipt remain separate evidence. The linked
+runtime was not restarted, tested with simulator drivers or used for another send.
+Final source-publication commit/remote/clean receipt and limits are in
+NATIVE_PUBLICATION.md/results and execution handoff. Broader launch stays NO GO.
