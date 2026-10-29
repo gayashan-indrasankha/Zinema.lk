@@ -22,7 +22,7 @@ def build(destination,reviewed_tree=None):
         if path.parts[0] in {'admin','api','includes','assets','css','js'}:public=True
         if public:target=destination/'public'/path
         elif name=='database/schema.sql':target=destination/'database/schema.sql'
-        elif path.parts[0] in {'whatsapp-bot-deploy','fb-video-api'} and path.suffix in {'.js','.json'} and name!='whatsapp-bot-deploy/config/database.js':target=destination/'backends'/path
+        elif path.parts[0] in {'whatsapp-bot-deploy','fb-video-api'} and path.suffix in {'.js','.cjs','.json'} and name!='whatsapp-bot-deploy/config/database.js':target=destination/'backends'/path
         elif name in {'THIRD_PARTY.md','LICENSE'}:target=destination/path
         if target:
             raw=archive.extractfile(name).read()

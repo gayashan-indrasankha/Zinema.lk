@@ -5,6 +5,9 @@ targets confirmed; actual host compatibility and personal-server capacity pendin
 Continues the five-document uncommitted planning draft based on `759e4a0` on
 `zinema/promotion-controls`; the earlier US$100 combined envelope is superseded.
 This is a product/capacity brief, not a purchase, deployment or configuration change.
+The owner has now confirmed a bot-machine hardware/volume report; see
+BOT_MACHINE_INVENTORY.md. It records approximately 121.51 GiB free volume space
+and 1.55 GiB free RAM at collection, without proving throughput or load capacity.
 
 ## Confirmed scope
 
@@ -221,3 +224,13 @@ Next task: confirm the catalogue and personal-machine specifications; review
 Stellar's exact runtime/private extractor/backup/monitoring compatibility before
 any separately authorized private staging deployment or provider test.
 No spending, external account connection, deployment or publication is authorized.
+
+## Local Stellar adapter checkpoint — 2026-10-28
+
+[Adapter evidence](STELLAR_ADAPTERS.md) records the private bootstrap, account-owned
+quota/quarantine CLI, authenticated outbound extraction queue and worker resource
+pressure tests. Local regressions pass; these are not actual-host acceptance.
+The package remains locked, paid access stays excluded and full content remains
+WhatsApp-only. Actual PHP handler/permissions/TLS/private access, real extraction,
+SDK/account 2 GiB behavior, sustained capacity, upload speed, independent backup
+restore and alert/supervisor acceptance remain launch gates. No publishing enabled.
