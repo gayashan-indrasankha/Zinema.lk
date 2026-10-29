@@ -41,3 +41,11 @@ Sanitized screenshots (fictional content only):
 Automatically exercised actions and unverified features are mapped separately in
 PRODUCTION_FEATURES.md. Manual coverage is intentionally reported at action level;
 there is no claim that every discovered feature was manually verified.
+
+## 2026-10-28 follow-up classification
+
+A separate headless Chrome acceptance run now passes 16/16 journeys with generated
+PNG/MP4 and fictional accounts, including actual clip playback. Its screenshots
+were visually reviewed. Interactive tools failed initialization, so this does not
+expand the manual interaction claims in the earlier table. See LOCAL_ACCEPTANCE.md
+and LOCAL_ACCEPTANCE_BROWSER.json for executed actions, corrections and limits.

@@ -1,0 +1,84 @@
+{
+  "scope": "Read-only current Windows machine policy inventory; not uptime/restart or network verification",
+  "settings_changed": false,
+  "sleep_or_restart_triggered": false,
+  "external_connections": false,
+  "STANDBYIDLE": {
+    "status": "collected",
+    "seconds": {
+      "AC": 10800,
+      "DC": 10800
+    },
+    "zero_means_no_automatic_timeout": true
+  },
+  "HIBERNATEIDLE": {
+    "status": "collected",
+    "seconds": {
+      "AC": 900,
+      "DC": 900
+    },
+    "zero_means_no_automatic_timeout": true
+  },
+  "readiness": {
+    "schemaVersion": 1,
+    "purpose": "Read-only bot-machine inventory; not launch approval",
+    "decision": "needs_review",
+    "machineRole": "unconfirmed_until_owner_identifies_actual_bot_machine",
+    "system": {
+      "platform": "win32",
+      "architecture": "x64",
+      "osRelease": "10.0.26200",
+      "logicalCpuCount": 16,
+      "totalMemoryBytes": 16868970496,
+      "currentlyFreeMemoryBytes": 2586394624,
+      "currentUptimeSeconds": 806097.328
+    },
+    "runtime": {
+      "nodeVersion": "v24.13.1",
+      "testedMajorBaseline": 24,
+      "matchesTestedMajor": true,
+      "securityPatchStatus": "not_verified",
+      "dependencies": "not_inspected"
+    },
+    "mediaStorage": {
+      "status": "collected",
+      "scope": "volume_not_application_quota",
+      "totalBytes": 269482979328,
+      "availableBytes": 130470916096,
+      "writability": "not_tested"
+    },
+    "network": {
+      "speedTestExecuted": false,
+      "uploadMbps": null,
+      "source": "unknown",
+      "idealTwoGiBUploadSeconds": null
+    },
+    "availability": {
+      "alwaysOn": "unknown",
+      "source": "unknown",
+      "sleepPowerAndRestartPolicy": "not_inspected",
+      "continuousUptime": "not_verified"
+    },
+    "safety": {
+      "readOnly": true,
+      "networkApisUsed": false,
+      "applicationLoaded": false,
+      "credentialsOrSessionFilesRead": false,
+      "mediaContentsRead": false,
+      "directoryContentsEnumerated": false,
+      "filesWritten": false,
+      "configurationChanged": false
+    },
+    "pending": [
+      "Identify this as the actual bot machine",
+      "Verify patched runtime and locked dependencies",
+      "Measure sustained upload only under a separately approved network test",
+      "Verify power/sleep/supervisor and restart recovery",
+      "Verify local disk quotas and independent encrypted recovery",
+      "Approve and verify real SDK/account/recipient and 2 GiB attachment limits"
+    ]
+  },
+  "owner_confirmed_actual_bot_machine": true,
+  "machine_role_source": "Prior explicit owner confirmation; generic collector does not carry that context",
+  "availability_interpretation": "Nonzero AC/DC idle timers require owner review for always-on service; no actual sleep/hibernate/restart was triggered."
+}

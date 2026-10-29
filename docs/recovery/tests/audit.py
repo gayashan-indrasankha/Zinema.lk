@@ -21,6 +21,8 @@ import socket
 import subprocess
 import sys
 import time
+import struct
+import zlib
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -36,7 +38,7 @@ SAMPLE_PASSWORD = 'Fictional-local-test-42!'
 SKIP = {'node_modules', '.git', 'whatsapp-session', '.wwebjs_auth', '.runtime', '.recovery-private', 'uploads'}
 NO_WINDOW = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
 RESULT_PREFIX = os.environ.get('ZINEMA_TEST_PHASE', 'REPAIR')
-if RESULT_PREFIX not in {'REPAIR', 'LOCAL_DEV', 'OPERATIONS', 'QUARANTINE', 'PRODUCTION', 'EXTRACTOR_CONNECTION', 'LIFECYCLE', 'STAGING', 'PROMOTION', 'STELLAR_ADAPTERS'}: raise RuntimeError('Unknown sanitized result prefix')
+if RESULT_PREFIX not in {'REPAIR', 'LOCAL_DEV', 'OPERATIONS', 'QUARANTINE', 'PRODUCTION', 'EXTRACTOR_CONNECTION', 'LIFECYCLE', 'STAGING', 'PROMOTION', 'STELLAR_ADAPTERS', 'LOCAL_ACCEPTANCE'}: raise RuntimeError('Unknown sanitized result prefix')
 
 
 
@@ -111,6 +113,12 @@ def syntax():
     return result
 
 
+def generated_preview_png():
+    def chunk(kind,data):
+        return struct.pack('>I',len(data))+kind+data+struct.pack('>I',zlib.crc32(kind+data)&0xffffffff)
+    raw=b''.join(b'\0'+bytes([40,160,90])*32 for _ in range(32))
+    return b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>IIBBBBB',32,32,8,2,0,0,0))+chunk(b'IDAT',zlib.compress(raw))+chunk(b'IEND',b'')
+
 def prepare(on_created=None):
     assert not port_open(DB_PORT) and not port_open(PORT), 'Required loopback ports already occupied; do not reuse an unknown service'
     folder = ROOT / '.runtime' / ('audit-' + time.strftime('%Y%m%d-%H%M%S'))
@@ -126,6 +134,18 @@ def prepare(on_created=None):
     ownership = {'purpose': 'owner-authorized isolated Zinema assessment', 'base': BASE, 'pids': {}}
     (folder / 'ownership.json').write_text(json.dumps(ownership, indent=2))
     if on_created is not None:on_created(folder)
+    # Private PHP configuration: never edit or inherit the global XAMPP ini.
+    ini_dir=folder/'php-config';ini_dir.mkdir()
+    ini=['extension_dir="C:/xampp/php/ext"','date.timezone=Asia/Colombo',
+        'display_errors=Off','log_errors=On','error_reporting=E_ALL','expose_php=Off','memory_limit=128M',
+        'upload_max_filesize=20M','post_max_size=22M','max_file_uploads=1',
+        'session.use_strict_mode=1','session.use_only_cookies=1','session.cookie_httponly=1',
+        'session.cookie_samesite=Lax','zend.exception_ignore_args=On']
+    for extension in ['mysqli','pdo_mysql','gd','fileinfo','openssl','curl','mbstring']:
+        assert (PHP.parent/'ext'/('php_'+extension+'.dll')).is_file(), 'Required local PHP extension missing'
+        ini.append('extension='+extension)
+    (ini_dir/'php.ini').write_text('\n'.join(ini)+'\n')
+    (folder/'generated-acceptance.png').write_bytes(generated_preview_png())
     manifest = {}
     # Mirror code and style only. No environment, SQL rows, logs, sessions or private media.
     for path in source_files():
@@ -134,7 +154,7 @@ def prepare(on_created=None):
             continue
         if rel.parts[0] in {'docs', 'whatsapp-bot-deploy', 'fb-video-api', 'migrations', 'ops'}:
             continue
-        if path.suffix.lower() not in {'.php', '.js', '.css'} and rel.as_posix() != '.htaccess':
+        if path.suffix.lower() not in {'.php', '.js', '.css'} and rel.as_posix() not in {'.htaccess','assets/images/logo.png','assets/images/tab-logo.png'}:
             continue
         dest = web / rel
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -187,7 +207,7 @@ INSERT INTO trailers(id,movie_id,title,description,video_url,thumbnail_url) VALU
     conf = [f'ServerRoot "C:/xampp/apache"', f'Listen 127.0.0.1:{PORT}', 'ServerName 127.0.0.1', f'PidFile "{path(folder / "httpd.pid")}"', f'ErrorLog "{path(folder / "apache.log")}"', 'LogLevel warn']
     for module in ['authz_core', 'authz_host', 'dir', 'mime', 'rewrite', 'headers', 'env']:
         conf.append(f'LoadModule {module}_module modules/mod_{module}.so')
-    conf += ['LoadFile "C:/xampp/php/php8ts.dll"', 'LoadFile "C:/xampp/php/libpq.dll"', 'LoadFile "C:/xampp/php/libsqlite3.dll"', 'LoadModule php_module "C:/xampp/php/php8apache2_4.dll"', 'PHPIniDir "C:/xampp/php"', 'TypesConfig "C:/xampp/apache/conf/mime.types"', f'DocumentRoot "{path(web)}"', 'DirectoryIndex index.php', '<Directory />', 'Require all denied', 'AllowOverride None', '</Directory>', f'<Directory "{path(web)}">', 'Require local', 'AllowOverride All', 'Options -Indexes +FollowSymLinks', '</Directory>', '<FilesMatch "\\.php$">', 'SetHandler application/x-httpd-php', '</FilesMatch>', 'php_admin_flag display_errors Off', f'php_admin_value error_log "{path(folder / "php.log")}"', f'php_admin_value session.save_path "{path(folder / "sessions")}"', 'Header always set Content-Security-Policy "default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:; media-src \'self\'; connect-src \'self\'; font-src \'self\'; frame-src \'self\'; object-src \'none\'; base-uri \'self\'; form-action \'self\'"']
+    conf += ['LoadFile "C:/xampp/php/php8ts.dll"', 'LoadFile "C:/xampp/php/libpq.dll"', 'LoadFile "C:/xampp/php/libsqlite3.dll"', 'LoadModule php_module "C:/xampp/php/php8apache2_4.dll"', f'PHPIniDir "{path(ini_dir)}"', 'TypesConfig "C:/xampp/apache/conf/mime.types"', f'DocumentRoot "{path(web)}"', 'DirectoryIndex index.php', '<Directory />', 'Require all denied', 'AllowOverride None', '</Directory>', f'<Directory "{path(web)}">', 'Require local', 'AllowOverride All', 'Options -Indexes +FollowSymLinks', '</Directory>', '<FilesMatch "\\.php$">', 'SetHandler application/x-httpd-php', '</FilesMatch>', 'php_admin_flag display_errors Off', f'php_admin_value error_log "{path(folder / "php.log")}"', f'php_admin_value session.save_path "{path(folder / "sessions")}"', 'Header always set Content-Security-Policy "default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:; media-src \'self\'; connect-src \'self\'; font-src \'self\'; frame-src \'self\'; object-src \'none\'; base-uri \'self\'; form-action \'self\'"']
     conf += ['PassEnv ' + key for key in ['APP_ENV','BASE_URL','DB_HOST','DB_PORT','DB_NAME','DB_USER','DB_PASS','SESSION_SAVE_PATH','ALLOW_LIVE_INTEGRATIONS'] + [x + '_MODE' for x in ['MAIL','OAUTH','WHATSAPP','MEDIA','EXTRACTOR','PAYMENT']]]
     conf.append(f'php_admin_value mysqli.default_port {DB_PORT}')
     (folder / 'httpd.conf').write_text('\n'.join(conf) + '\n')
@@ -445,8 +465,8 @@ def refresh(folder):
     for path in source_files():
         rel = path.relative_to(ROOT)
         if not path.is_file() or any(x in SKIP for x in rel.parts): continue
-        if rel.parts[0] in {'docs','whatsapp-bot-deploy','fb-video-api','migrations','database'}: continue
-        if path.suffix.lower() not in {'.php','.js','.css'} and rel.as_posix() != '.htaccess': continue
+        if rel.parts[0] in {'docs','whatsapp-bot-deploy','fb-video-api','migrations','database','ops'}: continue
+        if path.suffix.lower() not in {'.php','.js','.css'} and rel.as_posix() not in {'.htaccess','assets/images/logo.png','assets/images/tab-logo.png'}: continue
         dest = folder / 'web' / rel
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(path, dest)
