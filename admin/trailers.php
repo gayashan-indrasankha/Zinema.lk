@@ -122,6 +122,25 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
             background: #f5f5f5;
             border-radius: 8px;
         }
+        #editModal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 16px;
+            background: rgba(15, 23, 42, 0.65);
+            box-sizing: border-box;
+        }
+        #editModal .modal-content {
+            width: 100%;
+            max-width: 500px;
+            margin: 5vh auto;
+            padding: 24px;
+            border-radius: 8px;
+            background: #fff;
+            color: #0f172a;
+            box-sizing: border-box;
+        }
     </style>
 <?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
@@ -205,7 +224,11 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
                     <p>Likes: <?php echo number_format($trailer['likes']); ?></p>
                     
                     <div class="trailer-actions">
-                        <button class="btn" onclick="editTrailer(<?php echo $trailer['id']; ?>)">Edit</button>
+                        <button class="btn" onclick="editTrailer(<?php echo (int)$trailer['id']; ?>)"
+                                data-trailer-id="<?php echo (int)$trailer['id']; ?>"
+                                data-trailer-title="<?php echo htmlspecialchars($trailer['title'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>"
+                                data-trailer-description="<?php echo htmlspecialchars($trailer['description'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>"
+                                data-trailer-status="<?php echo htmlspecialchars($trailer['status'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>">Edit</button>
                         <form action="trailers.php" method="POST" style="display: inline;"><?php csrf_token_field(); ?>
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<?php echo $trailer['id']; ?>">
@@ -221,9 +244,9 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
     </div>
 
     <!-- Edit Modal -->
-    <div id="editModal" class="modal" style="display: none;">
+    <div id="editModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="edit-modal-heading" style="display: none;">
         <div class="modal-content">
-            <h2>Edit Trailer</h2>
+            <h2 id="edit-modal-heading">Edit Trailer</h2>
             <form action="trailers.php" method="POST"><?php csrf_token_field(); ?>
                 <input type="hidden" name="action" value="update">
                 <input type="hidden" name="id" id="edit_id">
@@ -266,16 +289,19 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
 
         // Edit modal functions
         function editTrailer(id) {
-            // Fetch trailer data and populate form
-            fetch(`/api/trailers.php?id=${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('edit_id').value = data.id;
-                    document.getElementById('edit_title').value = data.title;
-                    document.getElementById('edit_description').value = data.description;
-                    document.getElementById('edit_status').value = data.status;
-                    document.getElementById('editModal').style.display = 'block';
-                });
+            const modal = document.getElementById('editModal');
+            modal.style.display = 'none';
+            if (!/^[1-9]\d*$/.test(String(id))) return;
+            const row = document.querySelector(`[data-trailer-id="${id}"]`);
+            if (!row) return;
+            const data = row.dataset;
+            if (typeof data.trailerTitle !== 'string' || typeof data.trailerDescription !== 'string'
+                || !['active', 'inactive'].includes(data.trailerStatus)) return;
+            document.getElementById('edit_id').value = String(id);
+            document.getElementById('edit_title').value = data.trailerTitle;
+            document.getElementById('edit_description').value = data.trailerDescription;
+            document.getElementById('edit_status').value = data.trailerStatus;
+            modal.style.display = 'block';
         }
 
         function closeEditModal() {
