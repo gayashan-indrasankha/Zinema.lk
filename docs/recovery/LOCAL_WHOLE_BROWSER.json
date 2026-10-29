@@ -1,0 +1,50 @@
+{
+  "scope": "Automated whole-local browser journeys; all provider operations simulated",
+  "tests": [
+    {
+      "name": "Administrator opens the whole-local console",
+      "passed": true
+    },
+    {
+      "name": "Console controls online/offline simulator state",
+      "passed": true
+    },
+    {
+      "name": "Website request opens a local simulated chat and completes",
+      "passed": true
+    },
+    {
+      "name": "Signup creates a fictional local verification message",
+      "passed": true
+    },
+    {
+      "name": "Fake inbox verification link activates the fictional account",
+      "passed": true
+    },
+    {
+      "name": "Fake OAuth navigates only to the local provider",
+      "passed": true
+    },
+    {
+      "name": "Administrator extractor button checks the original-media fake",
+      "passed": true
+    },
+    {
+      "name": "Trailer editor loads its own exact title description and status without undefined fields",
+      "passed": true
+    },
+    {
+      "name": "Legacy nonlocal asset attempts are blocked",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0
+  },
+  "nonlocal_asset_attempts": 3,
+  "nonlocal_failed": 3,
+  "nonlocal_responses": 0,
+  "page_errors": []
+}
