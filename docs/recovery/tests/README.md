@@ -166,3 +166,16 @@ fresh owned isolated Docker targets. Set ZINEMA_TEST_PHASE=PROMOTION for fresh
 native HTTP/schema evidence without overwriting earlier reports. Exact commands,
 observed failures, executed counts and limitations: ../PROMOTION_CONTROLS.md and
 ../../../ops/README.md. Production/provider/publishing gates remain closed.
+
+## Local preview acceptance
+
+`audit.py prepare --hold` now generates a private minimal PHP ini with installed
+required modules (including GD), 20 MiB upload/22 MiB post caps, a generated PNG,
+and the ffmpeg test clip. It never edits global XAMPP settings. The mirror copies
+only two explicit tracked brand PNGs in addition to source/style, not private media.
+Set `ZINEMA_TEST_PHASE=LOCAL_ACCEPTANCE` for its retained HTTP report. Then run
+`node docs/recovery/tests/local_acceptance.cjs <owned-runtime> <installed-playwright-package-directory>`
+with an existing Playwright package and Chrome; no downloads or real accounts.
+The browser uses a fresh profile and denies non-loopback page traffic. This is
+an automated test, with separate screenshot inspection, not manual interaction.
+See ../LOCAL_ACCEPTANCE.md for actual results and the exact owned preview stop path.

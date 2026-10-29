@@ -1,5 +1,50 @@
 # Recovery decisions
 
+## 2026-10-28 — Separate confirmed machine inventory from capacity acceptance
+
+The owner confirms the collector output belongs to the actual personal bot machine
+and supplies local volume metadata. Record the sanitized hardware/volume snapshot
+and its owner provenance without publishing the media path or interpreting volume
+space as a media quota. Keep independent specification/security/load verification
+false: approximately 1.55 GiB free RAM and 121.51 GiB available volume space do not
+establish steady worker capacity, throughput, folder usage or recovery. No code or
+runtime setting changes follow from this report. JSON/arithmetic/diff checks only.
+
+## 2026-10-28 — Prepare locked shared-host candidates and a private-free inventory
+
+Context: Owner asks for Stellar-compatible staging preparation and a read-only
+readiness tool for the actual bot machine; its specifications remain unknown.
+Started clean at `12c9954`; preserve prior published source/checkpoints. This request
+does not authorize account access, speed tests, production, deployment or publishing.
+
+Decision: Export a new ignored review bundle from committed website source plus
+hashed current templates. Put schema/configuration placeholders outside the public
+layout, deny every Apache route and return 503 from an independent private PHP
+prepend guard. No activation implementation, credentials or real host values.
+Match shared-host PHP handler/scheduler constraints and explicitly leave the
+current standalone extractor incompatible with an assumed managed deployment.
+No root daemon, cPanel API or unattended job is installed.
+
+Provide a standalone dependency-free Node metadata collector. Default filesystem,
+upload and continuous-availability inputs remain unknown; optional storage probes
+are local-only with remote/automount/symlink rejection. Read CPU/RAM/boot age and
+typed disk metadata only, not directory/media/session/config contents, identity or
+environment. No network APIs, benchmarks or writes. Any estimates stay unverified;
+all reports need review and are not automatic launch approval.
+
+Verification: Readiness17+configuration11, candidate8/twelve mutation subcases,
+artifact6/local guards9/two-host guards12 passed. Windows developer-workstation
+smokes do not establish actual bot capacity. Native loopback Apache deny/CLI guard
+checks passed with owned process/port cleanup. Docker stalled in create; stop only
+its identified client, preserve the aborted case and use native verification rather
+than restarting the engine globally. The unverified Docker path was removed; native ten-second command bounds tested. Detailed
+execution/static/security classifications and source provenance: STELLAR_* reports.
+
+Consequences: Local preparation complete; actual PHP handler/managed extractor,
+private bootstrap and production quota/recovery implementations, account approval,
+real machine/network/provider tests and publishing remain gates. No live settings
+or existing application source changed. Follow up from the actual sanitized report.
+
 ## 2026-10-28 — Test the website/personal-bot split without provider access
 
 Context: Owner requests local implementation/testing and supplies a Stellar plan
@@ -699,3 +744,93 @@ passed. Candidate/staged/history Gitleaks scans and private ignore21 checks pass
 new-work whitespace checks passed. Earlier full TLS/SQL/large-byte runs are retained
 historical evidence, not reclassified as newly executed. Final PR/head verification
 and immutable handoff hash are reported in the execution handoff.
+
+## 2026-10-28 — Account PHP adapters and outbound extraction queue
+
+Context: The owner selected Stellar for the website and a personal Windows bot
+server. Actual-account capabilities and upload/independent recovery are unverified.
+The existing container assumptions (fixed /var/lib state, root chown, Unix socket)
+are not evidence of shared-host compatibility. Preserve the default disabled bundle.
+
+Decision: Validate a private fixed-path account configuration before injecting env;
+use exact client allowlists and no trusted proxy headers. Add account-owned state
+outside public_html, with existing bounded quota/reference/quarantine operations.
+Move shared operator algorithms without weakening the original local CLI boundary.
+No schema migration or production credential loading is required for the local test.
+
+Use request-bounded PHP and private flock/atomic state for <=32 extraction jobs.
+The personal worker initiates communication; no new inbound home port, website
+Node daemon, browser credential, upstream fetch or automatic held replay. Independent
+worker key, hashed claim receipts, begin-before-side-effect, deadline holds, durable
+local intent, CAS-reviewed archival and persistent bounded audit form the contract.
+Only active intact owned same-origin short clips can become results. Browser saves
+wait for completion; the server independently refuses incomplete results. HTTPS
+policy is fake-tested; the delivered executable accepts local-fixture only.
+
+Apply conservative worker admission defaults: RSS <384 MiB, system free RAM >=512
+MiB, media-volume free reserve >=10 GiB plus expected write/SDK temporary allowance.
+Ingestion samples every 4 MiB and before publication; partials never replace originals.
+Pressure stops new sends/claims and reports offline. An in-flight SDK operation is
+not cancelled/retried automatically; actual SDK buffering/cancellation remains a gate.
+
+Verification: Local fictional tests and retained regressions are recorded in
+STELLAR_ADAPTERS.md/results. No actual-account, live SDK, upload-speed, sustained
+capacity, independent backup or publishing claim follows. Private-file Windows
+normalization/fixture restrictions and queued-expiry defects found during rehearsal
+were corrected and rerun. Final 343 local checks pass; syntax/ignore checks and
+Gitleaks candidate scan pass (zero findings, documented pattern/private exclusions).
+File flush/atomic rename and cooperative locks do not
+certify provider filesystem durability after power loss or distributed recovery.
+
+## 2026-10-28 — Local acceptance before account purchase
+
+Owner asked to execute the launch-verification steps, then confirmed Stellar has
+not been purchased. Perform authorized local acceptance and read-only machine
+policy inventory; prepare actual-host/network/recovery/live prerequisites without
+inventing account access, receivers, independent targets or live approval.
+
+Browser tools failed kernel-asset setup, including reset/retry. Use installed
+headless Chrome/Playwright with a fresh profile and non-loopback page routing
+blocked; visually inspect screenshots separately and do not call this a manual
+interaction test. Never import real browser sessions or run provider/recipient links.
+
+Actual browser input exposed a missing native GD module configuration, omitted
+tracked logos, wrong administrator upload URLs and an optional-null poster notice.
+Use a private allowlisted PHP ini (no global configuration edit), copy only known
+brand images into the mirror, preserve upload MIME/type bounds, normalize owned
+admin preview URLs and coalesce optional posters. Keep diagnostics visible to tests.
+Disabled delivery gets a friendly 503 before DB/token work; movie metadata and
+upload labels reflect free/WhatsApp-only full content and actual clip limits.
+
+Fresh fictional browser journeys pass; retained HTTP/source/secret results and
+initial failures are documented in LOCAL_ACCEPTANCE.md. Current power timers are
+observations, not restart/uptime proof. Independent backups and upload speed are
+unverified. Leave the owned preview available for owner review with private access
+notes and exact stop command; keep real integrations, staging activation and
+publishing off. No Git staging/commit/push or purchase in this phase.
+
+## 2026-10-29 — Publish the completed Stellar and acceptance work as ordered reviews
+
+Context: The owner requested incremental staging/Conventional Commits/PRs and then
+explicitly chose to wait for the active local acceptance chat. Its completed fixes
+expanded the initial 65 changed paths to 79. Keep that work, prior reports and the
+owner-requested running preview intact; source publication does not activate a host.
+
+Decision: Wait for the other turn to complete, freeze and reverify the combined
+source, then create four ordered project-prefixed checkpoints: preparation,
+adapters, worker pressure and acceptance. Stage nineteen purpose-based groups plus
+one publication handoff. Stage the audit helper's earlier/later changes separately
+from verified snapshots without editing its working file. Do not rewrite history,
+invent activity commits, merge PRs, stop the preview or enable external switches.
+
+Consequences: PRs #22–#25 all target main and must merge in order; later diffs include
+predecessors until merged. Source review is authorized by this request independently
+of the still-disabled hosting/provider/production/deployment gates. Actual hosting,
+always-on, speed, independent recovery and live identities remain unaccepted.
+
+Verification: Settled candidate591 and all staged/new-history scans pass, zero
+Gitleaks findings; private ignores22, PHP213/JS-CJS88/Python28/JSON105, Node171 and
+pure Python49 pass. Included local acceptance reports show browser16 and HTTP94;
+no manual interaction or newly replayed full runtime acceptance is claimed. Exact
+scope/group hashes, final handoff hash and remote/clean checks are documented in
+the publication records and execution handoff.

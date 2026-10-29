@@ -1,0 +1,760 @@
+{
+  "started_date": "2026-10-28",
+  "publication_date": "2026-10-29",
+  "state": "COMPLETE within source-review publication scope; broader launch plan PARTIAL / NO GO",
+  "authorization": "Owner requested logical staging/commits/branches and review PRs, then explicitly chose to wait and include the completed acceptance fixes. No merge, purchase, provider/recipient, production, credential rotation, power-setting change or deployment is authorized by source publication.",
+  "initial_head": "12c9954758b9718cabe25816d328b28db0198582",
+  "remote_main": "2e85a54f9a7e2ad0dad9b2602c96e3f44b51fb21",
+  "initial_changed_paths": 65,
+  "accepted_combined_changed_paths": 79,
+  "coordination": "Waited until Assess Zinema project readiness became idle/completed. No index or branch changes occurred during its writes; refreshed and verified the settled combined snapshot before committing.",
+  "source_commits": [
+    {
+      "sha": "75f7874a6f8870068c88f970eb9c96471485b4f1",
+      "branch": "zinema/stellar-preparation",
+      "message": "chore(security): exclude private account runtime credentials",
+      "paths": [
+        ".gitignore"
+      ],
+      "staged_diff_stats": "2\t0\t.gitignore\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "56ea98c60e26382d9ab774ca5dcd5d77f638e80c",
+      "branch": "zinema/stellar-preparation",
+      "message": "docs(staging): record host constraints and sanitized machine inventory",
+      "paths": [
+        "docs/recovery/BOT_MACHINE_INVENTORY.md",
+        "docs/recovery/LAUNCH_REQUIREMENTS.md",
+        "docs/recovery/PRODUCTION_FEATURES.md",
+        "docs/recovery/PRODUCTION_STAGING.md",
+        "ops/hosting/namecheap-stellar.json"
+      ],
+      "staged_diff_stats": "45\t0\tdocs/recovery/BOT_MACHINE_INVENTORY.md\n13\t0\tdocs/recovery/LAUNCH_REQUIREMENTS.md\n25\t0\tdocs/recovery/PRODUCTION_FEATURES.md\n25\t0\tdocs/recovery/PRODUCTION_STAGING.md\n39\t4\tops/hosting/namecheap-stellar.json\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 1,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_two_host_guard.py",
+          "exit": 0,
+          "tests": 12
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "9cf0ad656d56d6fe922ec7a48e4f8409fe3bceda",
+      "branch": "zinema/stellar-preparation",
+      "message": "feat(readiness): add read-only personal-bot inventory collector",
+      "paths": [
+        "docs/recovery/tests/bot-readiness.test.cjs",
+        "ops/bot-readiness.cjs"
+      ],
+      "staged_diff_stats": "75\t0\tdocs/recovery/tests/bot-readiness.test.cjs\n87\t0\tops/bot-readiness.cjs\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 2,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 17,
+          "pass": 17,
+          "fail": 0
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "99361474de54e1b955bb2d700b68a19f039a8cc9",
+      "branch": "zinema/stellar-preparation",
+      "message": "build(staging): add locked shared-host candidate and capability probes",
+      "paths": [
+        "ops/staging/stellar/README.md",
+        "ops/staging/stellar/bootstrap.php",
+        "ops/staging/stellar/candidate.php",
+        "ops/staging/stellar/check.php",
+        "ops/staging/stellar/cron.disabled.txt",
+        "ops/staging/stellar/extractor-review.php",
+        "ops/staging/stellar/guard.htaccess",
+        "ops/staging/stellar/host-capabilities.php",
+        "ops/staging/stellar/operator.php",
+        "ops/staging/stellar/runtime-config.example.php",
+        "ops/staging/stellar/runtime.php",
+        "ops/staging/stellar/user.ini.template"
+      ],
+      "staged_diff_stats": "190\t0\tops/staging/stellar/README.md\n16\t0\tops/staging/stellar/bootstrap.php\n38\t0\tops/staging/stellar/candidate.php\n37\t0\tops/staging/stellar/check.php\n8\t0\tops/staging/stellar/cron.disabled.txt\n11\t0\tops/staging/stellar/extractor-review.php\n14\t0\tops/staging/stellar/guard.htaccess\n15\t0\tops/staging/stellar/host-capabilities.php\n23\t0\tops/staging/stellar/operator.php\n23\t0\tops/staging/stellar/runtime-config.example.php\n61\t0\tops/staging/stellar/runtime.php\n20\t0\tops/staging/stellar/user.ini.template\n",
+      "syntax": {
+        "php": 8,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_stellar.py",
+          "exit": 0,
+          "tests": 8
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "9b4293040eb2a0824f55462abb7e174c086727e8",
+      "branch": "zinema/stellar-preparation",
+      "message": "build(staging): add bounded package exporter and guard rehearsal",
+      "paths": [
+        "dev/build_stage_artifact.py",
+        "dev/prepare_stellar.py",
+        "dev/rehearse_stellar.py",
+        "dev/test_stellar.py"
+      ],
+      "staged_diff_stats": "1\t1\tdev/build_stage_artifact.py\n66\t0\tdev/prepare_stellar.py\n71\t0\tdev/rehearse_stellar.py\n58\t0\tdev/test_stellar.py\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 4,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_stellar.py",
+          "exit": 0,
+          "tests": 8
+        },
+        {
+          "path": "dev/test_staging.py",
+          "exit": 0,
+          "tests": 6
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "37792f96f0b5a5f8705ebeeb50d210ae75ca7233",
+      "branch": "zinema/stellar-preparation",
+      "message": "docs(recovery): record Stellar preparation verification",
+      "paths": [
+        "docs/recovery/STELLAR_CHECKS.json",
+        "docs/recovery/STELLAR_PREPARATION.md",
+        "docs/recovery/STELLAR_RESULTS.json"
+      ],
+      "staged_diff_stats": "33\t0\tdocs/recovery/STELLAR_CHECKS.json\n122\t0\tdocs/recovery/STELLAR_PREPARATION.md\n187\t0\tdocs/recovery/STELLAR_RESULTS.json\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 2,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "c58642d32b6d2f9cf77ead66f768503338101f8b",
+      "branch": "zinema/stellar-adapters",
+      "message": "refactor(storage): share operator and recoverable cleanup routines",
+      "paths": [
+        "dev/operations.php",
+        "dev/upload_cleanup.php",
+        "includes/operator_operations.php",
+        "includes/upload_cleanup.php"
+      ],
+      "staged_diff_stats": "1\t164\tdev/operations.php\n1\t260\tdev/upload_cleanup.php\n165\t0\tincludes/operator_operations.php\n261\t0\tincludes/upload_cleanup.php\n",
+      "syntax": {
+        "php": 4,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_stellar_adapters.py",
+          "exit": 0,
+          "tests": 14
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "d9fd2078702c9a961900e33e55d269157bf919c0",
+      "branch": "zinema/stellar-adapters",
+      "message": "feat(storage): support guarded account-owned upload state",
+      "paths": [
+        "admin/config.php",
+        "api/whatsapp/config.php",
+        "includes/environment.php",
+        "includes/upload_lifecycle.php",
+        "includes/upload_storage.php"
+      ],
+      "staged_diff_stats": "1\t1\tadmin/config.php\n1\t1\tapi/whatsapp/config.php\n4\t3\tincludes/environment.php\n5\t4\tincludes/upload_lifecycle.php\n39\t6\tincludes/upload_storage.php\n",
+      "syntax": {
+        "php": 5,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_stellar_adapters.py",
+          "exit": 0,
+          "tests": 14
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "a9996b38ef2921e85eb116bddf67641ff1cf0402",
+      "branch": "zinema/stellar-adapters",
+      "message": "feat(extractor): add bounded administrator and worker queue",
+      "paths": [
+        "admin/extractor.php",
+        "admin/manage_shots.php",
+        "api/extractor-work.php",
+        "dev/test_stellar_adapters.py",
+        "docs/recovery/tests/stellar-queue-driver.php",
+        "includes/extractor_client.php",
+        "includes/extractor_queue.php",
+        "js/extractor-queue.js"
+      ],
+      "staged_diff_stats": "2\t2\tadmin/extractor.php\n40\t9\tadmin/manage_shots.php\n21\t0\tapi/extractor-work.php\n107\t0\tdev/test_stellar_adapters.py\n25\t0\tdocs/recovery/tests/stellar-queue-driver.php\n4\t0\tincludes/extractor_client.php\n142\t0\tincludes/extractor_queue.php\n16\t0\tjs/extractor-queue.js\n",
+      "syntax": {
+        "php": 6,
+        "javascript": 1,
+        "python": 1,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_stellar_adapters.py",
+          "exit": 0,
+          "tests": 14
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "10781e1b256758decbffa2e42faa6a8af5ca5db5",
+      "branch": "zinema/stellar-adapters",
+      "message": "feat(worker): add resumable outbound extraction transport",
+      "paths": [
+        "fb-video-api/outbound-worker.cjs",
+        "fb-video-api/queue-transport.cjs",
+        "fb-video-api/queue-worker.cjs"
+      ],
+      "staged_diff_stats": "19\t0\tfb-video-api/outbound-worker.cjs\n28\t0\tfb-video-api/queue-transport.cjs\n57\t0\tfb-video-api/queue-worker.cjs\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 3,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 13,
+          "pass": 13,
+          "fail": 0
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "9e07f23ff3b840cd5f3cae9461441fb9f637670e",
+      "branch": "zinema/stellar-adapters",
+      "message": "test(staging): add isolated native account-adapter rehearsal",
+      "paths": [
+        "dev/rehearse_stellar_adapters.py",
+        "docs/recovery/tests/audit.py"
+      ],
+      "staged_diff_stats": "142\t0\tdev/rehearse_stellar_adapters.py\n4\t3\tdocs/recovery/tests/audit.py\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 2,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_stellar_adapters.py",
+          "exit": 0,
+          "tests": 14
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": [
+        "docs/recovery/tests/audit.py"
+      ]
+    },
+    {
+      "sha": "cb8c586ad10cdb70c39da4496a8209fc6a9ece73",
+      "branch": "zinema/stellar-worker-pressure",
+      "message": "feat(bot): gate claims sends and streams on resource pressure",
+      "paths": [
+        "docs/recovery/tests/bot-entrypoint.test.cjs",
+        "docs/recovery/tests/staging-worker.test.cjs",
+        "docs/recovery/tests/worker-memory-child.cjs",
+        "whatsapp-bot-deploy/config/file-manager.js",
+        "whatsapp-bot-deploy/config/health-monitor.js",
+        "whatsapp-bot-deploy/config/resource-pressure.js",
+        "whatsapp-bot-deploy/index.js"
+      ],
+      "staged_diff_stats": "9\t0\tdocs/recovery/tests/bot-entrypoint.test.cjs\n105\t0\tdocs/recovery/tests/staging-worker.test.cjs\n18\t0\tdocs/recovery/tests/worker-memory-child.cjs\n10\t1\twhatsapp-bot-deploy/config/file-manager.js\n4\t3\twhatsapp-bot-deploy/config/health-monitor.js\n27\t0\twhatsapp-bot-deploy/config/resource-pressure.js\n13\t2\twhatsapp-bot-deploy/index.js\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 7,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 23,
+          "pass": 23,
+          "fail": 0
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "1b897905959703cec4b1c0c2a8766c91391efd95",
+      "branch": "zinema/stellar-worker-pressure",
+      "message": "docs(ops): document private staging and operator workflows",
+      "paths": [
+        "dev/README.md",
+        "ops/README.md"
+      ],
+      "staged_diff_stats": "22\t0\tdev/README.md\n14\t0\tops/README.md\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "758d27484276e1d546812489c5372c18ab882ca3",
+      "branch": "zinema/stellar-worker-pressure",
+      "message": "docs(recovery): record adapter and worker acceptance evidence",
+      "paths": [
+        "docs/recovery/STELLAR_ADAPTERS.md",
+        "docs/recovery/STELLAR_ADAPTERS_CHECKS.json",
+        "docs/recovery/STELLAR_ADAPTERS_REHEARSAL.json",
+        "docs/recovery/STELLAR_ADAPTERS_RETAINED_HTTP.json",
+        "docs/recovery/STELLAR_ADAPTERS_TESTS.json"
+      ],
+      "staged_diff_stats": "120\t0\tdocs/recovery/STELLAR_ADAPTERS.md\n35\t0\tdocs/recovery/STELLAR_ADAPTERS_CHECKS.json\n201\t0\tdocs/recovery/STELLAR_ADAPTERS_REHEARSAL.json\n793\t0\tdocs/recovery/STELLAR_ADAPTERS_RETAINED_HTTP.json\n77\t0\tdocs/recovery/STELLAR_ADAPTERS_TESTS.json\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 4,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "2d25b8d1940b8e46f1e760c2a8e54141e28cc283",
+      "branch": "zinema/local-acceptance",
+      "message": "fix(delivery): render an honest disabled-delivery page",
+      "paths": [
+        "includes/delivery_unavailable.php",
+        "whatsapp-watch.php"
+      ],
+      "staged_diff_stats": "16\t0\tincludes/delivery_unavailable.php\n3\t1\twhatsapp-watch.php\n",
+      "syntax": {
+        "php": 2,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "isolated PHP unavailable renderer",
+          "status": 503,
+          "no_delivery_contact": true,
+          "exit": 0
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "8b694faa9d85ffc82f173509169acd2613cfb91b",
+      "branch": "zinema/local-acceptance",
+      "message": "fix(admin): align trailer previews with upload validation",
+      "paths": [
+        "admin/trailers.php"
+      ],
+      "staged_diff_stats": "4\t4\tadmin/trailers.php\n",
+      "syntax": {
+        "php": 1,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "67166b6f1f0830ed18ce6285331c2a5e025adc51",
+      "branch": "zinema/local-acceptance",
+      "message": "fix(catalogue): describe full-content delivery accurately",
+      "paths": [
+        "movies.php"
+      ],
+      "staged_diff_stats": "4\t4\tmovies.php\n",
+      "syntax": {
+        "php": 1,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "a89dc7cf91ed6f5b4860d706efb81d2cbf97bcb3",
+      "branch": "zinema/local-acceptance",
+      "message": "test(preview): mirror local assets with isolated image support",
+      "paths": [
+        "docs/recovery/tests/audit.py"
+      ],
+      "staged_diff_stats": "25\t5\tdocs/recovery/tests/audit.py\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 1,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_stellar.py",
+          "exit": 0,
+          "tests": 8
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "eaab87c6c5d49471613ddb88c13fe0560f373c15",
+      "branch": "zinema/local-acceptance",
+      "message": "test(acceptance): record automated journeys and remaining launch gates",
+      "paths": [
+        "docs/recovery/DECISIONS.md",
+        "docs/recovery/LOCAL_ACCEPTANCE.md",
+        "docs/recovery/LOCAL_ACCEPTANCE_BROWSER.json",
+        "docs/recovery/LOCAL_ACCEPTANCE_CHECKS.json",
+        "docs/recovery/LOCAL_ACCEPTANCE_MACHINE.json",
+        "docs/recovery/LOCAL_ACCEPTANCE_PHP.json",
+        "docs/recovery/LOCAL_ACCEPTANCE_RETAINED_HTTP.json",
+        "docs/recovery/NEXT_VERIFICATION.md",
+        "docs/recovery/PRODUCTION_MANUAL.md",
+        "docs/recovery/STATUS.md",
+        "docs/recovery/tests/README.md",
+        "docs/recovery/tests/local_acceptance.cjs"
+      ],
+      "staged_diff_stats": "109\t0\tdocs/recovery/DECISIONS.md\n150\t0\tdocs/recovery/LOCAL_ACCEPTANCE.md\n97\t0\tdocs/recovery/LOCAL_ACCEPTANCE_BROWSER.json\n34\t0\tdocs/recovery/LOCAL_ACCEPTANCE_CHECKS.json\n84\t0\tdocs/recovery/LOCAL_ACCEPTANCE_MACHINE.json\n28\t0\tdocs/recovery/LOCAL_ACCEPTANCE_PHP.json\n793\t0\tdocs/recovery/LOCAL_ACCEPTANCE_RETAINED_HTTP.json\n58\t0\tdocs/recovery/NEXT_VERIFICATION.md\n8\t0\tdocs/recovery/PRODUCTION_MANUAL.md\n122\t0\tdocs/recovery/STATUS.md\n13\t0\tdocs/recovery/tests/README.md\n105\t0\tdocs/recovery/tests/local_acceptance.cjs\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 1,
+        "python": 0,
+        "json": 5,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    }
+  ],
+  "source_head_before_handoff": "eaab87c6c5d49471613ddb88c13fe0560f373c15",
+  "final_handoff_commit": {
+    "subject": "docs(review): record Stellar and acceptance publication handoff",
+    "hash_location": "This file is part of the final handoff commit; inspect its Git history or execution handoff for the immutable hash."
+  },
+  "total_commits_for_review": 20,
+  "ordered_prs_before_handoff": [
+    {
+      "order": 1,
+      "number": 22,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/22",
+      "branch": "zinema/stellar-preparation",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable_before_handoff": true,
+      "head_before_handoff": "37792f96f0b5a5f8705ebeeb50d210ae75ca7233"
+    },
+    {
+      "order": 2,
+      "number": 23,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/23",
+      "branch": "zinema/stellar-adapters",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable_before_handoff": true,
+      "head_before_handoff": "9e07f23ff3b840cd5f3cae9461441fb9f637670e"
+    },
+    {
+      "order": 3,
+      "number": 24,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/24",
+      "branch": "zinema/stellar-worker-pressure",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable_before_handoff": true,
+      "head_before_handoff": "758d27484276e1d546812489c5372c18ab882ca3"
+    },
+    {
+      "order": 4,
+      "number": 25,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/25",
+      "branch": "zinema/local-acceptance",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "mergeable_before_handoff": true,
+      "head_before_handoff": "eaab87c6c5d49471613ddb88c13fe0560f373c15"
+    }
+  ],
+  "fresh_publication_checks": {
+    "date": "2026-10-28",
+    "source_head": "12c9954758b9718cabe25816d328b28db0198582",
+    "base_main": "2e85a54f9a7e2ad0dad9b2602c96e3f44b51fb21",
+    "initial_working_tree_clean": false,
+    "unpublished_commits": 0,
+    "candidate_files": 591,
+    "changed_files": 79,
+    "scanner": "Gitleaks 8.30.1",
+    "archive_and_binary_checksums_match": true,
+    "scans": [
+      {
+        "scope": "candidate",
+        "exit": 0,
+        "findings": 0
+      }
+    ],
+    "private_ignore_checks_passed": 22,
+    "syntax": {
+      "php": {
+        "total": 213,
+        "passed": 213,
+        "failures": []
+      },
+      "javascript": {
+        "total": 88,
+        "passed": 88,
+        "failures": []
+      },
+      ".py": {
+        "total": 28,
+        "passed": 28,
+        "failures": []
+      },
+      ".json": {
+        "total": 105,
+        "passed": 105,
+        "failures": []
+      }
+    },
+    "tests": {
+      "node_fake_and_local": {
+        "exit": 0,
+        "files": [
+          "docs/recovery/tests/backup-crypto.test.cjs",
+          "docs/recovery/tests/bot-api-boundary.test.cjs",
+          "docs/recovery/tests/bot-entrypoint.test.cjs",
+          "docs/recovery/tests/bot-lifecycle.test.cjs",
+          "docs/recovery/tests/bot-readiness.test.cjs",
+          "docs/recovery/tests/bot-recovery.test.cjs",
+          "docs/recovery/tests/bot.test.cjs",
+          "docs/recovery/tests/config.test.cjs",
+          "docs/recovery/tests/extractor-fetch.test.cjs",
+          "docs/recovery/tests/extractor.test.cjs",
+          "docs/recovery/tests/promotion-controls.test.cjs",
+          "docs/recovery/tests/search-popup.test.cjs",
+          "docs/recovery/tests/staging-worker.test.cjs",
+          "docs/recovery/tests/token-delivery.test.cjs",
+          "docs/recovery/tests/trailer-feed.test.cjs",
+          "docs/recovery/tests/two-host-media.test.cjs"
+        ],
+        "tests": 171,
+        "pass": 171,
+        "fail": 0,
+        "skipped": 0,
+        "failed_test_names": []
+      },
+      "test_local_guard.py": {
+        "exit": 0,
+        "tests": 9
+      },
+      "test_staging.py": {
+        "exit": 0,
+        "tests": 6
+      },
+      "test_two_host_guard.py": {
+        "exit": 0,
+        "tests": 12
+      },
+      "test_stellar.py": {
+        "exit": 0,
+        "tests": 8
+      },
+      "test_stellar_adapters.py": {
+        "exit": 0,
+        "tests": 14
+      }
+    },
+    "whitespace": {
+      "exit": 0,
+      "findings": 0,
+      "files": 0
+    },
+    "privacy_pattern_inventory": {
+      "phone": 0,
+      "whatsapp_identifier": 2,
+      "email": 15,
+      "private_key": 0,
+      "sql_data_statement": 8
+    },
+    "limitations": [
+      "No new Docker, HTTP/database/TLS, browser or real-provider acceptance run in this publication phase.",
+      "Prior phase runtime evidence is retained separately; production readiness remains NO GO.",
+      "Default secret patterns do not prove every secret or personal datum absent; ignored private material is not a publication candidate.",
+      "No container vulnerability, penetration, complete licensing or dependency advisory refresh performed."
+    ]
+  },
+  "history_scan_before_handoff": {
+    "scope": "origin/main..source_head_before_handoff",
+    "exit": 0,
+    "findings": 0
+  },
+  "staged_source_scans": {
+    "runs": 19,
+    "findings": 0
+  },
+  "accepted_runtime_evidence": {
+    "browser": {
+      "passed": 16,
+      "failed": 0,
+      "method": "isolated automated Chrome plus separate screenshot inspection; interactive tooling unavailable"
+    },
+    "retained_http": {
+      "passed": 94,
+      "failed": 0
+    },
+    "source": "LOCAL_ACCEPTANCE.md and LOCAL_ACCEPTANCE_*.json",
+    "classification": "Completed local acceptance phase evidence included after owner-directed wait; not replayed by the publication pass."
+  },
+  "partial_staging": "The audit helper's verified earlier Stellar version and later acceptance changes were staged separately from saved/current snapshots. Git index blobs were hash-checked and syntax-checked; the working file was never replaced or overwritten.",
+  "preview": {
+    "owner_requested_running": true,
+    "origin": "http://127.0.0.1:8088",
+    "started_or_stopped_by_publication": false,
+    "private_access_and_stop_instructions": "LOCAL_ACCEPTANCE.md; do not publish private access files."
+  },
+  "evidence_classifications": {
+    "statically_inspected": "Source/control flow, staged diffs/path statistics, snapshot/index hashes, syntax, JSON, exclusions, contact/SQL/fixture patterns.",
+    "test_covered_and_executed": "Fresh Node171 and pure Python49 plus focused staged-group checks. Isolated disabled-delivery PHP renderer returns 503 without a contact link or DB access.",
+    "runtime_verified_in_completed_acceptance": "Browser16 and HTTP94 on fictional/generated local fixtures; no new PHP/page errors in that recorded scope.",
+    "externally_verified": "Four source branches/PRs against main; final updated heads and status checked in execution handoff.",
+    "not_yet_verified": "Actual Stellar account/host, always-on configuration, sustained upload/SDK capacity, independent recovery, provider/live acceptance, comprehensive privacy/licensing/security."
+  },
+  "publication_changes": [
+    "docs/recovery/STELLAR_PUBLICATION.md",
+    "docs/recovery/STELLAR_PUBLICATION_RESULTS.json",
+    "docs/recovery/STATUS.md",
+    "docs/recovery/DECISIONS.md"
+  ],
+  "preserved_original_branch": "zinema/two-host-rehearsal at 12c9954758b9718cabe25816d328b28db0198582",
+  "application_changes_authored_by_publication_pass": false,
+  "next_recommended_task": "Review the localhost results, choose an owner-approved always-on policy and independent recovery destination, and obtain hosting capability confirmation before purchase or private staging. Approve exact receivers and caps before any upload-speed or live-provider test."
+}
