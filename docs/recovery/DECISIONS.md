@@ -834,3 +834,132 @@ pure Python49 pass. Included local acceptance reports show browser16 and HTTP94;
 no manual interaction or newly replayed full runtime acceptance is claimed. Exact
 scope/group hashes, final handoff hash and remote/clean checks are documented in
 the publication records and execution handoff.
+
+## 2026-10-29 — Whole local native demo, independent of hosting
+
+Owner explicitly requested the whole system locally and deferred hosting. Start
+from clean ee3d223; preserve source publication history and the prior preview.
+Docker's local engine timed out in bounded read-only checks. Do not restart the
+engine globally. Use installed XAMPP/Python/Node with private owned runtime state.
+
+A private native bootstrap pins test DB/datadir, origins, modes and owner and
+injects local-only configuration. An environment flag alone cannot enable it.
+Add a native account-owned quota mode and a loopback-only dev console, fake inbox
+and chat. Rewrite WhatsApp handoff only in this verified native context. Default
+production/provider/publishing policy and normal exports remain unchanged.
+
+Run the actual extractor HTTP app with its generated-media adapter and installed
+lock-matching HTTP dependencies, not upstream browser/fetch code. A separate Node
+simulator uses the real claim client/protocol and streamed media hashes; it never
+loads Baileys. Local control keys stay private; browser mutations require CSRF.
+Restart retains database/media/ledger and never releases uncertain claims.
+
+Keep the fake sink's raw-message contract while adding MIME-aware safe action
+links. Invalid configuration, wrong owner/keys and real recipient domains fail
+closed. Store generated accounts/messages/receipts privately and publish only
+sanitized results. Keep manual GUI, live SDK/provider, sustained load and power-loss
+claims distinct. Executed native28/browser8/guards6, retained Node171/Python49/HTTP94 and persistence5
+all pass. Static/secret candidate checks pass with zero findings and documented
+exclusions. Exact executed results, initial corrections and limits are in
+LOCAL_WHOLE_SYSTEM.md. No hosting work, deployment, global settings or remote Git.
+
+## Local continuation — separate native SMTP from Docker mail
+
+Context: On resuming local work, all recorded native processes had exited. Process
+verification refused the stale records. Only SMTP1025 remained occupied, owned by
+Docker/WSL, rather than the native sink. Do not kill it or assume it is our fixture.
+
+Decision: Reserve loopback11025 for native fake SMTP; keep Docker's existing1025.
+Accept the two explicit ports in private native validation for backward
+compatibility. On stopped startup, atomically change only an owned older config's
+mail port, after all native destination ports are free. No arbitrary SMTP host or
+port, provider connection, credential rotation, global configuration or data reset.
+Status/stop/tests use the validated runtime mail port. Existing keys/media/DB/ledger
+remain owned and reusable.
+
+Verification: Guard9, integration28 and automated browser8 pass. Six normal
+stop/resume checks pass, including exact ledger/manifest hashes and retention of
+the unrelated SMTP listener. Repeated start is idempotent, services are healthy,
+no held work or browser page errors. Results: LOCAL_WHOLE_RESUME.json. This is a
+normal process restart, not OS/power-loss proof or live delivery verification.
+
+## 2026-10-30 — Repair trailer editing discovered during interactive review
+
+Context: Owner requested a local demo delivery and administrator browsing. The
+interactive review succeeded in delivery and all ten navigation sections, but
+trailer Edit showed undefined fields. Its public endpoint returns an envelope,
+and its single-trailer query includes movie-description metadata. The page also
+lacked modal positioning styles, leaving the edit form below the viewport.
+
+Decision: Use the authenticated administrator page's exact trailer-row metadata
+in escaped attributes; assign input values rather than HTML. Refuse unknown or
+incomplete row references. Keep existing update POST/CSRF and public API behavior.
+Add a bounded fixed overlay so the edit controls visibly appear. No schema,
+provider, settings, credential or publishing change is needed.
+
+Verification: Interactive recheck shows exact title/description/status and visible
+overlay; cancelled without saving. Editor4/feed10, Chrome9 and integration28 pass,
+including generated clip upload and quoted/multiline/Sinhala metadata. Browser
+scope blocks nonlocal assets; no real extraction/account/recipient is contacted.
+LOCAL_ADMIN_REVIEW.md records the defect, repair, observations and limitations.
+
+## 2026-10-30 — Double-click entry points for the native local stack
+
+Owner requested a batch file that starts the whole system. Reuse dev/native.py
+as the sole process/data owner; batch files must not start legacy bots, import
+provider configuration, install services/dependencies or change global XAMPP.
+Add root start/stop wrappers with self-relative paths and Python/py fallback.
+Keep the supervising start window open and use owned normal shutdown for stopping.
+
+Native --open-browser is accepted only for up. Open the fixed localhost URL after
+readiness/identity checks, including fake mail/OAuth, extractor and simulator, for
+both initial and repeated startup. Browser-open failure must not tear down the
+running stack or reveal exception details; show a manual local link instead.
+
+Verification: actual Windows cmd invocation of start/stop, warm start from another
+folder and cold start pass. Ten focused readiness/browser/prerequisite/persistence
+checks and native guards9 pass. Initial inconclusive concurrent-count comparison
+and test command-quoting correction are retained in LOCAL_BATCH_LAUNCHER.json.
+No production/provider/publishing capability was added, enabled or exercised.
+
+## 2026-10-30 — Owner-approved real WhatsApp connected to local website
+
+The owner explicitly requested replacing the simulator with the actual bot from
+D:/Zinema.lk/whatsapp-bot-deploy, chose fresh setup for a specified phone and the
+same owner test recipient. This authorizes the WhatsApp provider connection and
+one capped original-media test, while retaining other provider/production/publishing
+boundaries. Phone/account/recipient values stay only in ignored private config.
+
+The D: project is a different recovery checkpoint, with a blocked entry, old
+get/mark-used token API and scheduled group/cache behavior. Preserve that source,
+dotenv and saved account evidence. Use its actual installed Baileys transport
+through a narrow new local adapter and the current hardened claim client/media/
+resource/lease modules. No legacy group jobs or saved auth state are loaded. A
+fresh session accepts only the configured account; non-owner/group messages are
+ignored. Existing simulator ledger remains independent and preserved.
+
+Store owner approval outside the web root, pin source/SDK manifest, exact local API,
+account/recipient and20MiB cap. Pairing QR is authenticated/no-store, auto-refreshing;
+actual connection readiness determines website admission. Admin owner-test is CSRF
+protected. Lost/uncertain send outcomes remain held, without auto replay. Default
+unapproved profiles stay simulated. Live mode refuses simulator test drivers.
+
+Initial bundled web revision returned405; official Baileys revision metadata was
+verified and set privately. SDK import and actual provider QR exchange succeed;
+account linking awaits owner action. Policy/claim/lifecycle24, guards9 and local
+live-control10 checks pass. No real test submission/delivery is yet claimed.
+Initial sandbox-loopback and HTTP-contract probe corrections are recorded. See
+REAL_WHATSAPP_LOCAL.md/results for evidence, limits and the remaining owner step.
+
+## 2026-10-30 — Owner-confirmed first real clip delivery
+
+After the owner reported linking, verified real socket readiness and configured
+account/heartbeat. Made exactly one authenticated original-clip submission to the
+same approved account, with a durable attempt marker and no automatic retry.
+Local token/intent completion and outbox delta match that single submission.
+
+Owner first did not find the clip, then confirmed receipt and playback in the
+account's Message yourself/You chat. Record this as owner-reported external
+verification; do not mislabel the SDK return as a device delivery/read receipt.
+No resend, extra recipient or new provider action was needed. Local capped test
+is complete; other launch verification remains outside that evidence.
