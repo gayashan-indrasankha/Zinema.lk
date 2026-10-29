@@ -1,0 +1,124 @@
+{
+  "scope": "Owned native PHP/SQL/SMTP/OAuth/extractor/Node simulator; no provider connections",
+  "tests": [
+    {
+      "name": "Owned PHP SQL bridge authenticates",
+      "passed": true
+    },
+    {
+      "name": "Simulator rejects missing key",
+      "passed": true
+    },
+    {
+      "name": "Extractor rejects missing service key",
+      "passed": true
+    },
+    {
+      "name": "Extractor rejects an incorrect service key",
+      "passed": true
+    },
+    {
+      "name": "Local console requires administrator",
+      "passed": true
+    },
+    {
+      "name": "Administrator can open whole local console",
+      "passed": true
+    },
+    {
+      "name": "Signup sends only to local fictional inbox",
+      "passed": true
+    },
+    {
+      "name": "New account starts unverified",
+      "passed": true
+    },
+    {
+      "name": "Administrator inbox displays a verification action",
+      "passed": true
+    },
+    {
+      "name": "Local email verification activates account",
+      "passed": true
+    },
+    {
+      "name": "Verified local account signs in",
+      "passed": true
+    },
+    {
+      "name": "Password reset uses local sink",
+      "passed": true
+    },
+    {
+      "name": "Fictional account reset completes",
+      "passed": true
+    },
+    {
+      "name": "Reset link cannot be reused",
+      "passed": true
+    },
+    {
+      "name": "Fake OAuth completes without Google",
+      "passed": true
+    },
+    {
+      "name": "Actual fb-video-api app is online in local mode",
+      "passed": true
+    },
+    {
+      "name": "Extraction returns only original managed fixture",
+      "passed": true
+    },
+    {
+      "name": "Extractor refuses arbitrary network target",
+      "passed": true
+    },
+    {
+      "name": "Website handoff stays in localhost",
+      "passed": true
+    },
+    {
+      "name": "Real claim client completes one simulated delivery",
+      "passed": true
+    },
+    {
+      "name": "Database records completed claim",
+      "passed": true
+    },
+    {
+      "name": "Consumed token never duplicates attachment",
+      "passed": true
+    },
+    {
+      "name": "Offline simulator prevents new token issuance",
+      "passed": true
+    },
+    {
+      "name": "Simulator can return online",
+      "passed": true
+    },
+    {
+      "name": "Restart preserves outbox and avoids replay",
+      "passed": true
+    },
+    {
+      "name": "Restarted simulator refuses consumed token",
+      "passed": true
+    },
+    {
+      "name": "Native quota inventory uses owned state",
+      "passed": true
+    },
+    {
+      "name": "SMTP never accepts real recipient domains",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "total": 28,
+    "passed": 28,
+    "failed": 0
+  },
+  "external_connections": false,
+  "real_whatsapp": false
+}
