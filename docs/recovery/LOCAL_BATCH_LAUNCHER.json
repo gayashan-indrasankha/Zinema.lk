@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-30",
+  "scope": "Windows batch start/stop of owned local demo; no live integrations",
+  "actual_batch_stop_passed": true,
+  "actual_batch_cold_start_passed": true,
+  "actual_batch_existing_start_from_other_directory_passed": true,
+  "checks": {
+    "users": true,
+    "completed_claims": true,
+    "bot_state": true,
+    "upload_manifest": true,
+    "existing_outbox_and_intents_preserved": true,
+    "browser_destination_is_fixed_localhost": true,
+    "browser_unavailable_has_safe_manual_link": true,
+    "browser_exception_has_safe_manual_link": true,
+    "browser_flag_rejected_for_stop": true,
+    "missing_python_fails_with_readable_message": true
+  },
+  "passed": true,
+  "external_connections": false,
+  "publishing": false,
+  "limitations": [
+    "Invoked actual batch files through cmd; Explorer double-click and every machine/Python-installation variant are not separately certified.",
+    "Initial comparison was inconclusive after one additional demo completion; repeated immediate restart comparison passed.",
+    "Initial missing-Python probe had incorrect cmd quoting; corrected raw Windows command-line probe passed."
+  ]
+}

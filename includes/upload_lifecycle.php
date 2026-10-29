@@ -56,9 +56,9 @@ function storage_save_manifest($settings,$manifest) {
     else { @chown($settings['state'].'/manifest.json','www-data'); @chgrp($settings['state'].'/manifest.json','www-data'); }
 }
 function storage_reference_acquire($db) {
-    if (!in_array(getenv('UPLOAD_QUOTA_MODE'),['local','staging','account'],true)) return null;
+    if (!in_array(getenv('UPLOAD_QUOTA_MODE'),['local','staging','account','native'],true)) return null;
     $settings=local_storage_settings();
-    $name=getenv('UPLOAD_QUOTA_MODE')==='account' ? 'zinema-uploads-'.substr(hash('sha256',$settings['owner'].DB_NAME),0,32) : 'zinema-development-upload-references';
+    $name=in_array(getenv('UPLOAD_QUOTA_MODE'),['account','native'],true) ? 'zinema-uploads-'.substr(hash('sha256',$settings['owner'].DB_NAME),0,32) : 'zinema-development-upload-references';
     $stmt=$db->prepare('SELECT GET_LOCK(?,5)');$stmt->bind_param('s',$name);$stmt->execute();
     if ((int)$stmt->get_result()->fetch_row()[0] !== 1) throw new LocalStorageError('storage_reference_busy');
     return $name;

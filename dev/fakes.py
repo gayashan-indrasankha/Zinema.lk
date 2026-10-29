@@ -3,23 +3,46 @@ Raw fictional messages/codes stay in memory and are never logged.
 """
 import asyncio
 import base64
+import email.parser
+import email.policy
 from email.utils import parseaddr
 import hashlib
 import hmac
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import html
+import re
 from pathlib import Path
 import secrets
 import threading
 import time
+import sys
 from urllib.parse import parse_qs, urlencode, urlsplit
 
-CONTROL = Path('/run/secrets/control_key').read_text().strip()
-CLIENT_SECRET = Path('/run/secrets/oauth_secret').read_text().strip()
+NATIVE = len(sys.argv)==3 and sys.argv[1]=='--native'
+if NATIVE:
+    home=Path(sys.argv[2]).resolve();root=Path(__file__).resolve().parent.parent
+    if home.parent!=(root/'.runtime').resolve() or not home.name.startswith('audit-'):raise RuntimeError('native_fixture_denied')
+    config=json.loads((home/'native-config.json').read_text());owner=json.loads((home/'ownership.json').read_text())
+    if config.get('schema')!=1 or config.get('external_connections') is not False or config.get('publishing') is not False or config.get('owner')!=owner.get('native_owner'):raise RuntimeError('native_fixture_denied')
+    if config['environment'].get('MAIL_HOST')!='127.0.0.1' or config['environment'].get('MAIL_PORT') not in ['1025','11025']:raise RuntimeError('native_fixture_denied')
+    CONTROL=config['control_key'];CLIENT_SECRET=config['environment']['GOOGLE_CLIENT_SECRET']
+    SMTP_PORT=int(config['environment']['MAIL_PORT'])
+else:
+    SMTP_PORT=1025
+    CONTROL = Path('/run/secrets/control_key').read_text().strip()
+    CLIENT_SECRET = Path('/run/secrets/oauth_secret').read_text().strip()
 REDIRECT = 'http://127.0.0.1:8088/google-callback.php'
 LOCK = threading.RLock()
 STATE = {'messages': [], 'codes': {}, 'access': {}, 'fail_mail': False,
          'identity': {'id': 'fictional-default', 'email': 'oauth@example.invalid', 'name': 'Fictional OAuth User', 'email_verified': True}, 'scenario': 'normal'}
+
+def project_message(message):
+    parsed=email.parser.Parser(policy=email.policy.default).parsestr(message['raw']);text=''
+    for part in parsed.walk():
+        if part.get_content_type() in {'text/plain','text/html'}:text+=part.get_content()+'\n'
+    links=list(dict.fromkeys(re.findall(r'http://127\.0\.0\.1:8088/(?:verify-email|reset-password)\.php\?token=[a-zA-Z0-9]+',html.unescape(text))))
+    return {**message,'subject':str(parsed.get('Subject','Fictional message')),'links':links}
 
 
 async def smtp(reader, writer):
@@ -78,7 +101,7 @@ class Handler(BaseHTTPRequestHandler):
             self.send_response(200); self.end_headers(); self.wfile.write(b'ok'); return
         if parsed.path=='/_test/outbox':
             if not self.test_authorized(): self.answer(403,{}); return
-            with LOCK: self.answer(200,{'messages':STATE['messages'][:]})
+            with LOCK: self.answer(200,{'messages':[project_message(message) for message in STATE['messages']]})
             return
         if parsed.path=='/authorize':
             if params.get('client_id')!='zinema-local' or params.get('redirect_uri')!=REDIRECT or params.get('code_challenge_method')!='S256' or not params.get('code_challenge') or not params.get('state'):
@@ -127,7 +150,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def smtp_thread():
     async def serve():
-        server=await asyncio.start_server(smtp,'127.0.0.1',1025,limit=131072)
+        server=await asyncio.start_server(smtp,'127.0.0.1',SMTP_PORT,limit=131072)
         async with server: await server.serve_forever()
     asyncio.run(serve())
 
@@ -153,5 +176,5 @@ class ExtractorFaults(BaseHTTPRequestHandler):
 
 if __name__=='__main__':
     threading.Thread(target=smtp_thread,daemon=True).start()
-    threading.Thread(target=lambda:ThreadingHTTPServer(('127.0.0.1',3335),ExtractorFaults).serve_forever(),daemon=True).start()
-    ThreadingHTTPServer(('0.0.0.0',9081),Handler).serve_forever()
+    if not NATIVE:threading.Thread(target=lambda:ThreadingHTTPServer(('127.0.0.1',3335),ExtractorFaults).serve_forever(),daemon=True).start()
+    ThreadingHTTPServer(('127.0.0.1' if NATIVE else '0.0.0.0',9081),Handler).serve_forever()
