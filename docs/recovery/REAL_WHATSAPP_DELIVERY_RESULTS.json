@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-30",
+  "scope": "One owner-authorized original clip to the same linked owner account; no automatic resend",
+  "checks": {
+    "real_bot_online": true,
+    "configured_account_heartbeat_matches": true,
+    "one_local_submission": true,
+    "database_claim_completed": true,
+    "durable_intent_completed": true,
+    "held_count_zero": true,
+    "automatic_jobs_disabled": true
+  },
+  "submission_checks_passed": true,
+  "attachment": "original-demo.mp4",
+  "attachment_bytes": 113037,
+  "recipient_role": "approved_owner_self_chat",
+  "sdk_submission_recorded": true,
+  "recipient_receipt": "owner_confirmed_received_and_playable_in_self_chat",
+  "device_delivery_receipt": "not_captured",
+  "automatic_retry": false,
+  "production": false,
+  "publishing": false,
+  "owner_feedback_history": [
+    "initially_not_found",
+    "confirmed_in_self_chat_and_playable"
+  ],
+  "verification": {
+    "account_connection": "runtime_verified",
+    "local_claim_completion": "runtime_verified",
+    "recipient_receipt_and_playback": "externally_verified_by_owner_report",
+    "protocol_delivery_read_receipts": "not_captured"
+  },
+  "capped_owner_delivery_test_passed": true
+}

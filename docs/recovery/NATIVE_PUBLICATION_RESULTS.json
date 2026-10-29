@@ -1,0 +1,627 @@
+{
+  "date": "2026-10-30",
+  "scope": "Source publication and review preparation; no runtime/provider activation",
+  "state": "COMPLETE within source-review scope; final Git and remote verification recorded in execution handoff",
+  "base_main": "137fe8fbf7e5ca2b94e048b505dca4197d54355f",
+  "previous_source_head": "ee3d223c15d4471d2945241f20c1dbbcaec92f70",
+  "source_checkpoint": "f80d6ed50314456ebf378b237f97d42bf9158e57",
+  "source_changed_paths": 46,
+  "source_commits": 15,
+  "total_commits_with_handoff": 16,
+  "final_commit_locator": "git log -1 --format=%H -- docs/recovery/NATIVE_PUBLICATION.md",
+  "pull_requests": [
+    {
+      "number": 26,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/26",
+      "head": "zinema/native-local-stack",
+      "title": "feat(dev): add persistent Windows local stack (1/3)",
+      "source_head": "296f5806d3211d2c91a9747c186f2fcd16e91165"
+    },
+    {
+      "number": 27,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/27",
+      "head": "zinema/admin-trailer-editor",
+      "title": "fix(admin): preserve trailer metadata in the edit modal (2/3)",
+      "source_head": "15dc1654f9df7ce8747dc99413169c0484cf7d31"
+    },
+    {
+      "number": 28,
+      "url": "https://github.com/gayashan-indrasankha/Zinema.lk/pull/28",
+      "head": "zinema/owner-whatsapp-local",
+      "title": "feat(whatsapp): add owner-only local Baileys adapter (3/3)",
+      "source_head": "f80d6ed50314456ebf378b237f97d42bf9158e57"
+    }
+  ],
+  "merge_order": [
+    26,
+    27,
+    28
+  ],
+  "merge_strategy": "Normal merge commits preserve the individual Conventional Commits. Later diffs include predecessors until merged.",
+  "verification": {
+    "date": "2026-10-30",
+    "source_head": "ee3d223c15d4471d2945241f20c1dbbcaec92f70",
+    "base_main": "137fe8fbf7e5ca2b94e048b505dca4197d54355f",
+    "initial_working_tree_clean": false,
+    "unpublished_commits": 0,
+    "candidate_files": 627,
+    "changed_files": 46,
+    "scanner": "Gitleaks 8.30.1",
+    "archive_and_binary_checksums_match": true,
+    "scans": [
+      {
+        "scope": "candidate",
+        "exit": 0,
+        "findings": 0
+      }
+    ],
+    "private_ignore_checks_passed": 22,
+    "syntax": {
+      "php": {
+        "total": 223,
+        "passed": 223,
+        "failures": []
+      },
+      "javascript": {
+        "total": 94,
+        "passed": 94,
+        "failures": []
+      },
+      ".py": {
+        "total": 32,
+        "passed": 32,
+        "failures": []
+      },
+      ".json": {
+        "total": 115,
+        "passed": 115,
+        "failures": []
+      }
+    },
+    "tests": {
+      "node_fake_and_local": {
+        "exit": 0,
+        "files": [
+          "docs/recovery/tests/backup-crypto.test.cjs",
+          "docs/recovery/tests/bot-api-boundary.test.cjs",
+          "docs/recovery/tests/bot-entrypoint.test.cjs",
+          "docs/recovery/tests/bot-lifecycle.test.cjs",
+          "docs/recovery/tests/bot-readiness.test.cjs",
+          "docs/recovery/tests/bot-recovery.test.cjs",
+          "docs/recovery/tests/bot.test.cjs",
+          "docs/recovery/tests/config.test.cjs",
+          "docs/recovery/tests/extractor-fetch.test.cjs",
+          "docs/recovery/tests/extractor.test.cjs",
+          "docs/recovery/tests/native-whatsapp-live.test.cjs",
+          "docs/recovery/tests/promotion-controls.test.cjs",
+          "docs/recovery/tests/search-popup.test.cjs",
+          "docs/recovery/tests/staging-worker.test.cjs",
+          "docs/recovery/tests/token-delivery.test.cjs",
+          "docs/recovery/tests/trailer-admin.test.cjs",
+          "docs/recovery/tests/trailer-feed.test.cjs",
+          "docs/recovery/tests/two-host-media.test.cjs"
+        ],
+        "tests": 180,
+        "pass": 180,
+        "fail": 0,
+        "skipped": 0
+      },
+      "test_local_guard.py": {
+        "exit": 0,
+        "tests": 9
+      },
+      "test_staging.py": {
+        "exit": 0,
+        "tests": 6
+      },
+      "test_two_host_guard.py": {
+        "exit": 0,
+        "tests": 12
+      },
+      "test_stellar.py": {
+        "exit": 0,
+        "tests": 8
+      },
+      "test_stellar_adapters.py": {
+        "exit": 0,
+        "tests": 14
+      },
+      "test_native_guards.py": {
+        "exit": 0,
+        "tests": 9
+      }
+    },
+    "whitespace": {
+      "exit": 0,
+      "findings": 0,
+      "files": 0
+    },
+    "privacy_pattern_inventory": {
+      "phone": 0,
+      "whatsapp_identifier": 2,
+      "email": 18,
+      "private_key": 0,
+      "sql_data_statement": 8
+    },
+    "limitations": [
+      "No new Docker, HTTP/database/TLS, browser or real-provider acceptance run in this publication phase.",
+      "Prior phase runtime evidence is retained separately; production readiness remains NO GO.",
+      "Default secret patterns do not prove every secret or personal datum absent; ignored private material is not a publication candidate.",
+      "No container vulnerability, penetration, complete licensing or dependency advisory refresh performed."
+    ],
+    "restricted_first_attempt": {
+      "node_pass": 151,
+      "node_fail": 29,
+      "cause": "Local socket and hard-link operations restricted by sandbox; identical fixture tests rerun with required permissions.",
+      "all_other_checks_passed": true
+    }
+  },
+  "source_receipt": {
+    "source_head": "f80d6ed50314456ebf378b237f97d42bf9158e57",
+    "source_commits": 15,
+    "source_changed_paths": 46,
+    "source_candidate_files": 627,
+    "schema_and_promotion_policy_unchanged": true,
+    "original_branch_preserved": true,
+    "source_worktree_clean": true,
+    "new_work_whitespace_exit": 0,
+    "launcher_help_smoke_exit": 0,
+    "scans": [
+      {
+        "scope": "candidate-final",
+        "findings": 0,
+        "exit": 0
+      },
+      {
+        "scope": "history-source",
+        "findings": 0,
+        "exit": 0
+      }
+    ]
+  },
+  "commits": [
+    {
+      "sha": "de907a9f7bce8fa80f2b62cb9314d6556f9d3322",
+      "branch": "zinema/native-local-stack",
+      "message": "build(dev): add owned Windows runtime bootstrap and launcher",
+      "paths": [
+        "dev/native.py",
+        "dev/native/bootstrap.php",
+        "docs/recovery/tests/audit.py",
+        "includes/environment.php"
+      ],
+      "staged_diff_stats": "236\t0\tdev/native.py\n57\t0\tdev/native/bootstrap.php\n3\t1\tdocs/recovery/tests/audit.py\n6\t0\tincludes/environment.php\n",
+      "syntax": {
+        "php": 2,
+        "javascript": 0,
+        "python": 2,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_native_guards.py",
+          "exit": 0,
+          "tests": 9
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "e8d1f9d9094518d4515e04f9b2fb6f51bec5b42e",
+      "branch": "zinema/native-local-stack",
+      "message": "feat(storage): guard native uploads and local operator access",
+      "paths": [
+        "admin/config.php",
+        "api/whatsapp/config.php",
+        "dev/native/operator.php",
+        "dev/native/seed.php",
+        "includes/upload_lifecycle.php",
+        "includes/upload_storage.php"
+      ],
+      "staged_diff_stats": "1\t1\tadmin/config.php\n1\t1\tapi/whatsapp/config.php\n11\t0\tdev/native/operator.php\n34\t0\tdev/native/seed.php\n2\t2\tincludes/upload_lifecycle.php\n9\t0\tincludes/upload_storage.php\n",
+      "syntax": {
+        "php": 6,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_native_guards.py",
+          "exit": 0,
+          "tests": 9
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "f4491dc916117905b40bed7e88a3d289367f92e1",
+      "branch": "zinema/native-local-stack",
+      "message": "feat(dev): add loopback mail and extraction simulators",
+      "paths": [
+        "dev/fakes.py",
+        "dev/native/services.cjs"
+      ],
+      "staged_diff_stats": "29\t6\tdev/fakes.py\n72\t0\tdev/native/services.cjs\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 1,
+        "python": 1,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 19,
+          "pass": 19,
+          "fail": 0
+        },
+        {
+          "path": "dev/test_native_guards.py",
+          "exit": 0,
+          "tests": 9
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "126649775bb46254138fe963ec26d052fb6cbe2c",
+      "branch": "zinema/native-local-stack",
+      "message": "feat(dev): add authenticated local console and chat handoff",
+      "paths": [
+        "dev/native/http/chat.php",
+        "dev/native/http/common.php",
+        "dev/native/http/inbox.php",
+        "dev/native/http/index.php",
+        "includes/whatsapp_token.php"
+      ],
+      "staged_diff_stats": "23\t0\tdev/native/http/chat.php\n32\t0\tdev/native/http/common.php\n13\t0\tdev/native/http/inbox.php\n17\t0\tdev/native/http/index.php\n1\t0\tincludes/whatsapp_token.php\n",
+      "syntax": {
+        "php": 5,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 6,
+          "pass": 6,
+          "fail": 0
+        },
+        {
+          "path": "dev/test_native_guards.py",
+          "exit": 0,
+          "tests": 9
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "a3d6e5f3a3e7a75c74b9f67486f8967514eba7ba",
+      "branch": "zinema/native-local-stack",
+      "message": "test(dev): cover native target and lifecycle boundaries",
+      "paths": [
+        "dev/test_native_baseline.py",
+        "dev/test_native_guards.py",
+        "dev/test_native_system.py"
+      ],
+      "staged_diff_stats": "29\t0\tdev/test_native_baseline.py\n73\t0\tdev/test_native_guards.py\n94\t0\tdev/test_native_system.py\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 3,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_native_guards.py",
+          "exit": 0,
+          "tests": 9
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "b5bd45b8d2c3a37f9363e8d7de34cc4c2915d981",
+      "branch": "zinema/native-local-stack",
+      "message": "feat(dev): add Windows start and stop launchers",
+      "paths": [
+        "Start-Zinema-Local.bat",
+        "Stop-Zinema-Local.bat"
+      ],
+      "staged_diff_stats": "53\t0\tStart-Zinema-Local.bat\n33\t0\tStop-Zinema-Local.bat\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "path": "dev/test_native_guards.py",
+          "exit": 0,
+          "tests": 9
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "296f5806d3211d2c91a9747c186f2fcd16e91165",
+      "branch": "zinema/native-local-stack",
+      "message": "docs(dev): record local lifecycle and launcher evidence",
+      "paths": [
+        "docs/recovery/LOCAL_BATCH_LAUNCHER.json",
+        "docs/recovery/LOCAL_WHOLE_CHECKS.json",
+        "docs/recovery/LOCAL_WHOLE_PERSISTENCE.json",
+        "docs/recovery/LOCAL_WHOLE_RESULTS.json",
+        "docs/recovery/LOCAL_WHOLE_RESUME.json",
+        "docs/recovery/LOCAL_WHOLE_SYSTEM.md",
+        "docs/recovery/WHOLE_LOCAL_BASELINE_RETAINED_HTTP.json"
+      ],
+      "staged_diff_stats": "27\t0\tdocs/recovery/LOCAL_BATCH_LAUNCHER.json\n34\t0\tdocs/recovery/LOCAL_WHOLE_CHECKS.json\n13\t0\tdocs/recovery/LOCAL_WHOLE_PERSISTENCE.json\n124\t0\tdocs/recovery/LOCAL_WHOLE_RESULTS.json\n27\t0\tdocs/recovery/LOCAL_WHOLE_RESUME.json\n180\t0\tdocs/recovery/LOCAL_WHOLE_SYSTEM.md\n793\t0\tdocs/recovery/WHOLE_LOCAL_BASELINE_RETAINED_HTTP.json\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 6,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "82f85b217e92d858d28f9ced36d26aece4f4ede0",
+      "branch": "zinema/admin-trailer-editor",
+      "message": "fix(admin): preserve exact trailer metadata in visible editor",
+      "paths": [
+        "admin/trailers.php",
+        "docs/recovery/LOCAL_ADMIN_REVIEW.md",
+        "docs/recovery/tests/trailer-admin.test.cjs"
+      ],
+      "staged_diff_stats": "39\t13\tadmin/trailers.php\n74\t0\tdocs/recovery/LOCAL_ADMIN_REVIEW.md\n31\t0\tdocs/recovery/tests/trailer-admin.test.cjs\n",
+      "syntax": {
+        "php": 1,
+        "javascript": 1,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 14,
+          "pass": 14,
+          "fail": 0
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "15dc1654f9df7ce8747dc99413169c0484cf7d31",
+      "branch": "zinema/admin-trailer-editor",
+      "message": "test(browser): exercise local workflows and trailer editing",
+      "paths": [
+        "dev/native_browser.cjs",
+        "docs/recovery/LOCAL_WHOLE_BROWSER.json"
+      ],
+      "staged_diff_stats": "44\t0\tdev/native_browser.cjs\n50\t0\tdocs/recovery/LOCAL_WHOLE_BROWSER.json\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 1,
+        "python": 0,
+        "json": 1,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 14,
+          "pass": 14,
+          "fail": 0
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "ca266d1cb12bea3ef7a7835e2544e8429093bc9c",
+      "branch": "zinema/owner-whatsapp-local",
+      "message": "feat(whatsapp): validate private owner-only account approval",
+      "paths": [
+        "dev/native/whatsapp-policy.cjs",
+        "docs/recovery/tests/native-whatsapp-live.test.cjs"
+      ],
+      "staged_diff_stats": "22\t0\tdev/native/whatsapp-policy.cjs\n18\t0\tdocs/recovery/tests/native-whatsapp-live.test.cjs\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 2,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 5,
+          "pass": 5,
+          "fail": 0
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "cf0821a468d5fcc187daf7a0603041efaf1f7192",
+      "branch": "zinema/owner-whatsapp-local",
+      "message": "feat(whatsapp): add capped local Baileys transport",
+      "paths": [
+        "dev/native/whatsapp-live.cjs"
+      ],
+      "staged_diff_stats": "89\t0\tdev/native/whatsapp-live.cjs\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 1,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 24,
+          "pass": 24,
+          "fail": 0
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "94cc0f075020ec2c5c7d82b185230c3df7d1f7fd",
+      "branch": "zinema/owner-whatsapp-local",
+      "message": "feat(admin): add private WhatsApp pairing and clip controls",
+      "paths": [
+        "dev/native/http/pairing-image.php",
+        "dev/native/http/pairing.php",
+        "dev/native/http/self-test.php"
+      ],
+      "staged_diff_stats": "10\t0\tdev/native/http/pairing-image.php\n9\t0\tdev/native/http/pairing.php\n17\t0\tdev/native/http/self-test.php\n",
+      "syntax": {
+        "php": 3,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [
+        {
+          "kind": "fake/local Node",
+          "tests": 5,
+          "pass": 5,
+          "fail": 0
+        },
+        {
+          "path": "dev/test_native_guards.py",
+          "exit": 0,
+          "tests": 9
+        }
+      ],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "dec8d8e99fad646f1fffadf19b90395146b2cdf6",
+      "branch": "zinema/owner-whatsapp-local",
+      "message": "docs(whatsapp): record owner-confirmed original clip delivery",
+      "paths": [
+        "docs/recovery/REAL_WHATSAPP_DELIVERY_RESULTS.json",
+        "docs/recovery/REAL_WHATSAPP_LOCAL.md",
+        "docs/recovery/REAL_WHATSAPP_LOCAL_RESULTS.json"
+      ],
+      "staged_diff_stats": "34\t0\tdocs/recovery/REAL_WHATSAPP_DELIVERY_RESULTS.json\n116\t0\tdocs/recovery/REAL_WHATSAPP_LOCAL.md\n59\t0\tdocs/recovery/REAL_WHATSAPP_LOCAL_RESULTS.json\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 2,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "7202e9238c3b75a8b22a31b6b639aea2d5754ec6",
+      "branch": "zinema/owner-whatsapp-local",
+      "message": "docs(dev): clarify native and owner-selected launch modes",
+      "paths": [
+        "dev/README.md"
+      ],
+      "staged_diff_stats": "108\t0\tdev/README.md\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    },
+    {
+      "sha": "f80d6ed50314456ebf378b237f97d42bf9158e57",
+      "branch": "zinema/owner-whatsapp-local",
+      "message": "docs(recovery): record native and live acceptance checkpoints",
+      "paths": [
+        "docs/recovery/DECISIONS.md",
+        "docs/recovery/STATUS.md"
+      ],
+      "staged_diff_stats": "129\t0\tdocs/recovery/DECISIONS.md\n201\t1\tdocs/recovery/STATUS.md\n",
+      "syntax": {
+        "php": 0,
+        "javascript": 0,
+        "python": 0,
+        "json": 0,
+        "shell": 0
+      },
+      "tests": [],
+      "staged_whitespace_exit": 0,
+      "staged_secret_findings": 0,
+      "snapshot_index_hashes_match": true,
+      "baseline_paths_staged_without_editing_working_files": []
+    }
+  ],
+  "handoff_checks": [
+    "Staged JSON parsing and whitespace",
+    "Gitleaks staged documentation and complete new history",
+    "Remote branch-head equality and unchanged main",
+    "Clean final working tree"
+  ],
+  "runtime": "Existing linked native runtime, private account state and services left untouched. No new send or pairing.",
+  "readiness": "Production launch remains NO GO; the prior capped owner clip test does not establish larger-media or general-provider readiness.",
+  "next_recommended_task": "Review PRs 26, 27 and 28 in order. Continue local administrator, large-file and failure-recovery verification with generated fixtures; any additional live send or recipient requires a specifically scoped owner request."
+}
