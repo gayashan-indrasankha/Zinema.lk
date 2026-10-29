@@ -1,0 +1,14 @@
+# Preparation only: distributed bundle stays disabled; account activation requires separate review.
+Require all denied
+Options -Indexes
+<FilesMatch "(?i)(^\.user\.ini$|^\.env|\.(sql|log|pem|key|bak|dump)$)">
+    Require all denied
+</FilesMatch>
+<IfModule mod_headers.c>
+    Header unset X-Powered-By
+    Header always unset X-Powered-By
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "same-origin"
+    Header always set Cache-Control "no-store"
+</IfModule>

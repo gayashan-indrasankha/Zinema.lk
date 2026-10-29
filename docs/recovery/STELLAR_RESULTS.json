@@ -1,0 +1,187 @@
+{
+  "date": "2026-10-28",
+  "source_base": "12c9954758b9718cabe25816d328b28db0198582",
+  "scope": "Disabled Stellar review bundle and standalone read-only inventory, no account/provider/database/deployment",
+  "readiness_and_config_regressions": {
+    "total": 28,
+    "passed": 28,
+    "failed": 0
+  },
+  "readiness_new_tests": 17,
+  "retained_config_tests": 11,
+  "candidate_tests": {
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "safety_mutation_subcases": 12
+  },
+  "retained": {
+    "artifact": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0
+    },
+    "local-guards": {
+      "total": 9,
+      "passed": 9,
+      "failed": 0
+    },
+    "two-host-guards": {
+      "total": 12,
+      "passed": 12,
+      "failed": 0
+    }
+  },
+  "native_locked_rehearsal": {
+    "date": "2026-10-28",
+    "scope": "Native loopback Apache deny rules and private PHP CLI guard; no PHP web execution, DB or providers",
+    "tests": [
+      {
+        "name": "Owned native Apache configuration validates",
+        "passed": true
+      },
+      {
+        "name": "Owned native Apache denies /",
+        "passed": true
+      },
+      {
+        "name": "Owned native Apache denies /index.php",
+        "passed": true
+      },
+      {
+        "name": "Owned native Apache denies /admin/index.php",
+        "passed": true
+      },
+      {
+        "name": "Owned native Apache denies /api/whatsapp/health.php",
+        "passed": true
+      },
+      {
+        "name": "Owned native Apache denies /.user.ini",
+        "passed": true
+      },
+      {
+        "name": "Owned native Apache denies /assets/js/security.js",
+        "passed": true
+      },
+      {
+        "name": "Owned native Apache denies /uploads/fictional.php",
+        "passed": true
+      },
+      {
+        "name": "Owned native Apache denies /zinema-private/staging/candidate.php",
+        "passed": true
+      },
+      {
+        "name": "Explicit private CLI prepend stops before application execution",
+        "passed": true
+      },
+      {
+        "name": "Exported private disabled template validates",
+        "passed": true
+      },
+      {
+        "name": "Private capability probe stays read-only and offline",
+        "passed": true
+      },
+      {
+        "name": "Owned native Apache stopped",
+        "passed": true
+      },
+      {
+        "name": "Native loopback test port closed",
+        "passed": true
+      }
+    ],
+    "http": [
+      {
+        "path": "/",
+        "status": 403,
+        "owned": true,
+        "version_header_removed": true
+      },
+      {
+        "path": "/index.php",
+        "status": 403,
+        "owned": true,
+        "version_header_removed": true
+      },
+      {
+        "path": "/admin/index.php",
+        "status": 403,
+        "owned": true,
+        "version_header_removed": true
+      },
+      {
+        "path": "/api/whatsapp/health.php",
+        "status": 403,
+        "owned": true,
+        "version_header_removed": true
+      },
+      {
+        "path": "/.user.ini",
+        "status": 403,
+        "owned": true,
+        "version_header_removed": true
+      },
+      {
+        "path": "/assets/js/security.js",
+        "status": 403,
+        "owned": true,
+        "version_header_removed": true
+      },
+      {
+        "path": "/uploads/fictional.php",
+        "status": 403,
+        "owned": true,
+        "version_header_removed": true
+      },
+      {
+        "path": "/zinema-private/staging/candidate.php",
+        "status": 403,
+        "owned": true,
+        "version_header_removed": true
+      }
+    ],
+    "error": null,
+    "source_commit": "12c9954758b9718cabe25816d328b28db0198582",
+    "bundle_files": 228,
+    "php_diagnostics": {
+      "Warning": 0,
+      "Notice": 0,
+      "Fatal error": 0,
+      "Deprecated": 0
+    },
+    "summary": {
+      "total": 14,
+      "passed": 14,
+      "failed": 0
+    },
+    "limitations": [
+      "Actual shared-host handler/user.ini, private extractor and account not verified.",
+      "Docker test was unavailable; no global Docker restart was performed.",
+      "Application feature/TLS/DB/provider tests were not repeated; locked staging must be activated only after review."
+    ]
+  },
+  "collector_smokes": {
+    "default_unknown_storage": true,
+    "sandbox_permission_failure_keeps_storage_unknown": true,
+    "outside_sandbox_local_windows_metadata_collected": true,
+    "actual_bot_machine_verified": false,
+    "actual_linux_machine_verified": false
+  },
+  "docker_rehearsal": {
+    "state": "aborted",
+    "reason": "Local daemon stalled in create; owned client stopped, no start issued",
+    "not_counted_as_pass": true,
+    "global_engine_restart_performed": false,
+    "stopped_metadata_cleanup_verified": false,
+    "delivered_rehearsal_uses_docker": false
+  },
+  "external_connections": false,
+  "production_access": false,
+  "deployment": false,
+  "publishing": false,
+  "activation_implemented": false,
+  "launch_decision": "NO GO; actual account, machine, managed extractor/private bootstrap/storage/recovery and provider acceptance remain unverified"
+}

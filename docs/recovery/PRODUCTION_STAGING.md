@@ -1,5 +1,11 @@
 # Production staging requirements — not a deployment
 
+The disabled Stellar-specific review templates, committed-source exporter and
+read-only bot-machine readiness tool are documented in STELLAR_PREPARATION.md and
+../../ops/staging/stellar/README.md. The actual shared account is not verified.
+Provider-managed Node compatibility remains a gate: the existing standalone
+extractor daemon must not be assumed permitted or operational on shared hosting.
+
 Owner-approved launch scope: free access, website catalogue/shorts/trailers, full
 movies and episodes through WhatsApp. Owner clarification, 2026-10-28: Stellar
 shared hosting selected for the website (screenshot US$2.28/month equivalent,
@@ -127,3 +133,22 @@ extensions/schema privileges, Node patch/private socket/process control, resourc
 and upload/storage limits, cron, backup export and alert delivery. The two-host
 Docker test is not an emulation of cPanel/LVE or an actual account acceptance test.
 Full-content files stay on the personal server and never become website uploads.
+
+## Local Stellar adapter checkpoint — 2026-10-28
+
+[Adapter evidence](STELLAR_ADAPTERS.md) records the private bootstrap, account-owned
+quota/quarantine CLI, authenticated outbound extraction queue and worker resource
+pressure tests. Local regressions pass; these are not actual-host acceptance.
+The package remains locked, paid access stays excluded and full content remains
+WhatsApp-only. Actual PHP handler/permissions/TLS/private access, real extraction,
+SDK/account 2 GiB behavior, sustained capacity, upload speed, independent backup
+restore and alert/supervisor acceptance remain launch gates. No publishing enabled.
+
+## Current owner verification status — 2026-10-28
+
+Owner confirmed Stellar is not purchased. Local acceptance now passes 16 browser
+and 94 HTTP checks, but actual host configuration cannot be verified. Read-only
+machine policy found nonzero idle timers; always-on/restart, sustained upload and
+independent restore remain unverified. NEXT_VERIFICATION.md separates these gates
+and retains disabled integration/publishing defaults. No hosting/account/purchase,
+settings change, real provider, recipient or independent target was contacted.
