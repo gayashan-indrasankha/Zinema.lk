@@ -119,7 +119,7 @@ def generated_preview_png():
     raw=b''.join(b'\0'+bytes([40,160,90])*32 for _ in range(32))
     return b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>IIBBBBB',32,32,8,2,0,0,0))+chunk(b'IDAT',zlib.compress(raw))+chunk(b'IEND',b'')
 
-def prepare(on_created=None):
+def prepare(on_created=None, environment_hook=None, apache_hook=None):
     assert not port_open(DB_PORT) and not port_open(PORT), 'Required loopback ports already occupied; do not reuse an unknown service'
     folder = ROOT / '.runtime' / ('audit-' + time.strftime('%Y%m%d-%H%M%S'))
     folder.mkdir(parents=True, exist_ok=False)
@@ -202,6 +202,7 @@ INSERT INTO trailers(id,movie_id,title,description,video_url,thumbnail_url) VALU
     env.update(APP_ENV='test', BASE_URL=BASE, DB_HOST='127.0.0.1', DB_PORT=str(DB_PORT), DB_NAME='zinema_recovery_test', DB_USER='zinema_recovery_test', DB_PASS=app_password, SESSION_SAVE_PATH=str(folder / 'sessions'), ALLOW_LIVE_INTEGRATIONS='false')
     for adapter in ['MAIL', 'OAUTH', 'WHATSAPP', 'MEDIA', 'EXTRACTOR', 'PAYMENT']:
         env[adapter + '_MODE'] = 'disabled'
+    if environment_hook is not None:environment_hook(folder,env,ownership)
     # Apache's own config and actual project .htaccess run against the sanitized mirror.
     path = lambda p: str(p).replace('\\', '/')
     conf = [f'ServerRoot "C:/xampp/apache"', f'Listen 127.0.0.1:{PORT}', 'ServerName 127.0.0.1', f'PidFile "{path(folder / "httpd.pid")}"', f'ErrorLog "{path(folder / "apache.log")}"', 'LogLevel warn']
@@ -210,6 +211,7 @@ INSERT INTO trailers(id,movie_id,title,description,video_url,thumbnail_url) VALU
     conf += ['LoadFile "C:/xampp/php/php8ts.dll"', 'LoadFile "C:/xampp/php/libpq.dll"', 'LoadFile "C:/xampp/php/libsqlite3.dll"', 'LoadModule php_module "C:/xampp/php/php8apache2_4.dll"', f'PHPIniDir "{path(ini_dir)}"', 'TypesConfig "C:/xampp/apache/conf/mime.types"', f'DocumentRoot "{path(web)}"', 'DirectoryIndex index.php', '<Directory />', 'Require all denied', 'AllowOverride None', '</Directory>', f'<Directory "{path(web)}">', 'Require local', 'AllowOverride All', 'Options -Indexes +FollowSymLinks', '</Directory>', '<FilesMatch "\\.php$">', 'SetHandler application/x-httpd-php', '</FilesMatch>', 'php_admin_flag display_errors Off', f'php_admin_value error_log "{path(folder / "php.log")}"', f'php_admin_value session.save_path "{path(folder / "sessions")}"', 'Header always set Content-Security-Policy "default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\'; img-src \'self\' data:; media-src \'self\'; connect-src \'self\'; font-src \'self\'; frame-src \'self\'; object-src \'none\'; base-uri \'self\'; form-action \'self\'"']
     conf += ['PassEnv ' + key for key in ['APP_ENV','BASE_URL','DB_HOST','DB_PORT','DB_NAME','DB_USER','DB_PASS','SESSION_SAVE_PATH','ALLOW_LIVE_INTEGRATIONS'] + [x + '_MODE' for x in ['MAIL','OAUTH','WHATSAPP','MEDIA','EXTRACTOR','PAYMENT']]]
     conf.append(f'php_admin_value mysqli.default_port {DB_PORT}')
+    if apache_hook is not None:apache_hook(folder,conf)
     (folder / 'httpd.conf').write_text('\n'.join(conf) + '\n')
     config_check = run([HTTPD, '-t', '-f', folder / 'httpd.conf'], env=env)
     (folder / 'apache-config-check.log').write_text(config_check.stdout + config_check.stderr)
