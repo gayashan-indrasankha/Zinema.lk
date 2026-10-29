@@ -181,6 +181,7 @@ function createWhatsAppToken($conn, $contentId, $contentType, $expiryMinutes = 1
  * @return string WhatsApp wa.me URL
  */
 function getWhatsAppLink($token, $botNumber) {
+    if (function_exists('recovery_native_fixture') && recovery_native_fixture() && empty(ZINEMA_NATIVE_CONTEXT['real_whatsapp'])) return BASE_URL.'/__local/chat.php?token='.rawurlencode($token);
     // Remove + if present
     $botNumber = str_replace('+', '', $botNumber);
     $message = urlencode("!get {$token}");
