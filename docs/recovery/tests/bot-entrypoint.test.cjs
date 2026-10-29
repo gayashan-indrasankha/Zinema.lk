@@ -24,6 +24,7 @@ async function fixture(t,options={}) {
    if(name==='pino')return ()=>({});
    if(name==='node-schedule')return {scheduleJob:(spec,callback)=>{const job={spec,callback,active:true,cancel(){this.active=false;},nextInvocation:()=>null};jobs.push(job);return job;}};
    if(name==='fs'||name==='node:fs')return shim;
+   if(name==='./config/resource-pressure')return {ResourcePressure:class {sample(){return {allowed:!options.pressure};}assertReady(){if(options.pressure)throw Error('media_disk_pressure');}}};
    if(['path','node:path','crypto','node:crypto','events','node:events','os','node:os'].includes(name))return require(name);
    if(name.startsWith('.')) {
     const target=path.resolve(path.dirname(file),name)+'.js';
@@ -58,4 +59,12 @@ test('Registered credentials without reviewed owner approval cannot start a sock
 test('Reconnect cannot extend the owner test window or permit later scheduled sends',async t=>{const f=await fixture(t,{reviewDuration:10000});await f.emit(f.sockets[0],'connection.update',{connection:'open'});await f.emit(f.sockets[0],'connection.update',{connection:'close',lastDisconnect:{}});await f.tick(5000);assert.equal(f.sockets.length,2);await f.emit(f.sockets[1],'connection.update',{connection:'open'});assert.equal(f.subject.state().ready,true);await f.tick(5000);assert.equal(f.exits[0],1);assert.equal(f.subject.state().ready,false);assert.equal(f.jobs.filter(j=>j.active).length,0);assert.equal(f.timers.size,0);});
 test('Signal shutdown has a hard drain deadline and refuses late socket events',async t=>{const f=await fixture(t);await f.emit(f.sockets[0],'connection.update',{connection:'open'});let release;const gate=new Promise(resolve=>release=resolve);f.subject.state().queue.add(async()=>gate);const pending=f.subject.shutdownWorker(0);assert.equal(f.subject.state().queue.add(async()=>{}),false);await f.tick(5000);await pending;assert.equal(f.exits[0],0);const count=f.sockets.length;await f.emit(f.sockets[0],'connection.update',{connection:'close',lastDisconnect:{}});await f.tick(60000);assert.equal(f.sockets.length,count);assert.equal(f.timers.size,0);release();});
 test('Unavailable API readiness fails closed with session evidence retained',async t=>{const f=await fixture(t,{health:async()=>false});await f.emit(f.sockets[0],'connection.update',{connection:'open'});assert.equal(f.exits[0],1);assert.equal(f.subject.state().ready,false);assert.equal(f.jobs.length,0);assert.equal(f.intervals.size,0);assert.equal(fs.existsSync(f.config.sessionPath),true);});
+
+test('Pressure reports offline and blocks new SDK sends without replaying work',async t=>{
+ const options={},f=await fixture(t,options),socket=f.sockets[0];await f.emit(socket,'connection.update',{connection:'open'});options.pressure=true;
+ for(const interval of f.intervals.values())if(interval.ms===30000)await interval.fn();
+ await settle(()=>f.apiCalls.some(call=>call.endpoint==='bot-heartbeat.php' && call.data.status==='offline'));
+ await f.emit(socket,'messages.upsert',{type:'notify',messages:[{key:{id:'fixture-pressure-help',fromMe:false,remoteJid:'0000000002@s.whatsapp.net'},message:{conversation:'!help'}}]});
+ assert.equal(socket.sent.length,0);assert.equal(f.subject.state().queue.getStatus().size,0);
+});
 test('Fake incoming commands are gated by readiness and legacy processing reports held status',async t=>{const f=await fixture(t),socket=f.sockets[0];const message=(id,text)=>({type:'notify',messages:[{key:{id,fromMe:false,remoteJid:'0000000002@s.whatsapp.net'},message:{conversation:text}}]});await f.emit(socket,'messages.upsert',message('fixture-before-open','!help'));assert.equal(socket.sent.length,0);await f.emit(socket,'connection.update',{connection:'open'});await f.emit(socket,'messages.upsert',message('fixture-help','!help'));assert.equal(socket.sent.length>0,true);await f.emit(socket,'messages.upsert',message('fixture-process','!process'));assert.equal(socket.sent.some(m=>m.payload.text?.includes('held for operator review')),true);assert.equal(f.logs.some(line=>String(line).includes('0000000002')),false);});

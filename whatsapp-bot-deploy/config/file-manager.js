@@ -13,9 +13,10 @@ const path = require('path');
 const {MAX_MEDIA_BYTES,inspectMedia} = require('./media-policy');
 
 class FileManager {
-    constructor(basePath) {
+    constructor(basePath,{resourceGuard=null}={}) {
         if (!basePath || !path.isAbsolute(basePath)) throw new Error('Explicit absolute local media path required.');
         this.basePath = path.resolve(basePath);
+        this.resourceGuard=resourceGuard;
         this.ensureDirectories();
     }
 
@@ -193,6 +194,8 @@ class FileManager {
         if(!Number.isSafeInteger(max)||max<1||max>MAX_MEDIA_BYTES||!source||typeof source.pipe!=='function')throw Error('Invalid media stream');
         if(options.expectedBytes!==undefined&&(!Number.isSafeInteger(options.expectedBytes)||options.expectedBytes<1||options.expectedBytes>max))throw Error('Invalid media length');
         if(options.expectedSha256!==undefined&&(typeof options.expectedSha256!=='string'||!(/^[a-f0-9]{64}$/).test(options.expectedSha256)))throw Error('Invalid media digest');
+        const reservation=options.expectedBytes ?? max;
+        this.resourceGuard?.assertReady(reservation);
         const savePath=this.getSavePath(contentType,contentId,partNumber,extension);
         let bytes=0,expected;const digest=crypto.createHash('sha256');
         const matches=async()=>{
@@ -200,14 +203,20 @@ class FileManager {
             const hash=crypto.createHash('sha256');for await(const chunk of fs.createReadStream(savePath))hash.update(chunk);return hash.digest('hex')===expected;
         };
         const temporary=path.join(path.dirname(savePath),'.ingest-'+crypto.randomBytes(16).toString('hex'));
+        const guard=this.resourceGuard;let sampled=0;
         const validator=new Transform({transform(chunk,_encoding,callback){
             bytes+=chunk.length;
             if(bytes>max)return callback(Error('media_size_exceeded'));
+            if(guard && bytes-sampled>=4*1024*1024) {
+                try {guard.assertReady(Math.max(0,reservation-bytes));sampled=bytes;}
+                catch(error){return callback(error);}
+            }
             digest.update(chunk);callback(null,chunk);
         }});
         try {
             await pipeline(source,validator,fs.createWriteStream(temporary,{flags:'wx',mode:0o600}),...(options.signal?[{signal:options.signal}]:[]));
             expected=digest.digest('hex');
+            guard?.assertReady();
             if(bytes===0||(options.expectedBytes!==undefined&&bytes!==options.expectedBytes)||(options.expectedSha256!==undefined&&expected!==options.expectedSha256))throw Error('media_integrity_mismatch');
             const fd=await fs.promises.open(temporary,'r+');try{await fd.sync();}finally{await fd.close();}
             this.assertContained(savePath);

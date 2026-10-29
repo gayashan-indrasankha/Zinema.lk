@@ -46,6 +46,8 @@ const {
 const HealthMonitor = require('./config/health-monitor');
 const apiClient = require('./config/api-client');
 const FileManager = require('./config/file-manager');
+const {ResourcePressure}=require('./config/resource-pressure');
+let resourceGuard=null;
 const MultiTierForwarder = require('./config/multi-tier-forwarder');
 const CacheWarmer = require('./config/cache-warmer');
 const AutoRefresher = require('./config/auto-refresher');
@@ -290,6 +292,13 @@ async function connectToWhatsApp() {
     });
 
     const connectionSocket = sock;
+    const sendWithSdk=sock.sendMessage.bind(sock);
+    sock.sendMessage=async (...args)=>{
+        if(!resourceGuard)throw Error('worker_not_ready');
+        const media=args[1]?.document?.url || args[1]?.video?.url;
+        resourceGuard.assertReady(typeof media==='string' && path.isAbsolute(media) ? require('./config/media-policy').inspectMedia(media).bytes : 0);
+        return sendWithSdk(...args);
+    };
     // Bind store to socket
     store.bind(sock.ev);
 
@@ -460,7 +469,8 @@ async function onConnectionOpen(connectionSocket) {
             console.log(`✅ All components updated with new socket`);
         } else {
             // First connection — initialize everything
-            fileManager = new FileManager(LOCAL_MEDIA_PATH);
+            resourceGuard=new ResourcePressure(LOCAL_MEDIA_PATH);
+            fileManager = new FileManager(LOCAL_MEDIA_PATH,{resourceGuard});
             global.fileManager = fileManager;
             console.log(`📁 File Manager initialized: ${LOCAL_MEDIA_PATH}`);
 
@@ -516,7 +526,7 @@ async function onConnectionOpen(connectionSocket) {
     workerReady=true;workerLog.event('connection_open');
     const BOT_ID = parseInt(BOT_INSTANCE_ID) || 1;
     if (healthMonitor) healthMonitor.stop();
-    healthMonitor = new HealthMonitor(BOT_ID, apiClient, sock);
+    healthMonitor = new HealthMonitor(BOT_ID, apiClient, sock,resourceGuard);
     healthMonitor.start(30);
     console.log(`💓 Health monitoring started for Bot #${BOT_ID}`);
 }
@@ -839,6 +849,7 @@ async function handleMessage(msg) {
  */
 async function handleTokenRequest(chatId, token, senderNumber) {
     try {
+        resourceGuard.assertReady();
         const { deliverClaimedToken } = require('./config/token-delivery');
         const { claimToken, transitionToken } = require('./config/api-client');
         const result = await deliverClaimedToken({

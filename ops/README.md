@@ -1,5 +1,11 @@
 # Local promotion controls
 
+The selected shared-host preparation is in [Stellar staging](staging/stellar/README.md).
+`node ops/bot-readiness.cjs` prints a standalone sanitized read-only inventory on
+the actual bot machine, without loading the worker or making network requests.
+It does not activate this policy or certify capacity. The shared-host export is
+locked/disabled and still requires an account-specific compatibility review.
+
 These tools have no real SDK, remote backup, mail, webhook or deployment adapter.
 `promotion-policy.json` is a reviewed configuration candidate, not a release or
 permission. It requires every external/production/publishing switch to remain off.
@@ -130,3 +136,11 @@ external alert sender or acknowledgement/deletion action. Scheduling/routing,
 actual worker/disk metric collection and on-call response await the chosen host.
 
 See `../docs/recovery/PROMOTION_CONTROLS.md` for executed results and remaining gates.
+
+Local account-adapter and worker pressure tests are documented in
+[Stellar adapters](../docs/recovery/STELLAR_ADAPTERS.md).
+Use `python -X utf8 dev/test_stellar_adapters.py`,
+`python -X utf8 dev/rehearse_stellar_adapters.py` and the Node
+`docs/recovery/tests/staging-worker.test.cjs` suite from the checkout root.
+These paths use only fictional scratch state/loopback services. They do not enable
+account access, provider extraction, real delivery, backup transport or deployment.

@@ -1,5 +1,13 @@
 # Isolated local development
 
+For the selected Stellar shared-host layout, use `python -X utf8 dev/prepare_stellar.py`
+and `python -X utf8 dev/test_stellar.py`. The generated ignored bundle is locked,
+has separate private placeholders and never uploads/deploys. The optional locked-
+Apache checks are `python -X utf8 dev/rehearse_stellar.py --native` (Windows XAMPP).
+The delivered rehearsal does not depend on Docker. See ../ops/staging/stellar/README.md for actual
+account/handler/private-extractor and recovery limits. The standalone
+`node ops/bot-readiness.cjs` must run on the actual bot machine for meaningful sizing.
+
 Requires Docker Engine/Desktop with Linux containers, Compose v2+, and Python 3.11+.
 Node.js 24 runs the separate fake bot tests. Run these commands from the repository
 root; no native PHP/MySQL installation is required for the Docker workflow.
@@ -163,3 +171,17 @@ extractor, streaming SQL/media/ZIP64/encryption/local mirror/restore and bounded
 local alerts. See [the operator contract](../ops/README.md) and
 [promotion evidence](../docs/recovery/PROMOTION_CONTROLS.md). No live adapter,
 production path, external backup/alert destination or publishing is enabled.
+
+Local account-adapter and worker pressure tests are documented in
+[Stellar adapters](../docs/recovery/STELLAR_ADAPTERS.md).
+Use `python -X utf8 dev/test_stellar_adapters.py`,
+`python -X utf8 dev/rehearse_stellar_adapters.py` and the Node
+`docs/recovery/tests/staging-worker.test.cjs` suite from the checkout root.
+These paths use only fictional scratch state/loopback services. They do not enable
+account access, provider extraction, real delivery, backup transport or deployment.
+
+For the latest localhost acceptance preview, see
+[LOCAL_ACCEPTANCE.md](../docs/recovery/LOCAL_ACCEPTANCE.md). The native fixture now
+uses private PHP/GD settings and generates its own PNG/MP4; global XAMPP settings
+are unchanged. Browser tests require an existing Playwright package and Chrome.
+The owner has not purchased Stellar; no actual hosting/provider test is claimed.
