@@ -1,8 +1,241 @@
 # Recovery status
 
-Updated: 2026-10-29.
+Updated: 2026-10-30.
 
 ## Current phase
+
+**Native local stack and owner WhatsApp source publication: COMPLETE within source-review scope.**
+Broader production launch remains **PARTIAL / NO GO**. Continued the owner-authorized
+publishing request after the earlier PRs merged; all 46 changed paths are staged in
+15 focused source commits plus one final review/handoff commit, across three
+zinema/ branches. Earlier local/account verification is preserved below.
+
+- Open, non-draft PRs: #26 native-local-stack (7 commits), #27 admin-trailer-editor
+  (2), #28 owner-whatsapp-local (7 including handoff). Merge in that order using
+  normal merge commits. Later diffs include predecessors until merged.
+- Fresh executed Node180/180, Python guards58/58, syntax PHP223/JS-CJS94/Python32/
+  JSON115; final handoff JSON separately parsed. Integrated candidate627 and each
+  staged group/new-history Gitleaks8.30.1 scans report zero findings; ignore22 and
+  whitespace checks pass. Initial sandbox Node29 failures were resolved by the
+  identical fixture tests with required local permissions; both runs retained.
+- Source/actual staged blobs statically inspected and hash-checked. Prior native28,
+  Chrome9, disabled HTTP94, batch/persistence and owner-reported real clip evidence
+  retain their original scopes; runtime/browser/live delivery were not replayed
+  during publication. No full dependency/security/large-media certification.
+- Existing linked native runtime/private account state and services untouched;
+  no new send, pairing, production connection, deployment, purchase or PR merge.
+  Canonical schema/promotion policy and original branch/main preserved. Original
+  source checkpoint f80d6ed50314456ebf378b237f97d42bf9158e57; final immutable handoff
+  hash is in Git history for NATIVE_PUBLICATION.md and the execution handoff.
+- NATIVE_PUBLICATION.md/results record files, commit hashes, verification,
+  security-scan limitations and review order. All public changes are committed
+  and remote heads/worktree cleanliness are verified after the final push.
+
+Next recommended task: **Review #26 → #27 → #28; continue local administrator,
+large-file and failure-recovery verification with generated fixtures. Any extra
+live send/recipient requires a specifically scoped owner request.**
+
+## Previous real WhatsApp local integration checkpoint
+
+**Real WhatsApp local integration: COMPLETE for the capped owner-only clip test.**
+Owner linked the selected account, and confirmed receipt/playback of the original
+test clip in the account's self-chat. Broader real-user/large-media acceptance is
+still unverified. The owner explicitly superseded simulator-only WhatsApp scope, selected
+a new account and the same sole owner test recipient. All other providers remain
+substitutes; production access and publishing remain disabled.
+
+- Inspected supplied D:/Zinema.lk/whatsapp-bot-deploy read-only. Its older guarded
+  entry uses obsolete token semantics and automatic group/cache jobs. Added a
+  dedicated local adapter using its actual installed Baileys6.7.21 and current
+  authenticated claim/begin/complete client, owned original media and pressure
+  guards. Old dotenv/auth/group settings were not imported; old auth evidence kept.
+- Fresh private session, separate durable ledger, exclusive worker lease, bounded
+  retries, identity/recipient allowlist and20MiB test cap. Only the configured
+  owner account/self-chat/admin test may send. Uncertain intents stay held. No
+  group job, arbitrary user reply, history store or production/API connection.
+- Native launch/batch now selects the private owner-approved real mode. Web links
+  use real WhatsApp after actual online admission. Administrator pairing/QR and
+  explicit original-clip test routes added; CSRF/auth/no-store controls retained.
+  Simulator tests now refuse a live-configured runtime before delivery actions.
+- Real WhatsApp initially rejected the bundled client revision with405. Updated
+  only private web-client revision from official Baileys metadata, retaining the
+  installed SDK/session. Actual socket then received a live pairing QR. It is
+  served privately; QR/session/phone/key values are excluded from reports/output.
+- Fresh policy/claim/lifecycle24 and native guards9 pass. Live-profile local
+  controls10/10 pass; no real message submitted. Initial offline HTTP-status
+  assertion incorrectly assumed disabled-profile503 rather than the existing
+  active-profile200/unavailable page; corrected without changing that contract.
+  A restricted-loopback unit run failed; unrestricted fake-loopback rerun passes.
+- Source remains unstaged/uncommitted at ee3d223 with all previous work preserved.
+  No D: source edits, credential rotation, remote Git, publishing or deployment.
+  Evidence: REAL_WHATSAPP_LOCAL.md and REAL_WHATSAPP_LOCAL_RESULTS.json.
+- Separate disabled-profile HTTP94/94 passes, no PHP diagnostics and owned ports
+  closed. Full syntax PHP223/JS-CJS94/Python32/JSON114 passes. Verified Gitleaks
+  scans626 source candidates, zero findings after replacing a fictional test token
+  that triggered generic-key detection with a generated fixture. Scanner rules
+  unchanged. Ignore22, whitespace and canonical schema/promotion-policy checks pass.
+  Runtime account data is excluded; SDK advisory/full-integrity review is not done.
+
+## Owner linking and first real delivery — 2026-10-30
+
+- Runtime verified real socket online and configured account/heartbeat match.
+  Submitted exactly one original generated113037-byte MP4 through the authenticated
+  administrator self-test. Persistent attempt marker prevents an automatic repeat.
+- Verified one outbox record, matching completed local token/intent, fresh online
+  heartbeat, zero held work and automatic jobs disabled. Seven submission checks
+  pass. SDK submission alone was reported distinctly from phone delivery.
+- Owner initially reported the clip missing, then checked the same account's
+  Message yourself/You chat and confirmed it arrived and plays. This is external
+  verification by owner report, not a captured SDK delivery/read receipt. No resend
+  was made. REAL_WHATSAPP_DELIVERY_RESULTS.json records the evidence and feedback.
+- Current mode is real-whatsapp/online, one real submission, zero held work. No
+  production/publishing, other provider activation, group job or additional recipient.
+  Source is unchanged in this continuation; previous work remains unstaged at
+  ee3d223. Prior regression/security evidence retains its stated scope; only the
+  new documentation/JSON/whitespace checks are required for this evidence update.
+- New evidence JSON parses; whitespace passes. Previously verified Gitleaks8.30.1
+  scanned the four changed evidence documents, zero findings. Private runtime
+  account/ledger/config files were excluded; no new dependency/security audit or
+  broad application regression is claimed for this documentation-only checkpoint.
+
+Next recommended task: **Continue local administrator/large-file/failure-recovery
+verification. Any additional live send or recipient needs a specifically scoped
+test; the one approved original clip has completed.** Full2GiB delivery, SDK
+delivery/read receipts, group schedules and real-user admission remain unverified.
+Start/Stop batch now uses the saved linked real account with the local website.
+
+## Previous whole local simulation checkpoint
+
+Whole local system: **RUNNING / COMPLETE for local-substitute scope**. Owner
+explicitly deferred hosting. Started clean at `ee3d223` on
+`zinema/local-acceptance`; publication history and previous preview files preserved.
+
+- Added one native up/status/down/restart/operator launcher, persistent owned
+  PHP/SQL state, private validated bootstrap and local storage quotas. No global
+  XAMPP changes or Docker restart. All services bind loopback only.
+- Local SMTP/inbox, fake OAuth, actual keyed extractor app with original-media
+  response and a separate WhatsApp simulator are connected. Website handoff stays
+  in localhost. The simulator uses real claim/begin/complete and streamed hashes,
+  but never loads Baileys, phones or real accounts. Payments remain disabled.
+- Executed native integration28, browser8, native guards6, retained Node171/Python49,
+  disabled-profile HTTP94 and persistence5; all pass. No page/PHP errors.
+  Syntax PHP220/JS-CJS90/Python32/JSON110, Gitleaks source611 (zero findings),
+  ignores22 and whitespace checks pass with documented exclusions.
+- Executed positive local flows, browser journeys, private-target/MIME guards,
+  retained Node/Python/disabled-profile HTTP tests and normal persistence/replay
+  checks. Exact counts, corrections and scan results: LOCAL_WHOLE_SYSTEM.md/JSON.
+- Running instance: `.runtime/audit-20261029-004837`; start/status/stop commands are
+  at the top of dev/README.md. Website http://127.0.0.1:8088, console /__local/index.php.
+  Fictional access details are private in its preview-access.txt. Old preview was
+  stopped without deleting its state. Current instance is left available to owner.
+- Native mode requires an exact private context; flags alone do not enable it.
+  Default policy/normal exports unchanged. Work is uncommitted, no remote Git,
+  host/production/provider access, account pairing, publishing or deployment.
+
+Next task: **Use the running local console and administrator site to exercise
+local workflows. Keep real WhatsApp/Facebook/mail/OAuth disabled; any real account
+connection requires a separate specific request. No hosting work is needed now.**
+
+## Windows double-click launcher — 2026-10-30
+
+**COMPLETE / runtime verified on this machine.** Added Start-Zinema-Local.bat and
+Stop-Zinema-Local.bat in the project root. Both resolve their own folder, support
+Python3.11+ or py-3, show errors and retain the window for review. No installation,
+elevation, global XAMPP/Docker change, credentials or live-provider command.
+
+- Native up accepts --open-browser, opening only the fixed localhost website
+  after verified process/DB/service readiness. Repeated start verifies/reuses the
+  existing stack. A browser failure prints the manual local URL and keeps services.
+  The start terminal supervises services; use the stop batch for normal shutdown.
+- Executed real batch warm start from another current directory, normal stop and
+  cold start. Immediate comparison preserves users/completed claims, exact bot-state
+  and upload-manifest hashes, and existing outbox/intents. Ten focused checks and
+  native guards9/9 pass. LOCAL_BATCH_LAUNCHER.json records scope and initial probe
+  corrections; no physical Explorer double-click/all-installation certification.
+- First comparison saw an additional demo completion and was inconclusive, rather
+  than proving loss. An isolated repeat passes. The first missing-Python test used
+  incorrect cmd quoting; the corrected command line verifies readable exit1. Both
+  initial observations remain recorded; no data reset or ledger clearing occurred.
+- dev/README.md documents double-click use. Earlier source work preserved; no Git
+  staging, commit, remote operation, production, account or recipient connection.
+  HEAD remains ee3d223, changes remain unstaged/uncommitted.
+- Final website/OAuth/extractor/simulator health200, SMTP11025 listening, online
+  simulator/no held work. Full syntax PHP220/JS-CJS91/Python32/JSON113 passes;
+  verified Gitleaks scans618 source candidates with zero findings. Ignore22,
+  whitespace, schema and disabled promotion-policy checks pass. Runtime secrets
+  remain excluded; default-pattern scanning is not proof of every possible secret.
+
+Owner handoff: **Double-click Start-Zinema-Local.bat; keep its window open.
+Double-click Stop-Zinema-Local.bat to stop safely.** The current local stack is
+left running. Provider behavior remains simulated; remaining local workflow,
+large-file and unexpected-crash verification is unchanged by this convenience task.
+
+## Interactive local console and administrator review — 2026-10-30
+
+**COMPLETE for requested browsing/demo scope.** Continued prior unstaged native
+work at ee3d223; all existing changes preserved. Verified owned local processes
+and test database identity before mutations. No hosting/live integration work.
+
+- Used interactive browser controls to complete one generated demo movie delivery
+  (local console records7 to8), browse all ten administrator navigation sections,
+  inspect movie/series forms and check the local fake extractor. Settings unchanged.
+- Confirmed and repaired trailer Edit: flat-response assumptions produced undefined
+  metadata, and missing modal styles placed the form below the viewport. Read exact
+  authenticated row metadata through escaped attributes; preserve POST/CSRF and the
+  public API contract. Added a visible bounded overlay. Interactive recheck passes.
+- Fresh editor4/feed10 tests pass14/14; updated local Chrome9/9 and integration28/28
+  pass. Browser checks include a generated clip with quoted, multiline and Unicode
+  metadata; zero page errors/nonlocal responses. Exact evidence/limits and private
+  screenshot locations: LOCAL_ADMIN_REVIEW.md. No claim that every CRUD action or
+  real provider was reverified by browsing.
+- Runtime retained and left available, services use loopback only. No real phone,
+  recipient, external provider, publishing, deployment, Git staging/commit/push.
+  HEAD remains ee3d223; earlier native source changes remain uncommitted.
+- Fresh disabled-profile HTTP94/94 passes on separate ports/database; owned ports
+  closed afterward. Native and baseline PHP diagnostics zero. Full syntax passes
+  PHP220/JS-CJS91/Python32/JSON112. Verified Gitleaks scans615 source candidates,
+  zero findings; ignore22, schema/promotion-policy and whitespace checks pass.
+  Ignored runtime secrets/data and non-pattern secrets remain outside scan proof;
+  no dependency advisory refresh or live security verification was performed.
+
+Next recommended task: **Try remaining desired local administrator create/edit
+workflows with generated fixtures; report a specific missing or broken behavior.
+Keep live integrations/publishing disabled.**
+
+## Local continuation checkpoint
+
+**RUNNING / local verification COMPLETE.** Continued from the existing uncommitted
+native work at ee3d223; no earlier changes were staged or overwritten. The previous
+owned processes had exited, while Docker/WSL occupied SMTP 1025. Ownership checks
+failed closed; no unrelated process was stopped or service contacted.
+
+- Native fake SMTP now defaults to loopback 11025. An older owned configuration
+  migrates only during stopped startup with all native destination ports free.
+  Only the mail-port field changes; keys, database, media and ledger are retained.
+  PHP/fake guards accept only the two explicit legacy/native mail ports; Docker
+  continues using its existing 1025. Arbitrary mail ports remain rejected.
+- Fresh execution: guards9/9, connected integration28/28, automated browser8/8,
+  zero page errors and zero nonlocal browser responses. Six stop/resume comparisons
+  pass: users, completed claims, exact bot ledger and upload manifest, dedicated
+  SMTP readiness and unrelated SMTP still listening. Repeated start reuses the
+  same owned instance. See LOCAL_WHOLE_RESUME.json and updated browser/HTTP reports.
+- Local website/OAuth/extractor/simulator return 200, SMTP11025 listens, simulator
+  online with no held work. Native source/runtime targets were verified before
+  database tests. No real provider, recipient, hosting, deployment or remote Git.
+- PHP bootstrap and four changed Python files pass syntax; whitespace passes.
+  Broader prior Node/Python/HTTP results above remain historical, not newly rerun.
+  Source secret/static checks are recorded in LOCAL_WHOLE_CHECKS.json with limits.
+  Fresh full syntax checks pass PHP220/JS-CJS90/Python32/JSON112; verified Gitleaks
+  scans613 source candidate files with zero findings. Private ignore22, schema and
+  disabled promotion-policy checks pass. Ignored runtime secrets/data are excluded;
+  pattern scanning does not prove the absence of every secret.
+
+Owner handoff: open localhost:8088 and /__local/index.php, using the runtime's
+private preview-access.txt for fictional logins. Keep the launcher terminal open
+when starting it yourself. Next task remains local workflow review, not hosting.
+Work is unstaged and uncommitted; HEAD remains ee3d223.
+
+## Previous source publication checkpoint
 
 Owner-requested Stellar/acceptance source publication: **COMPLETE within review
 scope; broader launch plan remains PARTIAL / NO GO**. Started 2026-10-28 at

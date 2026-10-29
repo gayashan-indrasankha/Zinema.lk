@@ -1,3 +1,111 @@
+# Run the whole system locally (Windows, no Docker required)
+
+## Current owner-selected WhatsApp mode
+
+The owner has explicitly requested real WhatsApp for the local site. The private
+owned runtime now selects `dev/native/whatsapp-live.cjs`, using Baileys from
+`D:\Zinema.lk\whatsapp-bot-deploy\node_modules`. Its older entry, saved session,
+dotenv and group jobs are not executed. Fresh private login state is used.
+
+Open http://127.0.0.1:8088/__local/pairing.php as the local administrator and scan
+with the configured phone's WhatsApp Linked devices. Only that owner account and
+the same test recipient are allowed. The site reports delivery offline until the
+socket is actually linked. After pairing, the administrator's `/__local/self-test.php`
+can send one original generated clip per button press, capped at20MiB. Check the
+phone for receipt; submission alone is not a delivery/read guarantee.
+
+Start/Stop batch files select this saved private mode automatically. Real WhatsApp
+requires internet; website, database and other fake providers remain local. No
+production or publishing is enabled. Simulator HTTP/browser suites refuse this
+live runtime rather than causing real sends. Five pure policy tests are at
+`docs/recovery/tests/native-whatsapp-live.test.cjs`; guard/disabled-profile tests
+remain safe. See `docs/recovery/REAL_WHATSAPP_LOCAL.md` for exact scope/evidence.
+
+## Starting the local stack
+
+The owner currently wants local development only. Start the complete local demo:
+
+**Double-click `Start-Zinema-Local.bat` in the project root.** It starts all six
+local services and opens the website when ready. Keep that terminal window open.
+Double-click `Stop-Zinema-Local.bat` for a normal stop that retains saved data.
+The start script supports Python on PATH or the Windows `py -3` launcher, works
+from another current directory, and leaves errors visible. It never downloads
+packages, elevates privileges, changes global XAMPP or changes the saved WhatsApp mode.
+If already running, it verifies/reuses the existing services and opens the site.
+
+Equivalent terminal command:
+
+```powershell
+cd C:\xampp\htdocs\Zinema.lk
+python -X utf8 dev/native.py up
+```
+
+Keep its terminal open. Repeating `up` reuses a verified running instance.
+
+- Website: http://127.0.0.1:8088
+- Administrator: http://127.0.0.1:8088/admin/login.php
+- Local console/inbox: http://127.0.0.1:8088/__local/index.php
+- Read fictional login details privately from the `access_file` path printed at
+  startup; no credentials need to be pasted into chat.
+
+The default unapproved/new-machine profile runs real local PHP/SQL and the actual keyed fb-video-api HTTP app with an
+original-media fixture, plus fake SMTP/OAuth and a separate Node WhatsApp simulator.
+Only localhost is used. The simulator never loads Baileys or contacts phones;
+Facebook URLs are validated but never fetched. Payments and real integrations stay
+disabled. Full-content website playback is not enabled; a tiny original generated
+clip stands in for the simulated chat attachment.
+
+In a second terminal:
+
+```powershell
+python -X utf8 dev/native.py status
+python -X utf8 dev/native.py restart-bot
+python -X utf8 dev/native.py down
+```
+
+Normal stop/up preserves the owned database, sessions, uploads/quarantine and
+simulated-delivery ledger. Mail/code-flow sink memory is ephemeral; use a new
+fictional signup or resend flow after stopping it. Never reset/delete the runtime
+folder to recover an uncertain claim. Inspect the CLI operator with a private
+request JSON, e.g. `python dev/native.py operator <absolute-private-request-file>`;
+`{"action":"inventory"}` is read-only. Existing reviewed cleanup/reconciliation
+requirements remain. Held simulator intents stop new work and require review.
+
+Requires the existing Windows XAMPP installation under C:\xampp (PHP modules incl.
+GD), Python, Node and ffmpeg. Existing locked extractor HTTP dependencies are reused
+from owned `.runtime/audit-*/extractor-deps` after lockfile comparison. No dependency
+or browser download occurs at startup. For a clean machine, copy the package.json
+and package-lock.json from `docs/recovery/tests/extractor-http` into the ignored
+`.runtime/native-local/dependencies` folder and explicitly install using
+`npm.cmd ci --prefix .runtime/native-local/dependencies --ignore-scripts --no-audit --no-fund`
+before starting. Dependency installation requires network access. The default
+simulator works locally; privately approved real WhatsApp requires internet access.
+
+The launcher refuses occupied/unknown ports (8088,3307,11025,9081,3334,9090), never
+restarts Docker globally, and uses its own PHP ini rather than global XAMPP settings.
+Native fake SMTP uses 11025 so Docker/other mail tools can keep 1025. An older owned
+native configuration moves to 11025 only during a stopped start; accounts, keys,
+uploads and database remain intact. The Docker profile keeps its original 1025.
+Do not also start the website-only audit fixture on these same ports. New source
+is mirrored on a normal stop/up; user uploads and DB records are preserved.
+
+Verification commands:
+
+```powershell
+python -X utf8 dev/test_native_guards.py
+python -X utf8 dev/test_native_system.py
+python -X utf8 dev/test_native_baseline.py
+node dev/native_browser.cjs <absolute-existing-playwright-package-directory>
+```
+
+Browser checks require an existing Playwright package and Chrome. Read
+[whole-local evidence](../docs/recovery/LOCAL_WHOLE_SYSTEM.md) for exact results,
+profile boundaries and the active runtime. These suites cover fictional substitutes
+and refuse a live WhatsApp profile. Separate owner-approved WhatsApp evidence is
+in `docs/recovery/REAL_WHATSAPP_LOCAL.md`; production remains disabled.
+
+---
+
 # Isolated local development
 
 For the selected Stellar shared-host layout, use `python -X utf8 dev/prepare_stellar.py`
