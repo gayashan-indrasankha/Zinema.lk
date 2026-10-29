@@ -1,0 +1,27 @@
+{
+  "scope": "Local continuation: stopped native mail-port migration and normal stop/resume; no live providers",
+  "checks": {
+    "users": true,
+    "completed_claims": true,
+    "bot_state": true,
+    "upload_manifest": true,
+    "dedicated_native_smtp": true,
+    "unrelated_smtp_still_listening": true
+  },
+  "passed": true,
+  "guards": {
+    "total": 9,
+    "passed": 9
+  },
+  "integration": {
+    "total": 28,
+    "passed": 28
+  },
+  "automated_browser": {
+    "total": 8,
+    "passed": 8
+  },
+  "data_reset": false,
+  "external_connections": false,
+  "publishing": false
+}
