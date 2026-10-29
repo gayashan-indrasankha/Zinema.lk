@@ -1,0 +1,13 @@
+{
+  "scope": "Controlled normal stop/resume of owned local services, no OS reboot",
+  "checks": {
+    "users": true,
+    "completed_claims": true,
+    "bot_state_sha256": true,
+    "upload_manifest_sha256": true,
+    "completed_token_not_replayed_after_full_restart": true
+  },
+  "passed": true,
+  "data_reset": false,
+  "external_connections": false
+}

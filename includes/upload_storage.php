@@ -6,6 +6,15 @@ require_once __DIR__ . '/upload_lifecycle.php';
 function local_storage_settings() {
     $mode=getenv('UPLOAD_QUOTA_MODE') ?: 'disabled';
     if ($mode==='disabled') return null;
+    if ($mode==='native') {
+        if (!function_exists('recovery_native_fixture') || !recovery_native_fixture()) throw new LocalStorageError('storage_target_denied');
+        $c=ZINEMA_NATIVE_CONTEXT;$e=$c['environment'];
+        foreach (['UPLOAD_STORAGE_STATE','UPLOAD_STORAGE_OWNER','UPLOAD_MAX_BYTES','UPLOAD_MAX_FILES','UPLOAD_QUARANTINE_MAX_BYTES','UPLOAD_QUARANTINE_MAX_FILES'] as $name)
+            if (getenv($name)!==$e[$name]) throw new LocalStorageError('storage_configuration_denied');
+        if (storage_real_path(dirname(__DIR__))!==$c['public'] || !native_demo_plain($c['public'].'/uploads') || !native_demo_plain($e['UPLOAD_STORAGE_STATE'])) throw new LocalStorageError('storage_target_denied');
+        return ['root'=>$c['public'].'/uploads','state'=>$e['UPLOAD_STORAGE_STATE'],'owner'=>$c['owner'],'ownership'=>'account',
+            'max_bytes'=>268435456,'max_files'=>1000,'quarantine_max_bytes'=>67108864,'quarantine_max_files'=>500];
+    }
     if ($mode==='account') return account_storage_settings();
     if (!in_array($mode,['local','staging'],true)) throw new LocalStorageError('storage_configuration_denied');
     $promotion=$mode==='staging';
