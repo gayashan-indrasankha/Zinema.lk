@@ -1,7 +1,7 @@
 <?php
-// Live delivery in production; 'local' mode issues tokens for the dev dry-run bot (dev-dry-run.js).
+// Live delivery only; local fake delivery will use a separate adapter.
 require_once __DIR__ . '/includes/environment.php';
-recovery_require_adapter('WHATSAPP');
+if (APP_ENV !== 'production' || WHATSAPP_MODE !== 'live') recovery_config_error('WhatsApp delivery disabled');
 
 // Include database connection
 require_once 'admin/config.php';
