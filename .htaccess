@@ -5,13 +5,7 @@
 RewriteEngine On
 RewriteRule (^|/)\.(git|recovery-private)(/|$) - [F,L]
 RewriteRule ^includes/PHPMailer/ - [F,L]
-RewriteRule ^includes/ - [F,L]
-RewriteRule ^api/includes/ - [F,L]
-RewriteRule ^api/whatsapp/token-data\.php$ - [F,L]
-RewriteRule ^admin/(_layout|functions)\.php$ - [F,L]
-RewriteRule ^_(top_nav|bottom_nav|pagination)\.php$ - [F,L]
 RewriteRule ^fb-video-api/ - [F,L]
-RewriteRule ^dev/ - [F,L]
 RewriteRule ^uploads/.*\.(php[0-9]?|phtml|phar|cgi|pl|py|sh)(/|$) - [F,L,NC]
 
 # Enable GZIP compression
@@ -41,7 +35,7 @@ RewriteRule ^uploads/.*\.(php[0-9]?|phtml|phar|cgi|pl|py|sh)(/|$) - [F,L,NC]
     <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico)$">
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
-    
+
     # CSS/JS - Shorter cache for updates
     <FilesMatch "\.(css|js)$">
         Header set Cache-Control "public, max-age=2592000"
@@ -53,7 +47,8 @@ RewriteRule ^uploads/.*\.(php[0-9]?|phtml|phar|cgi|pl|py|sh)(/|$) - [F,L,NC]
     Header set X-Content-Type-Options "nosniff"
     Header set X-XSS-Protection "1; mode=block"
     Header set X-Frame-Options "SAMEORIGIN"
-    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    # HSTS only on production (not on localhost/127.0.0.1)
+    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
 </IfModule>
 
 # Prevent directory listing
@@ -64,8 +59,9 @@ RewriteEngine On
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 
-# Force HTTPS
+# Force HTTPS — bypassed for local development (localhost and 127.0.0.1)
 RewriteCond %{HTTP_HOST} !^127\.0\.0\.1(?::[0-9]+)?$ [NC]
+RewriteCond %{HTTP_HOST} !^localhost(?::[0-9]+)?$ [NC]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
@@ -85,7 +81,7 @@ RewriteRule ^series/([0-9]+)/?.*$ series-details.php?id=$1 [L,QSA]
 # 3. Collection Details: /collection/123/collection-name -> collection-details.php?id=123
 RewriteRule ^collection/([0-9]+)/?.*$ collection-details.php?id=$1 [L,QSA]
 
-# 3. Clean Pages (optional but good practice)
+# 4. Clean Pages (optional but good practice)
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^([a-z0-9-]+)/?$ $1.php [L,QSA]

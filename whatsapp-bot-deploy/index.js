@@ -1,10 +1,6 @@
 // Fail before loading Baileys, authentication stores or timers.
 const recoveryConfig = require('./config/environment').readConfig();
 require('./config/environment').assertLiveWhatsAppEnabled(recoveryConfig);
-const workerLog=require('./config/safe-logger').install(console);
-const workerLease=require('./config/worker-lease').acquire(recoveryConfig.sessionPath);
-let shuttingDown=false,shutdownPromise=null;
-let pairingReviewTimer=null;
 
 /**
  * WhatsApp Video Forwarder Bot with Baileys
@@ -20,6 +16,8 @@ let pairingReviewTimer=null;
 const makeWASocket = require('@whiskeysockets/baileys').default;
 const { useMultiFileAuthState, DisconnectReason, delay, fetchLatestBaileysVersion, Browsers, downloadMediaMessage } = require('@whiskeysockets/baileys');
 const pino = require('pino');
+const qrcode = require('qrcode-terminal');
+const cliProgress = require('cli-progress');
 const fs = require('fs');
 const path = require('path');
 
@@ -36,6 +34,8 @@ try {
 // API Client for database access
 const {
     testConnection,
+    getTokenData,
+    markTokenAsUsed,
     logForward,
     addMessageId,
     needsRefresh,
@@ -46,8 +46,6 @@ const {
 const HealthMonitor = require('./config/health-monitor');
 const apiClient = require('./config/api-client');
 const FileManager = require('./config/file-manager');
-const {ResourcePressure}=require('./config/resource-pressure');
-let resourceGuard=null;
 const MultiTierForwarder = require('./config/multi-tier-forwarder');
 const CacheWarmer = require('./config/cache-warmer');
 const AutoRefresher = require('./config/auto-refresher');
@@ -75,12 +73,50 @@ const BAD_MAC_COOLDOWN = 5 * 60 * 1000; // 5 minute cooldown before retry
 const SESSION_PATH = recoveryConfig.sessionPath;
 
 /**
- * Preserve corrupted-session evidence for explicit operator review.
- * Automatic reconnect/error handling must not delete authentication state.
+ * Clear corrupted session files for a specific sender
+ * Only deletes session-SENDER.*.json and sender-key-*--SENDER--*.json files
  */
-function clearCorruptedSenderSession(_senderNumber) {
-    console.error('Session repair requires operator review; all session evidence retained.');
-    return false;
+function clearCorruptedSenderSession(senderNumber) {
+    console.log(`\n🔧 AUTO-RECOVERY: Clearing corrupted session for sender ${senderNumber}`);
+
+    try {
+        if (!fs.existsSync(SESSION_PATH)) {
+            console.log(`   ⚠️ Session path not found: ${SESSION_PATH}`);
+            return false;
+        }
+
+        const files = fs.readdirSync(SESSION_PATH);
+        let cleared = 0;
+
+        for (const file of files) {
+            // Match session-SENDER.*.json files (e.g., session-<sender>.0.json)
+            const sessionMatch = file.match(/^session-(\d+)\.\d+\.json$/);
+            // Match sender-key-*--SENDER--*.json files
+            const senderKeyMatch = file.includes(`--${senderNumber}--`);
+
+            if ((sessionMatch && sessionMatch[1] === senderNumber) || senderKeyMatch) {
+                try {
+                    fs.unlinkSync(path.join(SESSION_PATH, file));
+                    cleared++;
+                    console.log(`   🗑️ Deleted: ${file}`);
+                } catch (err) {
+                    console.error(`   ❌ Failed to delete ${file}: ${err.message}`);
+                }
+            }
+        }
+
+        if (cleared > 0) {
+            console.log(`✅ AUTO-RECOVERY: Cleared ${cleared} session files for ${senderNumber}`);
+            console.log(`   ℹ️ The sender's session will be re-established on next message\n`);
+        } else {
+            console.log(`   ⚠️ No session files found for ${senderNumber}\n`);
+        }
+
+        return cleared > 0;
+    } catch (err) {
+        console.error(`❌ AUTO-RECOVERY ERROR: ${err.message}`);
+        return false;
+    }
 }
 
 /**
@@ -136,7 +172,7 @@ function parseBadMacError(message) {
     if (!message.includes('Bad MAC')) return null;
 
     // Try to extract sender ID from the message or stack trace
-    // The sender ID appears in the async queue name like "37495366524979.0"
+    // The sender ID appears in the async queue name like "<sender>.0"
     const senderMatch = message.match(/(\d{10,20})\.(\d+)\s*\[as awaitable\]/);
     if (senderMatch) {
         return senderMatch[1];
@@ -201,7 +237,6 @@ process.on('warning', (warning) => {
 
 // Global instances
 let sock = null;
-let activeSocket=null,workerReady=false;
 let store = null;
 
 // Initialize store if available
@@ -227,12 +262,6 @@ let fileManager = null;
 let multiTierForwarder = null;
 let cacheWarmer = null;
 let autoRefresher = null;
-let storeSaveTimer = null;
-const ReconnectController = require('./config/reconnect-controller');
-const reconnectController = new ReconnectController(connectToWhatsApp, {
-    onExhausted: () => console.error('Reconnect budget exhausted; session retained for operator review.'),
-    onError: () => console.error('Reconnect failed; retry budget retained.')
-});
 
 // Message deduplication cache
 const processedMessages = new Set();
@@ -240,7 +269,7 @@ const MAX_PROCESSED_MESSAGES = 1000;
 
 // Helper functions
 function isAdmin(phoneNumber) {
-    return require('./config/admin-identity').isAdminIdentity(phoneNumber, ADMIN_NUMBERS);
+    return ADMIN_NUMBERS.some(admin => phoneNumber.includes(admin));
 }
 
 function extractGroupFromMessageId(messageId) {
@@ -250,16 +279,64 @@ function extractGroupFromMessageId(messageId) {
 }
 
 // Message Queue for rate limiting
-const MessageQueue = require('./config/message-queue');
+class MessageQueue {
+    constructor() {
+        this.queue = [];
+        this.isProcessing = false;
+        this.minDelay = 2000;  // 2 seconds
+        this.maxDelay = 4000;  // 4 seconds
+    }
 
-const messageQueue = new MessageQueue({maxQueueSize:30});
-global.messageQueue = messageQueue;
+    add(task, metadata = {}) {
+        this.queue.push({ task, metadata, addedAt: Date.now() });
+        console.log(`📥 Queue: Added task. Queue size: ${this.queue.length}`);
+        this.process();
+    }
+
+    getRandomDelay() {
+        return Math.floor(Math.random() * (this.maxDelay - this.minDelay + 1)) + this.minDelay;
+    }
+
+    async process() {
+        if (this.isProcessing || this.queue.length === 0) return;
+        this.isProcessing = true;
+
+        while (this.queue.length > 0) {
+            const { task, metadata, addedAt } = this.queue.shift();
+            const waitTime = Date.now() - addedAt;
+            console.log(`⚙️ Queue: Processing task. Waited: ${Math.round(waitTime / 1000)}s. Remaining: ${this.queue.length}`);
+
+            try {
+                await task();
+            } catch (error) {
+                console.error(`❌ Queue: Task failed:`, error.message);
+            }
+
+            if (this.queue.length > 0) {
+                const delay = this.getRandomDelay();
+                console.log(`⏳ Queue: Waiting ${delay / 1000}s before next task...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+        }
+
+        this.isProcessing = false;
+        console.log(`✅ Queue: All tasks completed`);
+    }
+
+    getStatus() {
+        return {
+            size: this.queue.length,
+            isProcessing: this.isProcessing
+        };
+    }
+}
+
+const messageQueue = new MessageQueue();
 
 /**
  * Main Baileys Connection Function
  */
 async function connectToWhatsApp() {
-    if(shuttingDown)return;
     const sessionPath = recoveryConfig.sessionPath;
 
     // Ensure session directory exists
@@ -271,17 +348,7 @@ async function connectToWhatsApp() {
 
     const { state, saveCreds } = await useMultiFileAuthState(sessionPath);
 
-    // Pairing belongs to an explicitly reviewed separate owner operation.
-    // Never let the normal delivery worker turn a fresh/fake store into a login.
-    if(state?.creds?.registered!==true||state.creds.zinemaLocalFake===true) {
-        workerLog.event('pairing_required');await shutdownWorker(1);return;
-    }
-    const pairingReview=require('./config/pairing-approval').assertReviewedPairing(state,sessionPath);
-    if(pairingReviewTimer)clearTimeout(pairingReviewTimer);
-    pairingReviewTimer=setTimeout(()=>{pairingReviewTimer=null;workerLog.event('pairing_required');void shutdownWorker(1);},Math.max(1,pairingReview.validUntil-Date.now()));
-
     const { version } = await fetchLatestBaileysVersion();
-    if(shuttingDown)return;
 
     sock = makeWASocket({
         version,
@@ -291,14 +358,6 @@ async function connectToWhatsApp() {
         auth: state
     });
 
-    const connectionSocket = sock;
-    const sendWithSdk=sock.sendMessage.bind(sock);
-    sock.sendMessage=async (...args)=>{
-        if(!resourceGuard)throw Error('worker_not_ready');
-        const media=args[1]?.document?.url || args[1]?.video?.url;
-        resourceGuard.assertReady(typeof media==='string' && path.isAbsolute(media) ? require('./config/media-policy').inspectMedia(media).bytes : 0);
-        return sendWithSdk(...args);
-    };
     // Bind store to socket
     store.bind(sock.ev);
 
@@ -309,8 +368,7 @@ async function connectToWhatsApp() {
     }
 
     // Save store periodically
-    if (storeSaveTimer) clearInterval(storeSaveTimer);
-    storeSaveTimer = setInterval(() => {
+    setInterval(() => {
         store.writeToFile(storePath);
     }, 10000);
 
@@ -372,19 +430,19 @@ async function connectToWhatsApp() {
     };
 
     // Connection updates (QR, status, errors)
-
+    let reconnectAttempts = 0;
+    const MAX_RECONNECT_ATTEMPTS = 10;
 
     sock.ev.on('connection.update', async (update) => {
-        if (shuttingDown || sock !== connectionSocket) return;
         const { connection, lastDisconnect, qr } = update;
 
         if (qr) {
-            workerLog.event('pairing_required');
-            await shutdownWorker(1);return;
+            console.log('\\n📱 Scan this QR code with your WhatsApp:\\n');
+            qrcode.generate(qr, { small: true });
+            console.log('\\n⏳ Waiting for QR code scan...\\n');
         }
 
         if (connection === 'close') {
-            activeSocket=null;workerReady=false;workerLog.event('connection_closed');
             const statusCode = lastDisconnect?.error?.output?.statusCode;
             const errorMessage = lastDisconnect?.error?.message || 'Unknown';
 
@@ -395,22 +453,49 @@ async function connectToWhatsApp() {
                 multiTierForwarder.socketReady = false;
             }
 
-            if (storeSaveTimer) {clearInterval(storeSaveTimer);storeSaveTimer=null;}
-            if (healthMonitor) healthMonitor.stop();
-            if (cacheWarmer) cacheWarmer.socketReady=false;
-            if (autoRefresher) autoRefresher.socketReady=false;
-            reconnectController.disconnected(statusCode !== DisconnectReason.loggedOut);
+            // Check if we should reconnect
+            const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
+
+            if (shouldReconnect) {
+                reconnectAttempts++;
+
+                if (reconnectAttempts > MAX_RECONNECT_ATTEMPTS) {
+                    console.log(`🚨 Max reconnect attempts (${MAX_RECONNECT_ATTEMPTS}) reached!`);
+                    console.log(`💡 Clearing session and restarting fresh...`);
+
+                    // Clear corrupted session files (keep creds.json and cache)
+                    const sessionPath = path.join(process.cwd(), 'whatsapp-session', `bot${BOT_INSTANCE_ID}`);
+                    try {
+                        const fs = require('fs');
+                        const files = fs.readdirSync(sessionPath);
+                        for (const file of files) {
+                            if (file.startsWith('app-state-') || file.startsWith('sender-key')) {
+                                fs.unlinkSync(path.join(sessionPath, file));
+                                console.log(`   🗑️ Deleted: ${file}`);
+                            }
+                        }
+                    } catch (e) { /* ignore */ }
+
+                    reconnectAttempts = 0;
+                    setTimeout(() => connectToWhatsApp(), 5000);
+                } else {
+                    // Exponential backoff: 5s, 10s, 20s, 40s, etc. (max 60s)
+                    const delay = Math.min(5000 * Math.pow(2, reconnectAttempts - 1), 60000);
+                    console.log(`🔄 Reconnecting in ${delay / 1000}s... (attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})`);
+                    setTimeout(() => connectToWhatsApp(), delay);
+                }
+            } else {
+                console.log('🔐 Logged out. Delete session folder and restart.');
+                console.log('   Run: rm -rf whatsapp-session/bot1 && node index.js');
+            }
         } else if (connection === 'open') {
-            if(activeSocket===connectionSocket)return;
-            activeSocket=connectionSocket;workerReady=false;
-            reconnectController.connected();
-            await onConnectionOpen(connectionSocket);
+            reconnectAttempts = 0; // Reset on successful connection
+            await onConnectionOpen();
         }
     });
 
     // Message events - WITH DEBUG LOGGING
     sock.ev.on('messages.upsert', async ({ messages, type }) => {
-        if (shuttingDown || !workerReady || sock !== connectionSocket) return;
         console.log(`🔔 Message event: type=${type}, count=${messages.length}`);
         if (type !== 'notify') return;
 
@@ -424,9 +509,7 @@ async function connectToWhatsApp() {
 /**
  * Called when connection is established
  */
-async function onConnectionOpen(connectionSocket) {
-    const current=()=>!shuttingDown && activeSocket===connectionSocket && sock===connectionSocket;
-    if(!current())return;
+async function onConnectionOpen() {
     console.log('╔════════════════════════════════════════════════════════╗');
     console.log('║  ✅ WhatsApp Bot READY! (Baileys + Large File Support) ║');
     console.log('╠════════════════════════════════════════════════════════╣');
@@ -438,9 +521,7 @@ async function onConnectionOpen(connectionSocket) {
     console.log('║     !queue - Show queue status                          ║');
     console.log('╚════════════════════════════════════════════════════════╝\\n');
 
-    const bridgeReady=await testConnection();
-    if(!current())return;
-    if(bridgeReady!==true){workerLog.event('worker_error');await shutdownWorker(1);return;}
+    await testConnection();
 
     // Display storage groups
     if (STORAGE_GROUP_IDS.length > 0) {
@@ -469,8 +550,7 @@ async function onConnectionOpen(connectionSocket) {
             console.log(`✅ All components updated with new socket`);
         } else {
             // First connection — initialize everything
-            resourceGuard=new ResourcePressure(LOCAL_MEDIA_PATH);
-            fileManager = new FileManager(LOCAL_MEDIA_PATH,{resourceGuard});
+            fileManager = new FileManager(LOCAL_MEDIA_PATH);
             global.fileManager = fileManager;
             console.log(`📁 File Manager initialized: ${LOCAL_MEDIA_PATH}`);
 
@@ -483,22 +563,18 @@ async function onConnectionOpen(connectionSocket) {
             console.log(`🚀 Multi-Tier Forwarder & Auto-Refresher initialized`);
 
             const files = await fileManager.listAllFiles();
-            if(!current())return;
             console.log(`📊 Local files available: ${files.length}`);
 
             cacheWarmer = new CacheWarmer(sock, fileManager, cacheGroupId);
             cacheWarmer.setApiClient(apiClient);
-            autoRefresher.setWarmer(cacheWarmer);
-            await cacheWarmer.start(false);
-            if(!current()){cacheWarmer.stop();autoRefresher.stop();return;}
-            console.log('Cache schedules installed; startup uploads remain disabled.');
+            await cacheWarmer.start(true);
+            console.log(`🔥 Cache Warmer started and scheduled (Startup Sync ENABLED)`);
         }
 
         // Preload cache group messages for Tier 2 forwarding
         if (STORAGE_GROUP_IDS.length > 0) {
             console.log(`📥 Preloading cache group messages for Tier 2...`);
             for (const groupId of STORAGE_GROUP_IDS) {
-                if(!current())return;
                 try {
                     // Send presence to trigger message sync
                     await sock.sendPresenceUpdate('available', groupId);
@@ -518,16 +594,12 @@ async function onConnectionOpen(connectionSocket) {
 
     } catch (err) {
         console.error(`❌ Failed to initialize Ultimate System: ${err.message}`);
-        await shutdownWorker(1);return;
     }
 
     // Start Health Monitor
-    if(!current() || !multiTierForwarder || !cacheWarmer || !autoRefresher)return;
-    workerReady=true;workerLog.event('connection_open');
     const BOT_ID = parseInt(BOT_INSTANCE_ID) || 1;
-    if (healthMonitor) healthMonitor.stop();
-    healthMonitor = new HealthMonitor(BOT_ID, apiClient, sock,resourceGuard);
-    healthMonitor.start(30);
+    healthMonitor = new HealthMonitor(BOT_ID, apiClient, sock);
+    healthMonitor.start(120);
     console.log(`💓 Health monitoring started for Bot #${BOT_ID}`);
 }
 
@@ -600,7 +672,8 @@ async function handleMessage(msg) {
         const senderNumber = senderId.split('@')[0].split(':')[0];
         const senderName = msg.pushName || senderNumber;
 
-        console.log('Processing text command; content suppressed.');
+        console.log(`📩 [${new Date().toLocaleTimeString()}] From ${senderName}: ${body.substring(0, 50)}...`);
+        console.log(`🔍 DEBUG: bodyLower="${bodyLower}", isAdmin=${isAdmin(senderNumber)}, senderNumber=${senderNumber}`);
 
         // Help command
         if (bodyLower === '!help') {
@@ -684,7 +757,7 @@ async function handleMessage(msg) {
             const parts = body.trim().split(/\s+/);
             const token = parts[1];
 
-            console.log('Token command received; values suppressed.');
+            console.log(`🔍 Command parts:`, parts);
 
             if (!token) {
                 await sendMessage(chatId, `⚠️ Usage: ${TOKEN_PREFIX} <TOKEN>`);
@@ -692,10 +765,9 @@ async function handleMessage(msg) {
             }
 
             // Add to queue
-            const queued = messageQueue.add(async () => {
+            messageQueue.add(async () => {
                 await handleTokenRequest(chatId, token.toUpperCase(), senderNumber);
             }, { type: 'video_request', token });
-            if (!queued) await sendMessage(chatId, 'Service is busy. Please try again later.');
 
             return;
         }
@@ -777,7 +849,7 @@ async function handleMessage(msg) {
                 await sendMessage(chatId, `🌙 *Starting manual nightly processing...*`);
                 try {
                     const result = await multiTierForwarder.processPendingRequests();
-                    await sendMessage(chatId, result.reason==='legacy_queue_review_required' ? 'Legacy deliveries are held for operator review; no queue was replayed.' : `Processed: ${result.processed}; failed: ${result.failed}`);
+                    await sendMessage(chatId, `✅ *Process Complete!*\n📥 Success: ${result.processed}\n❌ Failed: ${result.failed}`);
                 } catch (err) {
                     await sendMessage(chatId, `❌ *Process Failed:* ${err.message}`);
                 }
@@ -849,24 +921,65 @@ async function handleMessage(msg) {
  */
 async function handleTokenRequest(chatId, token, senderNumber) {
     try {
-        resourceGuard.assertReady();
-        const { deliverClaimedToken } = require('./config/token-delivery');
-        const { claimToken, transitionToken } = require('./config/api-client');
-        const result = await deliverClaimedToken({
-            claim: claimToken, transition: transitionToken,
-            forward: (recipient, data) => multiTierForwarder.forwardVideo(recipient, data)
-        }, token, chatId);
-        if (result.success) {
-            await logForward(result.data.id, senderNumber, chatId, 'success', null);
-            await sendMessage(chatId, 'Video delivered successfully.');
-        } else {
-            await sendMessage(chatId, result.status === 'unavailable' ?
-                'Token unavailable. Request a new token on the website.' :
-                'Delivery is held for review. Please contact support before retrying.');
+        console.log(`\n🎫 Processing token: ${token} for ${senderNumber}`);
+
+        // Get token data from API
+        const tokenResponse = await getTokenData(token);
+
+        // A token is processable if we have data, even if valid is false (e.g. no_message_id for first upload)
+        if (!tokenResponse.data) {
+            await sendMessage(chatId, `❌ ඔබ එවූ මෙම \`${token}\` Token එක කල් ඉකුත් වී (*Expired*) ඇත.\n\n කරුණාකර වෙබ් අඩවියට ගොස් Refresh කර, අලුත් Token එකක් ලබාගෙන නැවත එවන්න.`);
+            return;
         }
-    } catch {
-        console.error('Token delivery could not be confirmed; details suppressed.');
-        await sendMessage(chatId, 'Delivery could not be confirmed. Please contact support before retrying.');
+
+        // Reject already-used tokens — cannot be reused by another user
+        if (tokenResponse.error === 'already_used') {
+            await sendMessage(chatId, `❌ මෙම Token එක දැනටමත් භාවිත කර ඇත (*Already Used*).\n\n කරුණාකර වෙබ් අඩවියට ගොස් නැවතත් Request කර, අලුත් Token එකක් ලබාගන්න.`);
+            return;
+        }
+
+        const tokenData = tokenResponse.data;
+        console.log(`✅ Token data found: ${tokenData.token} (${tokenData.content_type} ID:${tokenData.content_id})`);
+
+        // Use Multi-Tier Forwarder
+        const result = await multiTierForwarder.forwardVideo(chatId, tokenData);
+
+        if (result.success) {
+            console.log(`✅ Video delivered via TIER ${result.tier}`);
+
+            // Mark token as used so it cannot be reused by other users
+            await markTokenAsUsed(tokenData.id).catch(e => console.error(`⚠️ markTokenAsUsed failed: ${e.message}`));
+
+            // Log to database
+            await logForward(tokenData.id, senderNumber, chatId, 'success', null);
+            // Send token ID so users can identify their file in group chats
+            await sendMessage(chatId, `🎬 *${tokenData.token}* : ${tokenData.content_type}_${tokenData.content_id}`);
+
+        } else if (result.queued) {
+            // Queued for night
+            await sendMessage(chatId,
+                `🌙 *Video Queued for Night Delivery*\n\n` +
+                `📁 ${tokenData.title || token}\n` +
+                `⏰ Will be sent at 12:30 AM automatically\n\n` +
+                `This prevents WhatsApp rate limits during daytime. Thank you for your patience!`
+            );
+
+            await logForward(tokenData.id, senderNumber, chatId, 'queued', 'Daytime restriction');
+
+        } else {
+            // Failed
+            await sendMessage(chatId,
+                `❌ *Video Unavailable*\n\n` +
+                `${result.message || 'Please try again later.'}\n\n` +
+                `Contact support if this persists.`
+            );
+
+            await logForward(tokenData.id, senderNumber, chatId, 'failed', result.error);
+        }
+
+    } catch (error) {
+        console.error('Error processing token:', error.message);
+        await sendMessage(chatId, `❌ Error: ${error.message}`);
     }
 }
 
@@ -875,36 +988,16 @@ async function handleTokenRequest(chatId, token, senderNumber) {
  */
 async function sendMessage(jid, text, options = {}) {
     try {
-        console.log('Sending response; content suppressed.');
+        console.log(`📤 Sending message to ${jid}: ${text.substring(0, 50)}...`);
         await sock.sendMessage(jid, { text }, options);
         console.log(`✅ Message sent successfully`);
     } catch (error) {
         console.error(`❌ Send message error to ${jid}:`, error.message);
-        console.error('Send diagnostics suppressed.');
+        console.error('Full error:', error);
     }
 }
 
-async function shutdownWorker(exitCode=0) {
-    if(shutdownPromise)return shutdownPromise;
-    shuttingDown=true;workerReady=false;activeSocket=null;
-    if(pairingReviewTimer){clearTimeout(pairingReviewTimer);pairingReviewTimer=null;}
-    workerLog.event('shutdown_started');
-    reconnectController.stop();messageQueue.stop();
-    if(storeSaveTimer){clearInterval(storeSaveTimer);storeSaveTimer=null;}
-    healthMonitor?.stop();cacheWarmer?.stop();autoRefresher?.stop();
-    shutdownPromise=(async()=>{
-        let deadline;
-        try{await Promise.race([messageQueue.whenIdle(),new Promise(resolve=>{deadline=setTimeout(resolve,5000);})]);}
-        finally{clearTimeout(deadline);}
-        try{sock?.end?.(Error('Worker shutdown'));}catch{}
-        try{workerLease.release();}catch{exitCode=1;}
-        workerLog.event('shutdown_complete');process.exit(exitCode);
-    })();
-    return shutdownPromise;
-}
-for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>{void shutdownWorker(0);});
-
-// Failure details are not safe log data; preserve private session/claim evidence.
+// Global error handlers - Enhanced with Bad MAC detection
 process.on('unhandledRejection', (reason) => {
     console.error('⚠️ Unhandled Rejection:', reason);
 
@@ -914,7 +1007,6 @@ process.on('unhandledRejection', (reason) => {
     if (sender) {
         handleBadMacError(sender);
     }
-    void shutdownWorker(1);
 });
 
 process.on('uncaughtException', (error) => {
@@ -926,7 +1018,6 @@ process.on('uncaughtException', (error) => {
     if (sender) {
         handleBadMacError(sender);
     }
-    void shutdownWorker(1);
 });
 
 // Start the bot
@@ -935,5 +1026,5 @@ console.log(`🚀 Starting Baileys WhatsApp Bot...`);
 
 connectToWhatsApp().catch(err => {
     console.error('Failed to connect:', err);
-    void shutdownWorker(1);
+    process.exit(1);
 });

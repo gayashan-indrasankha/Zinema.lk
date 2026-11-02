@@ -38,7 +38,8 @@ if (!empty($token)) {
                 $success = true;
                 
                 // Auto-login the user
-                establish_user_session($user);
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
             } else {
                 $error = 'Verification failed. Please try again.';
             }
@@ -109,7 +110,6 @@ if (!empty($token)) {
             margin-top: 15px;
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <div class="verify-container">

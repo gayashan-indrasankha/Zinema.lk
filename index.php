@@ -1,13 +1,23 @@
 <?php
 // Include database connection
 require_once 'admin/config.php';
+require_once 'includes/settings.php';
 require_once 'includes/csrf_helper.php';
 
 /**
  * Generate Google OAuth URL
  */
 function getGoogleAuthUrl() {
-    return OAUTH_MODE === 'disabled' ? '#' : BASE_URL . '/oauth-start.php';
+    if (OAUTH_MODE === 'disabled') return '#';
+    $params = [
+        'client_id' => GOOGLE_CLIENT_ID,
+        'redirect_uri' => GOOGLE_REDIRECT_URI,
+        'response_type' => 'code',
+        'scope' => 'email profile',
+        'access_type' => 'online',
+        'prompt' => 'select_account'
+    ];
+    return OAUTH_AUTHORIZE_URL . '?' . http_build_query($params);
 }
 
 // Check if user is logged in
@@ -123,7 +133,6 @@ if ($result && $result->num_rows > 0) {
             100% { transform: rotate(360deg); }
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <?php include '_top_nav.php'; ?>
@@ -874,8 +883,8 @@ if ($result && $result->num_rows > 0) {
             const emailInput = document.getElementById('login-email');
             const email = emailInput ? emailInput.value.trim() : '';
             
-            // Optional support contact, configured outside source control.
-            const whatsappNumber = <?php echo json_encode(getenv('SUPPORT_WHATSAPP_NUMBER') ?: '', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+            // Admin WhatsApp number from site_settings (empty = disabled)
+            const whatsappNumber = <?php echo json_encode(getSetting($conn, 'admin_whatsapp', '')); ?>;
             if (!whatsappNumber) return;
             
             // Pre-filled message

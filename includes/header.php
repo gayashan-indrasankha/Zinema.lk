@@ -1,4 +1,3 @@
-<?php require_once __DIR__ . '/session.php'; require_once __DIR__ . '/csrf_helper.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,7 +29,6 @@
     <link href="<?php echo defined('BASE_URL') ? BASE_URL : ''; ?>/assets/css/style.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">

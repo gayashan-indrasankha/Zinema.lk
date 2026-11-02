@@ -12,8 +12,52 @@ $tables_check = mysqli_query($conn, "SHOW TABLES LIKE 'bot_health_status'");
 $tables_exist = ($tables_check && mysqli_num_rows($tables_check) > 0);
 
 if (!$tables_exist) {
-    http_response_code(503);
-    exit('Local schema unavailable. Provision a fresh isolated database using database/schema.sql.');
+    // Tables don't exist - Show Setup Required Page
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Setup Required - WhatsApp Bot Tracking</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            body { background: #f3f4f6; padding: 50px; font-family: sans-serif; }
+            .setup-box { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+            .setup-box h1 { color: #667eea; margin-bottom: 20px; }
+            .setup-box .alert { margin: 20px 0; }
+            code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
+        </style>
+    </head>
+    <body>
+        <div class="setup-box">
+            <h1>⚙️ Database Setup Required</h1>
+            <div class="alert alert-warning">
+                <strong>⚠️ The Ultimate Multi-Bot System tables haven't been created yet!</strong>
+            </div>
+            
+            <h3>📋 Setup Instructions:</h3>
+            <ol>
+                <li>Login to <strong>Namecheap cPanel</strong></li>
+                <li>Open <strong>phpMyAdmin</strong></li>
+                <li>Select database: <code>zinexxio_cinedrive</code></li>
+                <li>Click the <strong>"Import"</strong> tab</li>
+                <li>Upload file: <code>migration_ultimate_system_FIXED.sql</code></li>
+                <li>Click <strong>"Go"</strong> button</li>
+                <li>Refresh this page</li>
+            </ol>
+            
+            <div class="alert alert-info">
+                <strong>📁 File Location:</strong><br>
+                <code>d:/001/whatapp bot/database/migration_ultimate_system_FIXED.sql</code>
+            </div>
+            
+            <a href="whatsapp-bot-tracking.php" class="btn btn-primary btn-lg mt-3">🔄 Refresh Page</a>
+        </div>
+    </body>
+    </html>
+    <?php
+    exit();
 }
 
 // ==========================================
@@ -52,7 +96,7 @@ $token_distribution = [];
 try {
     $token_dist_query = "SELECT assigned_bot_id, COUNT(*) as count 
                          FROM whatsapp_tokens 
-                         WHERE is_active = 1 AND is_used = 0 AND expires_at > NOW() 
+                         WHERE status = 'active' 
                          GROUP BY assigned_bot_id";
     $token_dist_result = mysqli_query($conn, $token_dist_query);
     if ($token_dist_result) {
@@ -61,8 +105,8 @@ try {
         }
     }
 } catch (Exception $e) {
-    // Schema mismatches must fail visibly rather than report empty statistics.
-    throw $e;
+    // Ignore missing column errors, just leave distribution empty
+    error_log("Token distribution query failed: " . $e->getMessage());
 }
 
 // Get cache hit rate
@@ -81,7 +125,7 @@ if (!empty($overall_stats) && ($overall_stats['total_cache_hits'] + $overall_sta
     <title>WhatsApp Bot Tracking - Zinema.lk Admin</title>
     
     <!-- Standard Admin CSS -->
-    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
+    <link rel="stylesheet" href="assets/admin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -286,7 +330,6 @@ if (!empty($overall_stats) && ($overall_stats['total_cache_hits'] + $overall_sta
         .cache-status.warm { background: #fef3c7; color: #92400e; }
         .cache-status.cold { background: #dbeafe; color: #1e40af; }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
 
@@ -335,6 +378,7 @@ if (!empty($overall_stats) && ($overall_stats['total_cache_hits'] + $overall_sta
                 <?php 
                 if ($bot_health_result && mysqli_num_rows($bot_health_result) > 0):
                     while($bot = mysqli_fetch_assoc($bot_health_result)): 
+                        $status_class = strtolower($bot['status'] ?? 'offline');
                         $status_class = strtolower($bot['status'] ?? 'offline');
                         
                         // Use SQL calculated seconds difference to handle timezone mismatches

@@ -1,21 +1,27 @@
 <?php
 require_once 'config.php';
 check_login();
-require_once __DIR__ . '/../includes/uploads.php';
 
 $admin_id = $_SESSION['admin_id'];
 $message = '';
 $message_type = '';
 
 // Handle Delete Episode
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_episode'])) {
-    $id = intval($_POST['delete_episode']);
+if (isset($_GET['delete_episode'])) {
+    $id = intval($_GET['delete_episode']);
     $stmt = $conn->prepare("SELECT thumb_image FROM episodes WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result()->fetch_assoc();
     
-    // Media cleanup requires separate review; retain legacy and shared files.
+    // Delete the thumbnail file if it exists
+    if ($result && !empty($result['thumb_image'])) {
+        $filename = basename($result['thumb_image']);
+        if (file_exists('../uploads/' . $filename)) {
+            unlink('../uploads/' . $filename);
+        }
+    }
+    
     $stmt = $conn->prepare("DELETE FROM episodes WHERE id = ?");
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
@@ -40,7 +46,20 @@ if (isset($_POST['add_episode'])) {
     
     $thumb_image_path = '';
 
-    $thumb_image_path = store_catalogue_upload('thumb_image', 'image', $thumb_image_path);
+    // Handle thumbnail upload
+    if (isset($_FILES['thumb_image']) && $_FILES['thumb_image']['error'] == 0) {
+        $target_dir = "../uploads/";
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0755, true);
+        }
+        
+        $image_name = uniqid() . '_thumb_' . basename($_FILES["thumb_image"]["name"]);
+        $target_file = $target_dir . $image_name;
+        
+        if (move_uploaded_file($_FILES["thumb_image"]["tmp_name"], $target_file)) {
+            $thumb_image_path = 'https://sinhalamovies.web.lk/uploads/' . $image_name;
+        }
+    }
 
     // Insert episode
     $stmt = $conn->prepare("INSERT INTO episodes (series_id, season_number, episode_number, title, description, video_url, thumb_image, air_date, duration) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -74,7 +93,25 @@ if (isset($_POST['edit_episode'])) {
     $current = $stmt->get_result()->fetch_assoc();
     $thumb_image_path = $current['thumb_image'];
 
-    $thumb_image_path = store_catalogue_upload('thumb_image', 'image', $thumb_image_path);
+    // Handle new thumbnail upload
+    if (isset($_FILES['thumb_image']) && $_FILES['thumb_image']['error'] == 0) {
+        $target_dir = "../uploads/";
+        
+        // Delete old thumbnail
+        if (!empty($thumb_image_path)) {
+            $old_filename = basename($thumb_image_path);
+            if (file_exists($target_dir . $old_filename)) {
+                unlink($target_dir . $old_filename);
+            }
+        }
+        
+        $image_name = uniqid() . '_thumb_' . basename($_FILES["thumb_image"]["name"]);
+        $target_file = $target_dir . $image_name;
+        
+        if (move_uploaded_file($_FILES["thumb_image"]["tmp_name"], $target_file)) {
+            $thumb_image_path = 'https://sinhalamovies.web.lk/uploads/' . $image_name;
+        }
+    }
 
     // Update episode
     $stmt = $conn->prepare("UPDATE episodes SET series_id = ?, season_number = ?, episode_number = ?, title = ?, description = ?, video_url = ?, thumb_image = ?, air_date = ?, duration = ? WHERE id = ?");
@@ -117,7 +154,7 @@ if (isset($_GET['edit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
+    <link rel="stylesheet" href="assets/admin.css">
     <style>
         .message {
             padding: 12px 20px;
@@ -147,7 +184,6 @@ if (isset($_GET['edit'])) {
             border-radius: 4px;
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <?php include '_layout.php'; ?>
@@ -165,7 +201,7 @@ if (isset($_GET['edit'])) {
 
         <section class="form-container">
             <h2><?php echo $edit_episode ? 'Edit Episode' : 'Add New Episode'; ?></h2>
-            <form method="POST" action="episodes.php" enctype="multipart/form-data"><?php csrf_token_field(); ?>
+            <form method="POST" action="episodes.php" enctype="multipart/form-data">
                 <?php if ($edit_episode): ?>
                     <input type="hidden" name="episode_id" value="<?php echo $edit_episode['id']; ?>">
                 <?php endif; ?>
@@ -212,12 +248,12 @@ if (isset($_GET['edit'])) {
                 </div>
                 
                 <div class="form-group">
-                    <label for="video_url">Legacy media reference (optional)</label>
+                    <label for="video_url">Streaming Video URL *</label>
                     <textarea name="video_url" id="video_url" rows="4" 
-                        placeholder="Optional legacy reference; not used for full-content website playback"
-                        style="font-family: monospace; font-size: 0.85em;"><?php echo $edit_episode ? htmlspecialchars($edit_episode['video_url']) : ''; ?></textarea>
+                        placeholder="Paste the streaming URL here (e.g., https://my-drive-streamer.indrasankag.workers.dev/FILE_ID)"
+                        style="font-family: monospace; font-size: 0.85em;" required><?php echo $edit_episode ? htmlspecialchars($edit_episode['video_url']) : ''; ?></textarea>
                     <small style="color: #888; display: block; margin-top: 5px;">
-                        Full content uses WhatsApp delivery. Configure the bot media separately.
+                        ℹ️ Paste the complete streaming URL for the episode.
                     </small>
                 </div>
                 
@@ -298,7 +334,8 @@ if (isset($_GET['edit'])) {
                             <td><?php echo $episode['duration'] ? $episode['duration'] . 'm' : '-'; ?></td>
                             <td>
                                 <a href="episodes.php?edit=<?php echo $episode['id']; ?>">Edit</a> | 
-                                <form method="POST" action="episodes.php" style="display:inline" onsubmit="return confirm('Delete this record?')"><?php csrf_token_field(); ?><input type="hidden" name="delete_episode" value="<?php echo $episode['id']; ?>"><button type="submit" class="btn btn-danger btn-sm">Delete</button></form>
+                                <a href="episodes.php?delete_episode=<?php echo $episode['id']; ?>" 
+                                    onclick="return confirm('Are you sure you want to delete this episode?')">Delete</a>
                             </td>
                         </tr>
                         <?php endwhile; ?>

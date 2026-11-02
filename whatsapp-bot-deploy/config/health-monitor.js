@@ -6,22 +6,18 @@
 const os = require('os');
 
 class HealthMonitor {
-    constructor(botInstanceId, apiClient, client,resourceGuard=null) {
+    constructor(botInstanceId, apiClient, client) {
         this.botInstanceId = botInstanceId;
         this.apiClient = apiClient;
         this.client = client;
-        this.resourceGuard=resourceGuard;
         this.startTime = Date.now();
         this.interval = null;
-        this.running=false;this.generation=0;
     }
 
     /**
      * Start sending heartbeats
      */
     start(intervalSeconds = 30) {
-        this.stop();
-        this.running=true;
         console.log(`💓 Health monitor started (reporting every ${intervalSeconds}s)`);
 
         // Send initial heartbeat immediately
@@ -37,7 +33,6 @@ class HealthMonitor {
      * Stop sending heartbeats
      */
     stop() {
-        this.running=false;this.generation++;
         if (this.interval) {
             clearInterval(this.interval);
             this.interval = null;
@@ -49,10 +44,8 @@ class HealthMonitor {
      * Send heartbeat to server
      */
     async sendHeartbeat() {
-        const generation=this.generation;
         try {
             const healthData = await this.collectHealthData();
-            if(!this.running || generation!==this.generation)return;
 
             const response = await this.apiClient.request('bot-heartbeat.php', {
                 bot_id: this.botInstanceId,
@@ -78,10 +71,10 @@ class HealthMonitor {
         return {
             queue_size: global.messageQueue ? global.messageQueue.getStatus().size : 0,
             disk_usage_mb: diskUsage,
-            memory_usage_mb: ((memoryUsage.rss ?? memoryUsage.heapUsed) / (1024 * 1024)).toFixed(2),
+            memory_usage_mb: (memoryUsage.heapUsed / (1024 * 1024)).toFixed(2),
             uptime_seconds: uptime,
-            status: this.resourceGuard && !this.resourceGuard.sample().allowed ? 'offline' : 'online',
-            bot_phone: this.client?.user?.id ? this.client.user.id.split('@')[0].split(':')[0] : (this.client?.info?.wid?.user || null)
+            status: 'online',
+            bot_phone: this.client && this.client.info ? this.client.info.wid.user : null
         };
     }
 

@@ -1,7 +1,6 @@
 <?php
 header('Content-Type: application/json');
 require_once '../admin/config.php';
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); exit; }
 
 // Get user ID from session
 $user_id = $_SESSION['user_id'] ?? 0;

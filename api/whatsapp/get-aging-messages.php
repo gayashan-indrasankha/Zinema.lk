@@ -4,10 +4,21 @@
  * Prevents "Download failed" by identifying content that will expire soon
  */
 
-define('WHATSAPP_API', true);
-require_once __DIR__ . '/config.php';
-validateApiRequest();
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') sendResponse(['success' => false, 'error' => 'POST required'], 405);
+require_once __DIR__ . '/../../includes/environment.php';
+recovery_require_adapter('WHATSAPP');
+require_once __DIR__ . '/../../admin/config.php';
+
+header('Content-Type: application/json');
+
+// Validate API key
+$headers = getallheaders();
+$apiKey = $headers['X-Api-Key'] ?? '';
+
+if ($apiKey !== WHATSAPP_API_KEY) {
+    http_response_code(401);
+    echo json_encode(['success' => false, 'error' => 'Invalid API key']);
+    exit;
+}
 
 // Get input
 $input = json_decode(file_get_contents('php://input'), true);
@@ -16,14 +27,74 @@ $daysOld = $input['days_old'] ?? 10;
 try {
     $messages = [];
     
-    $stmt = $conn->prepare("SELECT content_type, content_id, part_number, message_id, updated_at
-        FROM v_delivery_files WHERE message_id IS NOT NULL
-        AND updated_at < DATE_SUB(NOW(), INTERVAL ? DAY) ORDER BY updated_at ASC LIMIT 300");
-    $stmt->bind_param('i', $daysOld); $stmt->execute();
+    // Get aging movie parts (uploaded more than X days ago)
+    $stmt = $conn->prepare("
+        SELECT 'movie' as content_type, movie_id as content_id, part_number, message_id, updated_at 
+        FROM movie_parts 
+        WHERE message_id IS NOT NULL 
+        AND updated_at < DATE_SUB(NOW(), INTERVAL ? DAY)
+        ORDER BY updated_at ASC
+        LIMIT 100
+    ");
+    $stmt->bind_param("i", $daysOld);
+    $stmt->execute();
     $result = $stmt->get_result();
-    while ($row = $result->fetch_assoc()) $messages[] = $row;
+    while ($row = $result->fetch_assoc()) {
+        $messages[] = $row;
+    }
     $stmt->close();
-
+    
+    // Get aging episode parts
+    $stmt = $conn->prepare("
+        SELECT 'episode' as content_type, episode_id as content_id, part_number, message_id, updated_at 
+        FROM episode_parts 
+        WHERE message_id IS NOT NULL 
+        AND updated_at < DATE_SUB(NOW(), INTERVAL ? DAY)
+        ORDER BY updated_at ASC
+        LIMIT 100
+    ");
+    $stmt->bind_param("i", $daysOld);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $messages[] = $row;
+    }
+    $stmt->close();
+    
+    // Get aging movies (full files, not parts)
+    $stmt = $conn->prepare("
+        SELECT 'movie' as content_type, id as content_id, 0 as part_number, message_id, updated_at 
+        FROM movies 
+        WHERE message_id IS NOT NULL 
+        AND updated_at < DATE_SUB(NOW(), INTERVAL ? DAY)
+        ORDER BY updated_at ASC
+        LIMIT 50
+    ");
+    $stmt->bind_param("i", $daysOld);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $messages[] = $row;
+    }
+    $stmt->close();
+    
+    // Get aging episodes (full files, not parts)
+    $stmt = $conn->prepare("
+        SELECT 'episode' as content_type, id as content_id, 0 as part_number, message_id, updated_at 
+        FROM episodes 
+        WHERE message_id IS NOT NULL 
+        AND updated_at < DATE_SUB(NOW(), INTERVAL ? DAY)
+        ORDER BY updated_at ASC
+        LIMIT 50
+    ");
+    $stmt->bind_param("i", $daysOld);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $messages[] = $row;
+    }
+    $stmt->close();
+    
     echo json_encode([
         'success' => true,
         'days_threshold' => $daysOld,

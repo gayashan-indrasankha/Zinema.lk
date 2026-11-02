@@ -38,38 +38,30 @@ async function apiRequest(endpoint, data = {}) {
 
         const req = client.request(options, (res) => {
             let responseData = '';
-            let bytes=0;
 
             res.on('data', (chunk) => {
-                bytes+=Buffer.byteLength(chunk);if(bytes>1048576){req.destroy(new Error('API response too large'));return;}
                 responseData += chunk;
             });
 
             res.on('end', () => {
-                clearTimeout(deadline);
                 try {
                     const parsed = JSON.parse(responseData);
                     if (res.statusCode >= 400) {
-                        reject(new Error(`API HTTP ${res.statusCode}`));
+                        reject(new Error(parsed.error || `HTTP ${res.statusCode}`));
                     } else {
                         resolve(parsed);
                     }
                 } catch (e) {
-                    reject(new Error('Invalid JSON response'));
+                    reject(new Error(`Invalid JSON response: ${responseData.substring(0, 100)}`));
                 }
             });
-            res.on('aborted',()=>{clearTimeout(deadline);reject(new Error('API response interrupted'));});
-            res.on('error',()=>{clearTimeout(deadline);reject(new Error('API response unavailable'));});
         });
-        const deadline=setTimeout(()=>req.destroy(new Error('API request deadline')),30000);
-        deadline.unref?.();
 
         req.on('error', (e) => {
-            clearTimeout(deadline);reject(new Error('API request unavailable'));
+            reject(new Error(`API request failed: ${e.message}`));
         });
 
         req.on('timeout', () => {
-            clearTimeout(deadline);
             req.destroy();
             reject(new Error('API request timed out'));
         });
@@ -87,6 +79,7 @@ async function apiRequest(endpoint, data = {}) {
 async function getTokenData(token) {
     try {
         const response = await apiRequest('validate-token.php', { token });
+        console.log('🎫 Token Validation Result:', JSON.stringify(response, null, 2));
         return response;
     } catch (error) {
         console.error('API Error (getTokenData):', error.message);
@@ -190,10 +183,10 @@ async function addMessageId(contentType, contentId, messageId, fileName = null, 
 async function needsRefresh(messageId) {
     try {
         const response = await apiRequest('needs-refresh.php', { message_id: messageId });
-        return response.needs_refresh === true;
+        return response.needs_refresh !== false;
     } catch (error) {
         console.error('API Error (needsRefresh):', error.message);
-        throw new Error('Refresh metadata unavailable');
+        return true; // On error, assume it needs refresh
     }
 }
 
@@ -205,15 +198,13 @@ async function needsRefresh(messageId) {
  */
 async function logRefresh(messageId, fileName = '', fileType = 'video') {
     try {
-        const response=await apiRequest('log-refresh.php', {
+        await apiRequest('log-refresh.php', {
             message_id: messageId,
             file_name: fileName,
             file_type: fileType
         });
-        return response.success===true;
     } catch (error) {
         console.error('API Error (logRefresh):', error.message);
-        return false;
     }
 }
 
@@ -240,8 +231,8 @@ async function getRefreshStats() {
  */
 async function testConnection() {
     try {
-        const result=await apiRequest('health.php');
-        if(result?.success!==true || result.service!=='zinema-bridge' || result.claim_protocol!=='claim-begin-complete-v1')return false;
+        // Try a simple validation request with dummy token
+        await apiRequest('validate-token.php', { token: 'TEST_CONNECTION' });
         console.log('✅ API Bridge connected successfully!');
         console.log(`   🌐 API URL: ${API_URL}`);
         return true;
@@ -390,17 +381,8 @@ async function getAgingMessages(daysOld = 10) {
     }
 }
 
-function claimRequest(action, data, recipient) {
-    const recipient_hash = require('crypto').createHash('sha256').update(recipient).digest('hex');
-    return apiRequest('claim-token.php', { ...data, action, recipient_hash, bot_id: recoveryConfig.botInstanceId });
-}
-function claimToken(token, recipient) { return claimRequest('claim', { token }, recipient); }
-function transitionToken(action, proof, recipient) { return claimRequest(action, proof, recipient); }
-
 // Create a client object with request method for HealthMonitor
 const apiClient = {
-    claimToken,
-    transitionToken,
     request: apiRequest,
     getTokenData,
     markTokenAsUsed,

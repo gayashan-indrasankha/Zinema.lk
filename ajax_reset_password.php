@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Validate CSRF token
-if (!validate_csrf_token(request_csrf_token())) {
+if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
     echo json_encode(['success' => false, 'message' => 'Invalid security token. Please refresh and try again.']);
     exit;
 }
@@ -79,7 +79,7 @@ $conn->begin_transaction();
 
 try {
     // Update user password
-    $stmt = $conn->prepare("UPDATE users SET password_hash = ?, remember_token = NULL, remember_expires_at = NULL WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
     $stmt->bind_param("si", $passwordHash, $resetData['user_id']);
     
     if (!$stmt->execute()) {
