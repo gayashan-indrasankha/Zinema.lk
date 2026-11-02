@@ -1,7 +1,6 @@
 <?php
 require_once 'config.php';
 check_login();
-require_once __DIR__ . '/../includes/uploads.php';
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -13,9 +12,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $title = $_POST['title'];
                     $description = $_POST['description'];
                     
-                    $video_url = store_catalogue_upload('trailer_video', 'video');
-                    if ($video_url !== '') {
+                    // Handle file upload
+                    $target_dir = "../uploads/trailers/";
+                    $file_extension = pathinfo($_FILES["trailer_video"]["name"], PATHINFO_EXTENSION);
+                    $video_filename = uniqid() . '.' . $file_extension;
+                    $target_file = $target_dir . $video_filename;
+                    
+                    if (move_uploaded_file($_FILES["trailer_video"]["tmp_name"], $target_file)) {
+                        $video_url = '/uploads/trailers/' . $video_filename;
+                        
+                        // Create thumbnail using ffmpeg if available
                         $thumbnail_url = null;
+                        if (function_exists('exec')) {
+                            $thumb_filename = uniqid() . '.jpg';
+                            $thumb_path = $target_dir . $thumb_filename;
+                            exec("ffmpeg -i $target_file -ss 00:00:01 -vframes 1 $thumb_path");
+                            if (file_exists($thumb_path)) {
+                                $thumbnail_url = '/uploads/trailers/' . $thumb_filename;
+                            }
+                        }
+                        
                         // Insert into database
                         $stmt = $conn->prepare("INSERT INTO trailers (movie_id, title, description, video_url, thumbnail_url) VALUES (?, ?, ?, ?, ?)");
                         $stmt->bind_param("issss", $movie_id, $title, $description, $video_url, $thumbnail_url);
@@ -52,7 +68,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             case 'delete':
                 $id = $_POST['id'];
                 
-                // Retain media; never unlink a path supplied by a database record.
+                // Get video path before deleting
+                $stmt = $conn->prepare("SELECT video_url, thumbnail_url FROM trailers WHERE id=?");
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                if ($file_data = $result->fetch_assoc()) {
+                    // Delete files
+                    if (file_exists("../" . $file_data['video_url'])) {
+                        unlink("../" . $file_data['video_url']);
+                    }
+                    if ($file_data['thumbnail_url'] && file_exists("../" . $file_data['thumbnail_url'])) {
+                        unlink("../" . $file_data['thumbnail_url']);
+                    }
+                }
+                
                 // Delete from database
                 $stmt = $conn->prepare("DELETE FROM trailers WHERE id=?");
                 $stmt->bind_param("i", $id);
@@ -71,9 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Get all trailers with movie information
-$query = "SELECT t.*, m.title as movie_title,
-          (SELECT COUNT(*) FROM trailer_views tv WHERE tv.trailer_id = t.id) AS views,
-          (SELECT COUNT(*) FROM trailer_likes tl WHERE tl.trailer_id = t.id) AS likes
+$query = "SELECT t.*, m.title as movie_title 
           FROM trailers t 
           JOIN movies m ON t.movie_id = m.id 
           ORDER BY t.created_at DESC";
@@ -90,7 +118,7 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
+    <link rel="stylesheet" href="assets/admin.css">
     <style>
         .trailer-preview {
             width: 200px;
@@ -122,27 +150,7 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
             background: #f5f5f5;
             border-radius: 8px;
         }
-        #editModal {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-            overflow-y: auto;
-            padding: 16px;
-            background: rgba(15, 23, 42, 0.65);
-            box-sizing: border-box;
-        }
-        #editModal .modal-content {
-            width: 100%;
-            max-width: 500px;
-            margin: 5vh auto;
-            padding: 24px;
-            border-radius: 8px;
-            background: #fff;
-            color: #0f172a;
-            box-sizing: border-box;
-        }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <?php include '_layout.php'; ?>
@@ -173,7 +181,7 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
         <!-- Add Trailer Form -->
         <div class="upload-form">
             <h2>Add New Trailer</h2>
-            <form action="trailers.php" method="POST" enctype="multipart/form-data"><?php csrf_token_field(); ?>
+            <form action="trailers.php" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="add">
                 
                 <div class="form-group">
@@ -201,8 +209,8 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
                 <div class="form-group">
                     <label for="trailer_video">Video File:</label>
                     <input type="file" name="trailer_video" id="trailer_video" 
-                           accept="video/mp4,video/webm" required>
-                    <small>MP4 or WebM short previews, up to 20 MiB. Vertical format (9:16) recommended. Full movies are delivered through WhatsApp.</small>
+                           accept="video/mp4,video/quicktime,video/webm" required>
+                    <small>Recommended: Vertical format (9:16 aspect ratio), max 100MB</small>
                 </div>
 
                 <button type="submit" class="btn primary">Upload Trailer</button>
@@ -214,8 +222,8 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
             <?php while($trailer = $trailers->fetch_assoc()): ?>
                 <div class="trailer-card">
                     <video class="trailer-preview" 
-                           src="<?php echo htmlspecialchars(str_starts_with($trailer['video_url'],'uploads/') ? BASE_URL.'/'.$trailer['video_url'] : $trailer['video_url']); ?>"
-                           poster="<?php echo htmlspecialchars($trailer['thumbnail_url'] ?? ''); ?>"
+                           src="<?php echo htmlspecialchars($trailer['video_url']); ?>"
+                           poster="<?php echo htmlspecialchars($trailer['thumbnail_url']); ?>"
                            preload="metadata"
                            muted></video>
                     <h3><?php echo htmlspecialchars($trailer['title']); ?></h3>
@@ -224,12 +232,8 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
                     <p>Likes: <?php echo number_format($trailer['likes']); ?></p>
                     
                     <div class="trailer-actions">
-                        <button class="btn" onclick="editTrailer(<?php echo (int)$trailer['id']; ?>)"
-                                data-trailer-id="<?php echo (int)$trailer['id']; ?>"
-                                data-trailer-title="<?php echo htmlspecialchars($trailer['title'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>"
-                                data-trailer-description="<?php echo htmlspecialchars($trailer['description'] ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>"
-                                data-trailer-status="<?php echo htmlspecialchars($trailer['status'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); ?>">Edit</button>
-                        <form action="trailers.php" method="POST" style="display: inline;"><?php csrf_token_field(); ?>
+                        <button class="btn" onclick="editTrailer(<?php echo $trailer['id']; ?>)">Edit</button>
+                        <form action="trailers.php" method="POST" style="display: inline;">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<?php echo $trailer['id']; ?>">
                             <button type="submit" class="btn danger" 
@@ -244,10 +248,10 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
     </div>
 
     <!-- Edit Modal -->
-    <div id="editModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="edit-modal-heading" style="display: none;">
+    <div id="editModal" class="modal" style="display: none;">
         <div class="modal-content">
-            <h2 id="edit-modal-heading">Edit Trailer</h2>
-            <form action="trailers.php" method="POST"><?php csrf_token_field(); ?>
+            <h2>Edit Trailer</h2>
+            <form action="trailers.php" method="POST">
                 <input type="hidden" name="action" value="update">
                 <input type="hidden" name="id" id="edit_id">
                 
@@ -289,19 +293,16 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
 
         // Edit modal functions
         function editTrailer(id) {
-            const modal = document.getElementById('editModal');
-            modal.style.display = 'none';
-            if (!/^[1-9]\d*$/.test(String(id))) return;
-            const row = document.querySelector(`[data-trailer-id="${id}"]`);
-            if (!row) return;
-            const data = row.dataset;
-            if (typeof data.trailerTitle !== 'string' || typeof data.trailerDescription !== 'string'
-                || !['active', 'inactive'].includes(data.trailerStatus)) return;
-            document.getElementById('edit_id').value = String(id);
-            document.getElementById('edit_title').value = data.trailerTitle;
-            document.getElementById('edit_description').value = data.trailerDescription;
-            document.getElementById('edit_status').value = data.trailerStatus;
-            modal.style.display = 'block';
+            // Fetch trailer data and populate form
+            fetch(`/api/trailers.php?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('edit_id').value = data.id;
+                    document.getElementById('edit_title').value = data.title;
+                    document.getElementById('edit_description').value = data.description;
+                    document.getElementById('edit_status').value = data.status;
+                    document.getElementById('editModal').style.display = 'block';
+                });
         }
 
         function closeEditModal() {

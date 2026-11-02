@@ -7,7 +7,16 @@ require_once 'includes/csrf_helper.php';
  * Generate Google OAuth URL
  */
 function getGoogleAuthUrl() {
-    return OAUTH_MODE === 'disabled' ? '#' : BASE_URL . '/oauth-start.php';
+    if (OAUTH_MODE === 'disabled') return '#';
+    $params = [
+        'client_id' => GOOGLE_CLIENT_ID,
+        'redirect_uri' => GOOGLE_REDIRECT_URI,
+        'response_type' => 'code',
+        'scope' => 'email profile',
+        'access_type' => 'online',
+        'prompt' => 'select_account'
+    ];
+    return OAUTH_AUTHORIZE_URL . '?' . http_build_query($params);
 }
 
 // Check if user is logged in
@@ -115,7 +124,6 @@ $has_more = $page < $total_pages;
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/desktop-scroll-fix.css">
     <link rel="stylesheet" href="css/desktop-tablet.css">
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <?php include '_top_nav.php'; ?>
@@ -853,7 +861,7 @@ $has_more = $page < $total_pages;
         }
 
         function confirmLogout() {
-            fetch('logout.php', {method: 'POST'}).then(response => { if (response.ok) window.location.href = 'index.php'; });
+            window.location.href = 'logout.php';
         }
 
         // ========================================

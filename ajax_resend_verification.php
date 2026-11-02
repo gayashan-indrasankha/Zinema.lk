@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Validate CSRF token
-if (!validate_csrf_token(request_csrf_token())) {
+if (!validate_csrf_token($_POST['csrf_token'] ?? '')) {
     echo json_encode(['success' => false, 'message' => 'Invalid security token. Please refresh and try again.']);
     exit;
 }

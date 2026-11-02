@@ -4,7 +4,7 @@ ob_start();
 
 // Start session
 if (session_status() == PHP_SESSION_NONE) {
-    require_once __DIR__ . '/../includes/session.php';
+    session_start();
 }
 
 // Include database connection
@@ -19,8 +19,6 @@ header('Content-Type: application/json');
 // Disable error display to prevent HTML in JSON response
 ini_set('display_errors', 0);
 error_reporting(E_ALL);
-
-if (!is_string($_GET['q'] ?? '') || !is_string($_GET['type'] ?? 'movie') || strlen($_GET['q'] ?? '')>200) { http_response_code(400);echo json_encode(['status'=>'error','message'=>'Invalid search','results'=>[]]);exit; }
 
 // Get search parameters from URL
 $term = isset($_GET['q']) ? trim($_GET['q']) : '';
@@ -100,7 +98,7 @@ try {
 } catch (Exception $e) {
     echo json_encode([
         'status' => 'error',
-        'message' => 'Search temporarily unavailable.',
+        'message' => $e->getMessage(),
         'results' => []
     ]);
 }

@@ -176,7 +176,6 @@ if (!empty($token)) {
         }
         .back-link a:hover { text-decoration: underline; }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <div class="reset-container">

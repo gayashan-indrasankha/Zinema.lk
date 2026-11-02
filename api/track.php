@@ -4,11 +4,9 @@
 header("Access-Control-Allow-Origin: *");
 require_once __DIR__ . '/../admin/config.php';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); exit; }
-
 // Get the event type from the query parameter
-$event_type = $_POST['event'] ?? '';
-$value = isset($_POST['value']) ? intval($_POST['value']) : null;
+$event_type = $_GET['event'] ?? '';
+$value = isset($_GET['value']) ? intval($_GET['value']) : null;
 
 // Only log valid, expected events
 $allowed_events = ['page_view', 'watch_time'];

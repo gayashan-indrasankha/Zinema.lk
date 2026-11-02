@@ -1,12 +1,82 @@
 <?php
-require_once __DIR__ . '/admin/config.php';
-require_once __DIR__ . '/includes/registration.php';
+// Include database connection and start session
+require_once 'admin/config.php';
+require_once 'includes/csrf_helper.php';
+
+// Initialize error message
 $error = '';
+
+// Handle signup form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    try {
-        $result = register_password_user($conn, $_POST['username'] ?? '', $_POST['email'] ?? '', $_POST['password'] ?? '');
-        $error = $result['message'];
-    } catch (Throwable $e) { $error = 'Registration failed. Please try again later.'; }
+    // Validate CSRF token
+    $csrf_token = $_POST['csrf_token'] ?? '';
+    if (!validate_csrf_token($csrf_token)) {
+        $error = 'Invalid security token. Please try again.';
+    } else {
+        $username = trim($_POST['username'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+    
+    // Validate input
+    if (empty($username) || empty($email) || empty($password)) {
+        $error = 'Please fill in all fields.';
+    } elseif (strlen($password) < 6) {
+        $error = 'Password must be at least 6 characters long.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Please enter a valid email address.';
+    } else {
+        // Check if email already exists
+        $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $error = 'Email already registered. Please login or use a different email.';
+            $stmt->close();
+        } else {
+            $stmt->close();
+            
+            // Check if username already exists
+            $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows > 0) {
+                $error = 'Username already taken. Please choose a different username.';
+                $stmt->close();
+            } else {
+                $stmt->close();
+                
+                // Hash the password
+                $password_hash = password_hash($password, PASSWORD_DEFAULT);
+                
+                // Insert new user into database
+                $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash, created_at) VALUES (?, ?, ?, NOW())");
+                $stmt->bind_param("sss", $username, $email, $password_hash);
+                
+                if ($stmt->execute()) {
+                    // Get the newly created user ID
+                    $user_id = $conn->insert_id;
+                    
+                    // Auto-login: Set session variables
+                    $_SESSION['user_id'] = $user_id;
+                    $_SESSION['username'] = $username;
+                    
+                    $stmt->close();
+                    
+                    // Redirect to profile page
+                    header('Location: profile.php');
+                    exit();
+                } else {
+                    $error = 'Registration failed. Please try again.';
+                    $stmt->close();
+                }
+            }
+        }
+    }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -161,7 +231,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin-top: 5px;
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <div class="signup-container">
@@ -174,7 +243,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php endif; ?>
 
-        <form method="POST" action=""><?php csrf_token_field(); ?>
+        <form method="POST" action="">
             <?php csrf_token_field(); ?>
             <div class="form-group">
                 <label for="username">Username</label>

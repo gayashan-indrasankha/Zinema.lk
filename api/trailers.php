@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/../admin/config.php';
 require_once __DIR__ . '/../includes/TrailerManager.php';
 
@@ -13,9 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once __DIR__ . '/../includes/session.php';
+session_start();
 $userId = $_SESSION['user_id'] ?? null;
-$includeInactive = !empty($_SESSION['admin_id']);
 
 $tm = new TrailerManager($pdo);
 
@@ -23,15 +21,12 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // If id provided, return single trailer
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        $page = isset($_GET['page']) ? filter_var($_GET['page'], FILTER_VALIDATE_INT) : 1;
-        $limit = isset($_GET['limit']) ? filter_var($_GET['limit'], FILTER_VALIDATE_INT) : 20;
-        if (!$page || $page < 1 || $page > 10000 || !$limit || $limit < 1 || $limit > 100) {
-            http_response_code(400);echo json_encode(['error'=>'Invalid pagination']);exit;
-        }
+        $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT) ?: 1;
+        $limit = filter_input(INPUT_GET, 'limit', FILTER_VALIDATE_INT) ?: 20;
         $offset = ($page - 1) * $limit;
 
         if ($id) {
-            $trailer = $tm->getTrailer($id, $userId, $includeInactive);
+            $trailer = $tm->getTrailer($id, $userId);
             if (!$trailer) {
                 http_response_code(404);
                 echo json_encode(['error' => 'Trailer not found']);
@@ -42,7 +37,7 @@ try {
         }
 
         // List trailers
-        $trailers = $tm->getAllTrailers($userId, $limit, $offset, $includeInactive);
+        $trailers = $tm->getAllTrailers($userId, $limit, $offset);
         echo json_encode(['trailers' => $trailers]);
         exit;
     }
@@ -58,10 +53,6 @@ try {
             echo json_encode(['error' => 'Action required']);
             exit;
         }
-
-        $target=filter_var($body['trailer_id'] ?? null,FILTER_VALIDATE_INT);
-        if (!$target || $target<1) {http_response_code(400);echo json_encode(['error'=>'Invalid trailer_id']);exit;}
-        if (!$tm->getTrailer($target,$userId,$includeInactive)) {http_response_code(404);echo json_encode(['error'=>'Trailer not found']);exit;}
 
         switch ($action) {
             case 'like':
@@ -92,7 +83,7 @@ try {
             case 'share':
                 if (!$userId) { http_response_code(401); echo json_encode(['error'=>'Authentication required']); exit; }
                 $trailerId = filter_var($body['trailer_id'] ?? null, FILTER_VALIDATE_INT);
-                $platform = is_string($body['platform'] ?? null) ? substr(strip_tags($body['platform']),0,50) : 'unknown';
+                $platform = filter_var($body['platform'] ?? 'unknown', FILTER_SANITIZE_STRING);
                 if (!$trailerId) { http_response_code(400); echo json_encode(['error'=>'Invalid trailer_id']); exit; }
                 $tm->recordShare($trailerId, $userId, $platform);
                 echo json_encode(['ok' => true]);

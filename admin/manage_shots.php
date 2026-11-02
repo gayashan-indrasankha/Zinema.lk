@@ -1,7 +1,6 @@
 <?php
 require_once 'config.php';
 check_login();
-require_once __DIR__.'/../includes/extractor_client.php';
 $admin_id = $_SESSION['admin_id'];
 $message = '';
 $error = '';
@@ -9,7 +8,8 @@ $error = '';
 // ============================================
 // API CONFIGURATION
 // ============================================
-// Browser traffic stays on the authenticated same-origin administrator endpoint.
+// Set your Render.com API URL here after deployment
+$api_url = FB_VIDEO_API_URL;
 
 // Get shot for editing if requested
 $edit_shot = null;
@@ -40,27 +40,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_shot'])) {
         $error = 'Please fill in all required fields and select a movie/series.';
     } elseif (empty($fb_share_url)) {
         $error = 'Please provide a Facebook Share URL.';
-    } elseif (!valid_facebook_url($fb_share_url)) {
+    } elseif (!preg_match('/facebook\.com|fb\.com/i', $fb_share_url)) {
         $error = 'Please provide a valid Facebook URL.';
-    } elseif (!in_array($content_type,['movie','series','collection'],true)) {
-        $error = 'Please select a valid content type.';
     } else {
-        $table=['movie'=>'movies','series'=>'series','collection'=>'collections'][$content_type];
-        $linked=$conn->prepare("SELECT id FROM $table WHERE id=?");
-        $linked->bind_param('i',$linked_content_id);$linked->execute();
-        if (!$linked->get_result()->fetch_row()) { http_response_code(422);exit('Linked content not found.'); }
         // Try to extract CDN URL for initial cache (optional, non-blocking)
         $cached_cdn_url = '';
-        try {
-            $cached_cdn_url=extractor_request('extract',$fb_share_url)['url'] ?? '';
-            if (EXTRACTOR_MODE==='account-queue' && $cached_cdn_url==='') throw new ExtractorFailure('extractor_pending',409);
-        } catch (ExtractorFailure $ignored) {
-            if (EXTRACTOR_MODE==='account-queue') {
-                http_response_code(409);exit('Clip processing is incomplete or held. Return to the form, check the worker and test the URL before saving.');
-            }
-            /* Optional cache: source reference can be saved while disabled/unavailable. */
+        $extract_url = $api_url . '/api/extract?url=' . urlencode($fb_share_url);
+        
+        $response = false;
+        if (EXTRACTOR_MODE !== 'disabled') {
+        $ch = curl_init($extract_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($ch);
+        curl_close($ch);
         }
-
+        
+        if ($response) {
+            $data = json_decode($response, true);
+            if (isset($data['success']) && $data['success'] && !empty($data['url'])) {
+                $cached_cdn_url = $data['url'];
+            }
+        }
+        
         // Proceed with database operations
         if ($is_edit_mode) {
             // Update existing shot
@@ -112,8 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_shot'])) {
 }
 
 // Handle delete request
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-    $delete_id = intval($_POST['delete']);
+if (isset($_GET['delete'])) {
+    $delete_id = intval($_GET['delete']);
     
     $delete_sql = "DELETE FROM shots WHERE id = ?";
     $delete_stmt = $conn->prepare($delete_sql);
@@ -155,7 +158,7 @@ if ($shots_result && $shots_result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
+    <link rel="stylesheet" href="assets/admin.css">
     <style>
         .search-results {
             position: absolute;
@@ -296,7 +299,6 @@ if ($shots_result && $shots_result->num_rows > 0) {
             cursor: not-allowed;
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <?php include '_layout.php'; ?>
@@ -321,7 +323,7 @@ if ($shots_result && $shots_result->num_rows > 0) {
             </div>
             
             <div class="api-url-display">
-                <strong>API URL:</strong> Private administrator connection
+                <strong>API URL:</strong> <?php echo htmlspecialchars($api_url); ?>
             </div>
             
             <div class="api-status-details" id="api-details" style="margin-top: 15px; display: none;">
@@ -358,7 +360,7 @@ if ($shots_result && $shots_result->num_rows > 0) {
                 <h2><?php echo $edit_shot ? '✏️ Edit Shot' : '➕ Add New Shot'; ?></h2>
             </div>
             <div class="card-body">
-                <form action="manage_shots.php" method="post" enctype="multipart/form-data"><?php csrf_token_field(); ?>
+                <form action="manage_shots.php" method="post" enctype="multipart/form-data">
                     <?php if ($edit_shot): ?>
                         <input type="hidden" name="shot_id" value="<?php echo $edit_shot['id']; ?>">
                     <?php endif; ?>
@@ -446,7 +448,7 @@ if ($shots_result && $shots_result->num_rows > 0) {
             <div class="card-header">
                 <h2>📋 Existing Shots</h2>
             </div>
-            <div class="card-body table-scroll">
+            <div class="card-body">
                 <?php if (!empty($shots)): ?>
                     <table class="data-table">
                         <thead>
@@ -485,7 +487,9 @@ if ($shots_result && $shots_result->num_rows > 0) {
                                         <a href="?edit=<?php echo $shot['id']; ?>" class="btn btn-primary btn-sm">
                                             ✏️ Edit
                                         </a>
-                                        <form method="POST" action="manage_shots.php" style="display:inline" onsubmit="return confirm('Delete this record?')"><?php csrf_token_field(); ?><input type="hidden" name="delete" value="<?php echo $shot['id']; ?>"><button type="submit" class="btn btn-danger btn-sm">🗑️ Delete</button></form>
+                                        <a href="?delete=<?php echo $shot['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this shot?')">
+                                            🗑️ Delete
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -498,22 +502,11 @@ if ($shots_result && $shots_result->num_rows > 0) {
         </div>
     </div>
 
-    <script src="../js/extractor-queue.js"></script>
     <script>
         // ============================================
         // API HEALTH CHECK
         // ============================================
-        const API_URL = 'extractor.php';
-        const queueExtractor = <?php echo json_encode(EXTRACTOR_MODE==='account-queue'); ?>;
-        async function extractorCall(action,url) {
-            const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),4000);
-            try {
-                const response=await fetch(API_URL,{method:'POST',signal:controller.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify(url ? (action==='status'?{action,job_id:url}:{action,url}) : {action})});
-                const data=await response.json();
-                if (!response.ok || data.success!==true) throw new Error(data.error || 'extractor_unavailable');
-                return data;
-            } finally {clearTimeout(timeout);}
-        }
+        const API_URL = '<?php echo $api_url; ?>';
         
         async function checkApiHealth() {
             const btn = document.getElementById('btn-check-api');
@@ -527,13 +520,17 @@ if ($shots_result && $shots_result->num_rows > 0) {
             const startTime = Date.now();
             
             try {
-                const data = await extractorCall('health');
-                if (data.mode==='account-queue' && data.online!==true) throw new Error('extractor_offline');
+                const response = await fetch(API_URL + '/health', {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                
                 const responseTime = Date.now() - startTime;
-
+                const data = await response.json();
+                
                 // Update UI
                 indicator.classList.add('online');
-                document.getElementById('api-status-text').textContent = data.mode==='account-queue'?'✅ Private worker online':'✅ Local fake online';
+                document.getElementById('api-status-text').textContent = '✅ Online';
                 document.getElementById('api-uptime').textContent = formatUptime(data.uptime);
                 document.getElementById('api-response-time').textContent = responseTime + 'ms';
                 document.getElementById('api-version').textContent = data.version || 'Unknown';
@@ -583,34 +580,17 @@ if ($shots_result && $shots_result->num_rows > 0) {
             resultSpan.innerHTML = '<span style="color: #2196f3;">⏳ Testing...</span>';
             
             try {
-                const data = await ZinemaExtractor.waitForExtraction(extractorCall,fbUrl,state=>{resultSpan.textContent='⏳ Worker: '+state;});
+                const response = await fetch(API_URL + '/api/extract?url=' + encodeURIComponent(fbUrl));
+                const data = await response.json();
                 
                 if (data.success) {
-                    resultSpan.textContent = data.mode==='account-queue'?'✅ Clip ready; save the form to use it':'✅ Local fake connection verified';
+                    resultSpan.innerHTML = `<span style="color: #4caf50;">✅ Success! (${data.method}, ${data.duration_ms}ms)</span>`;
                 } else {
-                    resultSpan.textContent = '❌ Extraction unavailable';
+                    resultSpan.innerHTML = `<span style="color: #f44336;">❌ ${data.error || 'Extraction failed'}</span>`;
                 }
             } catch (error) {
-                resultSpan.textContent = '❌ Connection unavailable ('+error.message+')';
+                resultSpan.innerHTML = `<span style="color: #f44336;">❌ API Error: ${error.message}</span>`;
             }
-        }
-
-        // Complete an asynchronous extraction before submitting a new clip reference.
-        const shotSubmit=document.querySelector('button[name="submit_shot"]');
-        if (queueExtractor && shotSubmit) {
-            const form=shotSubmit.form;let preparedSource=null,busy=false;
-            form.addEventListener('submit',async event=>{
-                const source=document.getElementById('fb_share_url').value.trim();
-                if (preparedSource===source) return;
-                event.preventDefault();if(busy)return;busy=true;shotSubmit.disabled=true;
-                const result=document.getElementById('test-result');
-                try {
-                    await ZinemaExtractor.waitForExtraction(extractorCall,source,state=>{result.textContent='⏳ Worker: '+state;});
-                    if (document.getElementById('fb_share_url').value.trim()!==source)throw new Error('source_changed');
-                    preparedSource=source;shotSubmit.disabled=false;form.requestSubmit(shotSubmit);
-                } catch(error) {result.textContent='❌ Clip was not saved ('+error.message+').';}
-                finally {busy=false;shotSubmit.disabled=false;}
-            });
         }
 
         // ============================================
@@ -646,7 +626,7 @@ if ($shots_result && $shots_result->num_rows > 0) {
             }
             $stmt->close();
             ?>
-            selectedTitle.textContent = <?php echo json_encode($content_title, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+            selectedTitle.textContent = '<?php echo addslashes($content_title); ?>';
             selectedContent.style.display = 'block';
         });
         <?php endif; ?>

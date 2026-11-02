@@ -1,13 +1,8 @@
 // =================== CineDrive Analytics Tracker ===================
 (() => {
-    function sendEvent(event, value) {
-        const data = new URLSearchParams({event, csrf_token: document.querySelector('meta[name="csrf-token"]')?.content || ''});
-        if (value !== undefined) data.set('value', value);
-        navigator.sendBeacon(new URL('/api/track.php', location.origin), data);
-    }
     document.addEventListener("DOMContentLoaded", () => {
         // 1. Log a page view on every page load
-        sendEvent('page_view');
+        navigator.sendBeacon('api/track.php?event=page_view');
 
         // 2. Track watch time
         const playerDialog = document.getElementById("player");
@@ -29,7 +24,7 @@
 
                             // Only log if watch time is meaningful (e.g., > 5 seconds)
                             if (durationInSeconds > 5) {
-                                sendEvent('watch_time', durationInSeconds);
+                                navigator.sendBeacon(`api/track.php?event=watch_time&value=${durationInSeconds}`);
                             }
                             watchStartTime = null; // Reset timer
                         }

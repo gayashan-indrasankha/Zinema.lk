@@ -1,21 +1,27 @@
 <?php
 require_once 'config.php';
 check_login();
-require_once __DIR__ . '/../includes/uploads.php';
 
 $admin_id = $_SESSION['admin_id'];
 $message = '';
 $message_type = '';
 
 // Handle Delete
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-    $id = intval($_POST['delete']);
+if (isset($_GET['delete'])) {
+    $id = intval($_GET['delete']);
     $stmt = $conn->prepare("SELECT cover_image FROM series WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result()->fetch_assoc();
     
-    // Media cleanup requires separate review; retain legacy and shared files.
+    // Delete the cover image file if it exists
+    if ($result && !empty($result['cover_image'])) {
+        $filename = basename($result['cover_image']);
+        if (file_exists('../uploads/' . $filename)) {
+            unlink('../uploads/' . $filename);
+        }
+    }
+    
     $stmt = $conn->prepare("DELETE FROM series WHERE id = ?");
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
@@ -37,7 +43,20 @@ if (isset($_POST['add_series'])) {
     
     $cover_image_path = '';
 
-    $cover_image_path = store_catalogue_upload('cover_image', 'image', $cover_image_path);
+    // Handle file upload
+    if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] == 0) {
+        $target_dir = "../uploads/";
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0755, true);
+        }
+        
+        $image_name = uniqid() . '_' . basename($_FILES["cover_image"]["name"]);
+        $target_file = $target_dir . $image_name;
+        
+        if (move_uploaded_file($_FILES["cover_image"]["tmp_name"], $target_file)) {
+            $cover_image_path = 'uploads/' . $image_name;
+        }
+    }
 
     // Insert series
     $stmt = $conn->prepare("INSERT INTO series (title, release_date, genre, description, cover_image, language_type) VALUES (?, ?, ?, ?, ?, ?)");
@@ -74,7 +93,25 @@ if (isset($_POST['edit_series'])) {
     $current = $stmt->get_result()->fetch_assoc();
     $cover_image_path = $current['cover_image'];
 
-    $cover_image_path = store_catalogue_upload('cover_image', 'image', $cover_image_path);
+    // Handle new file upload
+    if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] == 0) {
+        $target_dir = "../uploads/";
+        
+        // Delete old cover image
+        if (!empty($cover_image_path)) {
+            $old_filename = basename($cover_image_path);
+            if (file_exists($target_dir . $old_filename)) {
+                unlink($target_dir . $old_filename);
+            }
+        }
+        
+        $image_name = uniqid() . '_' . basename($_FILES["cover_image"]["name"]);
+        $target_file = $target_dir . $image_name;
+        
+        if (move_uploaded_file($_FILES["cover_image"]["tmp_name"], $target_file)) {
+            $cover_image_path = 'uploads/' . $image_name;
+        }
+    }
 
     // Update series
     $stmt = $conn->prepare("UPDATE series SET title = ?, release_date = ?, genre = ?, description = ?, cover_image = ?, language_type = ? WHERE id = ?");
@@ -109,7 +146,7 @@ if (isset($_GET['edit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
+    <link rel="stylesheet" href="assets/admin.css">
     <style>
         .message {
             padding: 12px 20px;
@@ -128,7 +165,6 @@ if (isset($_GET['edit'])) {
             border: 1px solid #f5c6cb;
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <?php include '_layout.php'; ?>
@@ -146,7 +182,7 @@ if (isset($_GET['edit'])) {
 
         <section class="form-container">
             <h2><?php echo $edit_series ? 'Edit Series' : 'Add New Series'; ?></h2>
-            <form method="POST" action="series.php" enctype="multipart/form-data"><?php csrf_token_field(); ?>
+            <form method="POST" action="series.php" enctype="multipart/form-data">
                 <?php if ($edit_series): ?>
                     <input type="hidden" name="series_id" value="<?php echo $edit_series['id']; ?>">
                 <?php endif; ?>
@@ -239,7 +275,7 @@ if (isset($_GET['edit'])) {
                             </td>
                             <td>
                                 <a href="series.php?edit=<?php echo $series['id']; ?>">Edit</a> | 
-                                <form method="POST" action="series.php" style="display:inline" onsubmit="return confirm('Delete this record?')"><?php csrf_token_field(); ?><input type="hidden" name="delete" value="<?php echo $series['id']; ?>"><button type="submit" class="btn btn-danger btn-sm">Delete</button></form>
+                                <a href="series.php?delete=<?php echo $series['id']; ?>" onclick="return confirm('Are you sure you want to delete this series?')">Delete</a>
                             </td>
                         </tr>
                         <?php endwhile; ?>

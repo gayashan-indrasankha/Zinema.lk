@@ -1,8 +1,4 @@
 <?php
-// Phase 2: quarantined before any bootstrap, SQL, logging or network activity.
-http_response_code(403);
-exit('Disabled during recovery.');
-
 
 /**
  * Find Valid Movie IDs

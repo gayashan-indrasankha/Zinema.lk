@@ -1,21 +1,27 @@
 <?php
 require_once 'config.php';
 check_login();
-require_once __DIR__ . '/../includes/uploads.php';
 
 $admin_id = $_SESSION['admin_id'];
 $message = '';
 $message_type = '';
 
 // Handle Delete
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-    $id = intval($_POST['delete']);
+if (isset($_GET['delete'])) {
+    $id = intval($_GET['delete']);
     $stmt = $conn->prepare("SELECT cover_image FROM movies WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result()->fetch_assoc();
     
-    // Media cleanup requires separate review; retain legacy and shared files.
+    // Delete the cover image file if it exists
+    if ($result && !empty($result['cover_image'])) {
+        $filename = basename($result['cover_image']);
+        if (file_exists('../uploads/' . $filename)) {
+            unlink('../uploads/' . $filename);
+        }
+    }
+    
     $stmt = $conn->prepare("DELETE FROM movies WHERE id = ?");
     $stmt->bind_param("i", $id);
     if ($stmt->execute()) {
@@ -40,7 +46,20 @@ if (isset($_POST['add_movie'])) {
     
     $cover_image_path = '';
 
-    $cover_image_path = store_catalogue_upload('cover_image', 'image', $cover_image_path);
+    // Handle file upload
+    if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] == 0) {
+        $target_dir = "../uploads/";
+        if (!is_dir($target_dir)) {
+            mkdir($target_dir, 0755, true);
+        }
+        
+        $image_name = uniqid() . '_' . basename($_FILES["cover_image"]["name"]);
+        $target_file = $target_dir . $image_name;
+        
+        if (move_uploaded_file($_FILES["cover_image"]["tmp_name"], $target_file)) {
+            $cover_image_path = 'uploads/' . $image_name;
+        }
+    }
 
     // Insert movie
     $stmt = $conn->prepare("INSERT INTO movies (title, release_date, genre, rating, cover_image, video_url, language_type, collection_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
@@ -74,7 +93,25 @@ if (isset($_POST['edit_movie'])) {
     $current = $stmt->get_result()->fetch_assoc();
     $cover_image_path = $current['cover_image'];
 
-    $cover_image_path = store_catalogue_upload('cover_image', 'image', $cover_image_path);
+    // Handle new file upload
+    if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] == 0) {
+        $target_dir = "../uploads/";
+        
+        // Delete old cover image
+        if (!empty($cover_image_path)) {
+            $old_filename = basename($cover_image_path);
+            if (file_exists($target_dir . $old_filename)) {
+                unlink($target_dir . $old_filename);
+            }
+        }
+        
+        $image_name = uniqid() . '_' . basename($_FILES["cover_image"]["name"]);
+        $target_file = $target_dir . $image_name;
+        
+        if (move_uploaded_file($_FILES["cover_image"]["tmp_name"], $target_file)) {
+            $cover_image_path = 'uploads/' . $image_name;
+        }
+    }
 
     // Update movie
     $stmt = $conn->prepare("UPDATE movies SET title = ?, release_date = ?, genre = ?, rating = ?, cover_image = ?, video_url = ?, language_type = ?, collection_id = ? WHERE id = ?");
@@ -113,7 +150,7 @@ if (isset($_GET['edit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
+    <link rel="stylesheet" href="assets/admin.css">
     <style>
         .message {
             padding: 12px 20px;
@@ -132,7 +169,6 @@ if (isset($_GET['edit'])) {
             border: 1px solid #f5c6cb;
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <?php include '_layout.php'; ?>
@@ -150,7 +186,7 @@ if (isset($_GET['edit'])) {
 
         <section class="form-container">
             <h2><?php echo $edit_movie ? 'Edit Movie' : 'Add New Movie'; ?></h2>
-            <form method="POST" action="movies.php" enctype="multipart/form-data"><?php csrf_token_field(); ?>
+            <form method="POST" action="movies.php" enctype="multipart/form-data">
                 <?php if ($edit_movie): ?>
                     <input type="hidden" name="movie_id" value="<?php echo $edit_movie['id']; ?>">
                 <?php endif; ?>
@@ -206,11 +242,11 @@ if (isset($_GET['edit'])) {
 
                 
                 <div class="form-group">
-                    <label for="video_url">Legacy media reference (optional)</label>
-                    <textarea name="video_url" id="video_url" rows="4" placeholder="Optional legacy reference; not used for full-content website playback"
-                        style="font-family: monospace; font-size: 0.85em;"><?php echo $edit_movie ? htmlspecialchars($edit_movie['video_url']) : ''; ?></textarea>
+                    <label for="video_url">Streaming Video URL *</label>
+                    <textarea name="video_url" id="video_url" rows="4" placeholder="Paste the streaming URL here (e.g., https://my-drive-streamer.indrasankag.workers.dev/FILE_ID)" 
+                        style="font-family: monospace; font-size: 0.85em;" required><?php echo $edit_movie ? htmlspecialchars($edit_movie['video_url']) : ''; ?></textarea>
                     <small style="color: #888; display: block; margin-top: 5px;">
-                        Full content uses WhatsApp delivery. Configure the bot media separately.
+                        ℹ️ Paste the complete streaming URL for the movie.
                     </small>
                 </div>
                 
@@ -274,7 +310,7 @@ if (isset($_GET['edit'])) {
                             </td>
                             <td>
                                 <a href="movies.php?edit=<?php echo $movie['id']; ?>">Edit</a> | 
-                                <form method="POST" action="movies.php" style="display:inline" onsubmit="return confirm('Delete this record?')"><?php csrf_token_field(); ?><input type="hidden" name="delete" value="<?php echo $movie['id']; ?>"><button type="submit" class="btn btn-danger btn-sm">Delete</button></form>
+                                <a href="movies.php?delete=<?php echo $movie['id']; ?>" onclick="return confirm('Are you sure you want to delete this movie?')">Delete</a>
                             </td>
                         </tr>
                         <?php endwhile; ?>

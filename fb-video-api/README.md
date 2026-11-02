@@ -1,25 +1,3 @@
-# Current private contract
-
-The website uses its administrator POST/CSRF endpoint. This service binds loopback
-and requires X-Extractor-Key on POST /health and POST /api/extract. Local extraction
-accepts a bounded exact-host HTTPS Facebook-shaped source but returns only original
-local fake media; it never fetches that source. All live/browser access stays blocked.
-No CORS permission is published. Keys must never enter browser JavaScript or URLs.
-
-Use dev/local.py extractor-up and test-extractor after the baseline stack is up.
-See docs/recovery/EXTRACTOR_CONNECTION.md for tests, limits and restoring disabled
-mode. Historical public-API instructions below are not deployment authorization.
-
-> Current audit status (2026-10-25): **live extraction remains disabled**.
-> The historical deployment/performance notes below are not launch evidence.
-> Use Node >=24 and the committed lockfile with `npm ci --ignore-scripts`.
-> The full dependency candidate is audited separately from HTTP-only fixtures.
-> Pure parser and DNS-pinned HTTPS transport are tested with original/mock data;
-> no Facebook request has been made. Browser fallback remains blocked until an
-> explicitly supplied, compatible Chrome executable and outbound isolation are
-> verified. Do not deploy this folder or enable live access from these old notes.
-> See `../docs/recovery/PRODUCTION_STAGING.md` and `PRODUCTION_LIVE_TEST_PLAN.md`.
-
 # FB Video CDN Extractor API
 
 Facebook video CDN URL extractor for Zinema.lk shots page.
