@@ -2,14 +2,14 @@
 // Helper functions for comments API
 
 function validateUser($pdo) {
-    require_once __DIR__ . '/../../includes/session.php';
+    session_start();
     if (!isset($_SESSION['user_id'])) {
         http_response_code(401);
         return ['error' => 'Unauthorized access'];
     }
     
     // Get user details
-    $stmt = $pdo->prepare("SELECT id, username, 0 AS is_admin FROM users WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT id, username, is_admin FROM users WHERE id = ?");
     $stmt->execute([$_SESSION['user_id']]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -41,7 +41,7 @@ function validateCommentData($content) {
 }
 
 function canDeleteComment($pdo, $commentId, $userId, $isAdmin) {
-    $stmt = $pdo->prepare("SELECT user_id FROM movie_comments WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT user_id FROM comments WHERE id = ?");
     $stmt->execute([$commentId]);
     $comment = $stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -67,8 +67,8 @@ function validateMovieId($pdo, $movieId) {
 
 function getCommentReplies($pdo, $commentId) {
     $stmt = $pdo->prepare("
-        SELECT c.*, c.comment_text AS content, u.username, u.avatar_url 
-        FROM movie_comments c 
+        SELECT c.*, u.username, u.avatar_url 
+        FROM comments c 
         LEFT JOIN users u ON c.user_id = u.id 
         WHERE c.parent_id = ? 
         ORDER BY c.created_at ASC

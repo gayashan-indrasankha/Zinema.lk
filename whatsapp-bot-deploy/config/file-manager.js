@@ -10,13 +10,11 @@
 
 const fs = require('fs');
 const path = require('path');
-const {MAX_MEDIA_BYTES,inspectMedia} = require('./media-policy');
 
 class FileManager {
-    constructor(basePath,{resourceGuard=null}={}) {
+    constructor(basePath) {
         if (!basePath || !path.isAbsolute(basePath)) throw new Error('Explicit absolute local media path required.');
-        this.basePath = path.resolve(basePath);
-        this.resourceGuard=resourceGuard;
+        this.basePath = basePath;
         this.ensureDirectories();
     }
 
@@ -32,27 +30,11 @@ class FileManager {
         ];
 
         dirs.forEach(dir => {
-            this.assertContained(dir);
             if (!fs.existsSync(dir)) {
                 fs.mkdirSync(dir, { recursive: true });
                 console.log(`📁 Created directory: ${dir}`);
             }
         });
-    }
-
-    validateIdentity(type,id,part=null,extension='.mp4') {
-        const integer=value=>(typeof value==='number'||typeof value==='string') && /^[1-9][0-9]*$/.test(String(value)) && Number.isSafeInteger(Number(value)) && Number(value)<=2147483647;
-        if(!['movie','episode'].includes(type)||!integer(id)||!(part===null||part===undefined||part===0||part==='0'||integer(part))||!['.mp4','.mkv','.avi','.mov','.webm'].includes(extension))throw Error('Invalid media identity');
-    }
-
-    assertContained(candidate) {
-        const relative=path.relative(this.basePath,path.resolve(candidate));
-        if(relative==='..'||relative.startsWith('..'+path.sep)||path.isAbsolute(relative))throw Error('Invalid media path');
-        let current=this.basePath;
-        for(const component of ['',...relative.split(path.sep).filter(Boolean)]) {
-            if(component)current=path.join(current,component);
-            if(fs.existsSync(current) && fs.lstatSync(current).isSymbolicLink())throw Error('Invalid media link');
-        }
     }
 
     /**
@@ -63,10 +45,8 @@ class FileManager {
      * @returns {string|null} File path or null if not found
      */
     getFilePath(contentType, contentId, partNumber = null) {
-        this.validateIdentity(contentType,contentId,partNumber);
         const typeFolder = contentType === 'movie' ? 'movies' : 'episodes';
         const contentFolder = path.join(this.basePath, typeFolder, String(contentId));
-        this.assertContained(contentFolder);
 
         // Check if content folder exists
         if (!fs.existsSync(contentFolder)) {
@@ -85,7 +65,6 @@ class FileManager {
 
         // Check if file exists
         if (fs.existsSync(filePath)) {
-            this.assertContained(filePath);if(!fs.statSync(filePath).isFile())throw Error('Invalid media file');
             return filePath;
         }
 
@@ -94,7 +73,6 @@ class FileManager {
         for (const ext of extensions) {
             const altPath = filePath.replace('.mp4', ext);
             if (fs.existsSync(altPath)) {
-                this.assertContained(altPath);if(!fs.statSync(altPath).isFile())throw Error('Invalid media file');
                 return altPath;
             }
         }
@@ -145,10 +123,8 @@ class FileManager {
      * @returns {string} Folder path
      */
     ensureContentFolder(contentType, contentId) {
-        this.validateIdentity(contentType,contentId);
         const typeFolder = contentType === 'movie' ? 'movies' : 'episodes';
         const contentFolder = path.join(this.basePath, typeFolder, String(contentId));
-        this.assertContained(contentFolder);
 
         if (!fs.existsSync(contentFolder)) {
             fs.mkdirSync(contentFolder, { recursive: true });
@@ -167,9 +143,8 @@ class FileManager {
      * @returns {string}
      */
     getSavePath(contentType, contentId, partNumber = null, extension = '.mp4') {
-        this.validateIdentity(contentType,contentId,partNumber,extension);
         const folder = this.ensureContentFolder(contentType, contentId);
-        const fileName = Number(partNumber)>0 ? `part_${partNumber}${extension}` : `full${extension}`;
+        const fileName = partNumber ? `part_${partNumber}${extension}` : `full${extension}`;
         return path.join(folder, fileName);
     }
 
@@ -183,46 +158,12 @@ class FileManager {
      * @returns {string} Saved file path
      */
     async saveFile(contentType, contentId, partNumber, buffer, extension = '.mp4') {
-        if(!Buffer.isBuffer(buffer)||buffer.length===0)throw Error('Invalid media buffer');
-        return this.saveStream(contentType,contentId,partNumber,require('node:stream').Readable.from([buffer]),extension,{expectedBytes:buffer.length});
-    }
+        const savePath = this.getSavePath(contentType, contentId, partNumber, extension);
 
-    // Operators can ingest large originals without allocating a whole-file Buffer.
-    async saveStream(contentType,contentId,partNumber,source,extension='.mp4',options={}) {
-        const {Transform}=require('node:stream'),{pipeline}=require('node:stream/promises'),crypto=require('node:crypto');
-        const max=options.maxBytes===undefined?MAX_MEDIA_BYTES:options.maxBytes;
-        if(!Number.isSafeInteger(max)||max<1||max>MAX_MEDIA_BYTES||!source||typeof source.pipe!=='function')throw Error('Invalid media stream');
-        if(options.expectedBytes!==undefined&&(!Number.isSafeInteger(options.expectedBytes)||options.expectedBytes<1||options.expectedBytes>max))throw Error('Invalid media length');
-        if(options.expectedSha256!==undefined&&(typeof options.expectedSha256!=='string'||!(/^[a-f0-9]{64}$/).test(options.expectedSha256)))throw Error('Invalid media digest');
-        const reservation=options.expectedBytes ?? max;
-        this.resourceGuard?.assertReady(reservation);
-        const savePath=this.getSavePath(contentType,contentId,partNumber,extension);
-        let bytes=0,expected;const digest=crypto.createHash('sha256');
-        const matches=async()=>{
-            this.assertContained(savePath);if(!fs.existsSync(savePath)||!fs.lstatSync(savePath).isFile()||fs.statSync(savePath).size!==bytes)return false;
-            const hash=crypto.createHash('sha256');for await(const chunk of fs.createReadStream(savePath))hash.update(chunk);return hash.digest('hex')===expected;
-        };
-        const temporary=path.join(path.dirname(savePath),'.ingest-'+crypto.randomBytes(16).toString('hex'));
-        const guard=this.resourceGuard;let sampled=0;
-        const validator=new Transform({transform(chunk,_encoding,callback){
-            bytes+=chunk.length;
-            if(bytes>max)return callback(Error('media_size_exceeded'));
-            if(guard && bytes-sampled>=4*1024*1024) {
-                try {guard.assertReady(Math.max(0,reservation-bytes));sampled=bytes;}
-                catch(error){return callback(error);}
-            }
-            digest.update(chunk);callback(null,chunk);
-        }});
-        try {
-            await pipeline(source,validator,fs.createWriteStream(temporary,{flags:'wx',mode:0o600}),...(options.signal?[{signal:options.signal}]:[]));
-            expected=digest.digest('hex');
-            guard?.assertReady();
-            if(bytes===0||(options.expectedBytes!==undefined&&bytes!==options.expectedBytes)||(options.expectedSha256!==undefined&&expected!==options.expectedSha256))throw Error('media_integrity_mismatch');
-            const fd=await fs.promises.open(temporary,'r+');try{await fd.sync();}finally{await fd.close();}
-            this.assertContained(savePath);
-            try {await fs.promises.link(temporary,savePath);}catch(error){if(error.code!=='EEXIST')throw Error('media_publish_unavailable');if(!(await matches()))throw Error('media_conflict');}
-            return savePath;
-        }finally{if(fs.existsSync(temporary))await fs.promises.unlink(temporary);}
+        await fs.promises.writeFile(savePath, buffer);
+        console.log(`💾 Saved file: ${savePath} (${this.formatBytes(buffer.length)})`);
+
+        return savePath;
     }
 
     /**
@@ -235,7 +176,6 @@ class FileManager {
     async readFile(contentType, contentId, partNumber = null) {
         const filePath = this.getFilePath(contentType, contentId, partNumber);
         if (!filePath) return null;
-        if(inspectMedia(filePath).bytes>16*1024*1024)throw Error('media_stream_required');
 
         try {
             return await fs.promises.readFile(filePath);
@@ -243,13 +183,6 @@ class FileManager {
             console.error(`❌ Error reading file: ${error.message}`);
             return null;
         }
-    }
-
-    readStream(contentType,contentId,partNumber=null) {
-        const filePath=this.getFilePath(contentType,contentId,partNumber);
-        if(!filePath)return null;
-        inspectMedia(filePath);
-        return fs.createReadStream(filePath,{highWaterMark:65536});
     }
 
     /**
@@ -305,18 +238,15 @@ class FileManager {
             const contentFolders = await fs.promises.readdir(typeFolder);
 
             for (const idFolder of contentFolders) {
-                if(!/^[1-9][0-9]*$/.test(idFolder)||Number(idFolder)>2147483647)continue;
                 const contentPath = path.join(typeFolder, idFolder);
-                const stat = await fs.promises.lstat(contentPath);
+                const stat = await fs.promises.stat(contentPath);
 
                 if (stat.isDirectory()) {
                     const contentFiles = await fs.promises.readdir(contentPath);
 
                     for (const file of contentFiles) {
-                        if(!/^(?:full|part_[1-9][0-9]*)\.(?:mp4|mkv|avi|mov|webm)$/.test(file))continue;
                         const filePath = path.join(contentPath, file);
-                        const fileStat = await fs.promises.lstat(filePath);
-                        if(!fileStat.isFile() || fileStat.isSymbolicLink())continue;
+                        const fileStat = await fs.promises.stat(filePath);
 
                         files.push({
                             type: type === 'movies' ? 'movie' : 'episode',

@@ -44,7 +44,7 @@ DB_USER=root
 DB_PASSWORD=your_password
 DB_NAME=whatsapp_bot
 STORAGE_GROUP_ID=your_storage_group_id@g.us
-ADMIN_NUMBERS=FICTIONAL_IDENTIFIER
+ADMIN_NUMBERS=
 ```
 
 ### 4. Run the Bot
@@ -93,13 +93,13 @@ npm run dev
 
    **Via Command:**
    ```
-   !addtoken MOVIE001 true_FICTIONAL_IDENTIFIER_ABC123 Fictional_Demo.mp4
+   !addtoken MOVIE001 true_123456789@g.us_ABC123 Avengers_2019.mp4
    ```
 
    **Via Database:**
    ```sql
    INSERT INTO video_tokens (token, message_id, file_name, description) 
-   VALUES ('MOVIE001', 'true_FICTIONAL_IDENTIFIER_ABC123', 'Fictional_Demo.mp4', 'Fictional demonstration clip');
+   VALUES ('MOVIE001', 'true_123456789@g.us_ABC123', 'Avengers_2019.mp4', 'Avengers Endgame HD');
    ```
 
 ## File Structure

@@ -16,16 +16,6 @@ message-store*/
 store.json
 message-cache.json
 pending-requests.json
-warming-state.json
-worker.lock
-creds.json
-pairing-intent.json
-pairing-challenge.json
-pairing-receipt.json
-maintenance-review.pending.json
-maintenance-review-*.json
-maintenance-exclusions.json
-monitor-state.json
 hot-cache*/
 cache/
 logs/
@@ -78,13 +68,3 @@ id_ed25519*
 *-temp.*
 OLD/
 old/
-
-# Generated diagnostic symbol export; preserved locally, not application source.
-/whatsapp-bot-deploy/exports.txt
-# Python assessment bytecode.
-__pycache__/
-*.py[cod]
-# Empty legacy npm lockfile has no matching root package manifest.
-/package-lock.json
-# Account runtime credentials are never source or export input.
-/ops/staging/stellar/runtime-config.php

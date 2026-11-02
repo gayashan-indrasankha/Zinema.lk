@@ -1,18 +1,16 @@
 <?php
 // Enable error reporting for debugging (remove in production)
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 
 require_once 'config.php';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = is_string($_POST['username'] ?? null) ? trim($_POST['username']) : '';
-    $password = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
+    $username = trim($_POST['username']);
+    $password = $_POST['password'];
 
     try {
-        require_once __DIR__.'/../includes/password_throttle.php';
-        $result=password_attempt($conn,'admin',$username,static function() use($conn,$username,$password) {
         // Prepare statement to get user (MUST SELECT id column)
         $stmt = $conn->prepare("SELECT id, password_hash FROM admins WHERE username = ?");
         if (!$stmt) {
@@ -28,19 +26,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Verify password using password_verify (secure)
             if (password_verify($password, $admin['password_hash'])) {
-                return ['success'=>true,'id'=>(int)$admin['id']];
+                // Set ONLY admin_id in session
+                $_SESSION['admin_id'] = $admin['id'];
+                header('Location: index.php');
+                exit;
+            } else {
+                $error = 'Invalid username or password!';
             }
+        } else {
+            $error = 'Invalid username or password!';
         }
         $stmt->close();
-        return ['success'=>false,'message'=>'Invalid username or password!'];
-        });
-        if ($result['success']) {
-            session_regenerate_id(true);$_SESSION['admin_id']=$result['id'];
-            header('Location: index.php');exit;
-        }
-        $error=$result['message'];
     } catch (Exception $e) {
-        $error = 'Unable to sign in. Please try again later.';
+        $error = 'Login system error: ' . $e->getMessage();
     }
 }
 ?>
@@ -51,12 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
+    <link rel="stylesheet" href="assets/admin.css">
 </head>
 <body>
     <div class="login-container">
-        <form method="POST" action="login.php" class="login-form"><?php csrf_token_field(); ?>
+        <form method="POST" action="login.php" class="login-form">
             <h2>Zinema.lk Admin Login</h2>
             <?php if ($error): ?>
                 <p class="error"><?php echo htmlspecialchars($error); ?></p>

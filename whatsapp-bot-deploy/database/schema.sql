@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS forward_logs (
 
 -- Sample data (optional - remove in production)
 -- INSERT INTO video_tokens (token, message_id, file_name, description) VALUES
--- ('MOVIE001', 'true_fictional-group@g.us_ABC123DEF456', 'Fictional_Demo_One.mp4', 'Fictional demonstration clip one'),
--- ('MOVIE002', 'true_fictional-group@g.us_XYZ789GHI012', 'Fictional_Demo_Two.mp4', 'Fictional demonstration clip two');
+-- ('MOVIE001', 'true_1234567890123456789@g.us_ABC123DEF456', 'Avengers_Endgame_2019.mp4', 'Avengers Endgame Full Movie'),
+-- ('MOVIE002', 'true_1234567890123456789@g.us_XYZ789GHI012', 'Inception_2010.mp4', 'Inception Full Movie');
 
 -- Table to track media file refresh history (Auto Refresher optimization)
 CREATE TABLE IF NOT EXISTS media_refresh_log (

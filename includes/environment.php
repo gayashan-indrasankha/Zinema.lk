@@ -22,9 +22,7 @@ function recovery_url($key, $local) {
 }
 function recovery_mode($name) {
     $mode = recovery_env($name . '_MODE', 'disabled');
-    if (!in_array($mode, ['disabled', 'local', 'live', 'private-fixture', 'account-queue'], true)) recovery_config_error($name . '_MODE');
-    if ($mode==='account-queue' && ($name!=='EXTRACTOR' || !defined('ZINEMA_STELLAR_CONTEXT') || recovery_env('ALLOW_LIVE_INTEGRATIONS')!=='false')) recovery_config_error($name . '_MODE');
-    if ($mode==='private-fixture' && ($name!=='EXTRACTOR' || APP_ENV!=='production' || recovery_env('ALLOW_LIVE_INTEGRATIONS')!=='false' || recovery_env('ZINEMA_PROMOTION_FIXTURES')!=='1')) recovery_config_error($name . '_MODE');
+    if (!in_array($mode, ['disabled', 'local', 'live'], true)) recovery_config_error($name . '_MODE');
     if ($mode === 'live' && (APP_ENV !== 'production' || recovery_env('ALLOW_LIVE_INTEGRATIONS') !== 'true')) recovery_config_error($name . '_MODE');
     return $mode;
 }
@@ -32,8 +30,6 @@ define('APP_ENV', recovery_required('APP_ENV'));
 if (!in_array(APP_ENV, ['development', 'test', 'production'], true)) recovery_config_error('APP_ENV');
 define('BASE_URL', recovery_url('BASE_URL', APP_ENV !== 'production'));
 define('DB_HOST', recovery_required('DB_HOST'));
-define('DB_PORT', (int)recovery_env('DB_PORT', '3306'));
-if (DB_PORT < 1 || DB_PORT > 65535) recovery_config_error('DB_PORT');
 define('DB_USER', recovery_required('DB_USER'));
 define('DB_PASS', recovery_required('DB_PASS'));
 define('DB_NAME', recovery_required('DB_NAME'));
@@ -52,29 +48,15 @@ foreach (['OAUTH_AUTHORIZE_URL', 'OAUTH_TOKEN_URL', 'OAUTH_USERINFO_URL'] as $ke
 define('WHATSAPP_API_KEY', WHATSAPP_MODE === 'disabled' ? '' : recovery_required('WHATSAPP_API_KEY'));
 define('STREAM_SIGNING_SECRET', MEDIA_MODE === 'disabled' ? '' : recovery_required('STREAM_SIGNING_SECRET'));
 define('STREAM_BASE_URL', MEDIA_MODE === 'disabled' ? '' : recovery_url('STREAM_BASE_URL', MEDIA_MODE === 'local'));
-define('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'account-queue' ? '' : (EXTRACTOR_MODE === 'private-fixture' ? 'http://localhost' : (EXTRACTOR_MODE === 'disabled' ? BASE_URL . '/__recovery_disabled_extractor' : recovery_url('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'local'))));
+define('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'disabled' ? BASE_URL . '/__recovery_disabled_extractor' : recovery_url('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'local'));
 foreach (['PAYMENT_APP_ID', 'PAYMENT_APP_SECRET'] as $key) define($key, PAYMENT_MODE === 'disabled' ? '' : recovery_required($key));
 define('PAYMENT_API_URL', PAYMENT_MODE === 'disabled' ? '' : recovery_url('PAYMENT_API_URL', PAYMENT_MODE === 'local'));
 // Legacy payment handlers stay disabled independently of these future adapter settings.
 function recovery_require_adapter($name) {
     if (constant($name . '_MODE') === 'disabled') recovery_config_error($name . ' integration disabled');
 }
-// Explicit fictional two-host rehearsal only. Never a request-controlled live gate.
-function recovery_local_delivery_fixture() {
-    if (recovery_native_fixture()) return true;
-    return APP_ENV === 'development' && WHATSAPP_MODE === 'local' &&
-        recovery_env('ZINEMA_TWO_HOST_FIXTURES') === '1' &&
-        recovery_env('ALLOW_LIVE_INTEGRATIONS') === 'false' &&
-        BASE_URL === 'http://127.0.0.1:8088' && DB_HOST === '127.0.0.1' &&
-        DB_PORT === 3306 && DB_NAME === 'zinema_recovery_development';
-}
-function recovery_native_fixture() {
-    return defined('ZINEMA_NATIVE_CONTEXT') && APP_ENV==='test' && BASE_URL==='http://127.0.0.1:8088' &&
-        DB_HOST==='127.0.0.1' && DB_PORT===3307 && DB_NAME==='zinema_recovery_test' &&
-        recovery_env('ZINEMA_NATIVE_FIXTURES')==='1' && recovery_env('ALLOW_LIVE_INTEGRATIONS')==='false';
-}
 function recovery_browser_policy() {
-    if (APP_ENV !== 'production' || defined('ZINEMA_STELLAR_CONTEXT')) {
+    if (APP_ENV !== 'production') {
         // Cached legacy CDN URLs and browser storage cannot bypass this local policy.
         header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: http://127.0.0.1:*; media-src 'self' http://127.0.0.1:*; connect-src 'self' http://127.0.0.1:*; frame-src 'self' http://127.0.0.1:*; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'");
     }

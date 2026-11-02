@@ -61,7 +61,7 @@ $settings = getAllSettings($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Settings - Zinema.lk Admin</title>
-    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
+    <link rel="stylesheet" href="assets/admin.css">
     <style>
         .settings-card {
             background: #fff;
@@ -184,7 +184,6 @@ $settings = getAllSettings($conn);
             }
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <?php include '_layout.php'; ?>
@@ -202,7 +201,7 @@ $settings = getAllSettings($conn);
         
         <div class="settings-card">
             <h2>📝 Configuration</h2>
-            <form method="POST"><?php csrf_token_field(); ?>
+            <form method="POST">
                 <input type="hidden" name="action" value="save_settings">
                 
                 <?php foreach ($settings as $key => $data): ?>
@@ -228,7 +227,7 @@ $settings = getAllSettings($conn);
         
         <div class="settings-card">
             <h2>➕ Add New Setting</h2>
-            <form method="POST" class="add-setting-form"><?php csrf_token_field(); ?>
+            <form method="POST" class="add-setting-form">
                 <input type="hidden" name="action" value="add_setting">
                 <div class="add-form-row">
                     <input type="text" name="new_key" placeholder="Setting Key (e.g. my_setting)" required>

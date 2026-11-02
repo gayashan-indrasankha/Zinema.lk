@@ -1,15 +1,22 @@
 <?php
-require_once __DIR__ . '/admin/config.php';
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); header('Allow: POST'); exit('POST required.');
+// Start session
+session_start();
+
+// Unset all session variables
+session_unset();
+
+// Delete the session cookie explicitly
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(session_name(), '', time() - 42000,
+        $params["path"], $params["domain"],
+        $params["secure"], $params["httponly"]
+    );
 }
-if (isset($_SESSION['user_id'])) {
-    $stmt = $conn->prepare('UPDATE users SET remember_token = NULL, remember_expires_at = NULL WHERE id = ?');
-    $stmt->bind_param('i', $_SESSION['user_id']); $stmt->execute(); $stmt->close();
-}
-clear_remember_cookies();
-$_SESSION = [];
-$params = session_get_cookie_params();
-setcookie(session_name(), '', ['expires' => time() - 3600, 'path' => $params['path'], 'secure' => $params['secure'], 'httponly' => true, 'samesite' => 'Lax']);
+
+// Destroy the session
 session_destroy();
-header('Location: ' . BASE_URL . '/index.php', true, 303);
+
+// Redirect to home page (Shots feed)
+header('Location: index.php');
+exit();

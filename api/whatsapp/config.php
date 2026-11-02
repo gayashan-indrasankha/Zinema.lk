@@ -42,25 +42,12 @@ function validateApiRequest() {
         $apiKey = str_replace('Bearer ', '', $headersLower['authorization']);
     }
     
-    if (!is_string($apiKey) || !hash_equals(API_SECRET_KEY, $apiKey)) {
+    if ($apiKey !== API_SECRET_KEY) {
         http_response_code(401);
         echo json_encode(['error' => 'Invalid API key']);
         exit;
     }
-
-    // The bridge carries metadata; full movies stay on the personal bot server.
-    if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0)>65536 ||
-        strlen(file_get_contents('php://input',false,null,0,65537))>65536)
-        sendResponse(['success'=>false,'error'=>'metadata_too_large'],413);
     
-    if (defined('LOCAL_MEDIA_REFERENCE_WRITE') && in_array(getenv('UPLOAD_QUOTA_MODE'),['local','staging','account','native'],true)) {
-        require_once __DIR__ . '/../../includes/upload_storage.php';
-        try {
-            $db=$GLOBALS['conn'];$gate=storage_reference_acquire($db);
-            register_shutdown_function(static function() use ($db,$gate) { try { storage_reference_release($db,$gate); } catch (Throwable $ignored) {} });
-            storage_validate_reference_values(local_storage_settings(),getJsonInput());
-        } catch (Throwable $error) { sendResponse(['success'=>false,'error'=>'upload_reference_unavailable'],409); }
-    }
     return true;
 }
 
@@ -70,7 +57,6 @@ function validateApiRequest() {
 function sendResponse($data, $statusCode = 200) {
     http_response_code($statusCode);
     header('Content-Type: application/json');
-    header('Cache-Control: no-store');
     echo json_encode($data);
     exit;
 }

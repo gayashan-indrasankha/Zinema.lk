@@ -1,6 +1,7 @@
 <?php
 // Include database connection
 require_once 'admin/config.php';
+require_once 'includes/settings.php';
 require_once 'includes/csrf_helper.php';
 require_once 'includes/ads.php';
 
@@ -8,7 +9,16 @@ require_once 'includes/ads.php';
  * Generate Google OAuth URL
  */
 function getGoogleAuthUrl() {
-    return OAUTH_MODE === 'disabled' ? '#' : BASE_URL . '/oauth-start.php';
+    if (OAUTH_MODE === 'disabled') return '#';
+    $params = [
+        'client_id' => GOOGLE_CLIENT_ID,
+        'redirect_uri' => GOOGLE_REDIRECT_URI,
+        'response_type' => 'code',
+        'scope' => 'email profile',
+        'access_type' => 'online',
+        'prompt' => 'select_account'
+    ];
+    return OAUTH_AUTHORIZE_URL . '?' . http_build_query($params);
 }
 
 // Fetch Top 5 Trending Movies for Hero Slider
@@ -133,15 +143,15 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Browse Sinhala dubbed and subtitled movies. Full movies are delivered through WhatsApp; short previews play on the website.">
+    <meta name="description" content="Watch the latest movies online in Full HD with Sinhala subtitles and dubbing. Stream action, comedy, drama, horror and more on Zinema.lk - Sri Lanka's #1 movie streaming site.">
     <meta name="keywords" content="sinhala movies, sinhala dubbed movies, watch movies online, sinhala subtitles, HD movies, free movies, Zinema.lk">
     <link rel="canonical" href="<?php echo BASE_URL; ?>/movies.php">
     <link rel="icon" type="image/png" href="<?php echo BASE_URL; ?>/assets/images/tab-logo.png">
-    <title>Movies - Sinhala Dubbed & Subtitled | Zinema.lk</title>
+    <title>Watch Movies Online - Sinhala Dubbed & Subtitled | Zinema.lk</title>
     
     <!-- Open Graph Tags -->
-    <meta property="og:title" content="Movies - Sinhala Dubbed & Subtitled | Zinema.lk">
-    <meta property="og:description" content="Browse Sinhala dubbed and subtitled movies. Full movies are delivered through WhatsApp; short previews play on the website.">
+    <meta property="og:title" content="Watch Movies Online - Sinhala Dubbed & Subtitled | Zinema.lk">
+    <meta property="og:description" content="Stream the latest movies in Full HD with Sinhala subtitles and dubbing. Action, comedy, drama, horror and more!">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo BASE_URL; ?>/movies.php">
     <meta property="og:site_name" content="Zinema.lk">
@@ -601,7 +611,6 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
             padding-bottom: 20px;
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <?php include '_top_nav.php'; ?>
@@ -992,8 +1001,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
             const emailInput = document.getElementById('login-email');
             const email = emailInput ? emailInput.value.trim() : '';
             
-            // Optional support contact, configured outside source control.
-            const whatsappNumber = <?php echo json_encode(getenv('SUPPORT_WHATSAPP_NUMBER') ?: '', JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+            // Admin WhatsApp number from site_settings (empty = disabled)
+            const whatsappNumber = <?php echo json_encode(getSetting($conn, 'admin_whatsapp', '')); ?>;
             if (!whatsappNumber) return;
             
             // Pre-filled message
