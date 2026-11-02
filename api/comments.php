@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/../admin/config.php';
 require_once __DIR__ . '/includes/comment_helpers.php';
 
@@ -56,11 +55,11 @@ function handleGetComments($pdo) {
     // Get top-level comments
     $stmt = $pdo->prepare("
         SELECT 
-            c.*, c.comment_text AS content,
+            c.*,
             u.username,
             u.avatar_url,
-            (SELECT COUNT(*) FROM movie_comments r WHERE r.parent_id = c.id) as reply_count
-        FROM movie_comments c
+            (SELECT COUNT(*) FROM comments r WHERE r.parent_id = c.id) as reply_count
+        FROM comments c
         LEFT JOIN users u ON c.user_id = u.id
         WHERE c.movie_id = ? AND c.parent_id IS NULL
         ORDER BY c.created_at DESC
@@ -93,7 +92,7 @@ function handlePostComment($pdo) {
     
     $movieId = filter_var($data['movie_id'] ?? null, FILTER_VALIDATE_INT);
     $content = sanitizeInput($data['content'] ?? '');
-    $parentId = filter_var($data['parent_id'] ?? null, FILTER_VALIDATE_INT) ?: null;
+    $parentId = filter_var($data['parent_id'] ?? null, FILTER_VALIDATE_INT);
     
     // Validate comment data
     $validationError = validateCommentData($content);
@@ -110,7 +109,7 @@ function handlePostComment($pdo) {
     
     // If this is a reply, verify parent comment exists
     if ($parentId) {
-        $stmt = $pdo->prepare("SELECT id FROM movie_comments WHERE id = ? AND movie_id = ?");
+        $stmt = $pdo->prepare("SELECT id FROM comments WHERE id = ? AND movie_id = ?");
         $stmt->execute([$parentId, $movieId]);
         if (!$stmt->fetch()) {
             http_response_code(404);
@@ -120,7 +119,7 @@ function handlePostComment($pdo) {
     
     // Insert comment
     $stmt = $pdo->prepare("
-        INSERT INTO movie_comments (user_id, movie_id, parent_id, comment_text, created_at)
+        INSERT INTO comments (user_id, movie_id, parent_id, content, created_at)
         VALUES (?, ?, ?, ?, NOW())
     ");
     
@@ -133,10 +132,10 @@ function handlePostComment($pdo) {
     $commentId = $pdo->lastInsertId();
     $stmt = $pdo->prepare("
         SELECT 
-            c.*, c.comment_text AS content,
+            c.*,
             u.username,
             u.avatar_url
-        FROM movie_comments c
+        FROM comments c
         LEFT JOIN users u ON c.user_id = u.id
         WHERE c.id = ?
     ");
@@ -175,11 +174,11 @@ function handleDeleteComment($pdo) {
     
     try {
         // Delete replies first
-        $stmt = $pdo->prepare("DELETE FROM movie_comments WHERE parent_id = ?");
+        $stmt = $pdo->prepare("DELETE FROM comments WHERE parent_id = ?");
         $stmt->execute([$commentId]);
         
         // Delete the main comment
-        $stmt = $pdo->prepare("DELETE FROM movie_comments WHERE id = ?");
+        $stmt = $pdo->prepare("DELETE FROM comments WHERE id = ?");
         $stmt->execute([$commentId]);
         
         $pdo->commit();

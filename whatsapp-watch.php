@@ -1,11 +1,7 @@
 <?php
-// Live delivery only; local fake delivery will use a separate adapter.
+// Live delivery in production; 'local' mode issues tokens for the dev dry-run bot (dev-dry-run.js).
 require_once __DIR__ . '/includes/environment.php';
-if (!(APP_ENV === 'production' && WHATSAPP_MODE === 'live') && !recovery_local_delivery_fixture()) {
-    require __DIR__.'/includes/delivery_unavailable.php';exit;
-}
-header('Cache-Control: no-store');
-header('Pragma: no-cache');
+recovery_require_adapter('WHATSAPP');
 
 // Include database connection
 require_once 'admin/config.php';
@@ -70,7 +66,8 @@ if ($group_mode) {
 }
 
 // Generate WhatsApp token and link
-$whatsapp_number = getSetting($conn, 'default_bot_phone', ''); // From database
+$whatsapp_number = getSetting($conn, 'default_bot_phone', ''); // From database (site_settings)
+$admin_whatsapp = getSetting($conn, 'admin_whatsapp', '');
 
 // Rate limit and service availability flags
 $rate_limited = false;
@@ -79,10 +76,8 @@ $service_unavailable = false;
 $service_message = '';
 
 // Single token for full movie/episode
-$has_parts = false; // This page issues one full-content token, never part links.
-$expiry = filter_var(getSetting($conn,'token_expiry_minutes','10'), FILTER_VALIDATE_INT);
-$expiry = $expiry && $expiry >= 1 && $expiry <= 180 ? $expiry : 10;
-$token_data = createWhatsAppToken($conn, $id, $content_type, $expiry);
+$has_parts = false;
+$token_data = createWhatsAppToken($conn, $id, $content_type, 10);
 
 // Check for rate limit error
 if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
@@ -100,10 +95,9 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
     $whatsapp_link = getWhatsAppLink($token_data['token'], $token_data['bot_phone'] ?? $whatsapp_number);
     $token_expires = $token_data['expires_at'];
 } else {
-    // No delivery claim or unverified contact link when issuance fails.
-    $service_unavailable = true;
-    $service_message = 'Delivery could not be prepared. Catalogue browsing is still available. Please try again later.';
-    $whatsapp_link = '#';
+    // Fallback if token generation fails
+    $whatsapp_message = urlencode("Hi! I want to watch: " . $content['title']);
+    $whatsapp_link = "https://wa.me/{$whatsapp_number}?text={$whatsapp_message}";
     $token_expires = null;
 }
 ?>
@@ -702,7 +696,6 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
             }
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <div class="app-container">
@@ -745,7 +738,7 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
                         <i class="fas fa-server"></i>
                         <h3>Service Temporarily Unavailable</h3>
                         <p><?php echo htmlspecialchars($service_message); ?></p>
-                        <p class="retry-info">Delivery is offline or busy. You can continue browsing the catalogue.</p>
+                        <p class="retry-info">All bots are currently offline. Please try again shortly.</p>
                         <button onclick="location.reload()" class="btn-retry-blue">
                             <i class="fas fa-sync-alt"></i> Check Again
                         </button>
@@ -831,7 +824,9 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
                             <?php else: ?>
                             <p>ඉහත "WhatsApp මගින් නරඹන්න"  කියන button එක ක්ලික් කර අදාල Link එක send කර ඔබට අවශ්‍ය Movie එක හෝ Tv Series එක ලැබෙන තුරු රැඳී සිටින්න.</p>
                             <?php endif; ?>
-                            <p class="contact-admin-text">කිසියම් ගැටලුවක් ඇත්නම් Admin අමතන්න. - <a href="https://wa.me/<?php echo rawurlencode($whatsapp_number); ?>?text=<?php echo urlencode('Hi Admin, I need help'); ?>" target="_blank">Admin</a></p>
+                            <?php if ($admin_whatsapp !== ''): ?>
+                            <p class="contact-admin-text">කිසියම් ගැටලුවක් ඇත්නම් Admin අමතන්න. - <a href="https://wa.me/<?php echo urlencode($admin_whatsapp); ?>?text=<?php echo urlencode('Hi Admin, I need help'); ?>" target="_blank">Admin</a></p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

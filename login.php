@@ -1,12 +1,53 @@
 <?php
-require_once __DIR__ . '/admin/config.php';
+// Include database connection and start session
+require_once 'admin/config.php';
+require_once 'includes/csrf_helper.php';
+
+// Initialize error message
 $error = '';
+
+// Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    try {
-        $result = authenticate_password($conn, $_POST['email'] ?? '', $_POST['password'] ?? '');
-        if ($result['success']) { header('Location: profile.php', true, 303); exit; }
-        $error = $result['message'];
-    } catch (Throwable $e) { $error = 'Unable to sign in. Please try again later.'; }
+    // Validate CSRF token
+    $csrf_token = $_POST['csrf_token'] ?? '';
+    if (!validate_csrf_token($csrf_token)) {
+        $error = 'Invalid security token. Please try again.';
+    } else {
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+        
+        // Validate input
+        if (empty($email) || empty($password)) {
+            $error = 'Please enter both email and password.';
+    } else {
+        // Query to get user by email
+        $stmt = $conn->prepare("SELECT id, username, email, password_hash FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows === 1) {
+            $user = $result->fetch_assoc();
+            
+            // Verify password
+            if (password_verify($password, $user['password_hash'])) {
+                // Set session variables
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                
+                // Redirect to profile page
+                header('Location: profile.php');
+                exit();
+            } else {
+                $error = 'Invalid email or password.';
+            }
+        } else {
+            $error = 'Invalid email or password.';
+        }
+        
+        $stmt->close();
+    }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -155,7 +196,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #fff;
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <div class="login-container">
@@ -168,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php endif; ?>
 
-        <form method="POST" action=""><?php csrf_token_field(); ?>
+        <form method="POST" action="">
             <?php csrf_token_field(); ?>
             <div class="form-group">
                 <label for="email">Email</label>

@@ -19,7 +19,7 @@ file_put_contents('ideamart_log.txt', $input . "\n", FILE_APPEND);
 
 if (isset($notification['subscriberId']) && isset($notification['status'])) {
     
-    $msisdn = $notification['subscriberId']; // e.g., "tel:FICTIONAL_SUBSCRIBER"
+    $msisdn = $notification['subscriberId']; // e.g., "tel:<msisdn>"
     $status = $notification['status'];       // e.g., "REGISTERED" or "UNREGISTERED"
     $app_id = $notification['applicationId'];
     

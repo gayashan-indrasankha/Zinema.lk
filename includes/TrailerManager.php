@@ -13,13 +13,12 @@ class TrailerManager {
      * @param int $offset Offset for pagination
      * @return array Trailers with movie details and user interactions
      */
-    public function getAllTrailers($userId = null, $limit = 20, $offset = 0, $includeInactive = false) {
-        $visibility=$includeInactive ? '' : "WHERE t.status='active'";
+    public function getAllTrailers($userId = null, $limit = 20, $offset = 0) {
         $sql = "
             SELECT 
-                t.*, t.video_url AS trailer_url,
+                t.*,
                 m.title AS movie_title,
-                m.cover_image AS poster_url,
+                m.poster_url,
                 m.release_date,
                 m.genre,
                 m.duration,
@@ -36,17 +35,15 @@ class TrailerManager {
             LEFT JOIN trailer_likes tl ON t.id = tl.trailer_id
             LEFT JOIN trailer_favorites tf ON t.id = tf.trailer_id
             LEFT JOIN trailer_shares ts ON t.id = ts.trailer_id
-            LEFT JOIN trailer_likes utl ON t.id = utl.trailer_id AND utl.user_id = :like_user_id
-            LEFT JOIN trailer_favorites utf ON t.id = utf.trailer_id AND utf.user_id = :favorite_user_id
-            $visibility
+            LEFT JOIN trailer_likes utl ON t.id = utl.trailer_id AND utl.user_id = :user_id
+            LEFT JOIN trailer_favorites utf ON t.id = utf.trailer_id AND utf.user_id = :user_id
             GROUP BY t.id
             ORDER BY t.created_at DESC
             LIMIT :limit OFFSET :offset
         ";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindValue(':like_user_id', $userId, PDO::PARAM_INT);
-        $stmt->bindValue(':favorite_user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
@@ -60,13 +57,12 @@ class TrailerManager {
      * @param int|null $userId Current user ID
      * @return array|false Trailer data or false if not found
      */
-    public function getTrailer($trailerId, $userId = null, $includeInactive = false) {
-        $visibility=$includeInactive ? '' : "AND t.status='active'";
+    public function getTrailer($trailerId, $userId = null) {
         $sql = "
             SELECT 
-                t.*, t.video_url AS trailer_url,
+                t.*,
                 m.title AS movie_title,
-                m.cover_image AS poster_url,
+                m.poster_url,
                 m.release_date,
                 m.genre,
                 m.duration,
@@ -84,17 +80,15 @@ class TrailerManager {
             LEFT JOIN trailer_likes tl ON t.id = tl.trailer_id
             LEFT JOIN trailer_favorites tf ON t.id = tf.trailer_id
             LEFT JOIN trailer_shares ts ON t.id = ts.trailer_id
-            LEFT JOIN trailer_likes utl ON t.id = utl.trailer_id AND utl.user_id = :like_user_id
-            LEFT JOIN trailer_favorites utf ON t.id = utf.trailer_id AND utf.user_id = :favorite_user_id
+            LEFT JOIN trailer_likes utl ON t.id = utl.trailer_id AND utl.user_id = :user_id
+            LEFT JOIN trailer_favorites utf ON t.id = utf.trailer_id AND utf.user_id = :user_id
             WHERE t.id = :trailer_id
-            $visibility
             GROUP BY t.id
         ";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindValue(':trailer_id', $trailerId, PDO::PARAM_INT);
-        $stmt->bindValue(':like_user_id', $userId, PDO::PARAM_INT);
-        $stmt->bindValue(':favorite_user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -248,9 +242,9 @@ class TrailerManager {
     public function getRelatedTrailers($trailerId, $limit = 6) {
         $sql = "
             SELECT 
-                t2.*, t2.video_url AS trailer_url,
+                t2.*,
                 m2.title AS movie_title,
-                m2.cover_image AS poster_url,
+                m2.poster_url,
                 m2.release_date,
                 m2.genre,
                 COUNT(DISTINCT tv.id) as view_count
@@ -289,9 +283,9 @@ class TrailerManager {
     public function getTrendingTrailers($limit = 10, $days = 7) {
         $sql = "
             SELECT 
-                t.*, t.video_url AS trailer_url,
+                t.*,
                 m.title AS movie_title,
-                m.cover_image AS poster_url,
+                m.poster_url,
                 m.release_date,
                 m.genre,
                 COUNT(DISTINCT tv.id) as view_count,

@@ -1,11 +1,10 @@
 <?php
 require_once 'config.php';
 check_login();
-require_once __DIR__ . '/../includes/uploads.php';
 
 // Handle Delete
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-    $id = intval($_POST['delete']);
+if (isset($_GET['delete'])) {
+    $id = intval($_GET['delete']);
     // Unset collection_id from movies before deleting collection
     $stmt = $conn->prepare("UPDATE movies SET collection_id = NULL WHERE collection_id = ?");
     $stmt->bind_param("i", $id);
@@ -15,7 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result()->fetch_assoc();
-    // Retain media; database paths never authorize filesystem deletion.
+    if ($result && !empty($result['cover_image'])) {
+        $filename = basename($result['cover_image']);
+        if (file_exists('../uploads/' . $filename)) {
+            unlink('../uploads/' . $filename);
+        }
+    }
+    
     $stmt = $conn->prepare("DELETE FROM collections WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -24,20 +29,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 }
 
 // Handle Add/Edit
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $genre = $_POST['genre'];
     $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
     
-    $cover_image_path = '';
-    if ($id > 0) {
-        $lookup = $conn->prepare("SELECT cover_image FROM collections WHERE id = ?");
-        $lookup->bind_param("i", $id);
-        $lookup->execute();
-        $cover_image_path = $lookup->get_result()->fetch_assoc()['cover_image'] ?? '';
+    $cover_image_path = $_POST['existing_cover_image'] ?? '';
+
+    if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] == 0) {
+        $target_dir = "../uploads/";
+        $image_name = uniqid() . '_collection_' . basename($_FILES["cover_image"]["name"]);
+        $target_file = $target_dir . $image_name;
+        if (move_uploaded_file($_FILES["cover_image"]["tmp_name"], $target_file)) {
+            $cover_image_path = BASE_URL . '/uploads/' . $image_name;
+        }
     }
-    $cover_image_path = store_catalogue_upload('cover_image', 'image', $cover_image_path);
 
     if ($id > 0) { // Update
         $stmt = $conn->prepare("UPDATE collections SET title = ?, description = ?, genre = ?, cover_image = ? WHERE id = ?");
@@ -70,8 +77,7 @@ $collections = $conn->query("SELECT * FROM collections ORDER BY created_at DESC"
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css?v=<?php echo substr(hash_file('sha256', __DIR__ . '/assets/admin.css'),0,12); ?>">
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
+    <link rel="stylesheet" href="assets/admin.css">
 </head>
 <body>
     <?php include '_layout.php'; ?>
@@ -82,7 +88,7 @@ $collections = $conn->query("SELECT * FROM collections ORDER BY created_at DESC"
 
         <section class="form-container">
             <h2><?php echo $edit_collection ? 'Edit Collection' : 'Add New Collection'; ?></h2>
-            <form method="POST" action="collections.php" enctype="multipart/form-data"><?php csrf_token_field(); ?>
+            <form method="POST" action="collections.php" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?php echo $edit_collection['id'] ?? ''; ?>">
                 <input type="hidden" name="existing_cover_image" value="<?php echo htmlspecialchars($edit_collection['cover_image'] ?? ''); ?>">
                 
@@ -132,7 +138,7 @@ $collections = $conn->query("SELECT * FROM collections ORDER BY created_at DESC"
                         <td><?php echo htmlspecialchars($c['genre']); ?></td>
                         <td>
                             <a href="collections.php?edit=<?php echo $c['id']; ?>">Edit</a>
-                            <form method="POST" action="collections.php" style="display:inline" onsubmit="return confirm('Delete this record?')"><?php csrf_token_field(); ?><input type="hidden" name="delete" value="<?php echo $c['id']; ?>"><button type="submit" class="btn btn-danger btn-sm">Delete</button></form>
+                            <a href="collections.php?delete=<?php echo $c['id']; ?>" onclick="return confirm('Are you sure? This will also remove movies from this collection.')">Delete</a>
                         </td>
                     </tr>
                     <?php endwhile; endif; ?>

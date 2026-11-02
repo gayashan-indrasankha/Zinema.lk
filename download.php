@@ -1,8 +1,4 @@
 <?php
-// Phase 2: quarantined before any bootstrap, SQL, logging or network activity.
-http_response_code(403);
-exit('Disabled during recovery.');
-
 
 // Include database connection
 require_once 'admin/config.php';
@@ -307,7 +303,6 @@ $stmt->close();
             margin-right: 8px;
         }
     </style>
-<?php if (function_exists('csrf_meta_tags')) csrf_meta_tags(); ?>
 </head>
 <body>
     <div class="app-container">
