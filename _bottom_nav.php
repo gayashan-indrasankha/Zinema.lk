@@ -255,14 +255,14 @@ body {
                     isActive = (
                         currentPage === "movies.php" || 
                         currentPage === "movie-details.php" ||
-                        ((currentPage === "download.php" || currentPage === "whatsapp-watch.php") && contentType !== "series" && contentType !== "episode")
+                        (currentPage === "whatsapp-watch.php" && contentType !== "series" && contentType !== "episode")
                     );
                     break;
                 case "tv-series":
                     isActive = (
                         currentPage === "tv-series.php" || 
                         currentPage === "series-details.php" ||
-                        ((currentPage === "download.php" || currentPage === "whatsapp-watch.php") && (contentType === "series" || contentType === "episode"))
+                        (currentPage === "whatsapp-watch.php" && (contentType === "series" || contentType === "episode"))
                     );
                     break;
                 case "collections":

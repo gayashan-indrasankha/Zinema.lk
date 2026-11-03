@@ -1006,7 +1006,7 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
             currentEpisodeId = episodeId;
             
             // Update download button to download current episode
-            downloadBtn.href = `<?php echo BASE_URL; ?>/download.php?id=${episodeId}&type=episode`;
+            downloadBtn.href = `<?php echo BASE_URL; ?>/whatsapp-watch.php?id=${episodeId}&type=episode`;
 
             // Show loader
             container.innerHTML = `

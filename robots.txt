@@ -16,7 +16,6 @@ Disallow: /database/
 Disallow: /profile.php
 Disallow: /ajax_*
 Disallow: /google-callback.php
-Disallow: /download.php
 Disallow: /whatsapp-watch.php
 Disallow: /reset-password.php
 Disallow: /verify-email.php

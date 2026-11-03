@@ -528,7 +528,7 @@ recovery_browser_policy([$movie['video_url'] ?? '']);
                                 </button>
                             </div>
                         <?php endif; ?>
-                        <a href="<?php echo BASE_URL; ?>/download.php?id=<?php echo $movie['id']; ?>" class="btn btn-whatsapp">
+                        <a href="<?php echo BASE_URL; ?>/whatsapp-watch.php?id=<?php echo $movie['id']; ?>&type=movie" class="btn btn-whatsapp">
                             <i class="fab fa-whatsapp"></i>
                             <span>WhatsApp Packages මගින් නරඹන්න.</span>
                         </a>
