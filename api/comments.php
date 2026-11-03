@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../admin/config.php';
+require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/includes/comment_helpers.php';
 
 // Set CORS headers if needed

@@ -2,7 +2,7 @@ class CommentsSystem {
     constructor(options) {
         this.containerEl = options.container;
         this.movieId = options.movieId;
-        this.apiEndpoint = options.apiEndpoint || '/api/comments.php';
+        this.apiEndpoint = options.apiEndpoint || 'api/comments.php';
         this.maxLength = options.maxLength || 500;
         this.currentUser = options.currentUser || {};
         

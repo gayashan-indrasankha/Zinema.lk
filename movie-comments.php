@@ -44,7 +44,7 @@ $userJson = json_encode($currentUser);
                 container: document.getElementById('comments-container'),
                 movieId: <?php echo $movie_id; ?>,
                 currentUser: currentUser,
-                apiEndpoint: '/api/comments.php',
+                apiEndpoint: 'api/comments.php',
                 maxLength: 500,
                 onError: function(error) {
                     console.error('Comments error:', error);
