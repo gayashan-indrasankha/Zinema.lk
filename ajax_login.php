@@ -115,7 +115,7 @@ try {
             $stmt->close();
             echo json_encode([
                 'success' => false,
-                'message' => 'Incorrect password. Please try again.'
+                'message' => 'Incorrect email or password.'
             ]);
             exit;
         }
@@ -123,7 +123,7 @@ try {
         // Email not found
         echo json_encode([
             'success' => false,
-            'message' => 'No account found with this email address.'
+            'message' => 'Incorrect email or password.'
         ]);
         exit;
     }
