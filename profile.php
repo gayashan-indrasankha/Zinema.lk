@@ -119,11 +119,11 @@ $has_more = $page < $total_pages;
     <meta name="twitter:title" content="Profile - Zinema.lk">
     <meta name="twitter:description" content="Manage your Zinema.lk profile and saved content">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/vendor/fontawesome-6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/profile-style.css?v=2.0">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/desktop-scroll-fix.css">
-    <link rel="stylesheet" href="css/desktop-tablet.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css?v=<?php echo @filemtime(__DIR__ . '/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/profile-style.css?v=<?php echo @filemtime(__DIR__ . '/css/profile-style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/responsive.css?v=<?php echo @filemtime(__DIR__ . '/css/responsive.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-scroll-fix.css?v=<?php echo @filemtime(__DIR__ . '/css/desktop-scroll-fix.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-tablet.css?v=<?php echo @filemtime(__DIR__ . '/css/desktop-tablet.css'); ?>">
 </head>
 <body>
     <?php include '_top_nav.php'; ?>
@@ -456,7 +456,7 @@ $has_more = $page < $total_pages;
                 <p style="color: rgba(255,255,255,0.9); font-size: 1rem; margin-bottom: 10px;">
                     We've sent a verification link to:
                 </p>
-                <p id="verification-email-display" style="color: #ff3366; font-weight: bold; font-size: 1.1rem; word-break: break-all;"></p>
+                <p id="verification-email-display" style="color: #E09B1F; font-weight: bold; font-size: 1.1rem; word-break: break-all;"></p>
             </div>
             
             <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 20px;">
@@ -470,7 +470,7 @@ $has_more = $page < $total_pages;
                 </a>
                 
                 <!-- Secondary: Go to Login -->
-                <button onclick="closeVerificationNotice(); showLoginModal();" style="background: transparent; border: 1px solid rgba(138, 43, 226, 0.5); color: #8a2be2; padding: 12px 20px; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: all 0.3s;">
+                <button onclick="closeVerificationNotice(); showLoginModal();" style="background: transparent; border: 1px solid rgba(242, 179, 61, 0.5); color: #F2B33D; padding: 12px 20px; border-radius: 8px; font-size: 1rem; cursor: pointer; transition: all 0.3s;">
                     Go to Login
                 </button>
                 

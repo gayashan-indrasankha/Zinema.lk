@@ -123,10 +123,10 @@ if ($result && $result->num_rows > 0) {
     <link rel="icon" href="<?php echo BASE_URL; ?>/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="<?php echo BASE_URL; ?>/assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/shots-style.css">
-    <link rel="stylesheet" href="css/profile-style.css?v=2.0">
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css?v=<?php echo @filemtime(__DIR__ . '/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/shots-style.css?v=<?php echo @filemtime(__DIR__ . '/css/shots-style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/profile-style.css?v=<?php echo @filemtime(__DIR__ . '/css/profile-style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/responsive.css?v=<?php echo @filemtime(__DIR__ . '/css/responsive.css'); ?>">
     <style>
         @keyframes spin {
             0% { transform: rotate(0deg); }

@@ -51,7 +51,7 @@
 }
 
 .search-popup-container {
-    background: rgba(20, 22, 30, 0.98);
+    background: rgba(18, 20, 26, 0.98);
     border-radius: 16px;
     width: 90%;
     max-width: 800px;
@@ -113,8 +113,8 @@
 }
 
 .search-popup-input-wrapper:focus-within {
-    border-color: rgba(42, 108, 255, 0.6);
-    box-shadow: 0 0 20px rgba(42, 108, 255, 0.2);
+    border-color: rgba(242, 179, 61, 0.6);
+    box-shadow: 0 0 20px rgba(242, 179, 61, 0.2);
 }
 
 .search-popup-input-wrapper .search-icon {

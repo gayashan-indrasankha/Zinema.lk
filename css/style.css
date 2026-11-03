@@ -2,20 +2,21 @@
    🎬 CineDrive — UNIFIED STYLE SHEET (fixed)
    ============================== */
 
-/* ===== Root Colors (Bottom Nav Theme) ===== */
+/* ===== Root Colors: "Reel Gold" brand palette (gold from the logo's film reel) ===== */
 :root {
-    --primary: rgba(42, 108, 255, 1);
-    --secondary: rgba(255, 51, 102, 1);
-    --bg: rgba(15, 16, 25, 1);
-    --surface: rgba(20, 22, 30, 1);
+    --primary: rgba(242, 179, 61, 1);
+    --secondary: rgba(224, 155, 31, 1);
+    --on-primary: #1A1206;
+    --bg: rgba(10, 11, 14, 1);
+    --surface: rgba(18, 20, 26, 1);
     --text: #e9ecf1;
     --muted: #b4bcc9;
-    --card: rgba(20, 22, 30, 1);
+    --card: rgba(18, 20, 26, 1);
     --card-border: rgba(255, 255, 255, 0.08);
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    --primary-gradient: linear-gradient(135deg, rgba(42, 108, 255, 0.8), rgba(255, 51, 102, 0.6));
-    --primary-hover: rgba(42, 108, 255, 0.9);
-    --primary-glow: rgba(42, 108, 255, 0.25)
+    --primary-gradient: linear-gradient(135deg, #F7C75A, #E39A26);
+    --primary-hover: #F7C75A;
+    --primary-glow: rgba(242, 179, 61, 0.25)
 }
 
 /* ===== Global Reset ===== */
@@ -29,8 +30,8 @@ body {
     margin: 0;
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     background:
-        radial-gradient(1200px 600px at 10% -10%, rgba(42, 108, 255, .2), transparent 50%),
-        radial-gradient(900px 500px at 110% 10%, rgba(255, 51, 102, .1), transparent 55%),
+        radial-gradient(1200px 600px at 10% -10%, rgba(242, 179, 61, .2), transparent 50%),
+        radial-gradient(900px 500px at 110% 10%, rgba(224, 155, 31, .1), transparent 55%),
         var(--bg);
     color: var(--text);
     line-height: 1.5
@@ -84,7 +85,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(15, 16, 25, .7);
+    background: rgba(10, 11, 14, .7);
     border: 1px solid rgba(255, 255, 255, .06);
     box-shadow: 0 4px 20px rgba(0, 0, 0, .5);
     backdrop-filter: blur(14px) saturate(160%);
@@ -126,9 +127,9 @@ button {
 .menu a.active,
 .dropdown-trigger.active {
     color: #fff;
-    background: linear-gradient(135deg, rgba(42, 108, 255, .25), rgba(255, 51, 102, .2));
-    border: 1px solid rgba(42, 108, 255, .3);
-    box-shadow: 0 0 12px rgba(42, 108, 255, .25)
+    background: linear-gradient(135deg, rgba(242, 179, 61, .25), rgba(224, 155, 31, .2));
+    border: 1px solid rgba(242, 179, 61, .3);
+    box-shadow: 0 0 12px rgba(242, 179, 61, .25)
 }
 
 /* ===== Dropdown ===== */
@@ -178,19 +179,19 @@ button {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: rgba(20, 22, 30, .7);
+    background: rgba(18, 20, 26, .7);
     padding: 10px 16px;
     border-radius: 14px;
     border: 1px solid rgba(255, 255, 255, .08);
     width: clamp(240px, 28vw, 360px);
     transition: all .3s;
-    box-shadow: 0 0 0 rgba(42, 108, 255, 0)
+    box-shadow: 0 0 0 rgba(242, 179, 61, 0)
 }
 
 .search:hover,
 .search:focus-within {
-    border-color: rgba(42, 108, 255, .5);
-    box-shadow: 0 0 10px rgba(42, 108, 255, .25), 0 0 25px rgba(255, 51, 102, .15);
+    border-color: rgba(242, 179, 61, .5);
+    box-shadow: 0 0 10px rgba(242, 179, 61, .25), 0 0 25px rgba(224, 155, 31, .15);
     background: rgba(25, 28, 38, .9)
 }
 
@@ -247,8 +248,8 @@ button {
 
 .card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(42, 108, 255, .25);
-    border-color: rgba(42, 108, 255, .3)
+    box-shadow: 0 12px 30px rgba(242, 179, 61, .25);
+    border-color: rgba(242, 179, 61, .3)
 }
 
 .thumb {
@@ -391,7 +392,7 @@ footer {
 
 .season:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 35px rgba(42, 108, 255, .25)
+    box-shadow: 0 10px 35px rgba(242, 179, 61, .25)
 }
 
 .season-head {
@@ -436,8 +437,8 @@ footer {
 
 .episode:hover {
     transform: translateY(-4px);
-    border-color: rgba(42, 108, 255, .3);
-    box-shadow: 0 6px 18px rgba(42, 108, 255, .25)
+    border-color: rgba(242, 179, 61, .3);
+    box-shadow: 0 6px 18px rgba(242, 179, 61, .25)
 }
 
 .episode img {
@@ -520,7 +521,7 @@ footer {
 
 .series-header img:hover {
     transform: scale(1.03);
-    box-shadow: 0 10px 25px rgba(42, 108, 255, .25)
+    box-shadow: 0 10px 25px rgba(242, 179, 61, .25)
 }
 
 .series-info {
@@ -1121,8 +1122,8 @@ dialog#subscribeModal {
 
 /* Button Style from your admin.css */
 .subscribe-form button[type="submit"] {
-    background-color: #3498db;
-    color: white;
+    background-color: #F2B33D;
+    color: #1A1206;
     padding: 0.8rem 1.5rem;
     border: none;
     border-radius: 4px;
@@ -1133,7 +1134,7 @@ dialog#subscribeModal {
 }
 
 .subscribe-form button[type="submit"]:hover {
-    background-color: #2980b9;
+    background-color: #F7C75A;
 }
 
 /* For success/error messages */
@@ -1188,20 +1189,20 @@ dialog#subscribeModal {
 
 .auth-buttons .login-btn:hover {
     border-color: var(--primary);
-    background: rgba(42, 108, 255, 0.1);
+    background: rgba(242, 179, 61, 0.1);
     color: var(--primary);
 }
 
 /* Sign Up Button - Solid Style */
 .auth-buttons .signup-btn {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(42, 108, 255, 0.3);
+    color: #1A1206;
+    box-shadow: 0 4px 15px rgba(242, 179, 61, 0.3);
 }
 
 .auth-buttons .signup-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(42, 108, 255, 0.4);
+    box-shadow: 0 6px 20px rgba(242, 179, 61, 0.4);
 }
 
 /* User Info Display - After Login */
@@ -1218,19 +1219,19 @@ dialog#subscribeModal {
 }
 
 .auth-buttons .subscribe-btn {
-    background: linear-gradient(135deg, #ff3366, #ff6b6b);
-    color: #fff;
+    background: linear-gradient(135deg, #E09B1F, #ff6b6b);
+    color: #1A1206;
     padding: 10px 24px;
     border-radius: 8px;
     font-weight: 700;
     font-size: 0.95rem;
-    box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+    box-shadow: 0 4px 15px rgba(224, 155, 31, 0.3);
     transition: all 0.3s ease;
 }
 
 .auth-buttons .subscribe-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
+    box-shadow: 0 6px 20px rgba(224, 155, 31, 0.4);
 }
 
 .auth-buttons .logout-btn {
@@ -1335,7 +1336,7 @@ dialog#authModal::backdrop {
 
 .auth-tab.active {
     color: var(--primary);
-    background: rgba(42, 108, 255, 0.1);
+    background: rgba(242, 179, 61, 0.1);
 }
 
 .auth-tab.active::after {
@@ -1457,7 +1458,7 @@ dialog#authModal::backdrop {
     outline: none;
     border-color: var(--primary);
     background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 4px rgba(42, 108, 255, 0.1);
+    box-shadow: 0 0 0 4px rgba(242, 179, 61, 0.1);
 }
 
 .auth-form .form-group input::placeholder {
@@ -1467,7 +1468,7 @@ dialog#authModal::backdrop {
 
 .auth-form button[type="submit"] {
     background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
+    color: #1A1206;
     padding: 1rem 1.5rem;
     border: none;
     border-radius: 10px;
@@ -1476,14 +1477,14 @@ dialog#authModal::backdrop {
     font-weight: 700;
     width: 100%;
     transition: all 0.3s;
-    box-shadow: 0 6px 20px rgba(42, 108, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(242, 179, 61, 0.3);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .auth-form button[type="submit"]:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(42, 108, 255, 0.4);
+    box-shadow: 0 8px 25px rgba(242, 179, 61, 0.4);
 }
 
 .auth-form button[type="submit"]:disabled {
@@ -1586,9 +1587,9 @@ dialog#subscribeModal::backdrop {
 
 .subscribe-form .form-group input[type="tel"]:focus {
     outline: none;
-    border-color: #ff3366;
+    border-color: #E09B1F;
     background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 4px rgba(255, 51, 102, 0.1);
+    box-shadow: 0 0 0 4px rgba(224, 155, 31, 0.1);
 }
 
 .subscribe-form .form-group p {
@@ -1598,8 +1599,8 @@ dialog#subscribeModal::backdrop {
 }
 
 .subscribe-form button[type="submit"] {
-    background: linear-gradient(135deg, #ff3366, #ff6b6b);
-    color: white;
+    background: linear-gradient(135deg, #E09B1F, #ff6b6b);
+    color: #1A1206;
     padding: 1rem 1.5rem;
     border: none;
     border-radius: 10px;
@@ -1608,14 +1609,14 @@ dialog#subscribeModal::backdrop {
     font-weight: 700;
     width: 100%;
     transition: all 0.3s;
-    box-shadow: 0 6px 20px rgba(255, 51, 102, 0.3);
+    box-shadow: 0 6px 20px rgba(224, 155, 31, 0.3);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .subscribe-form button[type="submit"]:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
+    box-shadow: 0 8px 25px rgba(224, 155, 31, 0.4);
 }
 
 .subscribe-form button[type="submit"]:disabled {
@@ -2004,7 +2005,7 @@ dialog#subscribeModal::backdrop {
 
 /* Add Blue Glow on Focus */
 .header-search-form input:focus {
-    box-shadow: 0 0 15px rgba(42, 108, 255, 0.6);
+    box-shadow: 0 0 15px rgba(242, 179, 61, 0.6);
     /* Bright Blue Glow */
 }
 
@@ -2302,11 +2303,10 @@ dialog#subscribeModal::backdrop {
     color: #666;
 }
 
-/* Glow Effect on Focus (Blue Border) */
+/* Glow Effect on Focus (Gold Border) */
 .search-box input:focus {
-    border-color: #2f80ed;
-    /* The blue color */
-    box-shadow: 0 0 15px rgba(47, 128, 237, 0.3);
+    border-color: #F2B33D;
+    box-shadow: 0 0 15px rgba(242, 179, 61, 0.3);
 }
 
 /* Search Icon (Left) */
@@ -2467,7 +2467,7 @@ dialog#subscribeModal::backdrop {
 }
 
 .close-drawer:hover {
-    color: #E50914;
+    color: #F2B33D;
 }
 
 /* Auth Container - Centers the button */
@@ -2508,7 +2508,7 @@ dialog#subscribeModal::backdrop {
 /* Gradient - Matching Profile Page Button */
 .login-gradient {
     /* linear-gradient(135deg, var(--primary-purple-light), var(--accent-pink)) */
-    background: linear-gradient(135deg, rgba(138, 43, 226, 0.8), rgba(255, 51, 102, 0.6));
+    background: linear-gradient(135deg, rgba(242, 179, 61, 0.8), rgba(224, 155, 31, 0.6));
     box-shadow: none;
     border: none;
     outline: none;
@@ -2521,8 +2521,8 @@ dialog#subscribeModal::backdrop {
 }
 
 .login-gradient:hover {
-    /* linear-gradient(135deg, var(--primary-purple), rgba(255, 51, 102, 0.7)) */
-    background: linear-gradient(135deg, rgba(138, 43, 226, 1), rgba(255, 51, 102, 0.7));
+    /* linear-gradient(135deg, var(--primary-purple), rgba(224, 155, 31, 0.7)) */
+    background: linear-gradient(135deg, rgba(242, 179, 61, 1), rgba(224, 155, 31, 0.7));
     transform: translateY(-2px);
     box-shadow: none;
 }
@@ -2578,8 +2578,8 @@ dialog#subscribeModal::backdrop {
 }
 
 .genre-item:hover {
-    background: linear-gradient(135deg, #2A6CFF, #FF3366);
-    color: #ffffff;
+    background: linear-gradient(135deg, #F2B33D, #E09B1F);
+    color: #1A1206;
 }
 
 .genre-item:active {
@@ -2588,8 +2588,8 @@ dialog#subscribeModal::backdrop {
 
 /* Active/Selected State for Genre Buttons */
 .genre-item.active {
-    background: linear-gradient(135deg, #2A6CFF, #FF3366);
-    color: #ffffff;
+    background: linear-gradient(135deg, #F2B33D, #E09B1F);
+    color: #1A1206;
     font-weight: 600;
 }
 
@@ -2674,26 +2674,26 @@ dialog#subscribeModal::backdrop {
 
 .login-modal-form input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #F2B33D;
 }
 
 .btn-login-submit {
     width: 100%;
     padding: 14px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: linear-gradient(135deg, #F2B33D 0%, #E09B1F 100%);
+    color: #1A1206;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(242, 179, 61, 0.4);
     transition: all 0.3s ease;
 }
 
 .btn-login-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 6px 20px rgba(242, 179, 61, 0.6);
 }
 
 .btn-login-submit:active {
@@ -2710,7 +2710,7 @@ dialog#subscribeModal::backdrop {
 }
 
 .login-footer a {
-    color: #667eea;
+    color: #F2B33D;
     text-decoration: none;
     font-weight: 600;
 }
@@ -2975,20 +2975,20 @@ dialog#subscribeModal::backdrop {
     align-items: center;
     gap: 10px;
     padding: 15px 35px;
-    background: linear-gradient(135deg, rgba(42, 108, 255, 0.9), rgba(255, 51, 102, 0.8));
-    color: #fff;
+    background: linear-gradient(135deg, rgba(242, 179, 61, 0.9), rgba(224, 155, 31, 0.8));
+    color: #1A1206;
     text-decoration: none;
     border-radius: 8px;
     font-size: 1.1rem;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(42, 108, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(242, 179, 61, 0.3);
 }
 
 .hero-btn:hover {
-    background: linear-gradient(135deg, rgba(42, 108, 255, 1), rgba(255, 51, 102, 0.9));
+    background: linear-gradient(135deg, rgba(242, 179, 61, 1), rgba(224, 155, 31, 0.9));
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(42, 108, 255, 0.5);
+    box-shadow: 0 6px 20px rgba(242, 179, 61, 0.5);
 }
 
 .hero-btn i {
@@ -3012,8 +3012,8 @@ dialog#subscribeModal::backdrop {
 }
 
 .hero-nav:hover {
-    background: rgba(42, 108, 255, 0.8);
-    box-shadow: 0 0 15px rgba(42, 108, 255, 0.5);
+    background: rgba(242, 179, 61, 0.8);
+    box-shadow: 0 0 15px rgba(242, 179, 61, 0.5);
 }
 
 .hero-prev {
@@ -3052,7 +3052,7 @@ dialog#subscribeModal::backdrop {
 }
 
 .hero-dot.active {
-    background: rgba(42, 108, 255, 1);
+    background: rgba(242, 179, 61, 1);
     border-color: rgba(255, 255, 255, 0.8);
     width: 14px;
     height: 14px;

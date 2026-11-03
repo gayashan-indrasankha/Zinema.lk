@@ -36,8 +36,8 @@ recovery_browser_policy($pdo->query("SELECT video_url FROM trailers WHERE status
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/trailer-feed.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css?v=<?php echo @filemtime(__DIR__ . '/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/trailer-feed.css?v=<?php echo @filemtime(__DIR__ . '/css/trailer-feed.css'); ?>">
 </head>
 <body class="trailer-view">
     <!-- Main feed container -->

@@ -160,12 +160,12 @@ $schema_data = [
     </script>
 
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/vendor/fontawesome-6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/media-card.css?v=<?php echo filemtime(__DIR__ . '/css/media-card.css'); ?>">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/responsive.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/search_popup_styles.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-scroll-fix.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-tablet.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/media-card.css?v=<?php echo @filemtime(__DIR__ . '/css/media-card.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css?v=<?php echo @filemtime(__DIR__ . '/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/responsive.css?v=<?php echo @filemtime(__DIR__ . '/css/responsive.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/search_popup_styles.css?v=<?php echo @filemtime(__DIR__ . '/css/search_popup_styles.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-scroll-fix.css?v=<?php echo @filemtime(__DIR__ . '/css/desktop-scroll-fix.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-tablet.css?v=<?php echo @filemtime(__DIR__ . '/css/desktop-tablet.css'); ?>">
     <style>
         * {
             margin: 0;
@@ -531,7 +531,7 @@ $schema_data = [
                      loading="lazy"
                      decoding="async">
             <?php else: ?>
-                <div class="hero-bg" style="background: linear-gradient(135deg, #1a1a2e, #0a0a0a);"></div>
+                <div class="hero-bg" style="background: linear-gradient(135deg, #14161C, #0a0a0a);"></div>
             <?php endif; ?>
             
             <div class="hero-gradient"></div>
@@ -547,7 +547,7 @@ $schema_data = [
                         <img src="<?php echo htmlspecialchars($cover_img); ?>" 
                              alt="<?php echo htmlspecialchars($collection['title']); ?>">
                     <?php else: ?>
-                        <div class="desktop-poster-placeholder" style="background: linear-gradient(135deg, #1a1a2e, #0a0a0a); width: 100%; height: 100%;"></div>
+                        <div class="desktop-poster-placeholder" style="background: linear-gradient(135deg, #14161C, #0a0a0a); width: 100%; height: 100%;"></div>
                     <?php endif; ?>
                 </div>
 

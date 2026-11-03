@@ -126,7 +126,7 @@
 @media (hover: hover) {
     .media-card:hover .media-card__poster {
         transform: translateY(-4px);
-        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(42, 108, 255, 0.55);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(242, 179, 61, 0.55);
     }
 
     .media-card:hover .media-card__poster img {
@@ -145,7 +145,7 @@
 }
 
 .media-card:focus-visible .media-card__poster {
-    box-shadow: 0 0 0 3px rgba(42, 108, 255, 0.7);
+    box-shadow: 0 0 0 3px rgba(242, 179, 61, 0.7);
 }
 
 /* Phones: three cards per row */

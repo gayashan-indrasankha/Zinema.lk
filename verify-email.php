@@ -73,7 +73,7 @@ if (!empty($token)) {
             padding: 20px;
         }
         .verify-container {
-            background: linear-gradient(145deg, rgba(20, 22, 30, 1), rgba(15, 17, 25, 1));
+            background: linear-gradient(145deg, rgba(18, 20, 26, 1), rgba(10, 11, 14, 1));
             border-radius: 12px;
             padding: 40px;
             max-width: 450px;
@@ -97,11 +97,11 @@ if (!empty($token)) {
             transition: all 0.3s;
         }
         .btn-primary {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.8), rgba(255, 51, 102, 0.6));
-            color: #fff;
+            background: linear-gradient(135deg, rgba(242, 179, 61, 0.8), rgba(224, 155, 31, 0.6));
+            color: #1A1206;
         }
         .btn-primary:hover {
-            background: linear-gradient(135deg, #8a2be2, rgba(255, 51, 102, 0.7));
+            background: linear-gradient(135deg, #F2B33D, rgba(224, 155, 31, 0.7));
             transform: translateY(-2px);
         }
         .countdown {

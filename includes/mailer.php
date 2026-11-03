@@ -82,21 +82,21 @@ function sendPasswordResetEmail($email, $username, $resetLink) {
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f4f4f4; padding: 30px 0;">
         <tr>
             <td align="center">
-                <table role="presentation" width="500" cellspacing="0" cellpadding="0" style="background-color: #1a1a2e; border-radius: 12px; overflow: hidden; max-width: 500px;">
+                <table role="presentation" width="500" cellspacing="0" cellpadding="0" style="background-color: #14161C; border-radius: 12px; overflow: hidden; max-width: 500px;">
                     <!-- Header -->
                     <tr>
-                        <td style="background: linear-gradient(135deg, #8a2be2, #ff3366); padding: 25px; text-align: center;">
+                        <td style="background: linear-gradient(135deg, #F2B33D, #E09B1F); padding: 25px; text-align: center;">
                             <h1 style="margin: 0; color: #ffffff; font-size: 28px;">🎬 Zinema.lk</h1>
                         </td>
                     </tr>
                     
                     <!-- Content -->
                     <tr>
-                        <td style="padding: 35px 30px; background-color: #1a1a2e;">
-                            <h2 style="color: #ff3366; margin: 0 0 20px 0; font-size: 22px;">Password Reset Request</h2>
+                        <td style="padding: 35px 30px; background-color: #14161C;">
+                            <h2 style="color: #E09B1F; margin: 0 0 20px 0; font-size: 22px;">Password Reset Request</h2>
                             
                             <p style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 15px 0;">
-                                Hi <strong style="color: #ff3366;">{$username}</strong>,
+                                Hi <strong style="color: #E09B1F;">{$username}</strong>,
                             </p>
                             
                             <p style="color: #cccccc; font-size: 15px; line-height: 1.6; margin: 0 0 25px 0;">
@@ -107,7 +107,7 @@ function sendPasswordResetEmail($email, $username, $resetLink) {
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td align="center" style="padding: 15px 0 25px 0;">
-                                        <a href="{$resetLink}" style="display: inline-block; background: linear-gradient(135deg, #8a2be2, #ff3366); color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: bold; font-size: 16px;">Reset Password</a>
+                                        <a href="{$resetLink}" style="display: inline-block; background: linear-gradient(135deg, #F2B33D, #E09B1F); color: #1A1206; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: bold; font-size: 16px;">Reset Password</a>
                                     </td>
                                 </tr>
                             </table>
@@ -124,7 +124,7 @@ function sendPasswordResetEmail($email, $username, $resetLink) {
                     
                     <!-- Footer -->
                     <tr>
-                        <td style="background-color: #141420; padding: 20px; text-align: center; border-top: 1px solid #2a2a3e;">
+                        <td style="background-color: #141420; padding: 20px; text-align: center; border-top: 1px solid #1F2229;">
                             <p style="color: #666666; font-size: 12px; margin: 0;">
                                 © {$year} Zinema.lk. All rights reserved.
                             </p>
@@ -166,21 +166,21 @@ function sendVerificationEmail($email, $username, $verifyLink) {
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #f4f4f4; padding: 30px 0;">
         <tr>
             <td align="center">
-                <table role="presentation" width="500" cellspacing="0" cellpadding="0" style="background-color: #1a1a2e; border-radius: 12px; overflow: hidden; max-width: 500px;">
+                <table role="presentation" width="500" cellspacing="0" cellpadding="0" style="background-color: #14161C; border-radius: 12px; overflow: hidden; max-width: 500px;">
                     <!-- Header -->
                     <tr>
-                        <td style="background: linear-gradient(135deg, #8a2be2, #ff3366); padding: 25px; text-align: center;">
+                        <td style="background: linear-gradient(135deg, #F2B33D, #E09B1F); padding: 25px; text-align: center;">
                             <h1 style="margin: 0; color: #ffffff; font-size: 28px;">🎬 Zinema.lk</h1>
                         </td>
                     </tr>
                     
                     <!-- Content -->
                     <tr>
-                        <td style="padding: 35px 30px; background-color: #1a1a2e;">
+                        <td style="padding: 35px 30px; background-color: #14161C;">
                             <h2 style="color: #51cf66; margin: 0 0 20px 0; font-size: 22px;">Welcome to Zinema.lk! 🎉</h2>
                             
                             <p style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 15px 0;">
-                                Hi <strong style="color: #ff3366;">{$username}</strong>,
+                                Hi <strong style="color: #E09B1F;">{$username}</strong>,
                             </p>
                             
                             <p style="color: #cccccc; font-size: 15px; line-height: 1.6; margin: 0 0 25px 0;">
@@ -208,7 +208,7 @@ function sendVerificationEmail($email, $username, $verifyLink) {
                     
                     <!-- Footer -->
                     <tr>
-                        <td style="background-color: #141420; padding: 20px; text-align: center; border-top: 1px solid #2a2a3e;">
+                        <td style="background-color: #141420; padding: 20px; text-align: center; border-top: 1px solid #1F2229;">
                             <p style="color: #666666; font-size: 12px; margin: 0;">
                                 © {$year} Zinema.lk. All rights reserved.
                             </p>

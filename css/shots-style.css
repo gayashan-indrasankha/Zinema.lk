@@ -205,14 +205,14 @@ body {
     align-items: center;
     gap: 8px;
     padding: 11px 22px;
-    background: linear-gradient(90deg, #3B82F6, #EC4899);
-    color: #fff;
+    background: linear-gradient(90deg, #F2B33D, #E09B1F);
+    color: #1A1206;
     text-decoration: none;
     border-radius: 25px;
     font-weight: 600;
     font-size: clamp(0.85rem, 3vw, 0.95rem);
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+    box-shadow: 0 4px 15px rgba(224, 155, 31, 0.4);
 }
 
 .watch-movie-btn span {
@@ -220,9 +220,9 @@ body {
 }
 
 .watch-movie-btn:hover {
-    background: linear-gradient(90deg, #2563EB, #DB2777);
+    background: linear-gradient(90deg, #F2B33D, #E09B1F);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+    box-shadow: 0 6px 20px rgba(224, 155, 31, 0.6);
 }
 
 /* ===== TikTok-Style Sidebar Actions (Right Side) ===== */
@@ -290,12 +290,12 @@ body {
 
 /* ===== Like Button Active State ===== */
 .like-btn.liked .action-icon {
-    color: #ff2e63 !important;
+    color: #FF4D5E !important;
 }
 
 .like-btn.liked .action-icon svg {
-    fill: #ff2e63 !important;
-    stroke: #ff2e63 !important;
+    fill: #FF4D5E !important;
+    stroke: #E09B1F !important;
     animation: heartBeat 0.3s ease;
 }
 
@@ -726,11 +726,11 @@ body {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #3B82F6, #EC4899);
+    background: linear-gradient(135deg, #F2B33D, #E09B1F);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: #1A1206;
     font-weight: 700;
     font-size: 16px;
     flex-shrink: 0;
@@ -828,9 +828,9 @@ body {
 }
 
 .comment-form button {
-    background: linear-gradient(90deg, #3B82F6, #EC4899);
+    background: linear-gradient(90deg, #F2B33D, #E09B1F);
     /* Matching project gradient */
-    color: white;
+    color: #1A1206;
     border: none;
     padding: 10px 20px;
     border-radius: 20px;
@@ -969,27 +969,27 @@ body {
 
 .login-modal-form input:focus {
     outline: none;
-    border-color: #E50914;
+    border-color: #F2B33D;
 }
 
 .btn-login-submit {
     width: 100%;
     padding: 14px;
-    background: #E50914;
-    color: white;
+    background: #F2B33D;
+    color: #1A1206;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+    box-shadow: 0 4px 15px rgba(242, 179, 61, 0.4);
     transition: all 0.3s ease;
 }
 
 .btn-login-submit:hover {
     background: #c0070f;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6);
+    box-shadow: 0 6px 20px rgba(242, 179, 61, 0.6);
 }
 
 .login-footer {
@@ -1002,7 +1002,7 @@ body {
 }
 
 .login-footer a {
-    color: #E50914;
+    color: #F2B33D;
     text-decoration: none;
     font-weight: 600;
 }
@@ -1034,7 +1034,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
     font-size: 80px;
-    color: #ff2e63;
+    color: #FF4D5E;
     /* TikTok/Instagram Red/Pink */
     filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
     pointer-events: none;

@@ -128,11 +128,11 @@ function createSlug($string) {
     <meta property="og:url" content="<?php echo BASE_URL; ?>/tv-series.php">
     <meta property="og:site_name" content="Zinema.lk">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/vendor/fontawesome-6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/media-card.css?v=<?php echo filemtime(__DIR__ . '/css/media-card.css'); ?>">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/profile-style.css?v=2.0">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/desktop-scroll-fix.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/media-card.css?v=<?php echo @filemtime(__DIR__ . '/css/media-card.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css?v=<?php echo @filemtime(__DIR__ . '/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/profile-style.css?v=<?php echo @filemtime(__DIR__ . '/css/profile-style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/responsive.css?v=<?php echo @filemtime(__DIR__ . '/css/responsive.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-scroll-fix.css?v=<?php echo @filemtime(__DIR__ . '/css/desktop-scroll-fix.css'); ?>">
     <style>
         /* Page Header */
         .page-header {
@@ -165,7 +165,7 @@ function createSlug($string) {
             display: flex;
             align-items: center;
             gap: 10px;
-            background: rgba(20, 22, 30, 0.7);
+            background: rgba(18, 20, 26, 0.7);
             padding: 12px 18px;
             border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -176,8 +176,8 @@ function createSlug($string) {
 
         .search-bar:hover,
         .search-bar:focus-within {
-            border-color: rgba(42, 108, 255, 0.5);
-            box-shadow: 0 0 10px rgba(42, 108, 255, 0.25);
+            border-color: rgba(242, 179, 61, 0.5);
+            box-shadow: 0 0 10px rgba(242, 179, 61, 0.25);
             background: rgba(25, 28, 38, 0.9);
         }
 
@@ -196,7 +196,7 @@ function createSlug($string) {
 
         .search-bar button {
             background: var(--primary);
-            color: white;
+            color: #1A1206;
             padding: 8px 20px;
             border-radius: 8px;
             border: none;
@@ -206,7 +206,7 @@ function createSlug($string) {
         }
 
         .search-bar button:hover {
-            background: #1e56e0;
+            background: #E09B1F;
         }
 
         /* Filter Buttons */
@@ -220,24 +220,24 @@ function createSlug($string) {
         }
 
         .filter-btn {
-            background: rgba(42, 108, 255, 0.1);
+            background: rgba(242, 179, 61, 0.1);
             color: var(--text);
             padding: 8px 16px;
             border-radius: 20px;
-            border: 1px solid rgba(42, 108, 255, 0.3);
+            border: 1px solid rgba(242, 179, 61, 0.3);
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.3s;
         }
 
         .filter-btn:hover {
-            background: rgba(42, 108, 255, 0.2);
-            border-color: rgba(42, 108, 255, 0.5);
+            background: rgba(242, 179, 61, 0.2);
+            border-color: rgba(242, 179, 61, 0.5);
         }
 
         .filter-btn.active {
             background: var(--primary);
-            color: white;
+            color: #1A1206;
             border-color: var(--primary);
         }
 
@@ -274,7 +274,7 @@ function createSlug($string) {
         .series-grid-2col .movie-card {
             display: flex;
             flex-direction: column;
-            background: rgba(20, 22, 30, 1);
+            background: rgba(18, 20, 26, 1);
             border-radius: 6px;
             overflow: hidden;
             position: relative;
@@ -331,7 +331,7 @@ function createSlug($string) {
             aspect-ratio: 2/3;
             object-fit: cover;
             display: block;
-            background: linear-gradient(110deg, #1a1a2e 8%, #252540 18%, #1a1a2e 33%);
+            background: linear-gradient(110deg, #14161C 8%, #252540 18%, #14161C 33%);
             background-size: 200% 100%;
             animation: shimmer 1.5s linear infinite;
         }
@@ -420,7 +420,7 @@ function createSlug($string) {
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(135deg, rgba(42,108,255,1), rgba(255,51,102,0.85));
+            background: linear-gradient(135deg, rgba(242, 179, 61, 1), rgba(224, 155, 31, 0.85));
             border-radius: 2px 2px 0 0;
         }
 
@@ -461,7 +461,7 @@ function createSlug($string) {
             padding: 12px 45px 12px 20px;
             font-size: 16px;
             color: #fff;
-            background: rgba(20, 22, 30, 0.7);
+            background: rgba(18, 20, 26, 0.7);
             border: 2px solid rgba(255, 255, 255, 0.08);
             border-radius: 50px;
             outline: none;
@@ -469,8 +469,8 @@ function createSlug($string) {
         }
 
         .header-search-form input:focus {
-            border-color: rgba(42, 108, 255, 0.5);
-            box-shadow: 0 0 15px rgba(42, 108, 255, 0.3), 0 0 30px rgba(255, 51, 102, 0.15);
+            border-color: rgba(242, 179, 61, 0.5);
+            box-shadow: 0 0 15px rgba(242, 179, 61, 0.3), 0 0 30px rgba(224, 155, 31, 0.15);
         }
 
         .header-search-form input::placeholder {
@@ -509,7 +509,7 @@ function createSlug($string) {
             top: calc(100% + 5px);
             left: 0;
             right: 0;
-            background: rgba(20, 22, 30, 0.95);
+            background: rgba(18, 20, 26, 0.95);
             max-height: 400px;
             overflow-y: auto;
             border-radius: 10px;

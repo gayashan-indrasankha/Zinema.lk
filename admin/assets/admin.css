@@ -12,13 +12,15 @@
     --text: #e9ecf1;
     --muted: #b4bcc9;
     --faint: #7c8596;
-    --primary: #2a6cff;
-    --primary-hover: #4a84ff;
-    --secondary: #ff3366;
-    --gradient: linear-gradient(135deg, #2a6cff, #ff3366);
-    --gradient-soft: linear-gradient(135deg, rgba(42, 108, 255, 0.18), rgba(255, 51, 102, 0.12));
+    /* "Reel Gold" brand palette (matches the public site) */
+    --primary: #F2B33D;
+    --primary-hover: #F7C75A;
+    --secondary: #E09B1F;
+    --on-primary: #1A1206;
+    --gradient: linear-gradient(135deg, #F7C75A, #E39A26);
+    --gradient-soft: linear-gradient(135deg, rgba(242, 179, 61, 0.16), rgba(224, 155, 31, 0.08));
     --success: #22c55e;
-    --warning: #f5a524;
+    --warning: #ff8a3d;
     --danger: #ff4d6d;
     --radius: 14px;
     --radius-sm: 10px;
@@ -42,8 +44,8 @@ body {
     color: var(--text);
     background-color: var(--bg);
     background-image:
-        radial-gradient(circle at 15% -10%, rgba(42, 108, 255, 0.12), transparent 40%),
-        radial-gradient(circle at 100% 110%, rgba(255, 51, 102, 0.08), transparent 40%);
+        radial-gradient(circle at 15% -10%, rgba(242, 179, 61, 0.12), transparent 40%),
+        radial-gradient(circle at 100% 110%, rgba(224, 155, 31, 0.08), transparent 40%);
     background-attachment: fixed;
 }
 
@@ -83,7 +85,7 @@ hr {
 }
 
 ::selection {
-    background: rgba(42, 108, 255, 0.4);
+    background: rgba(242, 179, 61, 0.4);
 }
 
 /* ---------- Sidebar ---------- */
@@ -347,8 +349,8 @@ select:focus,
 .setting-input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(42, 108, 255, 0.2);
-    background: #10121b;
+    box-shadow: 0 0 0 3px rgba(242, 179, 61, 0.2);
+    background: #121218;
 }
 
 textarea {
@@ -431,11 +433,11 @@ input[type="submit"] {
     font: inherit;
     font-size: 0.95rem;
     font-weight: 600;
-    color: #fff;
+    color: var(--on-primary);
     background: var(--gradient);
     border: 0;
     border-radius: var(--radius-sm);
-    box-shadow: 0 6px 18px rgba(42, 108, 255, 0.25);
+    box-shadow: 0 6px 18px rgba(242, 179, 61, 0.25);
     cursor: pointer;
     text-decoration: none;
     transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
@@ -448,10 +450,10 @@ button:hover,
 .btn-check-api:hover,
 .refresh-btn:hover,
 input[type="submit"]:hover {
-    color: #fff;
+    color: var(--on-primary);
     transform: translateY(-1px);
     filter: brightness(1.08);
-    box-shadow: 0 10px 24px rgba(255, 51, 102, 0.25);
+    box-shadow: 0 10px 24px rgba(224, 155, 31, 0.25);
 }
 
 button:disabled,
@@ -541,7 +543,7 @@ table tbody tr {
 }
 
 table tbody tr:hover {
-    background: rgba(42, 108, 255, 0.06);
+    background: rgba(242, 179, 61, 0.06);
 }
 
 table tr:last-child td {
@@ -565,13 +567,13 @@ table td a {
     font-size: 0.82rem;
     font-weight: 600;
     color: var(--primary-hover);
-    background: rgba(42, 108, 255, 0.12);
-    border: 1px solid rgba(42, 108, 255, 0.25);
+    background: rgba(242, 179, 61, 0.12);
+    border: 1px solid rgba(242, 179, 61, 0.25);
     white-space: nowrap;
 }
 
 table td a:hover {
-    color: #fff;
+    color: var(--on-primary);
     background: var(--primary);
 }
 
@@ -637,15 +639,15 @@ table td a[href*="delete"]:hover {
 
 .alert-warning,
 .alert-item {
-    background: rgba(245, 165, 36, 0.1);
-    border-color: rgba(245, 165, 36, 0.35);
-    color: #ffc970;
+    background: rgba(255, 138, 61, 0.1);
+    border-color: rgba(255, 138, 61, 0.35);
+    color: #ffb07a;
 }
 
 .alert-info {
-    background: rgba(42, 108, 255, 0.1);
-    border-color: rgba(42, 108, 255, 0.35);
-    color: #8fb3ff;
+    background: rgba(242, 179, 61, 0.1);
+    border-color: rgba(242, 179, 61, 0.35);
+    color: #F5D58A;
 }
 
 .alert-item {
@@ -684,7 +686,7 @@ table td a[href*="delete"]:hover {
 
 .widget:hover {
     transform: translateY(-3px);
-    border-color: rgba(42, 108, 255, 0.4);
+    border-color: rgba(242, 179, 61, 0.4);
 }
 
 .widget h2,
@@ -821,7 +823,7 @@ table td a[href*="delete"]:hover {
 }
 
 .search-results div:hover {
-    background: rgba(42, 108, 255, 0.12);
+    background: rgba(242, 179, 61, 0.12);
 }
 
 .selected-content {
@@ -969,9 +971,9 @@ table td a[href*="delete"]:hover {
 }
 
 .stat-card.green { background: linear-gradient(135deg, rgba(34, 197, 94, 0.22), var(--surface) 70%); }
-.stat-card.blue { background: linear-gradient(135deg, rgba(42, 108, 255, 0.25), var(--surface) 70%); }
-.stat-card.purple { background: linear-gradient(135deg, rgba(168, 85, 247, 0.22), var(--surface) 70%); }
-.stat-card.orange { background: linear-gradient(135deg, rgba(255, 51, 102, 0.22), var(--surface) 70%); }
+.stat-card.blue { background: linear-gradient(135deg, rgba(242, 179, 61, 0.25), var(--surface) 70%); }
+.stat-card.purple { background: linear-gradient(135deg, rgba(148, 163, 184, 0.22), var(--surface) 70%); }
+.stat-card.orange { background: linear-gradient(135deg, rgba(224, 155, 31, 0.22), var(--surface) 70%); }
 
 .stat-card h3 {
     margin: 0 0 10px;
@@ -1039,8 +1041,8 @@ table td a[href*="delete"]:hover {
 .status-badge.online,
 .cache-status.hot { background: rgba(34, 197, 94, 0.15); color: #6ee7a0; }
 .status-badge.offline { background: rgba(255, 77, 109, 0.15); color: #ff8fa3; }
-.cache-status.warm { background: rgba(245, 165, 36, 0.15); color: #ffc970; }
-.cache-status.cold { background: rgba(42, 108, 255, 0.15); color: #8fb3ff; }
+.cache-status.warm { background: rgba(255, 138, 61, 0.15); color: #ffb07a; }
+.cache-status.cold { background: rgba(242, 179, 61, 0.15); color: #F5D58A; }
 
 .bot-info {
     display: grid;

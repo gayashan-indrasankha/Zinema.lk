@@ -108,8 +108,8 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
     <link rel="icon" type="image/png" href="assets/images/tab-logo.png">
     <title>Zinema.lk</title>
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/vendor/fontawesome-6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/desktop-tablet.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css?v=<?php echo @filemtime(__DIR__ . '/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-tablet.css?v=<?php echo @filemtime(__DIR__ . '/css/desktop-tablet.css'); ?>">
     <style>
         body {
             background-color: #000000 !important;
@@ -457,20 +457,20 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
 
         /* Service Unavailable */
         .service-unavailable {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.4);
+            background: rgba(242, 179, 61, 0.1);
+            border: 1px solid rgba(242, 179, 61, 0.4);
             border-radius: 12px;
             padding: 30px 20px;
             text-align: center;
             margin-bottom: 20px;
         }
         .service-unavailable i.fa-server {
-            color: #3b82f6;
+            color: #F2B33D;
             font-size: 2.5rem;
             margin-bottom: 15px;
         }
         .service-unavailable h3 {
-            color: #3b82f6;
+            color: #F2B33D;
             margin: 0 0 10px 0;
             font-size: 1.2rem;
         }
@@ -484,8 +484,8 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
             font-size: 0.85rem;
         }
         .btn-retry-blue {
-            background: rgba(59, 130, 246, 0.2);
-            border: 1px solid rgba(59, 130, 246, 0.5);
+            background: rgba(242, 179, 61, 0.2);
+            border: 1px solid rgba(242, 179, 61, 0.5);
             color: #fff;
             padding: 10px 20px;
             border-radius: 8px;
@@ -495,8 +495,8 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
             transition: all 0.3s ease;
         }
         .btn-retry-blue:hover {
-            background: rgba(59, 130, 246, 0.3);
-            border-color: rgba(59, 130, 246, 0.7);
+            background: rgba(242, 179, 61, 0.3);
+            border-color: rgba(242, 179, 61, 0.7);
         }
 
         /* Group Mode Styles */

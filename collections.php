@@ -106,12 +106,12 @@ if ($result && $result->num_rows > 0) {
     <meta property="og:url" content="<?php echo BASE_URL; ?>/collections.php">
     <meta property="og:site_name" content="Zinema.lk">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/vendor/fontawesome-6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/profile-style.css?v=2.0">
-    <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/search_popup_styles.css">
-    <link rel="stylesheet" href="css/desktop-scroll-fix.css">
-    <link rel="stylesheet" href="css/desktop-tablet.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css?v=<?php echo @filemtime(__DIR__ . '/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/profile-style.css?v=<?php echo @filemtime(__DIR__ . '/css/profile-style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/responsive.css?v=<?php echo @filemtime(__DIR__ . '/css/responsive.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/search_popup_styles.css?v=<?php echo @filemtime(__DIR__ . '/css/search_popup_styles.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-scroll-fix.css?v=<?php echo @filemtime(__DIR__ . '/css/desktop-scroll-fix.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-tablet.css?v=<?php echo @filemtime(__DIR__ . '/css/desktop-tablet.css'); ?>">
     <style>
         /* Fix scroll for Collections page */
         body {
@@ -201,7 +201,7 @@ if ($result && $result->num_rows > 0) {
         .collection-card {
             display: flex;
             flex-direction: column;
-            background: rgba(20, 22, 30, 1);
+            background: rgba(18, 20, 26, 1);
             border-radius: 8px;
             overflow: hidden;
             position: relative;
@@ -372,7 +372,7 @@ if ($result && $result->num_rows > 0) {
             padding: 12px 45px 12px 20px;
             font-size: 16px;
             color: #fff;
-            background: rgba(20, 22, 30, 0.7);
+            background: rgba(18, 20, 26, 0.7);
             border: 2px solid rgba(255, 255, 255, 0.08);
             border-radius: 50px;
             outline: none;
@@ -380,8 +380,8 @@ if ($result && $result->num_rows > 0) {
         }
 
         .header-search-form input:focus {
-            border-color: rgba(42, 108, 255, 0.5);
-            box-shadow: 0 0 15px rgba(42, 108, 255, 0.3), 0 0 30px rgba(255, 51, 102, 0.15);
+            border-color: rgba(242, 179, 61, 0.5);
+            box-shadow: 0 0 15px rgba(242, 179, 61, 0.3), 0 0 30px rgba(224, 155, 31, 0.15);
         }
 
         .header-search-form input::placeholder {

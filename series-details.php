@@ -164,11 +164,11 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
 
     <!-- CSS Assets (Absolute Paths) -->
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/vendor/fontawesome-6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/responsive.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/search_popup_styles.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-scroll-fix.css">
-    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-tablet.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css?v=<?php echo @filemtime(__DIR__ . '/css/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/responsive.css?v=<?php echo @filemtime(__DIR__ . '/css/responsive.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/search_popup_styles.css?v=<?php echo @filemtime(__DIR__ . '/css/search_popup_styles.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-scroll-fix.css?v=<?php echo @filemtime(__DIR__ . '/css/desktop-scroll-fix.css'); ?>">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/desktop-tablet.css?v=<?php echo @filemtime(__DIR__ . '/css/desktop-tablet.css'); ?>">
     
 
     <style>
@@ -313,7 +313,7 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
 
         .genre-tag {
             background: #1a1a2e;
-            color: #9bb3e0;
+            color: #D9C9A3;
             padding: 6px 14px;
             border-radius: 4px;
             font-size: 0.85rem;
@@ -346,14 +346,14 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
         }
 
         .btn-watch {
-            background: linear-gradient(135deg, rgba(42,108,255,0.9), rgba(255,51,102,0.7));
-            color: white;
+            background: linear-gradient(135deg, rgba(242, 179, 61, 0.9), rgba(224, 155, 31, 0.7));
+            color: #1A1206;
         }
 
         .btn-watch:hover {
-            background: linear-gradient(135deg, rgba(42,108,255,1), rgba(255,51,102,0.85));
+            background: linear-gradient(135deg, rgba(242, 179, 61, 1), rgba(224, 155, 31, 0.85));
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(42,108,255,0.4), 0 4px 10px rgba(255,51,102,0.2);
+            box-shadow: 0 8px 20px rgba(242, 179, 61, 0.4), 0 4px 10px rgba(224, 155, 31, 0.2);
         }
 
         .btn-whatsapp {
@@ -403,7 +403,7 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
 
         .video-loader-spinner {
             border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid rgba(42, 108, 255, 1);
+            border-top: 4px solid rgba(242, 179, 61, 1);
             border-radius: 50%;
             width: 50px;
             height: 50px;
@@ -457,7 +457,7 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(135deg, rgba(42,108,255,1), rgba(255,51,102,0.85));
+            background: linear-gradient(135deg, rgba(242, 179, 61, 1), rgba(224, 155, 31, 0.85));
             border-radius: 2px 2px 0 0;
         }
 
@@ -498,8 +498,8 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
         .episode-item:hover {
             background: rgba(35, 37, 48, 0.9);
             transform: scale(1.02);
-            box-shadow: 0 8px 24px rgba(42, 108, 255, 0.2), 0 4px 12px rgba(0, 0, 0, 0.4);
-            border-color: rgba(42, 108, 255, 0.4);
+            box-shadow: 0 8px 24px rgba(242, 179, 61, 0.2), 0 4px 12px rgba(0, 0, 0, 0.4);
+            border-color: rgba(242, 179, 61, 0.4);
         }
 
         .episode-thumbnail {
@@ -544,7 +544,7 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
 
         .episode-badge {
             font-size: 0.85rem;
-            color: #9bb3e0;
+            color: #D9C9A3;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -639,13 +639,13 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
         }
 
         .season-option:hover {
-            background: rgba(42, 108, 255, 0.1);
+            background: rgba(242, 179, 61, 0.1);
             color: #fff;
         }
 
         .season-option.active {
-            color: #4da6ff;
-            background: rgba(42, 108, 255, 0.15);
+            color: #F2B33D;
+            background: rgba(242, 179, 61, 0.15);
         }
 
         .season-dropdown-icon {
@@ -665,7 +665,7 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
             left: 0;
             width: 100%;
             height: 2px;
-            background: linear-gradient(135deg, rgba(42,108,255,1), rgba(255,51,102,0.85));
+            background: linear-gradient(135deg, rgba(242, 179, 61, 1), rgba(224, 155, 31, 0.85));
             border-radius: 2px 2px 0 0;
         }
 

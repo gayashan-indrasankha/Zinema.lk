@@ -64,7 +64,7 @@ if (!empty($token)) {
             padding: 20px;
         }
         .reset-container {
-            background: linear-gradient(145deg, rgba(20, 22, 30, 1), rgba(15, 17, 25, 1));
+            background: linear-gradient(145deg, rgba(18, 20, 26, 1), rgba(10, 11, 14, 1));
             border-radius: 12px;
             padding: 40px;
             max-width: 450px;
@@ -94,7 +94,7 @@ if (!empty($token)) {
         .form-group input {
             width: 100%;
             padding: 14px 18px;
-            background: rgba(20, 22, 30, 0.7);
+            background: rgba(18, 20, 26, 0.7);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 8px;
             color: #fff;
@@ -103,7 +103,7 @@ if (!empty($token)) {
         }
         .form-group input:focus {
             outline: none;
-            border-color: #8a2be2;
+            border-color: #F2B33D;
             background: rgba(25, 28, 38, 0.9);
         }
         .form-group input.invalid { border-color: #ff6b6b; }
@@ -111,8 +111,8 @@ if (!empty($token)) {
         .btn-submit {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.8), rgba(255, 51, 102, 0.6));
-            color: #fff;
+            background: linear-gradient(135deg, rgba(242, 179, 61, 0.8), rgba(224, 155, 31, 0.6));
+            color: #1A1206;
             border: none;
             border-radius: 8px;
             font-size: 1.05rem;
@@ -121,7 +121,7 @@ if (!empty($token)) {
             transition: all 0.3s;
         }
         .btn-submit:hover {
-            background: linear-gradient(135deg, #8a2be2, rgba(255, 51, 102, 0.7));
+            background: linear-gradient(135deg, #F2B33D, rgba(224, 155, 31, 0.7));
             transform: translateY(-2px);
         }
         .btn-submit:disabled {
@@ -171,7 +171,7 @@ if (!empty($token)) {
             margin-top: 20px;
         }
         .back-link a {
-            color: #8a2be2;
+            color: #F2B33D;
             text-decoration: none;
         }
         .back-link a:hover { text-decoration: underline; }

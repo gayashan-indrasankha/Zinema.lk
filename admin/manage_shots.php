@@ -439,7 +439,7 @@ if ($shots_result && $shots_result->num_rows > 0) {
                 return;
             }
             
-            resultSpan.innerHTML = '<span style="color: #2196f3;">⏳ Testing...</span>';
+            resultSpan.innerHTML = '<span style="color: #F2B33D;">⏳ Testing...</span>';
             
             try {
                 const response = await fetch(API_URL + '/api/extract?url=' + encodeURIComponent(fbUrl));

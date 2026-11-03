@@ -127,7 +127,7 @@ $active_nav = isset($current_nav_page) ? $current_nav_page : '';
     transform: translateX(-50%);
     width: 32px;
     height: 3px;
-    background: linear-gradient(90deg, rgba(42, 108, 255, 1), rgba(255, 51, 102, 1));
+    background: linear-gradient(90deg, rgba(242, 179, 61, 1), rgba(224, 155, 31, 1));
     border-radius: 0 0 3px 3px;
     animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
