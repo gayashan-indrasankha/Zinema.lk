@@ -1,7 +1,7 @@
 <?php
-// Live delivery only; local fake delivery will use a separate adapter.
+// 'live' in production; 'local' lets a bot on this PC (.env.bot5-local) deliver tokens from the local site.
 require_once __DIR__ . '/includes/environment.php';
-if (APP_ENV !== 'production' || WHATSAPP_MODE !== 'live') recovery_config_error('WhatsApp delivery disabled');
+recovery_require_adapter('WHATSAPP');
 
 // Include database connection
 require_once 'admin/config.php';
