@@ -131,7 +131,7 @@
 @media (hover: hover) {
     .media-card:hover .media-card__poster {
         transform: translateY(-4px);
-        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(227, 164, 71, 0.55);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
     }
 
     .media-card:hover .media-card__poster img {
