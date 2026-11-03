@@ -1019,6 +1019,12 @@ if ($result && $result->num_rows > 0) {
             // Set the shot_id in the hidden input
             document.getElementById('comment-shot-id').value = shotId;
 
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text == null ? '' : String(text);
+                return div.innerHTML;
+            }
+
             // Fetch and display comments
             fetch(`api/get_comments.php?shot_id=${shotId}`)
                 .then(response => response.json())
@@ -1037,14 +1043,15 @@ if ($result && $result->num_rows > 0) {
                             // Get first letter of username for avatar
                             const avatarLetter = comment.username.charAt(0).toUpperCase();
                             
+                            // Comments and usernames are user input: escape them before building HTML
                             commentItem.innerHTML = `
-                                <div class="comment-avatar">${avatarLetter}</div>
+                                <div class="comment-avatar">${escapeHtml(avatarLetter)}</div>
                                 <div class="comment-content">
                                     <div class="comment-header">
-                                        <strong class="comment-user">${comment.username}</strong>
+                                        <strong class="comment-user">${escapeHtml(comment.username)}</strong>
                                         <span class="comment-time">${timeAgo}</span>
                                     </div>
-                                    <p class="comment-text">${comment.comment_text}</p>
+                                    <p class="comment-text">${escapeHtml(comment.comment_text)}</p>
                                 </div>
                             `;
                             commentList.appendChild(commentItem);
