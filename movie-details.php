@@ -308,7 +308,7 @@ recovery_browser_policy([$movie['video_url'] ?? '']);
 
         .genre-tag {
             background: #1a1a2e;
-            color: #D9C9A3;
+            color: #B9C0CC;
             padding: 6px 14px;
             border-radius: 4px;
             font-size: 0.85rem;
@@ -349,14 +349,14 @@ recovery_browser_policy([$movie['video_url'] ?? '']);
         }
 
         .btn-watch {
-            background: linear-gradient(135deg, rgba(242, 179, 61, 0.9), rgba(224, 155, 31, 0.7));
+            background: rgba(227, 164, 71, 0.9);
             color: #1A1206;
         }
 
         .btn-watch:hover {
-            background: linear-gradient(135deg, rgba(242, 179, 61, 1), rgba(224, 155, 31, 0.85));
+            background: rgba(227, 164, 71, 1);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(242, 179, 61, 0.4), 0 4px 10px rgba(224, 155, 31, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), 0 4px 10px rgba(0, 0, 0, 0.35);
         }
 
         .btn-whatsapp {
@@ -405,7 +405,7 @@ recovery_browser_policy([$movie['video_url'] ?? '']);
 
         .video-loader-spinner {
             border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid rgba(242, 179, 61, 1);
+            border-top: 4px solid rgba(227, 164, 71, 1);
             border-radius: 50%;
             width: 50px;
             height: 50px;

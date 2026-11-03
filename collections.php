@@ -140,10 +140,6 @@ if ($result && $result->num_rows > 0) {
             color: var(--text);
             text-transform: uppercase;
             letter-spacing: 1px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .page-subtitle {
@@ -380,8 +376,8 @@ if ($result && $result->num_rows > 0) {
         }
 
         .header-search-form input:focus {
-            border-color: rgba(242, 179, 61, 0.5);
-            box-shadow: 0 0 15px rgba(242, 179, 61, 0.3), 0 0 30px rgba(224, 155, 31, 0.15);
+            border-color: rgba(227, 164, 71, 0.5);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.35), 0 0 30px rgba(0, 0, 0, 0.35);
         }
 
         .header-search-form input::placeholder {

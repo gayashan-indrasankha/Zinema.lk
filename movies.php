@@ -175,10 +175,6 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
             color: var(--text);
             text-transform: uppercase;
             letter-spacing: 1px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .page-subtitle {
@@ -203,8 +199,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
 
         .search-bar:hover,
         .search-bar:focus-within {
-            border-color: rgba(242, 179, 61, 0.5);
-            box-shadow: 0 0 10px rgba(242, 179, 61, 0.25);
+            border-color: rgba(227, 164, 71, 0.5);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
             background: rgba(25, 28, 38, 0.9);
         }
 
@@ -233,7 +229,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
         }
 
         .search-bar button:hover {
-            background: #E09B1F;
+            background: #C98B2E;
         }
 
         /* Filter Buttons */
@@ -247,19 +243,19 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
         }
 
         .filter-btn {
-            background: rgba(242, 179, 61, 0.1);
+            background: rgba(227, 164, 71, 0.1);
             color: var(--text);
             padding: 8px 16px;
             border-radius: 20px;
-            border: 1px solid rgba(242, 179, 61, 0.3);
+            border: 1px solid rgba(227, 164, 71, 0.3);
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.3s;
         }
 
         .filter-btn:hover {
-            background: rgba(242, 179, 61, 0.2);
-            border-color: rgba(242, 179, 61, 0.5);
+            background: rgba(227, 164, 71, 0.2);
+            border-color: rgba(227, 164, 71, 0.5);
         }
 
         .filter-btn.active {
@@ -447,7 +443,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
             left: 0;
             right: 0;
             height: 2px;
-            background: linear-gradient(135deg, rgba(242, 179, 61, 1), rgba(224, 155, 31, 0.85));
+            background: rgba(227, 164, 71, 1);
             border-radius: 2px 2px 0 0;
         }
 
@@ -496,8 +492,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
         }
 
         .header-search-form input:focus {
-            border-color: rgba(242, 179, 61, 0.5); /* Purple/blue border */
-            box-shadow: 0 0 15px rgba(242, 179, 61, 0.3), 0 0 30px rgba(224, 155, 31, 0.15); /* Purple/blue glow */
+            border-color: rgba(227, 164, 71, 0.5); /* Purple/blue border */
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.35), 0 0 30px rgba(0, 0, 0, 0.35); /* Purple/blue glow */
         }
 
         .header-search-form input::placeholder {

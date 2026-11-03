@@ -457,20 +457,20 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
 
         /* Service Unavailable */
         .service-unavailable {
-            background: rgba(242, 179, 61, 0.1);
-            border: 1px solid rgba(242, 179, 61, 0.4);
+            background: rgba(227, 164, 71, 0.1);
+            border: 1px solid rgba(227, 164, 71, 0.4);
             border-radius: 12px;
             padding: 30px 20px;
             text-align: center;
             margin-bottom: 20px;
         }
         .service-unavailable i.fa-server {
-            color: #F2B33D;
+            color: #E3A447;
             font-size: 2.5rem;
             margin-bottom: 15px;
         }
         .service-unavailable h3 {
-            color: #F2B33D;
+            color: #E3A447;
             margin: 0 0 10px 0;
             font-size: 1.2rem;
         }
@@ -484,8 +484,8 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
             font-size: 0.85rem;
         }
         .btn-retry-blue {
-            background: rgba(242, 179, 61, 0.2);
-            border: 1px solid rgba(242, 179, 61, 0.5);
+            background: rgba(227, 164, 71, 0.2);
+            border: 1px solid rgba(227, 164, 71, 0.5);
             color: #fff;
             padding: 10px 20px;
             border-radius: 8px;
@@ -495,8 +495,8 @@ if (isset($token_data['rate_limited']) && $token_data['rate_limited']) {
             transition: all 0.3s ease;
         }
         .btn-retry-blue:hover {
-            background: rgba(242, 179, 61, 0.3);
-            border-color: rgba(242, 179, 61, 0.7);
+            background: rgba(227, 164, 71, 0.3);
+            border-color: rgba(227, 164, 71, 0.7);
         }
 
         /* Group Mode Styles */

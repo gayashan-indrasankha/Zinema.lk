@@ -64,17 +64,22 @@
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 3px 7px;
-    border-radius: 4px;
-    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 0.78rem;
     font-weight: 700;
     line-height: 1.2;
-    color: #111;
-    background: #f5c518;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    /* Neutral glass pill: readable on any poster without competing with the gold buttons */
+    color: #fff;
+    background: rgba(12, 13, 18, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 .media-card__rating i {
+    color: #E3A447;
     font-size: 0.68rem;
 }
 
@@ -126,7 +131,7 @@
 @media (hover: hover) {
     .media-card:hover .media-card__poster {
         transform: translateY(-4px);
-        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(242, 179, 61, 0.55);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(227, 164, 71, 0.55);
     }
 
     .media-card:hover .media-card__poster img {
@@ -145,7 +150,7 @@
 }
 
 .media-card:focus-visible .media-card__poster {
-    box-shadow: 0 0 0 3px rgba(242, 179, 61, 0.7);
+    box-shadow: 0 0 0 3px rgba(227, 164, 71, 0.7);
 }
 
 /* Phones: three cards per row */

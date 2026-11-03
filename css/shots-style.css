@@ -205,14 +205,14 @@ body {
     align-items: center;
     gap: 8px;
     padding: 11px 22px;
-    background: linear-gradient(90deg, #F2B33D, #E09B1F);
+    background: #E3A447;
     color: #1A1206;
     text-decoration: none;
     border-radius: 25px;
     font-weight: 600;
     font-size: clamp(0.85rem, 3vw, 0.95rem);
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(224, 155, 31, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
 }
 
 .watch-movie-btn span {
@@ -220,9 +220,9 @@ body {
 }
 
 .watch-movie-btn:hover {
-    background: linear-gradient(90deg, #F2B33D, #E09B1F);
+    background: #E3A447;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(224, 155, 31, 0.6);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
 /* ===== TikTok-Style Sidebar Actions (Right Side) ===== */
@@ -295,7 +295,7 @@ body {
 
 .like-btn.liked .action-icon svg {
     fill: #FF4D5E !important;
-    stroke: #E09B1F !important;
+    stroke: #FF4D5E !important;
     animation: heartBeat 0.3s ease;
 }
 
@@ -726,11 +726,11 @@ body {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #F2B33D, #E09B1F);
+    background: #2B2F3A;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #1A1206;
+    color: #fff;
     font-weight: 700;
     font-size: 16px;
     flex-shrink: 0;
@@ -828,7 +828,7 @@ body {
 }
 
 .comment-form button {
-    background: linear-gradient(90deg, #F2B33D, #E09B1F);
+    background: #E3A447;
     /* Matching project gradient */
     color: #1A1206;
     border: none;
@@ -969,27 +969,27 @@ body {
 
 .login-modal-form input:focus {
     outline: none;
-    border-color: #F2B33D;
+    border-color: #E3A447;
 }
 
 .btn-login-submit {
     width: 100%;
     padding: 14px;
-    background: #F2B33D;
+    background: #E3A447;
     color: #1A1206;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(242, 179, 61, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
     transition: all 0.3s ease;
 }
 
 .btn-login-submit:hover {
     background: #c0070f;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(242, 179, 61, 0.6);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
 
 .login-footer {
@@ -1002,7 +1002,7 @@ body {
 }
 
 .login-footer a {
-    color: #F2B33D;
+    color: #E3A447;
     text-decoration: none;
     font-weight: 600;
 }

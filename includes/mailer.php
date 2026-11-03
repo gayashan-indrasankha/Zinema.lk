@@ -85,7 +85,7 @@ function sendPasswordResetEmail($email, $username, $resetLink) {
                 <table role="presentation" width="500" cellspacing="0" cellpadding="0" style="background-color: #14161C; border-radius: 12px; overflow: hidden; max-width: 500px;">
                     <!-- Header -->
                     <tr>
-                        <td style="background: linear-gradient(135deg, #F2B33D, #E09B1F); padding: 25px; text-align: center;">
+                        <td style="background: #E3A447; padding: 25px; text-align: center;">
                             <h1 style="margin: 0; color: #ffffff; font-size: 28px;">🎬 Zinema.lk</h1>
                         </td>
                     </tr>
@@ -93,10 +93,10 @@ function sendPasswordResetEmail($email, $username, $resetLink) {
                     <!-- Content -->
                     <tr>
                         <td style="padding: 35px 30px; background-color: #14161C;">
-                            <h2 style="color: #E09B1F; margin: 0 0 20px 0; font-size: 22px;">Password Reset Request</h2>
+                            <h2 style="color: #C98B2E; margin: 0 0 20px 0; font-size: 22px;">Password Reset Request</h2>
                             
                             <p style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 15px 0;">
-                                Hi <strong style="color: #E09B1F;">{$username}</strong>,
+                                Hi <strong style="color: #C98B2E;">{$username}</strong>,
                             </p>
                             
                             <p style="color: #cccccc; font-size: 15px; line-height: 1.6; margin: 0 0 25px 0;">
@@ -107,7 +107,7 @@ function sendPasswordResetEmail($email, $username, $resetLink) {
                             <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td align="center" style="padding: 15px 0 25px 0;">
-                                        <a href="{$resetLink}" style="display: inline-block; background: linear-gradient(135deg, #F2B33D, #E09B1F); color: #1A1206; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: bold; font-size: 16px;">Reset Password</a>
+                                        <a href="{$resetLink}" style="display: inline-block; background: #E3A447; color: #1A1206; text-decoration: none; padding: 16px 40px; border-radius: 8px; font-weight: bold; font-size: 16px;">Reset Password</a>
                                     </td>
                                 </tr>
                             </table>
@@ -169,7 +169,7 @@ function sendVerificationEmail($email, $username, $verifyLink) {
                 <table role="presentation" width="500" cellspacing="0" cellpadding="0" style="background-color: #14161C; border-radius: 12px; overflow: hidden; max-width: 500px;">
                     <!-- Header -->
                     <tr>
-                        <td style="background: linear-gradient(135deg, #F2B33D, #E09B1F); padding: 25px; text-align: center;">
+                        <td style="background: #E3A447; padding: 25px; text-align: center;">
                             <h1 style="margin: 0; color: #ffffff; font-size: 28px;">🎬 Zinema.lk</h1>
                         </td>
                     </tr>
@@ -180,7 +180,7 @@ function sendVerificationEmail($email, $username, $verifyLink) {
                             <h2 style="color: #51cf66; margin: 0 0 20px 0; font-size: 22px;">Welcome to Zinema.lk! 🎉</h2>
                             
                             <p style="color: #ffffff; font-size: 16px; line-height: 1.6; margin: 0 0 15px 0;">
-                                Hi <strong style="color: #E09B1F;">{$username}</strong>,
+                                Hi <strong style="color: #C98B2E;">{$username}</strong>,
                             </p>
                             
                             <p style="color: #cccccc; font-size: 15px; line-height: 1.6; margin: 0 0 25px 0;">

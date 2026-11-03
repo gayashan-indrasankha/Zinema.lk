@@ -13,12 +13,12 @@
     --muted: #b4bcc9;
     --faint: #7c8596;
     /* "Reel Gold" brand palette (matches the public site) */
-    --primary: #F2B33D;
-    --primary-hover: #F7C75A;
-    --secondary: #E09B1F;
+    --primary: #E3A447;
+    --primary-hover: #EDB660;
+    --secondary: #C98B2E;
     --on-primary: #1A1206;
-    --gradient: linear-gradient(135deg, #F7C75A, #E39A26);
-    --gradient-soft: linear-gradient(135deg, rgba(242, 179, 61, 0.16), rgba(224, 155, 31, 0.08));
+    --gradient: #E3A447;
+    --gradient-soft: rgba(227, 164, 71, 0.16);
     --success: #22c55e;
     --warning: #ff8a3d;
     --danger: #ff4d6d;
@@ -44,8 +44,8 @@ body {
     color: var(--text);
     background-color: var(--bg);
     background-image:
-        radial-gradient(circle at 15% -10%, rgba(242, 179, 61, 0.12), transparent 40%),
-        radial-gradient(circle at 100% 110%, rgba(224, 155, 31, 0.08), transparent 40%);
+        radial-gradient(circle at 15% -10%, rgba(227, 164, 71, 0.12), transparent 40%),
+        radial-gradient(circle at 100% 110%, rgba(201, 139, 46, 0.08), transparent 40%);
     background-attachment: fixed;
 }
 
@@ -85,7 +85,7 @@ hr {
 }
 
 ::selection {
-    background: rgba(242, 179, 61, 0.4);
+    background: rgba(227, 164, 71, 0.4);
 }
 
 /* ---------- Sidebar ---------- */
@@ -349,7 +349,7 @@ select:focus,
 .setting-input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(242, 179, 61, 0.2);
+    box-shadow: 0 0 0 3px rgba(227, 164, 71, 0.2);
     background: #121218;
 }
 
@@ -437,7 +437,7 @@ input[type="submit"] {
     background: var(--gradient);
     border: 0;
     border-radius: var(--radius-sm);
-    box-shadow: 0 6px 18px rgba(242, 179, 61, 0.25);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
     cursor: pointer;
     text-decoration: none;
     transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
@@ -453,7 +453,7 @@ input[type="submit"]:hover {
     color: var(--on-primary);
     transform: translateY(-1px);
     filter: brightness(1.08);
-    box-shadow: 0 10px 24px rgba(224, 155, 31, 0.25);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
 }
 
 button:disabled,
@@ -543,7 +543,7 @@ table tbody tr {
 }
 
 table tbody tr:hover {
-    background: rgba(242, 179, 61, 0.06);
+    background: rgba(227, 164, 71, 0.06);
 }
 
 table tr:last-child td {
@@ -567,8 +567,8 @@ table td a {
     font-size: 0.82rem;
     font-weight: 600;
     color: var(--primary-hover);
-    background: rgba(242, 179, 61, 0.12);
-    border: 1px solid rgba(242, 179, 61, 0.25);
+    background: rgba(227, 164, 71, 0.12);
+    border: 1px solid rgba(227, 164, 71, 0.25);
     white-space: nowrap;
 }
 
@@ -645,8 +645,8 @@ table td a[href*="delete"]:hover {
 }
 
 .alert-info {
-    background: rgba(242, 179, 61, 0.1);
-    border-color: rgba(242, 179, 61, 0.35);
+    background: rgba(227, 164, 71, 0.1);
+    border-color: rgba(227, 164, 71, 0.35);
     color: #F5D58A;
 }
 
@@ -680,13 +680,17 @@ table td a[href*="delete"]:hover {
     position: absolute;
     inset: 0 0 auto 0;
     height: 3px;
-    background: var(--gradient);
-    opacity: 0.85;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Gold only on the card being pointed at */
+.widget:hover::after {
+    background: var(--primary);
 }
 
 .widget:hover {
     transform: translateY(-3px);
-    border-color: rgba(242, 179, 61, 0.4);
+    border-color: rgba(227, 164, 71, 0.4);
 }
 
 .widget h2,
@@ -704,10 +708,7 @@ table td a[href*="delete"]:hover {
     margin: 0;
     font-size: 2.2rem;
     font-weight: 800;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: #fff;
 }
 
 .widget .unit {
@@ -823,7 +824,7 @@ table td a[href*="delete"]:hover {
 }
 
 .search-results div:hover {
-    background: rgba(242, 179, 61, 0.12);
+    background: rgba(227, 164, 71, 0.12);
 }
 
 .selected-content {
@@ -971,9 +972,9 @@ table td a[href*="delete"]:hover {
 }
 
 .stat-card.green { background: linear-gradient(135deg, rgba(34, 197, 94, 0.22), var(--surface) 70%); }
-.stat-card.blue { background: linear-gradient(135deg, rgba(242, 179, 61, 0.25), var(--surface) 70%); }
+.stat-card.blue { background: linear-gradient(135deg, rgba(227, 164, 71, 0.25), var(--surface) 70%); }
 .stat-card.purple { background: linear-gradient(135deg, rgba(148, 163, 184, 0.22), var(--surface) 70%); }
-.stat-card.orange { background: linear-gradient(135deg, rgba(224, 155, 31, 0.22), var(--surface) 70%); }
+.stat-card.orange { background: linear-gradient(135deg, rgba(201, 139, 46, 0.22), var(--surface) 70%); }
 
 .stat-card h3 {
     margin: 0 0 10px;
@@ -1042,7 +1043,7 @@ table td a[href*="delete"]:hover {
 .cache-status.hot { background: rgba(34, 197, 94, 0.15); color: #6ee7a0; }
 .status-badge.offline { background: rgba(255, 77, 109, 0.15); color: #ff8fa3; }
 .cache-status.warm { background: rgba(255, 138, 61, 0.15); color: #ffb07a; }
-.cache-status.cold { background: rgba(242, 179, 61, 0.15); color: #F5D58A; }
+.cache-status.cold { background: rgba(227, 164, 71, 0.15); color: #F5D58A; }
 
 .bot-info {
     display: grid;

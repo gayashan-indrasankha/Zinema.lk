@@ -103,7 +103,7 @@ if (!empty($token)) {
         }
         .form-group input:focus {
             outline: none;
-            border-color: #F2B33D;
+            border-color: #E3A447;
             background: rgba(25, 28, 38, 0.9);
         }
         .form-group input.invalid { border-color: #ff6b6b; }
@@ -111,7 +111,7 @@ if (!empty($token)) {
         .btn-submit {
             width: 100%;
             padding: 14px;
-            background: linear-gradient(135deg, rgba(242, 179, 61, 0.8), rgba(224, 155, 31, 0.6));
+            background: rgba(227, 164, 71, 0.8);
             color: #1A1206;
             border: none;
             border-radius: 8px;
@@ -121,7 +121,7 @@ if (!empty($token)) {
             transition: all 0.3s;
         }
         .btn-submit:hover {
-            background: linear-gradient(135deg, #F2B33D, rgba(224, 155, 31, 0.7));
+            background: #E3A447;
             transform: translateY(-2px);
         }
         .btn-submit:disabled {
@@ -171,7 +171,7 @@ if (!empty($token)) {
             margin-top: 20px;
         }
         .back-link a {
-            color: #F2B33D;
+            color: #E3A447;
             text-decoration: none;
         }
         .back-link a:hover { text-decoration: underline; }

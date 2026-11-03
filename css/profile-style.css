@@ -4,10 +4,10 @@
 
 /* CSS Variables for Easy Theming */
 :root {
-    --primary-purple: rgba(242, 179, 61, 1);
-    --primary-purple-light: rgba(242, 179, 61, 0.8);
-    --primary-purple-dark: rgba(224, 155, 31, 1);
-    --accent-pink: rgba(224, 155, 31, 0.6);
+    --primary-purple: rgba(227, 164, 71, 1);
+    --primary-purple-light: rgba(227, 164, 71, 0.8);
+    --primary-purple-dark: rgba(201, 139, 46, 1);
+    --accent-pink: rgba(201, 139, 46, 0.6);
     /* Movies page theme colors */
     --bg-dark: rgba(18, 20, 26, 1);
     --bg-card: rgba(18, 20, 26, 1);
@@ -151,7 +151,7 @@ body {
 }
 
 .btn-login:hover {
-    background: linear-gradient(135deg, var(--primary-purple), rgba(224, 155, 31, 0.7));
+    background: linear-gradient(135deg, var(--primary-purple), rgba(201, 139, 46, 0.7));
     transform: translateY(-2px);
 }
 
@@ -523,7 +523,7 @@ body {
 }
 
 .no-favorites a:hover {
-    background: linear-gradient(135deg, var(--primary-purple), rgba(224, 155, 31, 0.7));
+    background: linear-gradient(135deg, var(--primary-purple), rgba(201, 139, 46, 0.7));
     box-shadow: 0 0 15px var(--primary-purple-light);
 }
 
@@ -717,7 +717,7 @@ body {
 }
 
 .btn-login-submit:hover {
-    background: linear-gradient(135deg, var(--primary-purple), rgba(224, 155, 31, 0.7));
+    background: linear-gradient(135deg, var(--primary-purple), rgba(201, 139, 46, 0.7));
     transform: translateY(-2px);
     box-shadow: none;
 }
@@ -1026,7 +1026,7 @@ body {
 
 .btn-confirm-logout:focus,
 .btn-cancel-logout:focus {
-    outline: 2px solid rgba(242, 179, 61, 0.5);
+    outline: 2px solid rgba(227, 164, 71, 0.5);
     outline-offset: 2px;
 }
 
@@ -1237,7 +1237,7 @@ body {
     width: 22px;
     height: 22px;
     min-width: 22px;
-    background: #F2B33D;
+    background: #E3A447;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -1247,11 +1247,11 @@ body {
 }
 
 .remember-me-container input[type="checkbox"]:hover {
-    background: #F2B33D;
+    background: #E3A447;
 }
 
 .remember-me-container input[type="checkbox"]:checked {
-    background: #F2B33D;
+    background: #E3A447;
 }
 
 .remember-me-container input[type="checkbox"]:checked::after {

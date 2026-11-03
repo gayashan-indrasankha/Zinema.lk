@@ -97,11 +97,11 @@ if (!empty($token)) {
             transition: all 0.3s;
         }
         .btn-primary {
-            background: linear-gradient(135deg, rgba(242, 179, 61, 0.8), rgba(224, 155, 31, 0.6));
+            background: rgba(227, 164, 71, 0.8);
             color: #1A1206;
         }
         .btn-primary:hover {
-            background: linear-gradient(135deg, #F2B33D, rgba(224, 155, 31, 0.7));
+            background: #E3A447;
             transform: translateY(-2px);
         }
         .countdown {

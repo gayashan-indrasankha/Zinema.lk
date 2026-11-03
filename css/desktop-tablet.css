@@ -247,7 +247,7 @@
         background: linear-gradient(135deg, #1F2229 0%, #26314e 100%);
         border-color: rgba(255, 255, 255, 0.5);
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(242, 179, 61, 0.3);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
     }
 
     /* Description */
@@ -285,24 +285,24 @@
     }
 
     .btn-watch {
-        background: linear-gradient(90deg, #F2B33D 0%, #F2B33D 50%, #E09B1F 100%);
+        background: #E3A447;
         color: #1A1206;
-        box-shadow: 0 4px 15px rgba(242, 179, 61, 0.4);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
     }
 
     .btn-watch:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(242, 179, 61, 0.6);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
     }
 
     .btn-download {
         background: transparent;
         color: white;
-        border: 2px solid #F2B33D;
+        border: 2px solid #E3A447;
     }
 
     .btn-download:hover {
-        background: rgba(242, 179, 61, 0.1);
+        background: rgba(227, 164, 71, 0.1);
         border-color: #FF5A5F;
         transform: translateY(-2px);
     }
@@ -458,24 +458,24 @@
     }
 
     .btn-watch {
-        background: linear-gradient(90deg, #F2B33D 0%, #F2B33D 50%, #E09B1F 100%);
+        background: #E3A447;
         color: #1A1206;
-        box-shadow: 0 4px 15px rgba(242, 179, 61, 0.4);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
     }
 
     .btn-watch:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(242, 179, 61, 0.6);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
     }
 
     .btn-download {
         background: transparent;
         color: white;
-        border: 2px solid #F2B33D;
+        border: 2px solid #E3A447;
     }
 
     .btn-download:hover {
-        background: rgba(242, 179, 61, 0.1);
+        background: rgba(227, 164, 71, 0.1);
         border-color: #FF5A5F;
         transform: translateY(-2px);
     }
@@ -603,7 +603,7 @@
     }
 
     .genre-tag:hover {
-        box-shadow: 0 6px 20px rgba(242, 179, 61, 0.4);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
     }
 
     /* Description */
@@ -645,24 +645,24 @@
     }
 
     .btn-watch {
-        background: linear-gradient(90deg, #F2B33D 0%, #F2B33D 50%, #E09B1F 100%);
+        background: #E3A447;
         color: #1A1206;
-        box-shadow: 0 6px 20px rgba(242, 179, 61, 0.5);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
     }
 
     .btn-watch:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 30px rgba(242, 179, 61, 0.7);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
 
     .btn-download {
         background: transparent;
         color: white;
-        border: 2px solid #F2B33D;
+        border: 2px solid #E3A447;
     }
 
     .btn-download:hover {
-        background: rgba(242, 179, 61, 0.1);
+        background: rgba(227, 164, 71, 0.1);
         border-color: #FF5A5F;
         transform: translateY(-2px);
     }
@@ -714,7 +714,7 @@
     }
 
     .vjs-close-btn:hover {
-        background: rgba(224, 155, 31, 0.9);
+        background: rgba(201, 139, 46, 0.9);
         transform: rotate(90deg) scale(1.1);
     }
 
@@ -776,7 +776,7 @@
 
     .related-movie-card:hover {
         transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 15px 40px rgba(242, 179, 61, 0.4);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
     }
 
     .related-movie-card img {
@@ -858,7 +858,7 @@
         left: -2px;
         right: -2px;
         bottom: -2px;
-        background: linear-gradient(135deg, rgba(242, 179, 61, 0.5), rgba(224, 155, 31, 0.5));
+        background: rgba(227, 164, 71, 0.25);
         border-radius: 20px;
         opacity: 0;
         transition: opacity 0.4s ease;
@@ -875,11 +875,11 @@
 
         0%,
         100% {
-            box-shadow: 0 0 0 0 rgba(242, 179, 61, 0.4);
+            box-shadow: 0 0 0 0 rgba(227, 164, 71, 0.4);
         }
 
         50% {
-            box-shadow: 0 0 0 8px rgba(242, 179, 61, 0);
+            box-shadow: 0 0 0 8px rgba(227, 164, 71, 0);
         }
     }
 
@@ -914,7 +914,7 @@
 
     /* Selection Styling */
     ::selection {
-        background: rgba(242, 179, 61, 0.4);
+        background: rgba(227, 164, 71, 0.4);
         color: #fff;
     }
 }
@@ -952,13 +952,15 @@
         position: absolute;
         top: 20px;
         right: 20px;
-        background: rgba(224, 155, 31, 0.9);
-        color: #1A1206;
+        background: rgba(12, 13, 18, 0.72);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(6px);
         padding: 8px 16px;
         border-radius: 8px;
         font-size: 0.9rem;
         font-weight: 700;
-        box-shadow: 0 4px 15px rgba(224, 155, 31, 0.4);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
     }
 
     /* Language Badge (if exists) */
@@ -966,13 +968,15 @@
         position: absolute;
         top: 20px;
         left: 20px;
-        background: rgba(242, 179, 61, 0.9);
-        color: #1A1206;
+        background: rgba(12, 13, 18, 0.72);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(6px);
         padding: 8px 16px;
         border-radius: 8px;
         font-size: 0.9rem;
         font-weight: 700;
-        box-shadow: 0 4px 15px rgba(242, 179, 61, 0.4);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
     }
 }
 
@@ -987,7 +991,7 @@
     .btn:focus-visible,
     .top-nav-item:focus-visible,
     .genre-tag:focus-visible {
-        outline: 2px solid rgba(242, 179, 61, 1);
+        outline: 2px solid rgba(227, 164, 71, 1);
         outline-offset: 4px;
     }
 
@@ -1444,11 +1448,11 @@
 
     .profile-stats .stat-item:nth-child(2) .stat-number {
         font-size: 0.9rem !important;
-        background: rgba(242, 179, 61, 0.15);
+        background: rgba(227, 164, 71, 0.15);
         color: #FF8A8F !important;
         padding: 6px 16px;
         border-radius: 20px;
-        border: 1px solid rgba(242, 179, 61, 0.3);
+        border: 1px solid rgba(227, 164, 71, 0.3);
         font-weight: 600 !important;
         letter-spacing: 0.5px;
         text-transform: uppercase;
