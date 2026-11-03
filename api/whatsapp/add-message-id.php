@@ -52,13 +52,13 @@ if ($partNumber > 0 && in_array($contentType, ['movie', 'episode'])) {
     $idColumn = $contentType === 'movie' ? 'movie_id' : 'episode_id';
     
     $stmt = $conn->prepare(
-        "INSERT INTO {$tableName} ({$idColumn}, part_number, message_id, file_name, file_size) 
-         VALUES (?, ?, ?, ?, ?)
-         ON DUPLICATE KEY UPDATE message_id = ?, file_name = ?, file_size = ?, updated_at = NOW()"
+        "INSERT INTO {$tableName} ({$idColumn}, part_number, message_id, file_name)
+         VALUES (?, ?, ?, ?)
+         ON DUPLICATE KEY UPDATE message_id = ?, file_name = ?, updated_at = NOW()"
     );
-    $stmt->bind_param("iississi", 
-        $contentId, $partNumber, $messageId, $fileName, $fileSize,
-        $messageId, $fileName, $fileSize
+    $stmt->bind_param("iissss",
+        $contentId, $partNumber, $messageId, $fileName,
+        $messageId, $fileName
     );
     
     if ($stmt->execute()) {
