@@ -82,7 +82,7 @@ class TrailerFeed {
                     <div class="trailer-info">
                         <h2 class="trailer-title">${this.escapeHtml(trailer.movie_title)}</h2>
                         <p class="trailer-description">${this.escapeHtml(trailer.description)}</p>
-                        <a href="movie-detail.php?id=${trailer.movie_id}" class="watch-button">
+                        <a href="movie-details.php?id=${trailer.movie_id}" class="watch-button">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M8 5v14l11-7z"/>
                             </svg>
