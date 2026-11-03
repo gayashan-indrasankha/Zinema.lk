@@ -14,21 +14,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     
                     // Handle file upload
                     $target_dir = "../uploads/trailers/";
-                    $file_extension = pathinfo($_FILES["trailer_video"]["name"], PATHINFO_EXTENSION);
+                    if (!is_dir($target_dir)) {
+                        mkdir($target_dir, 0755, true);
+                    }
+                    $file_extension = strtolower(pathinfo($_FILES["trailer_video"]["name"], PATHINFO_EXTENSION));
+                    if (!in_array($file_extension, ['mp4', 'webm', 'mov', 'm4v'], true)) {
+                        $_SESSION['error'] = "Please upload a video file (mp4, webm, mov or m4v).";
+                        break;
+                    }
                     $video_filename = uniqid() . '.' . $file_extension;
                     $target_file = $target_dir . $video_filename;
-                    
+
                     if (move_uploaded_file($_FILES["trailer_video"]["tmp_name"], $target_file)) {
-                        $video_url = '/uploads/trailers/' . $video_filename;
-                        
+                        // Relative to the site root (like movie covers) so it works under /zinema
+                        $video_url = 'uploads/trailers/' . $video_filename;
+
                         // Create thumbnail using ffmpeg if available
                         $thumbnail_url = null;
                         if (function_exists('exec')) {
                             $thumb_filename = uniqid() . '.jpg';
                             $thumb_path = $target_dir . $thumb_filename;
-                            exec("ffmpeg -i $target_file -ss 00:00:01 -vframes 1 $thumb_path");
+                            exec('ffmpeg -i ' . escapeshellarg($target_file) . ' -ss 00:00:01 -vframes 1 ' . escapeshellarg($thumb_path));
                             if (file_exists($thumb_path)) {
-                                $thumbnail_url = '/uploads/trailers/' . $thumb_filename;
+                                $thumbnail_url = 'uploads/trailers/' . $thumb_filename;
                             }
                         }
                         
