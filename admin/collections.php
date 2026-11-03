@@ -33,8 +33,14 @@ if (isset($_GET['delete'])) {
     exit;
 }
 
+// Reject non-image uploads before saving
+$upload_error = '';
+if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] == 0) {
+    $upload_error = admin_image_upload_error($_FILES['cover_image']);
+}
+
 // Handle Add/Edit
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $upload_error === '') {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $genre = $_POST['genre'];
@@ -94,6 +100,9 @@ $collections = $conn->query("SELECT * FROM collections ORDER BY created_at DESC"
 
         <section class="form-container">
             <h2><?php echo $edit_collection ? 'Edit Collection' : 'Add New Collection'; ?></h2>
+            <?php if ($upload_error !== ""): ?>
+            <p style="color:#e74c3c;font-weight:600;"><?php echo htmlspecialchars($upload_error); ?></p>
+            <?php endif; ?>
             <form method="POST" action="collections.php" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?php echo $edit_collection['id'] ?? ''; ?>">
                 <input type="hidden" name="existing_cover_image" value="<?php echo htmlspecialchars($edit_collection['cover_image'] ?? ''); ?>">

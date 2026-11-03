@@ -6,6 +6,13 @@ $admin_id = $_SESSION['admin_id'];
 $message = '';
 $message_type = '';
 
+// Reject non-image uploads before any add/edit runs
+if (isset($_FILES['cover_image']) && $_FILES['cover_image']['error'] == 0 && ($upload_error = admin_image_upload_error($_FILES['cover_image'])) !== '') {
+    $message = $upload_error;
+    $message_type = 'error';
+    unset($_POST['add_movie'], $_POST['edit_movie']);
+}
+
 // Handle Delete
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);

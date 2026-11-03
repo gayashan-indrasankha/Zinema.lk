@@ -6,6 +6,13 @@ $admin_id = $_SESSION['admin_id'];
 $message = '';
 $message_type = '';
 
+// Reject non-image uploads before any add/edit runs
+if (isset($_FILES['thumb_image']) && $_FILES['thumb_image']['error'] == 0 && ($upload_error = admin_image_upload_error($_FILES['thumb_image'])) !== '') {
+    $message = $upload_error;
+    $message_type = 'error';
+    unset($_POST['add_episode'], $_POST['edit_episode']);
+}
+
 // Handle Delete Episode
 if (isset($_GET['delete_episode'])) {
     $id = intval($_GET['delete_episode']);
