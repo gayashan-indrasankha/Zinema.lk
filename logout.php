@@ -1,6 +1,6 @@
 <?php
-// Start session
-session_start();
+// Load the configured session save path and start the session
+require_once 'admin/config.php';
 
 // Unset all session variables
 session_unset();

@@ -2,12 +2,7 @@
 // Clean any output buffer and start fresh to prevent HTML output
 ob_start();
 
-// Start session
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Include database connection
+// Include database connection (also starts the session)
 require_once '../admin/config.php';
 
 // Clean output buffer before sending JSON
