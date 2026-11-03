@@ -1,6 +1,7 @@
 <?php
 // Include database connection
 require_once 'admin/config.php';
+require_once 'includes/media_card.php';
 $current_nav_page = 'collections'; // For bottom nav highlighting
 
 // Get collection ID from URL
@@ -159,6 +160,7 @@ $schema_data = [
     </script>
 
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/vendor/fontawesome-6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/media-card.css?v=<?php echo filemtime(__DIR__ . '/css/media-card.css'); ?>">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/responsive.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/search_popup_styles.css">
@@ -599,55 +601,15 @@ $schema_data = [
 
         <!-- Movies Grid -->
         <?php if (!empty($movies_in_collection)): ?>
-            <div class="movies-grid">
-                <?php foreach ($movies_in_collection as $movie): 
-                    $m_slug = createSlug($movie['title']);
-                    // Note: Ensure consistent clean URL generation
-                    $clean_movie_link = BASE_URL . "/movie/" . $movie['id'] . "/" . $m_slug;
-                    
-                    // Fix poster path
-                    $m_poster = $movie['cover_image'];
-                    if (strpos($m_poster, 'sinhalamovies.web.lk/uploads/') !== false) {
-                        $m_poster = 'uploads/' . basename($m_poster);
-                    }
-                    if (!preg_match('/^http/', $m_poster)) {
-                        $local_p = __DIR__ . '/' . ltrim($m_poster, '/');
-                        if (file_exists($local_p)) {
-                            $m_poster = BASE_URL . '/' . ltrim($m_poster, '/');
-                        } else {
-                            // Fallback logic could go here, but for now strict absolute path
-                             $m_poster = BASE_URL . '/' . ltrim($m_poster, '/');
-                        }
-                    }
-                ?>
-                    <a href="<?php echo $clean_movie_link; ?>" class="movie-card">
-                        <div class="movie-poster-wrapper">
-                            <?php if (!empty($movie['cover_image'])): ?>
-                                <img src="<?php echo htmlspecialchars($m_poster); ?>" 
-                                     alt="<?php echo htmlspecialchars($movie['title']); ?>"
-                                     class="movie-poster"
-                                     loading="lazy"
-                                     decoding="async">
-                            <?php else: ?>
-                                <div class="movie-poster" style="background: linear-gradient(135deg, #1a1a2e, #0a0a0a);"></div>
-                            <?php endif; ?>
-                            
-                            <div class="movie-info">
-                                <div class="movie-title"><?php echo htmlspecialchars($movie['title']); ?></div>
-                                <div class="movie-meta">
-                                    <?php if (!empty($movie['rating'])): ?>
-                                        <span class="movie-rating">
-                                            <i class="fas fa-star"></i>
-                                            <?php echo number_format($movie['rating'], 1); ?>
-                                        </span>
-                                        <span class="meta-divider">•</span>
-                                    <?php endif; ?>
-                                    <span><?php echo htmlspecialchars($movie['release_date'] ?? 'N/A'); ?></span>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
+            <div class="media-grid">
+                <?php foreach ($movies_in_collection as $movie) {
+                    render_media_card([
+                        'href' => BASE_URL . '/movie/' . $movie['id'] . '/' . createSlug($movie['title']),
+                        'title' => $movie['title'],
+                        'cover' => $movie['cover_image'],
+                        'rating' => $movie['rating'] ?? 0,
+                    ]);
+                } ?>
             </div>
         <?php else: ?>
             <div class="empty-state">

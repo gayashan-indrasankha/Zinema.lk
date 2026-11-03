@@ -1,6 +1,7 @@
 <?php
 // Include database connection
 require_once 'admin/config.php';
+require_once 'includes/media_card.php';
 require_once 'includes/settings.php';
 require_once 'includes/csrf_helper.php';
 
@@ -123,13 +124,12 @@ if ($result && $result->num_rows > 0) {
 if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
     if (!empty($movies)) {
         foreach ($movies as $movie) {
-            echo '<a href="movie-details.php?id=' . $movie['id'] . '" class="movie-card">';
-            echo '<img src="' . htmlspecialchars($movie['cover_image']) . '" alt="' . htmlspecialchars($movie['title']) . '" loading="lazy" decoding="async" class="movie-poster" onerror="this.src=\'assets/images/placeholder.jpg\';">';
-            echo '<div class="movie-info">';
-            echo '<div class="movie-title">' . htmlspecialchars($movie['title']) . '</div>';
-            echo '<div style="font-size: 10px; color: #888;">' . date('Y', strtotime($movie['release_date'])) . '</div>';
-            echo '</div>';
-            echo '</a>';
+            render_media_card([
+                'href' => BASE_URL . '/movie/' . $movie['id'] . '/' . createSlug($movie['title']),
+                'title' => $movie['title'],
+                'cover' => $movie['cover_image'],
+                'rating' => $movie['rating'] ?? 0,
+            ]);
         }
     } else {
         // Return empty string if no more movies
@@ -155,6 +155,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
     <meta property="og:url" content="<?php echo BASE_URL; ?>/movies.php">
     <meta property="og:site_name" content="Zinema.lk">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/vendor/fontawesome-6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/media-card.css?v=<?php echo filemtime(__DIR__ . '/css/media-card.css'); ?>">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/profile-style.css?v=2.0">
     <link rel="stylesheet" href="css/responsive.css">
@@ -661,33 +662,15 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
             <!-- Movie Grid -->
             <div class="container">
                 <?php if (!empty($movies)): ?>
-                    <div class="simple-movie-grid">
-                        <?php foreach ($movies as $movie): 
-                            $slug = createSlug($movie['title']);
-                            $clean_link = "movie/" . $movie['id'] . "/" . $slug;
-                            
-                            // Fix poster path
-                            $poster = $movie['cover_image'];
-                            if (strpos($poster, 'sinhalamovies.web.lk/uploads/') !== false) {
-                                $poster = 'uploads/' . basename($poster);
-                            }
-                        ?>
-                            <a href="<?php echo htmlspecialchars($clean_link); ?>" class="simple-movie-card">
-                                <div class="movie-poster-wrap">
-                                    <img src="<?php echo htmlspecialchars($poster); ?>" 
-                                         alt="<?php echo htmlspecialchars($movie['title']); ?>" 
-                                         loading="lazy"
-                                         onerror="this.onerror=null; this.src='https://placehold.co/180x270/1a1a1a/666666?text=No+Poster';">
-                                    <?php if (!empty($movie['is_vip'])): ?>
-                                        <span class="movie-badge vip">VIP</span>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="movie-details">
-                                    <h3 class="movie-title"><?php echo htmlspecialchars($movie['title']); ?></h3>
-                                    <p class="movie-year"><?php echo htmlspecialchars($movie['release_year'] ?? ''); ?></p>
-                                </div>
-                            </a>
-                        <?php endforeach; ?>
+                    <div class="media-grid">
+                        <?php foreach ($movies as $movie) {
+                            render_media_card([
+                                'href' => BASE_URL . '/movie/' . $movie['id'] . '/' . createSlug($movie['title']),
+                                'title' => $movie['title'],
+                                'cover' => $movie['cover_image'],
+                                'rating' => $movie['rating'] ?? 0,
+                            ]);
+                        } ?>
                     </div>
                 <?php else: ?>
                     <div class="no-results">
@@ -891,7 +874,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
             // Only active on mobile (< 768px for safety, or check if pagination is hidden)
             // The request was "Mobile users must be able to see ALL available movies by scrolling"
             
-            const movieGrid = document.querySelector('.simple-movie-grid');
+            const movieGrid = document.querySelector('.media-grid');
             if (!movieGrid) return;
             
             let currentPage = <?php echo $current_page; ?>;

@@ -1,6 +1,7 @@
 <?php
 // Include database connection
 require_once 'admin/config.php';
+require_once 'includes/media_card.php';
 require_once 'includes/settings.php';
 require_once 'includes/csrf_helper.php';
 
@@ -127,6 +128,7 @@ function createSlug($string) {
     <meta property="og:url" content="<?php echo BASE_URL; ?>/tv-series.php">
     <meta property="og:site_name" content="Zinema.lk">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/vendor/fontawesome-6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/media-card.css?v=<?php echo filemtime(__DIR__ . '/css/media-card.css'); ?>">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/profile-style.css?v=2.0">
     <link rel="stylesheet" href="css/responsive.css">
@@ -633,49 +635,14 @@ function createSlug($string) {
             <!-- Series Grid -->
             <div class="container">
                 <?php if (!empty($series_list)): ?>
-                    <div class="series-grid-2col">
-                        <?php foreach ($series_list as $series): 
-                            $slug = createSlug($series['title']);
-                            $clean_url = "series/" . $series['id'] . "/" . $slug;
-
-                            // Fix Poster Path Logic
-                            $s_poster = $series['cover_image'];
-                            
-                            // 1. Strip hardcoded legacy domain
-                            if (strpos($s_poster, 'sinhalamovies.web.lk/uploads/') !== false) {
-                                $s_poster = 'uploads/' . basename($s_poster);
-                            }
-
-                            // 2. Resolve to absolute path
-                            if (!preg_match('/^http/', $s_poster)) {
-                                $local_check = __DIR__ . '/' . ltrim($s_poster, '/');
-                                if (file_exists($local_check)) {
-                                    $s_poster = BASE_URL . '/' . ltrim($s_poster, '/');
-                                } else {
-                                     $s_poster = BASE_URL . '/' . ltrim($s_poster, '/');
-                                }
-                            }
-                        ?>
-                            <a href="<?php echo $clean_url; ?>" class="series-card">
-                                <img src="<?php echo htmlspecialchars($s_poster); ?>" 
-                                     alt="<?php echo htmlspecialchars($series['title']); ?>" 
-                                     loading="lazy" 
-                                     decoding="async"
-                                     class="series-poster"
-                                     onerror="this.src='assets/images/placeholder.jpg';">
-                                <div class="series-info">
-                                    <div class="series-title"><?php echo htmlspecialchars($series['title']); ?></div>
-                                    <div style="font-size: 10px; color: #888;">
-                                        <?php 
-                                        $year = !empty($series['release_date']) ? date('Y', strtotime($series['release_date'])) : '';
-                                        $seasons = $series['total_seasons'] ?? 1;
-                                        echo $year ? "$year • " : "";
-                                        echo "$seasons " . ($seasons > 1 ? "Seasons" : "Season");
-                                        ?>
-                                    </div>
-                                </div>
-                            </a>
-                        <?php endforeach; ?>
+                    <div class="media-grid">
+                        <?php foreach ($series_list as $series) {
+                            render_media_card([
+                                'href' => BASE_URL . '/series/' . $series['id'] . '/' . createSlug($series['title']),
+                                'title' => $series['title'],
+                                'cover' => $series['cover_image'],
+                            ]);
+                        } ?>
                     </div>
                 <?php else: ?>
                     <div class="no-movies">
