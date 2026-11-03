@@ -126,39 +126,7 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css">
-    <style>
-        .trailer-preview {
-            width: 200px;
-            height: 356px; /* 16:9 aspect ratio */
-            object-fit: cover;
-            border-radius: 8px;
-        }
-        .trailer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .trailer-card {
-            background: #f5f5f5;
-            border-radius: 8px;
-            padding: 10px;
-            position: relative;
-        }
-        .trailer-actions {
-            margin-top: 10px;
-            display: flex;
-            gap: 10px;
-        }
-        .upload-form {
-            max-width: 500px;
-            margin: 20px 0;
-            padding: 20px;
-            background: #f5f5f5;
-            border-radius: 8px;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo filemtime(__DIR__ . '/assets/admin.css'); ?>">
 </head>
 <body>
     <?php include '_layout.php'; ?>

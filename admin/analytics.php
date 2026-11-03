@@ -30,31 +30,7 @@ $monthly_watch_hours = round($monthly_watch_seconds / 3600, 2); // Convert to ho
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css">
-    <style>
-        /* Add some specific styles for the analytics page */
-        .analytics-widgets {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-        .widget .label {
-            font-size: 1.2rem;
-            color: #34495e;
-            margin-bottom: 0.5rem;
-        }
-        .widget .value {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #3498db;
-        }
-         .widget .unit {
-            font-size: 1.5rem;
-            font-weight: normal;
-            color: #7f8c8d;
-            margin-left: 8px;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo filemtime(__DIR__ . '/assets/admin.css'); ?>">
 </head>
 <body>
     <?php include '_layout.php'; ?>
@@ -82,8 +58,8 @@ $monthly_watch_hours = round($monthly_watch_seconds / 3600, 2); // Convert to ho
             </div>
         </section>
         
-        <div class="info-box" style="margin-top: 2rem; padding: 1.5rem; background: #eaf2f8; border-radius: 8px; border: 1px solid #d4e6f1;">
-            <p style="margin: 0; color: #2874a6;">
+        <div class="info-box">
+            <p style="margin: 0;">
                 <strong>Note:</strong> Data tracking started when this feature was implemented. "Watch Hours" are calculated based on the time the video player is open on the screen. This provides a good estimate of user engagement.
             </p>
         </div>

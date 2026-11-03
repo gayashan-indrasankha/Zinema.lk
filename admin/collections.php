@@ -89,7 +89,7 @@ $collections = $conn->query("SELECT * FROM collections ORDER BY created_at DESC"
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css">
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo filemtime(__DIR__ . '/assets/admin.css'); ?>">
 </head>
 <body>
     <?php include '_layout.php'; ?>
@@ -101,7 +101,7 @@ $collections = $conn->query("SELECT * FROM collections ORDER BY created_at DESC"
         <section class="form-container">
             <h2><?php echo $edit_collection ? 'Edit Collection' : 'Add New Collection'; ?></h2>
             <?php if ($upload_error !== ""): ?>
-            <p style="color:#e74c3c;font-weight:600;"><?php echo htmlspecialchars($upload_error); ?></p>
+            <p class="message error"><?php echo htmlspecialchars($upload_error); ?></p>
             <?php endif; ?>
             <form method="POST" action="collections.php" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?php echo $edit_collection['id'] ?? ''; ?>">
@@ -152,8 +152,8 @@ $collections = $conn->query("SELECT * FROM collections ORDER BY created_at DESC"
                         <td><?php echo htmlspecialchars($c['title']); ?></td>
                         <td><?php echo htmlspecialchars($c['genre']); ?></td>
                         <td>
-                            <a href="collections.php?edit=<?php echo $c['id']; ?>">Edit</a>
-                            <a href="collections.php?delete=<?php echo $c['id']; ?>" onclick="return confirm('Are you sure? This will also remove movies from this collection.')">Delete</a>
+                            <a href="collections.php?edit=<?php echo $c['id']; ?>"><i class="fas fa-pen"></i> Edit</a>
+                            <a href="collections.php?delete=<?php echo $c['id']; ?>" onclick="return confirm('Are you sure? This will also remove movies from this collection.')"><i class="fas fa-trash"></i> Delete</a>
                         </td>
                     </tr>
                     <?php endwhile; endif; ?>

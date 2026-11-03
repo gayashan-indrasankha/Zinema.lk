@@ -86,13 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css">
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo filemtime(__DIR__ . '/assets/admin.css'); ?>">
 </head>
 <body>
     <div class="login-container">
         <form method="POST" action="login.php" class="login-form">
             <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(admin_csrf_token(), ENT_QUOTES); ?>">
-            <h2>Zinema.lk Admin Login</h2>
+            <img class="login-logo" src="../assets/images/logo.png" alt="Zinema.lk">
+            <h2>Sign in to the admin panel</h2>
             <?php if ($error): ?>
                 <p class="error"><?php echo htmlspecialchars($error); ?></p>
             <?php endif; ?>
@@ -104,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <button type="submit">Login</button>
+            <button type="submit"><i class="fas fa-right-to-bracket"></i> Sign in</button>
         </form>
     </div>
 </body>

@@ -161,36 +161,7 @@ if (isset($_GET['edit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css">
-    <style>
-        .message {
-            padding: 12px 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .episode-thumbnail {
-            width: 80px;
-            height: 45px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo filemtime(__DIR__ . '/assets/admin.css'); ?>">
 </head>
 <body>
     <?php include '_layout.php'; ?>
@@ -297,7 +268,7 @@ if (isset($_GET['edit'])) {
                 </button>
                 
                 <?php if ($edit_episode): ?>
-                    <a href="episodes.php" style="margin-left: 10px; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">Cancel</a>
+                    <a href="episodes.php" class="cancel-btn">Cancel</a>
                 <?php endif; ?>
             </form>
         </section>
@@ -340,9 +311,9 @@ if (isset($_GET['edit'])) {
                             </td>
                             <td><?php echo $episode['duration'] ? $episode['duration'] . 'm' : '-'; ?></td>
                             <td>
-                                <a href="episodes.php?edit=<?php echo $episode['id']; ?>">Edit</a> | 
+                                <a href="episodes.php?edit=<?php echo $episode['id']; ?>"><i class="fas fa-pen"></i> Edit</a>
                                 <a href="episodes.php?delete_episode=<?php echo $episode['id']; ?>" 
-                                    onclick="return confirm('Are you sure you want to delete this episode?')">Delete</a>
+                                    onclick="return confirm('Are you sure you want to delete this episode?')"><i class="fas fa-trash"></i> Delete</a>
                             </td>
                         </tr>
                         <?php endwhile; ?>

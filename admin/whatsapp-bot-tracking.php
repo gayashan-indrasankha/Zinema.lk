@@ -15,18 +15,18 @@ if (!$tables_exist) {
     // Tables don't exist - Show Setup Required Page
     ?>
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="en" data-bs-theme="dark">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Setup Required - WhatsApp Bot Tracking</title>
         <link href="../assets/vendor/bootstrap-5.3.0/css/bootstrap.min.css" rel="stylesheet">
         <style>
-            body { background: #f3f4f6; padding: 50px; font-family: sans-serif; }
-            .setup-box { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-            .setup-box h1 { color: #667eea; margin-bottom: 20px; }
+            body { background: #0f1019; color: #e9ecf1; padding: 50px 16px; font-family: system-ui, sans-serif; }
+            .setup-box { max-width: 800px; margin: 0 auto; background: #14161e; border: 1px solid rgba(255,255,255,0.08); padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.35); }
+            .setup-box h1 { color: #fff; margin-bottom: 20px; }
             .setup-box .alert { margin: 20px 0; }
-            code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; }
+            code { background: #1a1d28; color: #ffd27a; padding: 2px 6px; border-radius: 4px; }
         </style>
     </head>
     <body>
@@ -125,211 +125,9 @@ if (!empty($overall_stats) && ($overall_stats['total_cache_hits'] + $overall_sta
     <title>WhatsApp Bot Tracking - Zinema.lk Admin</title>
     
     <!-- Standard Admin CSS -->
-    <link rel="stylesheet" href="assets/admin.css">
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo filemtime(__DIR__ . '/assets/admin.css'); ?>">
     <link rel="stylesheet" href="../assets/vendor/fontawesome-6.4.0/css/all.min.css">
     
-    <style>
-        /* Inherit admin panel layout but restore VIBRANT dashboard styles */
-        
-        .tracking-dashboard {
-            padding: 20px 0;
-        }
-
-        .refresh-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 25px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-        
-        /* RESTORED: Gradient Stat Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            border-radius: 15px;
-            padding: 25px;
-            color: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            /* Reset typical admin card styles if any */
-            background: white; 
-            border: none;
-        }
-        
-        .stat-card.green { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .stat-card.blue { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .stat-card.purple { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; }
-        .stat-card.orange { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        
-        .stat-card h3 {
-            font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: inherit; /* Inherit white or dark based on card */
-        }
-        
-        .stat-card .value {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: inherit;
-        }
-        
-        .stat-card .subtitle {
-            font-size: 12px;
-            opacity: 0.8;
-            color: inherit;
-        }
-        
-        /* RESTORED: Bot Cards with Status Borders */
-        .bots-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .bot-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            border-left: 5px solid #ddd; /* Default border */
-        }
-        
-        .bot-card.online { border-left-color: #10b981; }
-        .bot-card.offline { border-left-color: #ef4444; }
-        
-        .bot-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-        
-        .bot-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #1f2937;
-        }
-        
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .status-badge.online { background: #d1fae5; color: #065f46; }
-        .status-badge.offline { background: #fee2e2; color: #991b1b; }
-        
-        .bot-info { display: grid; gap: 10px; }
-        .bot-info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #f3f4f6;
-            font-size: 14px;
-        }
-        .bot-info-label { color: #6b7280; }
-        .bot-info-value { font-weight: 600; color: #1f2937; }
-        
-        /* Section Titles */
-        .section-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 40px 0 20px 0;
-            color: #1f2937;
-        }
-
-        /* RESTORED: Table Styles */
-        .table-container {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            overflow-x: auto;
-        }
-        
-        .data-table { width: 100%; border-collapse: collapse; }
-        .data-table thead { 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-            color: white; 
-        }
-        .data-table th { 
-            padding: 15px; 
-            text-align: left; 
-            font-weight: 600; 
-            font-size: 14px;
-            background: transparent; /* Override any admin.css specific background */
-            color: white;
-            text-transform: none;
-        }
-        .data-table td { 
-            padding: 12px 15px; 
-            border-bottom: 1px solid #f3f4f6; 
-            font-size: 14px; 
-            color: #4b5563;
-        }
-        .data-table tr:hover { background: #f9fafb; }
-        
-        /* Alerts */
-        .alert-item {
-            padding: 15px;
-            background: white;
-            border-left: 4px solid #f59e0b;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        
-        /* Progress Bar */
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-top: 8px;
-            display: block;
-            margin-left: 0;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #10b981, #059669);
-            border-radius: 10px;
-            transition: width 0.3s ease;
-        }
-        
-        .cache-status {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .cache-status.hot { background: #d1fae5; color: #065f46; }
-        .cache-status.warm { background: #fef3c7; color: #92400e; }
-        .cache-status.cold { background: #dbeafe; color: #1e40af; }
-    </style>
 </head>
 <body>
 

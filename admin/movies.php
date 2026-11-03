@@ -157,25 +157,7 @@ if (isset($_GET['edit'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../assets/images/tab-logo.png">
     <title>Zinema.lk</title>
-    <link rel="stylesheet" href="assets/admin.css">
-    <style>
-        .message {
-            padding: 12px 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/admin.css?v=<?php echo filemtime(__DIR__ . '/assets/admin.css'); ?>">
 </head>
 <body>
     <?php include '_layout.php'; ?>
@@ -274,7 +256,7 @@ if (isset($_GET['edit'])) {
                 </button>
                 
                 <?php if ($edit_movie): ?>
-                    <a href="movies.php" style="margin-left: 10px; padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px; display: inline-block;">Cancel</a>
+                    <a href="movies.php" class="cancel-btn">Cancel</a>
                 <?php endif; ?>
             </form>
         </section>
@@ -316,8 +298,8 @@ if (isset($_GET['edit'])) {
                                 <?php echo htmlspecialchars(substr($movie['video_url'], 0, 50)) . '...'; ?>
                             </td>
                             <td>
-                                <a href="movies.php?edit=<?php echo $movie['id']; ?>">Edit</a> | 
-                                <a href="movies.php?delete=<?php echo $movie['id']; ?>" onclick="return confirm('Are you sure you want to delete this movie?')">Delete</a>
+                                <a href="movies.php?edit=<?php echo $movie['id']; ?>"><i class="fas fa-pen"></i> Edit</a>
+                                <a href="movies.php?delete=<?php echo $movie['id']; ?>" onclick="return confirm('Are you sure you want to delete this movie?')"><i class="fas fa-trash"></i> Delete</a>
                             </td>
                         </tr>
                         <?php endwhile; ?>
