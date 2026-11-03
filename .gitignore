@@ -68,3 +68,6 @@ id_ed25519*
 *-temp.*
 OLD/
 old/
+
+# Local PHP session files (session_save_path); contain user session data
+runtime/php-sessions/
