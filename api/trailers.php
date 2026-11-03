@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../admin/config.php';
+require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/../includes/TrailerManager.php';
 
 header('Content-Type: application/json');
@@ -12,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-session_start();
 $userId = $_SESSION['user_id'] ?? null;
 
 $tm = new TrailerManager($pdo);

@@ -294,7 +294,7 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
         // Edit modal functions
         function editTrailer(id) {
             // Fetch trailer data and populate form
-            fetch(`/api/trailers.php?id=${id}`)
+            fetch(`../api/trailers.php?id=${id}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('edit_id').value = data.id;

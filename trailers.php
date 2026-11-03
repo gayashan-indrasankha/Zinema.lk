@@ -1,9 +1,7 @@
 <?php
 require_once __DIR__ . '/admin/config.php';
+require_once __DIR__ . '/includes/database.php';
 require_once __DIR__ . '/includes/TrailerManager.php';
-
-// Start session for user authentication
-session_start();
 
 // Get current user data
 $current_user = isset($_SESSION['user_id']) ? [
@@ -51,7 +49,7 @@ $initial_trailers = $trailerManager->getAllTrailers(
             const trailerFeed = new TrailerFeed({
                 container: document.getElementById('trailer-feed'),
                 userId: <?php echo $current_user ? $current_user['id'] : 'null'; ?>,
-                apiEndpoint: '/api/trailers.php',
+                apiEndpoint: 'api/trailers.php',
                 initialTrailers: <?php echo json_encode($initial_trailers); ?>
             });
             

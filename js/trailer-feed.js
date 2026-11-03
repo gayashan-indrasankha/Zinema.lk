@@ -1,7 +1,7 @@
 class TrailerFeed {
     constructor(options) {
         this.container = options.container;
-        this.apiEndpoint = options.apiEndpoint || '/api/trailers.php';
+        this.apiEndpoint = options.apiEndpoint || 'api/trailers.php';
         this.currentUserId = options.userId;
         this.page = 1;
         this.loading = false;
