@@ -163,7 +163,7 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
     </script>
 
     <!-- CSS Assets (Absolute Paths) -->
-    <link rel="stylesheet" href="assets/vendor/fontawesome-6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/vendor/fontawesome-6.4.0/css/all.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/responsive.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/search_popup_styles.css">
