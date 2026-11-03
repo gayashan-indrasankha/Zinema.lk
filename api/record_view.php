@@ -40,9 +40,10 @@ $sql = "INSERT IGNORE INTO user_views (user_id, shot_id) VALUES (?, ?)";
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {
+    error_log('record_view prepare failed: ' . $conn->error);
     echo json_encode([
         'status' => 'error', 
-        'message' => 'Database error: ' . $conn->error
+        'message' => 'Could not record view.'
     ]);
     exit;
 }

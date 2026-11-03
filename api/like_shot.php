@@ -92,7 +92,9 @@ try {
     $check_stmt->close();
     
 } catch (Exception $e) {
-    echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+    // Log details server-side; never show database internals to visitors
+    error_log('like_shot failed: ' . $e->getMessage());
+    echo json_encode(['status' => 'error', 'message' => 'Could not update like. Please try again.']);
 }
 
 // Close database connection
