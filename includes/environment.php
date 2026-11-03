@@ -48,7 +48,8 @@ foreach (['OAUTH_AUTHORIZE_URL', 'OAUTH_TOKEN_URL', 'OAUTH_USERINFO_URL'] as $ke
 define('WHATSAPP_API_KEY', WHATSAPP_MODE === 'disabled' ? '' : recovery_required('WHATSAPP_API_KEY'));
 define('STREAM_SIGNING_SECRET', MEDIA_MODE === 'disabled' ? '' : recovery_required('STREAM_SIGNING_SECRET'));
 define('STREAM_BASE_URL', MEDIA_MODE === 'disabled' ? '' : recovery_url('STREAM_BASE_URL', MEDIA_MODE === 'local'));
-define('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'disabled' ? BASE_URL . '/__recovery_disabled_extractor' : recovery_url('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'local'));
+// 'local' normally means an extractor on 127.0.0.1; ALLOW_REMOTE_EXTRACTOR=true lets the local site use the deployed https extractor.
+define('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'disabled' ? BASE_URL . '/__recovery_disabled_extractor' : recovery_url('FB_VIDEO_API_URL', EXTRACTOR_MODE === 'local' && recovery_env('ALLOW_REMOTE_EXTRACTOR') !== 'true'));
 foreach (['PAYMENT_APP_ID', 'PAYMENT_APP_SECRET'] as $key) define($key, PAYMENT_MODE === 'disabled' ? '' : recovery_required($key));
 define('PAYMENT_API_URL', PAYMENT_MODE === 'disabled' ? '' : recovery_url('PAYMENT_API_URL', PAYMENT_MODE === 'local'));
 // Legacy payment handlers stay disabled independently of these future adapter settings.
@@ -66,8 +67,15 @@ function recovery_browser_policy(array $media_urls = []) {
     }
     $media_origins = array_values(array_unique($media_origins));
     $extra_media = $media_origins ? ' ' . implode(' ', $media_origins) : '';
+    // With the extractor on, browsers call it for fresh shot URLs and play the Facebook CDN videos it returns.
+    $extra_connect = '';
+    if (EXTRACTOR_MODE !== 'disabled') {
+        $api = parse_url(FB_VIDEO_API_URL);
+        $extra_connect = ' ' . $api['scheme'] . '://' . strtolower($api['host']) . (isset($api['port']) ? ':' . (int)$api['port'] : '');
+        $extra_media .= ' https://*.fbcdn.net';
+    }
     if (APP_ENV !== 'production') {
         // Cached legacy CDN URLs and browser storage cannot bypass this local policy.
-        header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: http://127.0.0.1:*; media-src 'self' http://127.0.0.1:*" . $extra_media . "; connect-src 'self' http://127.0.0.1:*; frame-src 'self' http://127.0.0.1:*; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'");
+        header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: http://127.0.0.1:*; media-src 'self' http://127.0.0.1:*" . $extra_media . "; connect-src 'self' http://127.0.0.1:*" . $extra_connect . "; frame-src 'self' http://127.0.0.1:*; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'");
     }
 }
