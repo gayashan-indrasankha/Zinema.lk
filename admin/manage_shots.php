@@ -59,8 +59,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_shot'])) {
         
         if ($response) {
             $data = json_decode($response, true);
-            if (isset($data['success']) && $data['success'] && !empty($data['url'])) {
-                $cached_cdn_url = $data['url'];
+            // The extractor returns sd_url/hd_url; older versions returned a single url
+            $extracted_url = $data['sd_url'] ?? $data['hd_url'] ?? $data['url'] ?? '';
+            if (!empty($data['success']) && !empty($extracted_url)) {
+                $cached_cdn_url = $extracted_url;
             }
         }
         
