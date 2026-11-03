@@ -2,6 +2,11 @@
 require_once 'config.php';
 check_login();
 
+// Relative paths (uploads/...) are stored from the site root; legacy rows may hold full URLs
+function admin_image_src($path) {
+    return preg_match('~^https?://~', $path) ? $path : '../' . ltrim($path, '/');
+}
+
 // Handle Delete
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
@@ -42,7 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $image_name = uniqid() . '_collection_' . basename($_FILES["cover_image"]["name"]);
         $target_file = $target_dir . $image_name;
         if (move_uploaded_file($_FILES["cover_image"]["tmp_name"], $target_file)) {
-            $cover_image_path = BASE_URL . '/uploads/' . $image_name;
+            // Store a relative path (like movies) so images work on any host
+            $cover_image_path = 'uploads/' . $image_name;
         }
     }
 
@@ -108,7 +114,7 @@ $collections = $conn->query("SELECT * FROM collections ORDER BY created_at DESC"
                     <label>Cover Image</label>
                     <input type="file" name="cover_image" accept="image/*">
                      <?php if (!empty($edit_collection['cover_image'])): ?>
-                        <img src="<?php echo htmlspecialchars($edit_collection['cover_image']); ?>" width="100" style="margin-top:10px;">
+                        <img src="<?php echo htmlspecialchars(admin_image_src($edit_collection['cover_image'])); ?>" width="100" style="margin-top:10px;">
                     <?php endif; ?>
                 </div>
 
@@ -133,7 +139,7 @@ $collections = $conn->query("SELECT * FROM collections ORDER BY created_at DESC"
                 <tbody>
                     <?php if ($collections) : while($c = $collections->fetch_assoc()): ?>
                     <tr>
-                        <td><img src="<?php echo htmlspecialchars($c['cover_image']); ?>" width="100"></td>
+                        <td><img src="<?php echo htmlspecialchars(admin_image_src($c['cover_image'])); ?>" width="100"></td>
                         <td><?php echo htmlspecialchars($c['title']); ?></td>
                         <td><?php echo htmlspecialchars($c['genre']); ?></td>
                         <td>
