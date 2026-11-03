@@ -155,7 +155,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo BASE_URL; ?>/movies.php">
     <meta property="og:site_name" content="Zinema.lk">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/vendor/fontawesome-6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/profile-style.css?v=2.0">
     <link rel="stylesheet" href="css/responsive.css">

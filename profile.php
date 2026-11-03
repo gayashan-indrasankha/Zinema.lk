@@ -118,7 +118,7 @@ $has_more = $page < $total_pages;
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Profile - Zinema.lk">
     <meta name="twitter:description" content="Manage your Zinema.lk profile and saved content">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/vendor/fontawesome-6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/profile-style.css?v=2.0">
     <link rel="stylesheet" href="css/responsive.css">

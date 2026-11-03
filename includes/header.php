@@ -24,11 +24,11 @@
     <?php if (isset($og_url)): ?><meta property="og:url" content="<?php echo htmlspecialchars($og_url); ?>"><?php endif; ?>
     
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo BASE_URL; ?>/assets/vendor/bootstrap-5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="<?php echo defined('BASE_URL') ? BASE_URL : ''; ?>/assets/css/style.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>/assets/vendor/fontawesome-6.4.0/css/all.min.css">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">

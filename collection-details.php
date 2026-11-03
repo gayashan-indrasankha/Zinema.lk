@@ -159,7 +159,7 @@ $schema_data = [
         <?php echo json_encode($schema_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES); ?>
     </script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/vendor/fontawesome-6.4.0/css/all.min.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/style.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/responsive.css">
     <link rel="stylesheet" href="<?php echo BASE_URL; ?>/css/search_popup_styles.css">

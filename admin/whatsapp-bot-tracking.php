@@ -20,7 +20,7 @@ if (!$tables_exist) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Setup Required - WhatsApp Bot Tracking</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../assets/vendor/bootstrap-5.3.0/css/bootstrap.min.css" rel="stylesheet">
         <style>
             body { background: #f3f4f6; padding: 50px; font-family: sans-serif; }
             .setup-box { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
@@ -126,7 +126,7 @@ if (!empty($overall_stats) && ($overall_stats['total_cache_hits'] + $overall_sta
     
     <!-- Standard Admin CSS -->
     <link rel="stylesheet" href="assets/admin.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/vendor/fontawesome-6.4.0/css/all.min.css">
     
     <style>
         /* Inherit admin panel layout but restore VIBRANT dashboard styles */
