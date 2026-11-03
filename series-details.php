@@ -127,6 +127,9 @@ $schema_data = [
     "numberOfSeasons" => count($seasons),
     "genre" => explode(',', $series['genre'] ?? 'TV Show')
 ];
+
+// Allow the player to load these episodes' streaming URLs
+recovery_browser_policy(array_column($episodes, 'video_url'));
 ?>
 <!DOCTYPE html>
 <html lang="en">

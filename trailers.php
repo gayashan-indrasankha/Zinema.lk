@@ -20,6 +20,9 @@ $initial_trailers = $trailerManager->getAllTrailers(
     10, // Limit
     0   // Offset
 );
+
+// Allow the feed to load every active trailer's video URL (more trailers load as the user scrolls)
+recovery_browser_policy($pdo->query("SELECT video_url FROM trailers WHERE status = 'active'")->fetchAll(PDO::FETCH_COLUMN));
 ?>
 <!DOCTYPE html>
 <html lang="en">

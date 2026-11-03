@@ -94,6 +94,9 @@ $clean_base = rtrim($base_url . $script_dir, '/\\');
 // The new clean URL
 $og_url = $clean_base . "/movie/" . $movie['id'] . "/" . $clean_slug;
 $og_type = "video.movie";
+
+// Allow the player to load this movie's streaming URL
+recovery_browser_policy([$movie['video_url'] ?? '']);
 ?>
 <!DOCTYPE html>
 <html lang="en">

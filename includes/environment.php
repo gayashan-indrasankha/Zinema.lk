@@ -55,9 +55,19 @@ define('PAYMENT_API_URL', PAYMENT_MODE === 'disabled' ? '' : recovery_url('PAYME
 function recovery_require_adapter($name) {
     if (constant($name . '_MODE') === 'disabled') recovery_config_error($name . ' integration disabled');
 }
-function recovery_browser_policy() {
+// Pages pass the admin-entered video URLs they play; only their http(s) origin is allowed as a media source.
+function recovery_browser_policy(array $media_urls = []) {
+    static $media_origins = [];
+    foreach ($media_urls as $url) {
+        $parts = parse_url((string)$url);
+        if (!$parts || !in_array($parts['scheme'] ?? '', ['http', 'https'], true) || isset($parts['user']) || isset($parts['pass'])) continue;
+        if (!preg_match('~^[a-z0-9.-]+$~i', $parts['host'] ?? '')) continue;
+        $media_origins[] = $parts['scheme'] . '://' . strtolower($parts['host']) . (isset($parts['port']) ? ':' . (int)$parts['port'] : '');
+    }
+    $media_origins = array_values(array_unique($media_origins));
+    $extra_media = $media_origins ? ' ' . implode(' ', $media_origins) : '';
     if (APP_ENV !== 'production') {
         // Cached legacy CDN URLs and browser storage cannot bypass this local policy.
-        header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: http://127.0.0.1:*; media-src 'self' http://127.0.0.1:*; connect-src 'self' http://127.0.0.1:*; frame-src 'self' http://127.0.0.1:*; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'");
+        header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: http://127.0.0.1:*; media-src 'self' http://127.0.0.1:*" . $extra_media . "; connect-src 'self' http://127.0.0.1:*; frame-src 'self' http://127.0.0.1:*; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'");
     }
 }
