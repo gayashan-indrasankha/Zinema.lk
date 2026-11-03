@@ -3,7 +3,6 @@
 require_once 'admin/config.php';
 require_once 'includes/settings.php';
 require_once 'includes/csrf_helper.php';
-require_once 'includes/ads.php';
 
 /**
  * Generate Google OAuth URL

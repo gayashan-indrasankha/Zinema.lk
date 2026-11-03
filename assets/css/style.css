@@ -22,13 +22,6 @@ body {
     background-color: #000;
 }
 
-/* Download Page Styles */
-#countdown {
-    font-size: 4rem;
-    font-weight: bold;
-    color: #28a745;
-}
-
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
     width: 8px;
@@ -51,10 +44,6 @@ body {
 @media (max-width: 768px) {
     .movie-poster {
         height: 200px;
-    }
-    
-    #countdown {
-        font-size: 3rem;
     }
 }
 

@@ -1,7 +1,6 @@
 <?php
 // Include database connection
 require_once 'admin/config.php';
-require_once 'includes/ads.php';
 $current_nav_page = 'collections'; // For bottom nav highlighting
 
 // Get collection ID from URL

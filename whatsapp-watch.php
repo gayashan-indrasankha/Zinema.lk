@@ -6,7 +6,6 @@ recovery_require_adapter('WHATSAPP');
 // Include database connection
 require_once 'admin/config.php';
 require_once 'includes/whatsapp_token.php';
-require_once 'includes/ads.php';
 
 // Get ID and type from URL
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;

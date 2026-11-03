@@ -1,7 +1,6 @@
 <?php
 // Include database connection
 require_once 'admin/config.php';
-require_once 'includes/ads.php';
 $current_nav_page = 'movies'; // For bottom nav highlighting
 
 // Get movie ID from URL

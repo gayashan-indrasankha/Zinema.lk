@@ -2,7 +2,6 @@
 
 // Include database connection
 require_once 'admin/config.php';
-require_once 'includes/ads.php';
 
 // Get ID and type from URL
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -123,28 +122,6 @@ $stmt->close();
             font-size: 0.9rem;
         }
 
-        /* Ad Space */
-        .ad-space {
-            background: #111;
-            border: 2px dashed #333;
-            border-radius: 12px;
-            padding: 60px 20px;
-            margin: 20px 0;
-            color: #666;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .ad-space.top {
-            margin-bottom: 30px;
-        }
-
-        .ad-space.middle {
-            margin-top: 30px;
-            margin-bottom: 30px;
-        }
-
         /* Status Message */
         .status-message {
             font-size: 1.1rem;
@@ -164,58 +141,6 @@ $stmt->close();
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.5; }
-        }
-
-        /* Countdown Timer */
-        .countdown-timer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 40px 0;
-        }
-
-        .timer-circle {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            margin-bottom: 20px;
-        }
-
-        .timer-circle svg {
-            transform: rotate(-90deg);
-        }
-
-        .timer-circle circle {
-            fill: none;
-            stroke-width: 8;
-        }
-
-        .timer-circle .bg-circle {
-            stroke: #333;
-        }
-
-        .timer-circle .progress-circle {
-            stroke: url(#gradient);
-            stroke-linecap: round;
-            transition: stroke-dashoffset 1s linear;
-        }
-
-        .timer-number {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3rem;
-            font-weight: 700;
-            color: #fff;
-            text-shadow: 0 0 25px rgba(37, 211, 102, 0.8);
-        }
-
-        .timer-label {
-            color: #b4bcc9;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
 
         /* Download Button - Premium WhatsApp Theme */
@@ -312,38 +237,17 @@ $stmt->close();
                     <!-- Movie Info -->
                     <div class="movie-info">
                         <h1><?php echo htmlspecialchars($content['title']); ?></h1>
-                        <p>Preparing your download...</p>
+                        <p>Your download is ready</p>
                     </div>
 
                     <!-- Status Message -->
-                    <div class="status-message" id="statusMessage">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        <span>Please wait... Generating Link</span>
+                    <div class="status-message" id="statusMessage" style="color: #25D366;">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Ready!</span>
                     </div>
 
-                    <!-- Countdown Timer -->
-                    <div class="countdown-timer" id="countdownTimer">
-                        <div class="timer-circle">
-                            <svg width="150" height="150">
-                                <defs>
-                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#25D366;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#5FFC7B;stop-opacity:1" />
-                                    </linearGradient>
-                                </defs>
-                                <circle class="bg-circle" cx="75" cy="75" r="70"></circle>
-                                <circle class="progress-circle" cx="75" cy="75" r="70" 
-                                        id="progressCircle"
-                                        stroke-dasharray="440"
-                                        stroke-dashoffset="0"></circle>
-                            </svg>
-                            <div class="timer-number" id="timerNumber">5</div>
-                        </div>
-                        <div class="timer-label">Seconds Remaining</div>
-                    </div>
-
-                    <!-- Download Button (Hidden Initially) -->
-                    <a href="whatsapp-watch.php?id=<?php echo $id; ?>&type=<?php echo $content_type; ?>" class="download-btn" id="downloadBtn">
+                    <!-- Download Button -->
+                    <a href="whatsapp-watch.php?id=<?php echo $id; ?>&type=<?php echo $content_type; ?>" class="download-btn show" id="downloadBtn">
                         <i class="fab fa-whatsapp"></i>
                         <span id="btnText">Click Here</span>
                     </a>
@@ -360,51 +264,5 @@ $stmt->close();
         <!-- Bottom Navigation Bar -->
         <?php include '_bottom_nav.php'; ?>
     </div>
-
-    <script>
-        const COUNTDOWN_DURATION = 8; // seconds
-        let countdown = COUNTDOWN_DURATION;
-        let countdownInterval = null;
-
-        // Start countdown on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            startCountdown();
-        });
-
-        function startCountdown() {
-            const timerNumber = document.getElementById('timerNumber');
-            const progressCircle = document.getElementById('progressCircle');
-            const countdownTimer = document.getElementById('countdownTimer');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const statusMessage = document.getElementById('statusMessage');
-            
-            const circumference = 2 * Math.PI * 70; // radius = 70
-            
-            countdownInterval = setInterval(function() {
-                countdown--;
-                
-                // Update timer display
-                timerNumber.textContent = countdown;
-                
-                // Update progress circle
-                const progress = countdown / COUNTDOWN_DURATION;
-                const offset = circumference * (1 - progress);
-                progressCircle.style.strokeDashoffset = offset;
-                
-                // Check if countdown is complete
-                if (countdown <= 0) {
-                    clearInterval(countdownInterval);
-                    
-                    // Hide timer and update status message
-                    countdownTimer.style.display = 'none';
-                    statusMessage.innerHTML = '<i class="fas fa-check-circle"></i><span>Ready!</span>';
-                    statusMessage.style.color = '#25D366';
-                    
-                    // Show download button
-                    downloadBtn.classList.add('show');
-                }
-            }, 1000);
-        }
-    </script>
 </body>
 </html>
