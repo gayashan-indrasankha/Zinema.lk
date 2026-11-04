@@ -1147,6 +1147,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
                         
                         if (data.success) {
                             // Success - reload page to update session
+                            if (data.requires_verification && data.message) alert(data.message);
                             window.location.reload();
                         } else {
                             // Show error message

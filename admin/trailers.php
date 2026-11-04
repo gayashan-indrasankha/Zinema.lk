@@ -109,7 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Get all trailers with movie information
-$query = "SELECT t.*, m.title as movie_title 
+$query = "SELECT t.*, m.title as movie_title,
+                 (SELECT COUNT(*) FROM trailer_views tv WHERE tv.trailer_id = t.id) AS views,
+                 (SELECT COUNT(*) FROM trailer_likes tl WHERE tl.trailer_id = t.id) AS likes
           FROM trailers t 
           JOIN movies m ON t.movie_id = m.id 
           ORDER BY t.created_at DESC";
@@ -198,8 +200,8 @@ $movies = $conn->query("SELECT id, title FROM movies ORDER BY title");
             <?php while($trailer = $trailers->fetch_assoc()): ?>
                 <div class="trailer-card">
                     <video class="trailer-preview" 
-                           src="<?php echo htmlspecialchars($trailer['video_url']); ?>"
-                           poster="<?php echo htmlspecialchars($trailer['thumbnail_url']); ?>"
+                           src="<?php echo htmlspecialchars(preg_match('~^https?://~', $trailer['video_url']) ? $trailer['video_url'] : '../' . ltrim($trailer['video_url'], '/')); ?>"
+                           poster="<?php echo htmlspecialchars((string)($trailer['thumbnail_url'] ?? '')); ?>"
                            preload="metadata"
                            muted></video>
                     <h3><?php echo htmlspecialchars($trailer['title']); ?></h3>

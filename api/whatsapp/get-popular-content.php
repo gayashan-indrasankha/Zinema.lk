@@ -4,16 +4,12 @@
  * Returns most requested videos for cache warming
  */
 
+define('WHATSAPP_API', true);
 require_once 'config.php';
+header('Content-Type: application/json');
+validateApiRequest();
 
-// Verify API key
-if (!verifyApiKey()) {
-    http_response_code(401);
-    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-    exit;
-}
-
-$input = getApiInput();
+$input = getJsonInput();
 $limit = isset($input['limit']) ? intval($input['limit']) : 50;
 
 // Limit to max 100
@@ -37,7 +33,7 @@ try {
     FROM whatsapp_tokens wt
     LEFT JOIN movies m ON wt.content_type = 'movie' AND wt.content_id = m.id
     LEFT JOIN episodes e ON wt.content_type = 'episode' AND wt.content_id = e.id
-    LEFT JOIN tv_series s ON e.series_id = s.id
+    LEFT JOIN series s ON e.series_id = s.id
     WHERE wt.created_at > DATE_SUB(NOW(), INTERVAL 7 DAY)
     AND wt.message_id IS NOT NULL
     GROUP BY wt.content_type, wt.content_id, wt.part_number

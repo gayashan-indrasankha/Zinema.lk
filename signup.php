@@ -2,9 +2,11 @@
 // Include database connection and start session
 require_once 'admin/config.php';
 require_once 'includes/csrf_helper.php';
+require_once 'includes/mailer.php';
 
 // Initialize error message
 $error = '';
+$success = '';
 
 // Handle signup form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -24,6 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Password must be at least 6 characters long.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Please enter a valid email address.';
+    } elseif (!preg_match('/^[a-zA-Z0-9_]{3,20}$/', $username)) {
+        $error = 'Username must be 3-20 characters, using letters, numbers and underscores only.';
     } else {
         // Check if email already exists
         $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
@@ -53,22 +57,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $password_hash = password_hash($password, PASSWORD_DEFAULT);
                 
                 // Insert new user into database
-                $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash, created_at) VALUES (?, ?, ?, NOW())");
-                $stmt->bind_param("sss", $username, $email, $password_hash);
-                
+                $verification_token = bin2hex(random_bytes(32));
+                $verification_expires = date('Y-m-d H:i:s', strtotime('+24 hours'));
+                $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash, is_verified, verification_token, verification_expires, created_at) VALUES (?, ?, ?, 0, ?, ?, NOW())");
+                $stmt->bind_param("sssss", $username, $email, $password_hash, $verification_token, $verification_expires);
+
                 if ($stmt->execute()) {
-                    // Get the newly created user ID
-                    $user_id = $conn->insert_id;
-                    
-                    // Auto-login: Set session variables
-                    $_SESSION['user_id'] = $user_id;
-                    $_SESSION['username'] = $username;
-                    
                     $stmt->close();
-                    
-                    // Redirect to profile page
-                    header('Location: profile.php');
-                    exit();
+                    sendVerificationEmail($email, $username, BASE_URL . '/verify-email.php?token=' . $verification_token);
+                    $success = 'Account created! Please check your email to verify your account.';
                 } else {
                     $error = 'Registration failed. Please try again.';
                     $stmt->close();
@@ -237,6 +234,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1>🎬 Zinema.lk</h1>
         <p class="subtitle">Create your account</p>
 
+        <?php if (!empty($success)): ?>
+            <div class="error-message" style="color: #4ade80; border-color: #4ade80;" role="status"><?php echo htmlspecialchars($success); ?></div>
+        <?php endif; ?>
         <?php if (!empty($error)): ?>
             <div class="error-message">
                 <?php echo htmlspecialchars($error); ?>

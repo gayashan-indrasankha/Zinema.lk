@@ -250,7 +250,7 @@ $has_more = $page < $total_pages;
                                             <i class="fas fa-heart-broken"></i>
                                         </button>
                                         
-                                        <a href="index.php#shot-<?php echo $shot['id']; ?>" aria-label="View <?php echo htmlspecialchars($shot['title']); ?>">
+                                        <a href="index.php?shot=<?php echo $shot['id']; ?>" aria-label="View <?php echo htmlspecialchars($shot['title']); ?>">
                                             <video 
                                                 src="<?php echo htmlspecialchars($shot['shot_video_file']); ?>"
                                                 muted

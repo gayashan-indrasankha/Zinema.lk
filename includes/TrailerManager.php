@@ -37,6 +37,7 @@ class TrailerManager {
             LEFT JOIN trailer_shares ts ON t.id = ts.trailer_id
             LEFT JOIN trailer_likes utl ON t.id = utl.trailer_id AND utl.user_id = :user_id
             LEFT JOIN trailer_favorites utf ON t.id = utf.trailer_id AND utf.user_id = :user_id
+            WHERE t.status = 'active'
             GROUP BY t.id
             ORDER BY t.created_at DESC
             LIMIT :limit OFFSET :offset

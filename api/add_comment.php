@@ -32,6 +32,21 @@ if (empty($comment_text)) {
     exit;
 }
 
+if (mb_strlen($comment_text) > 1000) {
+    echo json_encode(['status' => 'error', 'message' => 'Comment is too long (1000 characters at most).']);
+    exit;
+}
+
+$shot_check = $conn->prepare("SELECT id FROM shots WHERE id = ?");
+$shot_check->bind_param("i", $shot_id);
+$shot_check->execute();
+$shot_exists = $shot_check->get_result()->num_rows > 0;
+$shot_check->close();
+if (!$shot_exists) {
+    echo json_encode(['status' => 'error', 'message' => 'This shot is no longer available.']);
+    exit;
+}
+
 // Insert new comment into database
 $stmt = $conn->prepare("INSERT INTO shot_comments (shot_id, user_id, comment_text, created_at) VALUES (?, ?, ?, NOW())");
 $stmt->bind_param("iis", $shot_id, $user_id, $comment_text);

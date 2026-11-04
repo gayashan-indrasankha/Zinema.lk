@@ -580,6 +580,10 @@ function createSlug($string) {
             padding-bottom: 20px;
         }
     </style>
+    <style>
+        /* This page has no infinite scroll, so phones keep the page buttons */
+        @media (max-width: 767px) { .pagination-wrapper { display: flex !important; } }
+    </style>
 </head>
 <body>
     <?php include '_top_nav.php'; ?>
@@ -1009,6 +1013,7 @@ function createSlug($string) {
                         
                         if (data.success) {
                             // Success - reload page to update session
+                            if (data.requires_verification && data.message) alert(data.message);
                             window.location.reload();
                         } else {
                             // Show error message

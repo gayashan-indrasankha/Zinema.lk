@@ -9,6 +9,8 @@
 define('WHATSAPP_API', true);
 require_once 'config.php';
 
+validateApiRequest();
+
 // Allow both GET and POST
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $movieId = isset($_GET['movie_id']) ? (int)$_GET['movie_id'] : 0;
@@ -27,7 +29,7 @@ if ($movieId <= 0) {
 
 // Get all parts for this movie
 $stmt = $conn->prepare(
-    "SELECT id, part_number, message_id, file_name, file_size, created_at 
+    "SELECT id, part_number, message_id, file_name, file_size_mb, created_at 
      FROM movie_parts 
      WHERE movie_id = ? 
      ORDER BY part_number ASC"
@@ -43,8 +45,8 @@ while ($row = $result->fetch_assoc()) {
         'part_number' => (int)$row['part_number'],
         'message_id' => $row['message_id'],
         'file_name' => $row['file_name'],
-        'file_size' => $row['file_size'] ? (int)$row['file_size'] : null,
-        'file_size_formatted' => $row['file_size'] ? formatBytes($row['file_size']) : null
+        'file_size' => $row['file_size_mb'] ? (int)round($row['file_size_mb'] * 1048576) : null,
+        'file_size_formatted' => $row['file_size_mb'] ? formatBytes($row['file_size_mb'] * 1048576) : null
     ];
 }
 

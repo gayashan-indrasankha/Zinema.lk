@@ -36,9 +36,7 @@ function generateUniqueToken() {
  * @return array|false Token data on success, false on failure, or rate limit error array
  */
 function createWhatsAppToken($conn, $contentId, $contentType, $expiryMinutes = 180, $partNumber = null) {
-    // Rate limiting check - DISABLED
-    // To re-enable, uncomment the code below:
-    /*
+    // Per-IP rate limit (skipped for localhost)
     $rateLimiter = new RateLimiter($conn);
     $rateCheck = $rateLimiter->checkLimit('token_request');
     
@@ -50,7 +48,6 @@ function createWhatsAppToken($conn, $contentId, $contentType, $expiryMinutes = 1
             'retry_after' => $rateCheck['retry_after'] ?? 60
         ];
     }
-    */
     
     // Check if any bots are online (heartbeat within last 2 minutes)
     $onlineBotCheck = mysqli_query($conn, 

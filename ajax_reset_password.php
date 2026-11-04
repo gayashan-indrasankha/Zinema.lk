@@ -79,7 +79,7 @@ $conn->begin_transaction();
 
 try {
     // Update user password
-    $stmt = $conn->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
+    $stmt = $conn->prepare("UPDATE users SET password_hash = ?, remember_token = NULL WHERE id = ?");
     $stmt->bind_param("si", $passwordHash, $resetData['user_id']);
     
     if (!$stmt->execute()) {

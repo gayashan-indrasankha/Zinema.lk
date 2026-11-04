@@ -294,8 +294,8 @@ if (isset($_GET['edit'])) {
                             <td>
                                 <span style="color: #ffc107;">⭐ <?php echo number_format($movie['rating'], 1); ?></span>
                             </td>
-                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: monospace; font-size: 0.75em;" title="<?php echo htmlspecialchars($movie['video_url']); ?>">
-                                <?php echo htmlspecialchars(substr($movie['video_url'], 0, 50)) . '...'; ?>
+                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: monospace; font-size: 0.75em;" title="<?php echo htmlspecialchars((string)($movie['video_url'] ?? '')); ?>">
+                                <?php $video_preview = (string)($movie['video_url'] ?? ''); echo $video_preview === '' ? '<em>No video</em>' : htmlspecialchars(mb_substr($video_preview, 0, 50)) . '...'; ?>
                             </td>
                             <td>
                                 <a href="movies.php?edit=<?php echo $movie['id']; ?>"><i class="fas fa-pen"></i> Edit</a>

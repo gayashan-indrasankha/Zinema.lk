@@ -19,46 +19,38 @@ if (!$tokenId) {
 }
 
 try {
-    // Get token details
-    $tokenQuery = "SELECT content_type, content_id, part_number FROM movie_message_ids 
-                   WHERE id = ?";
-    $stmt = mysqli_prepare($conn, $tokenQuery);
+    $stmt = mysqli_prepare($conn, "SELECT content_type, content_id, part_number FROM whatsapp_tokens WHERE id = ?");
     mysqli_stmt_bind_param($stmt, 'i', $tokenId);
     mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $tokenData = mysqli_fetch_assoc($result);
+    $tokenData = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
     mysqli_stmt_close($stmt);
-    
+
     if (!$tokenData) {
         echo json_encode(['success' => false, 'error' => 'Token not found']);
         exit;
     }
-    
-    // Update movie_message_ids counters
-    $isCacheHit = ($hitType === 'cache_hit');
-    
-    if ($isCacheHit) {
-        $sql = "UPDATE movie_message_ids 
-                SET cache_hit_count = cache_hit_count + 1,
-                    forward_count = forward_count + 1,
-                    last_forwarded_at = NOW()
-                WHERE id = ?";
-    } else {
-        $sql = "UPDATE movie_message_ids 
-                SET cache_miss_count = cache_miss_count + 1,
-                    forward_count = forward_count + 1,
-                    last_forwarded_at = NOW()
-                WHERE id = ?";
-    }
-    
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, 'i', $tokenId);
+
+    $isCacheHit = ($hitType === 'cache_hit') ? 1 : 0;
+    $isCacheMiss = 1 - $isCacheHit;
+    $partNumber = $tokenData['part_number'];
+
+    $stmt = mysqli_prepare($conn, "UPDATE content_forward_stats
+        SET total_forwards = total_forwards + 1, cache_hits = cache_hits + ?, cache_misses = cache_misses + ?, last_forwarded_at = NOW()
+        WHERE content_type = ? AND content_id = ? AND part_number <=> ?");
+    mysqli_stmt_bind_param($stmt, 'iisii', $isCacheHit, $isCacheMiss, $tokenData['content_type'], $tokenData['content_id'], $partNumber);
     mysqli_stmt_execute($stmt);
+    $updated = mysqli_stmt_affected_rows($stmt);
     mysqli_stmt_close($stmt);
-    
-    // Also update bot_statistics table
-    // (This would typically be done via stored procedure for accuracy)
-    
+
+    if ($updated === 0) {
+        $stmt = mysqli_prepare($conn, "INSERT INTO content_forward_stats
+            (content_type, content_id, part_number, total_forwards, cache_hits, cache_misses, last_forwarded_at)
+            VALUES (?, ?, ?, 1, ?, ?, NOW())");
+        mysqli_stmt_bind_param($stmt, 'siiii', $tokenData['content_type'], $tokenData['content_id'], $partNumber, $isCacheHit, $isCacheMiss);
+        mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+    }
+
     echo json_encode(['success' => true]);
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);

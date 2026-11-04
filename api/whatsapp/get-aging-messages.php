@@ -63,8 +63,8 @@ try {
     
     // Get aging movies (full files, not parts)
     $stmt = $conn->prepare("
-        SELECT 'movie' as content_type, id as content_id, 0 as part_number, message_id, updated_at 
-        FROM movies 
+        SELECT content_type, content_id, 0 as part_number, message_id, updated_at
+        FROM whatsapp_message_ids
         WHERE message_id IS NOT NULL 
         AND updated_at < DATE_SUB(NOW(), INTERVAL ? DAY)
         ORDER BY updated_at ASC
@@ -78,22 +78,6 @@ try {
     }
     $stmt->close();
     
-    // Get aging episodes (full files, not parts)
-    $stmt = $conn->prepare("
-        SELECT 'episode' as content_type, id as content_id, 0 as part_number, message_id, updated_at 
-        FROM episodes 
-        WHERE message_id IS NOT NULL 
-        AND updated_at < DATE_SUB(NOW(), INTERVAL ? DAY)
-        ORDER BY updated_at ASC
-        LIMIT 50
-    ");
-    $stmt->bind_param("i", $daysOld);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    while ($row = $result->fetch_assoc()) {
-        $messages[] = $row;
-    }
-    $stmt->close();
     
     echo json_encode([
         'success' => true,

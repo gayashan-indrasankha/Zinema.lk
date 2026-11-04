@@ -2,6 +2,16 @@
 // Load the configured session save path and start the session
 require_once 'admin/config.php';
 
+// Sign out everywhere: a remember-me cookie must not restore this session
+if (!empty($_SESSION['user_id'])) {
+    $forget = $conn->prepare("UPDATE users SET remember_token = NULL WHERE id = ?");
+    $forget->bind_param("i", $_SESSION['user_id']);
+    $forget->execute();
+    $forget->close();
+}
+setcookie('remember_token', '', time() - 3600, '/');
+setcookie('remember_user', '', time() - 3600, '/');
+
 // Unset all session variables
 session_unset();
 

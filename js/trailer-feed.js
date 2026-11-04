@@ -70,8 +70,8 @@ class TrailerFeed {
         return `
             <div class="trailer-item" data-trailer-id="${trailer.id}">
                 <video class="trailer-video" 
-                       src="${trailer.trailer_url}"
-                       poster="${trailer.thumbnail_url}"
+                       src="${trailer.video_url}"
+                       poster="${trailer.thumbnail_url || ''}"
                        playsinline
                        webkit-playsinline
                        preload="metadata"
@@ -337,7 +337,7 @@ class TrailerFeed {
     }
     
     handleShare(trailerId) {
-        const url = `${window.location.origin}/trailer.php?id=${trailerId}`;
+        const url = new URL(`trailers.php?id=${trailerId}`, window.location.href).href;
         if (navigator.share) {
             navigator.share({ title: 'Check out this movie trailer!', url })
                 .then(() => this.recordShare(trailerId, 'native'))
@@ -357,7 +357,7 @@ class TrailerFeed {
     
     async recordView(trailerId) {
         try {
-            await fetch(`${this.apiEndpoint}/view`, {
+            await fetch(`${this.apiEndpoint}?action=view`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ trailer_id: trailerId })
@@ -369,7 +369,7 @@ class TrailerFeed {
     
     async recordShare(trailerId, platform) {
         try {
-            await fetch(`${this.apiEndpoint}/share`, {
+            await fetch(`${this.apiEndpoint}?action=share`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
@@ -400,7 +400,7 @@ class TrailerFeed {
     }
     
     showShareDialog(trailerId) {
-        const url = `${window.location.origin}/trailer.php?id=${trailerId}`;
+        const url = new URL(`trailers.php?id=${trailerId}`, window.location.href).href;
         // Fallback copying method
         const input = document.createElement('input');
         input.value = url;

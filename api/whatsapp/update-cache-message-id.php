@@ -21,32 +21,25 @@ if (!$contentType || !$contentId || !$cacheMessageId) {
 }
 
 try {
-    // Update movie_message_ids table
-    if ($contentType === 'movie') {
-        if ($partNumber) {
-            $sql = "UPDATE movie_message_ids 
-                    SET cache_message_id = ?, 
-                        message_id_updated_at = NOW()
-                    WHERE movie_id = ? AND part_number = ?";
-            $stmt = mysqli_prepare($conn, $sql);
-            mysqli_stmt_bind_param($stmt, 'sii', $cacheMessageId, $contentId, $partNumber);
-        } else {
-            $sql = "UPDATE movie_message_ids 
-                    SET cache_message_id = ?, 
-                        message_id_updated_at = NOW()
-                    WHERE movie_id = ? AND part_number IS NULL";
-            $stmt = mysqli_prepare($conn, $sql);
-            mysqli_stmt_bind_param($stmt, 'si', $cacheMessageId, $contentId);
-        }
-        
-        mysqli_stmt_execute($stmt);
-        $affected = mysqli_stmt_affected_rows($stmt);
-        mysqli_stmt_close($stmt);
-        
-        echo json_encode(['success' => true, 'affected_rows' => $affected]);
-    } else {
+    // Only split files have a cache column; a whole file keeps its main message ID.
+    $tables = ['movie' => ['movie_parts', 'movie_id'], 'episode' => ['episode_parts', 'episode_id']];
+    if (!isset($tables[$contentType])) {
         echo json_encode(['success' => false, 'error' => 'Unsupported content type']);
+        exit;
     }
+    if (!$partNumber) {
+        echo json_encode(['success' => true, 'affected_rows' => 0, 'stored' => false]);
+        exit;
+    }
+
+    [$table, $idColumn] = $tables[$contentType];
+    $stmt = mysqli_prepare($conn, "UPDATE $table SET cache_message_id = ? WHERE $idColumn = ? AND part_number = ?");
+    mysqli_stmt_bind_param($stmt, 'sii', $cacheMessageId, $contentId, $partNumber);
+    mysqli_stmt_execute($stmt);
+    $affected = mysqli_stmt_affected_rows($stmt);
+    mysqli_stmt_close($stmt);
+
+    echo json_encode(['success' => true, 'affected_rows' => $affected, 'stored' => $affected > 0]);
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'error' => $e->getMessage()]);
 }

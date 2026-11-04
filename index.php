@@ -112,6 +112,36 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
+// A shared or saved link (index.php?shot=12) opens that shot first, even if it was already watched
+$requested_shot_id = isset($_GET['shot']) ? intval($_GET['shot']) : 0;
+if ($requested_shot_id > 0) {
+    $requested_shot = null;
+    foreach ($shots_feed as $feed_index => $feed_shot) {
+        if ((int)$feed_shot['id'] === $requested_shot_id) {
+            $requested_shot = $feed_shot;
+            unset($shots_feed[$feed_index]);
+            break;
+        }
+    }
+    if ($requested_shot === null) {
+        $viewer_id = (int)($current_user_id ?? 0);
+        $stmt = $conn->prepare("SELECT s.id, s.title, s.description, s.shot_video_file, s.fb_share_url,
+                s.linked_content_type, s.linked_content_id, s.created_at,
+                (SELECT COUNT(*) FROM shot_likes sl WHERE sl.shot_id = s.id) AS like_count,
+                (SELECT COUNT(*) FROM shot_comments sc WHERE sc.shot_id = s.id) AS comment_count,
+                EXISTS(SELECT 1 FROM shot_likes ul WHERE ul.shot_id = s.id AND ul.user_id = ?) AS user_has_liked,
+                EXISTS(SELECT 1 FROM user_favorites uf WHERE uf.shot_id = s.id AND uf.user_id = ?) AS user_has_saved
+            FROM shots s WHERE s.id = ?");
+        $stmt->bind_param("iii", $viewer_id, $viewer_id, $requested_shot_id);
+        $stmt->execute();
+        $requested_shot = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+    }
+    if ($requested_shot) {
+        array_unshift($shots_feed, $requested_shot);
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -830,6 +860,7 @@ if ($result && $result->num_rows > 0) {
                         
                         if (data.success) {
                             // Success - Reload page
+                            if (data.requires_verification && data.message) alert(data.message);
                             window.location.reload();
                         } else {
                             // Reset button state on error
@@ -1127,7 +1158,7 @@ if ($result && $result->num_rows > 0) {
 
         // ===== Share Shot =====
         function shareShot(shotId, title) {
-            const url = window.location.origin + '/index.php#shot-' + shotId;
+            const url = <?php echo json_encode(BASE_URL . '/index.php?shot='); ?> + shotId;
             
             if (navigator.share) {
                 navigator.share({
