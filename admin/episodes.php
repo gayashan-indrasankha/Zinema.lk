@@ -233,7 +233,7 @@ if (isset($_GET['edit'])) {
                 <div class="form-group">
                     <label for="video_url">Streaming Video URL *</label>
                     <textarea name="video_url" id="video_url" rows="4" 
-                        placeholder="Paste the streaming URL here (e.g., https://my-drive-streamer.indrasankag.workers.dev/FILE_ID)"
+                        placeholder="Paste the streaming URL here (e.g., https://media.example.com/videos/VIDEO_ID)"
                         style="font-family: monospace; font-size: 0.85em;" required><?php echo $edit_episode ? htmlspecialchars($edit_episode['video_url']) : ''; ?></textarea>
                     <small style="color: #888; display: block; margin-top: 5px;">
                         ℹ️ Paste the complete streaming URL for the episode.
