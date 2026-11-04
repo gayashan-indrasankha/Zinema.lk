@@ -93,15 +93,15 @@ if ($result && $result->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Browse curated movie collections and box sets on Zinema.lk. Watch complete franchises like Marvel, Harry Potter, Fast & Furious and more in Full HD with Sinhala subtitles.">
-    <meta name="keywords" content="movie collections, movie box sets, complete series, sinhala movies, movie franchise, Zinema.lk">
+    <meta name="description" content="Browse curated movie collections on Zinema.lk, grouped by theme and ready to watch online or through WhatsApp.">
+    <meta name="keywords" content="movie collections, curated movies, Zinema.lk">
     <link rel="canonical" href="<?php echo BASE_URL; ?>/collections.php">
     <link rel="icon" type="image/png" href="<?php echo BASE_URL; ?>/assets/images/tab-logo.png">
-    <title>Movie Collections & Box Sets - Complete Franchises | Zinema.lk</title>
+    <title>Movie Collections | Zinema.lk</title>
     
     <!-- Open Graph Tags -->
-    <meta property="og:title" content="Movie Collections & Box Sets | Zinema.lk">
-    <meta property="og:description" content="Browse curated movie collections. Watch complete franchises in Full HD with Sinhala subtitles.">
+    <meta property="og:title" content="Movie Collections | Zinema.lk">
+    <meta property="og:description" content="Browse curated movie collections, grouped by theme and ready to watch online or through WhatsApp.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo BASE_URL; ?>/collections.php">
     <meta property="og:site_name" content="Zinema.lk">

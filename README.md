@@ -83,7 +83,9 @@ sequenceDiagram
 
 ## Screenshots
 
-All screenshots are from the real, running application.
+All screenshots are from the running application, using a demo catalogue of openly licensed films
+(see [Demo content and credits](#demo-content-and-credits)). The bot status in the admin screenshots
+is sample data.
 
 ### From a short clip to the full movie
 
@@ -210,7 +212,7 @@ flowchart TB
 - A consistent design system (a dark theme with one gold accent) shared by the site and admin.
 - One reusable poster-card component, so every movie and series grid lines up.
 - Self-hosted fonts and libraries, lazy-loaded posters, and cache-busted stylesheets so updates reach users immediately.
-- Clean URLs (`/movie/90/harry-potter-...`), a sitemap and social-sharing metadata for SEO.
+- Clean URLs (`/movie/90/movie-title`), a sitemap and social-sharing metadata for SEO.
 
 **Code quality**
 - Audited the codebase and removed about 45 unused or unsafe files without breaking any page.
@@ -246,6 +248,7 @@ css/, js/               Site styles and scripts
 assets/                 Logo, icons and self-hosted libraries
 migrations/             SQL for optional tables
 docs/screenshots/       Screenshots used in this README
+docs/demo/              Seed data for the demo catalogue
 ```
 
 ---
@@ -253,7 +256,8 @@ docs/screenshots/       Screenshots used in this README
 ## Running locally
 
 1. Install **XAMPP** (PHP 8.2, Apache, MariaDB) and place the project in `htdocs` (or point an Apache alias at it).
-2. Create a database and import your schema and data.
+2. Create a database and import your schema. For a sample catalogue, also import
+   [`docs/demo/demo_seed.sql`](docs/demo/demo_seed.sql); its header lists the media files it expects.
 3. Set the configuration as Apache `SetEnv` variables. [`.env.example`](.env.example) lists every
    variable. Each integration (mail, Google sign-in, WhatsApp, shots, payments) can be
    `disabled`, `local` or `live`.
@@ -261,6 +265,25 @@ docs/screenshots/       Screenshots used in this README
 
 The Shots video service and the WhatsApp delivery service are deployed separately; the site works
 without them, with those features switched off.
+
+---
+
+## Demo content and credits
+
+The screenshots and seed data use six films from the Blender open movie projects. This repository
+contains no film files. A public deployment needs distribution rights for every title in its catalogue.
+
+| Film | Year | Credit | Licence |
+|---|---|---|---|
+| [Spring](https://commons.wikimedia.org/wiki/File:Spring_-_Blender_Open_Movie.webm) | 2019 | Blender Studio | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Sprite Fright](https://commons.wikimedia.org/wiki/File:Sprite_Fright-movie_poster.jpg) | 2021 | Blender Studio | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| [Tears of Steel](https://commons.wikimedia.org/wiki/File:Tos-poster.png) | 2012 | Blender Foundation | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
+| [Sintel](https://commons.wikimedia.org/wiki/File:Sintel_poster.jpg) | 2010 | Blender Foundation | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
+| [Big Buck Bunny](https://commons.wikimedia.org/wiki/File:Big_buck_bunny_poster_big.jpg) | 2008 | Blender Foundation | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
+| [Elephants Dream](https://commons.wikimedia.org/wiki/File:ElephantsDreamPoster.jpg) | 2006 | Orange Open Movie Project, Blender Foundation | Poster [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+
+Posters were resized, and the Shots clips are short vertical crops of *Spring* and the *Sintel* trailer.
+These projects do not endorse Zinema.lk.
 
 ---
 

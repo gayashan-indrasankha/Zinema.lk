@@ -478,11 +478,13 @@ recovery_browser_policy([$movie['video_url'] ?? '']);
 
                     <!-- Meta Info -->
                     <div class="meta-info">
+                        <?php if ((float)($movie['rating'] ?? 0) > 0): ?>
                         <span class="rating">
                             <i class="fas fa-star"></i>
-                            <span><?php echo number_format($movie['rating'] ?? 0, 1); ?></span>
+                            <span><?php echo number_format($movie['rating'], 1); ?></span>
                         </span>
                         <span class="meta-divider">•</span>
+                        <?php endif; ?>
                         <span class="meta-item">
                             <i class="far fa-calendar"></i>
                             <?php 
