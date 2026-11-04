@@ -3,14 +3,11 @@
 // Every card is the same 2:3 poster frame with the title overlaid at the bottom, so a row of
 // cards always lines up no matter the poster's original size or the title's length.
 
-// Poster URL from a stored cover path: legacy full URLs on the old domain become local uploads,
-// relative paths are made absolute so they work on clean URLs like /movie/90/title.
+// Poster URL from a stored cover path: relative paths are made absolute so they work on clean
+// URLs like /movie/90/title.
 function media_card_poster($cover) {
     $cover = trim((string)$cover);
     if ($cover === '') return '';
-    if (strpos($cover, 'sinhalamovies.web.lk/uploads/') !== false) {
-        $cover = 'uploads/' . basename($cover);
-    }
     return preg_match('~^https?://~', $cover) ? $cover : BASE_URL . '/' . ltrim($cover, '/');
 }
 

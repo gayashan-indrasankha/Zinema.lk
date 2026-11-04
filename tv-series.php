@@ -115,15 +115,15 @@ function createSlug($string) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Watch the best TV series online in Full HD with Sinhala subtitles and dubbing. Stream K-dramas, Hollywood series, anime and more on Zinema.lk - Sri Lanka's #1 streaming site.">
-    <meta name="keywords" content="sinhala tv series, korean drama sinhala sub, watch series online, sinhala subtitles, HD series, Zinema.lk">
+    <meta name="description" content="Browse TV series on Zinema.lk with Sinhala subtitles and dubbing, and watch online or through WhatsApp.">
+    <meta name="keywords" content="sinhala tv series, sinhala subtitles, watch via whatsapp, Zinema.lk">
     <link rel="canonical" href="<?php echo BASE_URL; ?>/tv-series.php">
     <link rel="icon" type="image/png" href="<?php echo BASE_URL; ?>/assets/images/tab-logo.png">
     <title>Watch TV Series Online - Sinhala Dubbed & Subtitled | Zinema.lk</title>
     
     <!-- Open Graph Tags -->
     <meta property="og:title" content="Watch TV Series Online - Sinhala Dubbed & Subtitled | Zinema.lk">
-    <meta property="og:description" content="Stream the best TV series in Full HD with Sinhala subtitles. K-dramas, Hollywood series, anime and more!">
+    <meta property="og:description" content="Browse TV series with Sinhala subtitles and dubbing.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo BASE_URL; ?>/tv-series.php">
     <meta property="og:site_name" content="Zinema.lk">

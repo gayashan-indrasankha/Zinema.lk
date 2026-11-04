@@ -2,6 +2,11 @@
 require_once 'config.php';
 check_login();
 
+// Relative paths (uploads/...) are stored from the site root; legacy rows may hold full URLs
+function admin_image_src($path) {
+    return preg_match('~^https?://~', $path) ? $path : '../' . ltrim($path, '/');
+}
+
 $admin_id = $_SESSION['admin_id'];
 $message = '';
 $message_type = '';
@@ -64,7 +69,7 @@ if (isset($_POST['add_episode'])) {
         $target_file = $target_dir . $image_name;
         
         if (move_uploaded_file($_FILES["thumb_image"]["tmp_name"], $target_file)) {
-            $thumb_image_path = 'https://sinhalamovies.web.lk/uploads/' . $image_name;
+            $thumb_image_path = 'uploads/' . $image_name;
         }
     }
 
@@ -116,7 +121,7 @@ if (isset($_POST['edit_episode'])) {
         $target_file = $target_dir . $image_name;
         
         if (move_uploaded_file($_FILES["thumb_image"]["tmp_name"], $target_file)) {
-            $thumb_image_path = 'https://sinhalamovies.web.lk/uploads/' . $image_name;
+            $thumb_image_path = 'uploads/' . $image_name;
         }
     }
 
@@ -257,7 +262,7 @@ if (isset($_GET['edit'])) {
                     <?php if ($edit_episode && !empty($edit_episode['thumb_image'])): ?>
                         <div style="margin-top: 10px;">
                             <small style="color: #888;">Current thumbnail:</small><br>
-                            <img src="<?php echo htmlspecialchars($edit_episode['thumb_image']); ?>" 
+                            <img src="<?php echo htmlspecialchars(admin_image_src($edit_episode['thumb_image'])); ?>" 
                                 alt="Current thumbnail" class="episode-thumbnail">
                         </div>
                     <?php endif; ?>
@@ -296,7 +301,7 @@ if (isset($_GET['edit'])) {
                             <td><?php echo $episode['id']; ?></td>
                             <td>
                                 <?php if (!empty($episode['thumb_image'])): ?>
-                                    <img src="<?php echo htmlspecialchars($episode['thumb_image']); ?>" 
+                                    <img src="<?php echo htmlspecialchars(admin_image_src($episode['thumb_image'])); ?>" 
                                         alt="Thumbnail" class="episode-thumbnail">
                                 <?php else: ?>
                                     <span style="color: #999;">No image</span>

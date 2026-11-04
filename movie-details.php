@@ -50,7 +50,7 @@ if (!empty($movie['release_date'])) {
     preg_match('/\d{4}/', $movie['release_date'], $matches);
     $release_year = isset($matches[0]) ? " (" . $matches[0] . ")" : "";
 }
-$page_title = "Watch " . htmlspecialchars($movie['title']) . $release_year . " Online Full HD - Zinema.lk";
+$page_title = htmlspecialchars($movie['title']) . $release_year . " - Zinema.lk";
 
 // 2. Rich Meta Description
 $meta_description = "";
@@ -62,10 +62,10 @@ if (!empty($movie['description'])) {
     } else {
         $meta_description = $clean_desc;
     }
-    $meta_description .= " Watch " . htmlspecialchars($movie['title']) . " in HD on Zinema.lk.";
+    $meta_description .= " See " . htmlspecialchars($movie['title']) . " on Zinema.lk, and watch online or through WhatsApp.";
 } else {
     // Fallback
-    $meta_description = "Watch " . htmlspecialchars($movie['title']) . " online in full HD. Stream the best movies and TV series on Zinema.lk.";
+    $meta_description = "See " . htmlspecialchars($movie['title']) . " on Zinema.lk, and watch online or through WhatsApp.";
 }
 
 // Helper to create slug

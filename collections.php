@@ -467,12 +467,7 @@ if ($result && $result->num_rows > 0) {
                 // Fix Poster Path Logic
                 $c_poster = $collection['cover_image'];
                 
-                // 1. Strip hardcoded legacy domain
-                if (strpos($c_poster, 'sinhalamovies.web.lk/uploads/') !== false) {
-                    $c_poster = 'uploads/' . basename($c_poster);
-                }
-
-                // 2. Resolve to absolute path
+                // Resolve to absolute path
                 if (!preg_match('/^http/', $c_poster)) {
                     $local_check = __DIR__ . '/' . ltrim($c_poster, '/');
                     if (file_exists($local_check)) {

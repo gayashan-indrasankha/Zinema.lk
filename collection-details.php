@@ -64,7 +64,7 @@ $clean_base = defined('BASE_URL') ? BASE_URL : 'http://localhost/cinedrive';
 $canonical_url = $clean_base . "/" . $clean_link;
 
 // 1. Dynamic Page Title
-$page_title = $collection['title'] . " - Complete Movie Collection / Box Set HD - Zinema.lk";
+$page_title = $collection['title'] . " - Movie Collection - Zinema.lk";
 
 // 2. Rich Meta Description
 $meta_description = "";
@@ -75,9 +75,9 @@ if (!empty($collection['description'])) {
     } else {
         $meta_description = $clean_desc;
     }
-    $meta_description .= " Watch all movies in this collection in HD.";
+    $meta_description .= " Browse all the movies in this collection.";
 } else {
-    $meta_description = "Stream the complete " . $collection['title'] . " series in Sinhala subtitles. All movies available in Full HD on Zinema.lk.";
+    $meta_description = "Browse the " . $collection['title'] . " collection on Zinema.lk, and watch online or through WhatsApp.";
 }
 
 // 3. Open Graph & Twitter Cards
@@ -86,10 +86,7 @@ $og_desc = $meta_description;
 $og_url = $canonical_url;
 $og_image = $collection['cover_image'];
 
-// Ensure absolute image path and fix legacy domains
-if (strpos($og_image, 'sinhalamovies.web.lk/uploads/') !== false) {
-    $og_image = 'uploads/' . basename($og_image);
-}
+// Ensure absolute image path
 if (!preg_match('/^http/', $og_image)) {
     $local_check_path = __DIR__ . '/' . ltrim($og_image, '/');
     if (file_exists($local_check_path)) {
@@ -509,9 +506,6 @@ $schema_data = [
 
             <?php 
                 $cover_img = $collection['cover_image'];
-                if (strpos($cover_img, 'sinhalamovies.web.lk/uploads/') !== false) {
-                    $cover_img = 'uploads/' . basename($cover_img);
-                }
                 if (!preg_match('/^http/', $cover_img)) {
                     $local_path = __DIR__ . '/' . ltrim($cover_img, '/');
                     if(file_exists($local_path)) {

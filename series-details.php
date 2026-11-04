@@ -82,7 +82,7 @@ if (!empty($series['release_date'])) {
     preg_match('/\d{4}/', $series['release_date'], $matches);
     $release_year = $matches[0] ?? 'N/A';
 }
-$page_title = "Watch " . $series['title'] . " - All Seasons (" . $release_year . ") Online Full HD - Zinema.lk";
+$page_title = $series['title'] . " - All Seasons (" . $release_year . ") - Zinema.lk";
 
 // 2. Rich Meta Description
 $meta_description = "";
@@ -93,9 +93,9 @@ if (!empty($series['description'])) {
     } else {
         $meta_description = $clean_desc;
     }
-    $meta_description .= " Stream all episodes in HD.";
+    $meta_description .= " Browse all the episodes on Zinema.lk.";
 } else {
-    $meta_description = "Watch " . $series['title'] . " online in Full HD with Sinhala subtitles. Stream all seasons and episodes of this popular TV show on Zinema.lk.";
+    $meta_description = "See " . $series['title'] . " on Zinema.lk. Browse every season and episode, and watch online or through WhatsApp.";
 }
 
 // 3. Open Graph & Twitter Cards
@@ -828,11 +828,6 @@ recovery_browser_policy(array_column($episodes, 'video_url'));
                                             <?php 
                                                 $ep_thumb = !empty($episode['thumb_image']) ? $episode['thumb_image'] : $series['cover_image'];
                                                 
-                                                // Fix legacy/broken hardcoded domain paths
-                                                if (strpos($ep_thumb, 'sinhalamovies.web.lk/uploads/') !== false) {
-                                                    $ep_thumb = 'uploads/' . basename($ep_thumb);
-                                                }
-
                                                 // If local path, check file existence and make absolute
                                                 if (!preg_match('/^http/', $ep_thumb)) {
                                                     $local_check_path = __DIR__ . '/' . ltrim($ep_thumb, '/');
