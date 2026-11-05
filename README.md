@@ -85,7 +85,7 @@ sequenceDiagram
 
 All screenshots are from the running application, using a demo catalogue of openly licensed films
 (see [Demo content and credits](#demo-content-and-credits)). The bot status in the admin screenshots
-is sample data.
+is sample data. For a real WhatsApp delivery, see [A real delivery, end to end](#a-real-delivery-end-to-end).
 
 ### From a short clip to the full movie
 
@@ -151,6 +151,22 @@ intentionally kept private. What it does:
 - **Serves many viewers at once** with a fair request queue, across **multiple bot numbers** with automatic load balancing.
 - **Reports its health** to the platform every minute. The website only hands out tokens for bots that are really online, and admins see every bot's status live.
 - **Prevents abuse**: tokens are single-use, expire after a few minutes and are rate-limited.
+
+### A real delivery, end to end
+
+These three screenshots show one real delivery on 4 November 2026. The same token,
+`4NLDPBYVRQSL`, appears in all of them. The bot log shows the 1.5 GB film delivered within about two
+seconds of the token being processed. Personal details and internal identifiers are blurred.
+
+| 1. The website gives the viewer a token and a bot number | 2. The token is sent in WhatsApp and the full film arrives |
+|:---:|:---:|
+| <img src="docs/screenshots/14-whatsapp-proof-token.png" alt="Watch via WhatsApp page showing token 4NLDPBYVRQSL for Spring (2019)" width="280"> | <img src="docs/screenshots/15-whatsapp-proof-delivery.png" alt="WhatsApp chat where the token is sent and a 1.5 GB MP4 of Spring (2019) is delivered" width="280"> |
+
+<p align="center">
+  <strong>3. The bot's own log of the same request: token validated, video delivered, queue cleared</strong>
+  <br><br>
+  <img src="docs/screenshots/16-whatsapp-proof-bot-log.png" alt="WhatsApp bot console log validating token 4NLDPBYVRQSL and delivering movie ID 90">
+</p>
 
 ---
 
